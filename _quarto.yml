@@ -2,12 +2,37 @@ project:
   type: website
 
 website:
-  title: "Desktop/lmtp-workshop"
+  title: "Beyond the ATE - SER 2024"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: about.qmd
+        text: Instructors
+  sidebar:
+    style: "floating"
+    search: true
+    contents:
+      - section: "Welcome"
+      - section: "Background"
+        contents: 
+          - "Modified treatment policies"
+      - section: "Getting started"
+        contents:
+          - "Data structure"
+          - "Specifying a machine learning ensemble"
+      - section: "Static effects"
+      - section: "Continuous exposures"
+      - section: "Longitudinal studies"
+        contents: 
+          - "Time-varying exposures"
+          - "Survival analysis"
+      - section: "Multivariate exposures"
+    tools:
+      - icon: github
+        menu:
+          - text: Source Code
+            url:  https://github.com/nt-williams/lmtp-workshop
 
 format:
   html:

@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Instructors",
+    "section": "",
+    "text": "Nick Williams\nNick is a Senior Data Analyst in Columbia University’s Mailman School of Publich Health, Department of Epidemiology. His interests are in the development of statistical computing tools for novel causal inference methods. He’s the author and maintainer of multiple R packages.\n\n\n\nKara Rudolph\nKara is an Assistant Professor of Epidemiology at Columbia University, Mailman School of Public Health. Her research interests are in developing and applying causal inference methods to understand social and contextual influences on mental health, substance use, and violence. Her current work focuses on developing and applying methods for transportability and mediations to understand mechanisms relevant for drug use disorder prevention and treatment in various target populations.\n\n\n\nIván Díaz\nIván is an Associate Professor of Biostatistics at New York University Grossman School of Medicine. His research focuses on the development of non-parametric statistical methods for causal inference from observational and randomized studies with complex datasets, using machine learning. This includes but is not limited to mediation analysis, methods for continuous exposures, longitudinal data including survival analysis, and efficiency guarantees with covariate adjustment in randomized trials."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Estimating the causal effects of binary, categorical, continuous, and multivariate exposures in R",
+    "section": "",
+    "text": "SER 2024 - Austin, Texas\n\nModified treatment policies (MTPs) are a class of interventions that generalize static and dynamic interventions for categorical, continuous, and multivariate exposures. MTPs are hypothetical interventions where the post-intervention is defined as a modification of the natural value of the exposure that can depend on the unit’s history. This short course will introduce the lmtp R package for estimating the causal effects of MTPs in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice.\n\nLearning objectives\nBy the end of the workshop, participants will be able to:\n\nDefine MTPs intuitively and using notation, and understand how they generalize static and dynamic interventions.\nEstimate the effect of a static or dynamic intervention with for point-treatment and longitudinal studies.\nEstimate the effect of an MTP on a continuous-valued exposure with for point-treatment and longitudinal studies.\nEstimate the effect of multivariate exposures with for point-treatment and longitudinal studies."
+  }
+]
