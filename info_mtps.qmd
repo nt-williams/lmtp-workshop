@@ -1,0 +1,17 @@
+---
+title: "Modified treatment policies"
+---
+
+### The structural causal model
+
+### Assumptions and Identification
+
+### Estimators
+
+#### G-computation
+
+#### Inverse probability weighting
+
+#### One-step estimator (SDR)
+
+#### Targeted minimum-loss based (TMLE)

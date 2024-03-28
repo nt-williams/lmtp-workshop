@@ -12,5 +12,17 @@
     "title": "Estimating the causal effects of binary, categorical, continuous, and multivariate exposures in R",
     "section": "",
     "text": "SER 2024 - Austin, Texas\n\nModified treatment policies (MTPs) are a class of interventions that generalize static and dynamic interventions for categorical, continuous, and multivariate exposures. MTPs are hypothetical interventions where the post-intervention is defined as a modification of the natural value of the exposure that can depend on the unit’s history. This short course will introduce the lmtp R package for estimating the causal effects of MTPs in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice.\n\nLearning objectives\nBy the end of the workshop, participants will be able to:\n\nDefine MTPs intuitively and using notation, and understand how they generalize static and dynamic interventions.\nEstimate the effect of a static or dynamic intervention with for point-treatment and longitudinal studies.\nEstimate the effect of an MTP on a continuous-valued exposure with for point-treatment and longitudinal studies.\nEstimate the effect of multivariate exposures with for point-treatment and longitudinal studies."
+  },
+  {
+    "objectID": "info_mtps.html",
+    "href": "info_mtps.html",
+    "title": "Modified treatment policies",
+    "section": "",
+    "text": "The structural causal model\n\n\nAssumptions and Identification\n\n\nEstimators\n\nG-computation\n\n\nInverse probability weighting\n\n\nOne-step estimator (SDR)\n\n\nTargeted minimum-loss based (TMLE)",
+    "crumbs": [
+      "Home",
+      "Background",
+      "Modified treatment policies"
+    ]
   }
 ]

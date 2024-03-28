@@ -16,7 +16,14 @@ website:
       - section: "Welcome"
       - section: "Background"
         contents: 
-          - "Modified treatment policies"
+          - href: tldr.qmd
+            text: "Causal Inference TL;DR"
+          - href: info_static.qmd
+            text: "Static treatment regimes"
+          - href: info_dynamic.qmd
+            text: "Dynamic treatment regimes"
+          - href: info_mtps.qmd
+            text: "Modified treatment policies"
       - section: "Getting started"
         contents:
           - "Data structure"
