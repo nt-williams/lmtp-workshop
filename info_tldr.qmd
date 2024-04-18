@@ -1,0 +1,7 @@
+---
+title: "Causal Inference in Brief"
+---
+
+### A motivating example
+
+### Identifying causal estimands from observed data

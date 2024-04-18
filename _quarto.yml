@@ -1,5 +1,8 @@
 project:
   type: website
+  
+filters:
+  - webr
 
 website:
   title: "Beyond the ATE - SER 2024"
@@ -7,34 +10,34 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: about.qmd
+      - href: instructors.qmd
         text: Instructors
   sidebar:
     style: "floating"
     search: true
     contents:
-      - section: "Welcome"
-      - section: "Background"
-        contents: 
-          - href: tldr.qmd
-            text: "Causal Inference TL;DR"
-          - href: info_static.qmd
-            text: "Static treatment regimes"
-          - href: info_dynamic.qmd
-            text: "Dynamic treatment regimes"
-          - href: info_mtps.qmd
-            text: "Modified treatment policies"
-      - section: "Getting started"
+      - href: index.qmd
+        text: Welcome!
+      - href: info_tldr.qmd
+        text: 1. Causal Inference Refresher
+      - href: info_d.qmd
+        text: 2. Defining Interventions
+      - href: info_estimators.qmd
+        text: 3. Estimators
+      - section: 4. Estimating effects with lmtp
         contents:
-          - "Data structure"
-          - "Specifying a machine learning ensemble"
-      - section: "Static effects"
-      - section: "Continuous exposures"
-      - section: "Longitudinal studies"
-        contents: 
-          - "Time-varying exposures"
-          - "Survival analysis"
-      - section: "Multivariate exposures"
+          - href: R_data_and_superlearner.qmd
+            text: Data Structure and Machine Learning Ensembles
+          - href: R_static.qmd
+            text: Static effects and the ATE
+          - href: R_dynamic.qmd
+            text: Dynamic treatment regimes
+          - href: R_continuous.qmd
+            text: Modified Treatment Policies
+          - href: R_survival.qmd
+            text: Survival Analysis
+          - href: R_advanced.qmd
+            text: Advanced Topics
     tools:
       - icon: github
         menu:
@@ -46,6 +49,3 @@ format:
     theme: cosmo
     css: styles.css
     toc: true
-
-
-

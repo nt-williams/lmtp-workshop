@@ -1,5 +1,17 @@
 [
   {
+    "objectID": "R_data_and_superlearner.html",
+    "href": "R_data_and_superlearner.html",
+    "title": "Data Structure & Machine Learning Ensembles",
+    "section": "",
+    "text": "Please enable JavaScript to experience the dynamic code cell content on this page.\n\nSpecifying the Data Structure\n\nPoint-treatment\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nPoint-treatment w/loss-to-follow-up\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nTime-varying treatment\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nPoint-treatment w/survival outcome\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nTime-varying treatment w/survival outcome\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\n\n\nMachine Learning Ensembles\nAn attractive property of multiply-robust estimators is that they can incorporate flexible machine-learning algorithms for the estimation of nuisance parameters while remaining \\(\\sqrt{n}\\)-consistent. The super learner algorithm is an ensemble learner than incorporates a set of candidate models through a weighted convex-combination based on cross-validation. Asymptotically, this weighted combination of models, called the meta-learner, will outperform any single one of its components.\nlmtp uses the implementation of the super learner provided by the SuperLearner package. The algorithms to be used in the super learner are specified with the lrnrs_trt and lrnrs_outcome arguments. The outcome variable type should guide users on selecting the appropriate candidate learners for use with the lrnrs_outcome argument. Regardless of whether an exposure is continuous, dichotomous, or categorical, the exposure mechanism is estimated using classification. Therefore only include candidate learners capable of binary classification with the lrnrs_trt argument.\nCandidate learners that rely on cross-validation for the tuning of hyper-parameters should support grouped data if used with lrnrs_trt. Because estimation of the treatment mechanism relies on the augmented \\(2n\\) duplicated data set, duplicated observations must be put into the same fold during sample-splitting. This is done automatically by the package.\n\n\nReferences\nDíaz, I., Williams, N., Hoffman, K. L., & Schenck, E. J. (2023). Nonparametric causal effects based on longitudinal modified treatment policies. Journal of the American Statistical Association, 118(542), 846-857.\nWilliams, N., & Díaz, I. (2023). lmtp: An r package for estimating the causal effects of modified treatment policies. Observational Studies, 9(2), 103-122.\nHoffman, K. L., Schenck, E. J., Satlin, M. J., Whalen, W., Pan, D., Williams, N., & Díaz, I. (2022). Corticosteroids in covid-19: Optimizing observational research through target trial emulations. medRxiv, 2022-05.\nVan der Laan, M. J., Polley, E. C., & Hubbard, A. E. (2007). Super learner. Statistical applications in genetics and molecular biology, 6(1).",
+    "crumbs": [
+      "Home",
+      "4. Estimating effects with lmtp",
+      "Data Structure and Machine Learning Ensembles"
+    ]
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "Instructors",
@@ -7,22 +19,50 @@
     "text": "Nick Williams\nNick is a Senior Data Analyst in Columbia University’s Mailman School of Publich Health, Department of Epidemiology. His interests are in the development of statistical computing tools for novel causal inference methods. He’s the author and maintainer of multiple R packages.\n\n\n\nKara Rudolph\nKara is an Assistant Professor of Epidemiology at Columbia University, Mailman School of Public Health. Her research interests are in developing and applying causal inference methods to understand social and contextual influences on mental health, substance use, and violence. Her current work focuses on developing and applying methods for transportability and mediations to understand mechanisms relevant for drug use disorder prevention and treatment in various target populations.\n\n\n\nIván Díaz\nIván is an Associate Professor of Biostatistics at New York University Grossman School of Medicine. His research focuses on the development of non-parametric statistical methods for causal inference from observational and randomized studies with complex datasets, using machine learning. This includes but is not limited to mediation analysis, methods for continuous exposures, longitudinal data including survival analysis, and efficiency guarantees with covariate adjustment in randomized trials."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Estimating the causal effects of binary, categorical, continuous, and multivariate exposures in R",
+    "objectID": "R_multivariate.html",
+    "href": "R_multivariate.html",
+    "title": "Multivariate exposures",
     "section": "",
-    "text": "SER 2024 - Austin, Texas\n\nModified treatment policies (MTPs) are a class of interventions that generalize static and dynamic interventions for categorical, continuous, and multivariate exposures. MTPs are hypothetical interventions where the post-intervention is defined as a modification of the natural value of the exposure that can depend on the unit’s history. This short course will introduce the lmtp R package for estimating the causal effects of MTPs in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice.\n\nLearning objectives\nBy the end of the workshop, participants will be able to:\n\nDefine MTPs intuitively and using notation, and understand how they generalize static and dynamic interventions.\nEstimate the effect of a static or dynamic intervention with for point-treatment and longitudinal studies.\nEstimate the effect of an MTP on a continuous-valued exposure with for point-treatment and longitudinal studies.\nEstimate the effect of multivariate exposures with for point-treatment and longitudinal studies."
+    "text": "Note\n\n\n\nThis section requires a version of lmtp that is still underdevelopment. You can install this version from GitHub with devtools::install_github(\"nt-williams/lmtp@multviariate\")"
   },
   {
     "objectID": "info_mtps.html",
     "href": "info_mtps.html",
     "title": "Modified treatment policies",
     "section": "",
-    "text": "The structural causal model\n\n\nAssumptions and Identification\n\n\nEstimators\n\nG-computation\n\n\nInverse probability weighting\n\n\nOne-step estimator (SDR)\n\n\nTargeted minimum-loss based (TMLE)",
+    "text": "The structural causal model\n\n\nAssumptions and Identification\n\n\nEstimators\n\nG-computation\n\n\nInverse probability weighting\n\n\nOne-step estimator (SDR)\n\n\nTargeted minimum-loss based (TMLE)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Estimating the causal effects of binary, categorical, continuous, and multivariate exposures in R",
+    "section": "",
+    "text": "SER 2024 - Austin, Texas\n\n\n\n\n\n\n\nModified treatment policies (MTPs) are a class of interventions that generalize static and dynamic interventions for categorical, continuous, and multivariate exposures. MTPs are hypothetical interventions where the post-intervention is defined as a modification of the natural value of the exposure that can depend on the unit’s history. This short course will introduce the lmtp R package for estimating the causal effects of MTPs in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice.\n\n\n\n\nLearning objectives\nBy the end of the workshop, participants will be able to:\n\nDefine MTPs intuitively and using notation, and understand how they generalize static and dynamic interventions.\nEstimate the effect of a static or dynamic intervention with for point-treatment and longitudinal studies.\nEstimate the effect of an MTP on a continuous-valued exposure with for point-treatment and longitudinal studies.\nEstimate the effect of multivariate exposures with for point-treatment and longitudinal studies.\n\n\n\nSchedule\n\n\n\nTime\nTopic\n\n\n\n\n1:00 PM - 1:15 PM\nIntroductions\n\n\n1:15 PM - 1:30 PM\nFrom observed data to causal estimands\n\n\n1:30 PM - 2:30 PM\nGeneralizing interventions using MTPs\n\n\n2:30 PM - 2:50 PM\nThe estimator landscape\n\n\n2:50 PM - 3:00 PM\nBreak\n\n\n3:00 PM - 3:15 PM\nSetting up the correct data structure\n\n\n3:15 PM - 4:45 PM\nEstimating effects using the lmtp package\n\n\n4:45 PM - 5:00 PM\nQ + A\n\n\n\n\n\nwebR\nThis workshop was prepared using Quarto and webR. The source code is available on GitHub. webR is a version of the R programming language compiled to be run directlyin the browser. Using webR for this workshop avoids having to spend time setting up a computing environment and making sure workshop participants are using the same version of R and R packages.",
     "crumbs": [
       "Home",
-      "Background",
-      "Modified treatment policies"
+      "Welcome!"
+    ]
+  },
+  {
+    "objectID": "info_estimators.html",
+    "href": "info_estimators.html",
+    "title": "Estimators",
+    "section": "",
+    "text": "g-computation\n\n\nDensity-ratio estimation\n\n\nInverse Probability Weighting\n\n\nTargeted Minimum-Loss Based Estimation\n\n\nSequentially Doubly Robust Estimator\n\nCrossfitting\n\n\n\nReferences",
+    "crumbs": [
+      "Home",
+      "3. Estimators"
+    ]
+  },
+  {
+    "objectID": "info_tldr.html",
+    "href": "info_tldr.html",
+    "title": "Causal Inference in Brief",
+    "section": "",
+    "text": "A motivating example\n\n\nIdentifying causal estimands from observed data",
+    "crumbs": [
+      "Home",
+      "Causal Inference TL;DR"
     ]
   }
 ]

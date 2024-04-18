@@ -1,0 +1,13 @@
+---
+title: "Multivariate exposures"
+engine: knitr
+filters:
+  - webr
+webr:
+  packages: ['lmtp', 'superlearner']
+  autoload-packages: false
+---
+
+::: callout-note
+This section requires a version of lmtp that is still underdevelopment. You can install this version from GitHub with `devtools::install_github("nt-williams/lmtp@multviariate")`
+:::
