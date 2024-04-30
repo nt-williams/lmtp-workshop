@@ -25,7 +25,7 @@ covid <- read.csv("williams_synthetic.csv")
 
 ### Motivating data
 
-For our first example, we'll use a synthetic dataset of $n = 500$ patients from a hypothetical clinical trial for a treatment to decrease intubation and death among patients hospitalized with COVID-19. The data is based on a database of over 1,500 patients hospitalised at Weill Cornell Medicine New York Presbyterian Hospital prior to 15 May 2020 with COVID-19 confirmed through PCR. To replicate a two-arm randomized clinical trial (RCT), we've simulated a hypothetical treatment variable (`A`) that is randomly assigned for each observation with probability 0.5.
+For our first example, we'll use a synthetic dataset of $n = 1000$ patients from a hypothetical clinical trial for a treatment to decrease intubation and death among patients hospitalized with COVID-19. The data is based on a database of over 1,500 patients hospitalised at Weill Cornell Medicine New York Presbyterian Hospital prior to 15 May 2020 with COVID-19 confirmed through PCR. To replicate a two-arm randomized clinical trial (RCT), we've simulated a hypothetical treatment variable (`A`) that is randomly assigned for each observation with probability 0.5.
 
 The outcome of interest (`event`) is intubation or death by 14-days post-hospitalization; treatment is associated with increased survival. Baseline covariates include: age, sex, BMI, smoking status, whether the patient required supplemental oxygen within 3 hours of presenting to the emergency department, number of comorbidities, number of relevant symptoms, presence of bilateral infiltrates on chest X-ray, dyspnea, and hypertension. For more information on how these data were generated see @williams2022optimising.
 

@@ -325,7 +325,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"id":1,"options":{"output":"true","out-width":"700px","label":"unnamed-chunk-1","fig-cap":"","dpi":72,"classes":"","editor-quick-suggestions":"false","fig-width":7,"read-only":"false","message":"true","editor-font-scale":1,"comment":"","results":"markup","editor-max-height":"","fig-height":5,"autorun":"true","out-height":"","context":"setup","warning":"true"},"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/williams_synthetic.csv\", \"williams_synthetic.csv\")\ncovid <- read.csv(\"williams_synthetic.csv\")"},{"id":2,"options":{"output":"true","out-width":"700px","label":"unnamed-chunk-2","fig-cap":"","dpi":72,"classes":"","editor-quick-suggestions":"false","fig-width":7,"read-only":"false","message":"true","editor-font-scale":1,"comment":"","results":"markup","editor-max-height":"","fig-height":5,"autorun":"true","out-height":"","context":"interactive","warning":"true"},"code":"d1 <- function(data, trt) {\n  rep(1, nrow(data))\n}"},{"id":3,"options":{"output":"true","out-width":"700px","label":"unnamed-chunk-3","fig-cap":"","dpi":72,"classes":"","editor-quick-suggestions":"false","fig-width":7,"read-only":"false","message":"true","editor-font-scale":1,"comment":"","results":"markup","editor-max-height":"","fig-height":5,"autorun":"false","out-height":"","context":"interactive","warning":"true"},"code":"d1(covid, \"A\") |> head()\nd1(covid, \"A\") |> length()"},{"id":4,"options":{"output":"true","out-width":"700px","label":"unnamed-chunk-4","fig-cap":"","dpi":72,"classes":"","editor-quick-suggestions":"false","fig-width":7,"read-only":"false","message":"true","editor-font-scale":1,"comment":"","results":"markup","editor-max-height":"","fig-height":5,"autorun":"false","out-height":"","context":"interactive","warning":"true"},"code":"A <- \"A\"\nY <- \"event\"\nW <- c(\"age\", \"sex\", \"bmi\", \"smoke\", \"o2\", \n       \"num_comorbid\", \"num_symptoms\", \"bilat\", \"dyspnea\", \"hyper\")\n\nset.seed(34465)\n\ntreat <- lmtp_tmle(\n  data = covid, \n  trt = \"A\", \n  outcome = \"event\", \n  baseline = W, \n  outcome_type = \"binomial\", \n  shift = d1, \n  folds = 1, \n  learners_trt = \"SL.mean\", \n  learners_outcome = \"SL.glm\"\n)\n\nprint(treat)"},{"id":5,"options":{"output":"true","out-width":"700px","label":"unnamed-chunk-5","fig-cap":"","dpi":72,"classes":"","editor-quick-suggestions":"false","fig-width":7,"read-only":"false","message":"true","editor-font-scale":1,"comment":"","results":"markup","editor-max-height":"","fig-height":5,"autorun":"false","out-height":"","context":"interactive","warning":"true"},"code":"tmp <- covid\ntmp$A <- d1(covid, \"A\")\n\nhead(tmp)\n\nset.seed(34465)\n\ntreat <- lmtp_tmle(\n  data = covid, \n  trt = \"A\", \n  outcome = \"event\", \n  baseline = W, \n  outcome_type = \"binomial\", \n  shifted = tmp, \n  folds = 1, \n  learners_trt = \"SL.mean\", \n  learners_outcome = \"SL.glm\"\n)\n\nprint(treat)"},{"id":6,"options":{"output":"true","out-width":"700px","label":"unnamed-chunk-6","fig-cap":"","dpi":72,"classes":"","editor-quick-suggestions":"false","fig-width":7,"read-only":"false","message":"true","editor-font-scale":1,"comment":"","results":"markup","editor-max-height":"","fig-height":5,"autorun":"false","out-height":"","context":"interactive","warning":"true"},"code":"hist(treat$density_ratios[, 1], \n     main = \"Histogram of density ratios\", \n     xlab = \"Density ratio\")"},{"id":7,"options":{"output":"true","out-width":"700px","label":"unnamed-chunk-7","fig-cap":"","dpi":72,"classes":"","editor-quick-suggestions":"false","fig-width":7,"read-only":"false","message":"true","editor-font-scale":1,"comment":"","results":"markup","editor-max-height":"","fig-height":5,"autorun":"false","out-height":"","context":"interactive","warning":"true"},"code":"dont_treat <- # Type your code here!"},{"id":8,"options":{"output":"true","out-width":"700px","label":"unnamed-chunk-8","fig-cap":"","dpi":72,"classes":"","editor-quick-suggestions":"false","fig-width":7,"read-only":"false","message":"true","editor-font-scale":1,"comment":"","results":"markup","editor-max-height":"","fig-height":5,"autorun":"false","out-height":"","context":"interactive","warning":"true"},"code":"lmtp_contrast(treat, ref = dont_treat)"},{"id":9,"options":{"output":"true","out-width":"700px","label":"unnamed-chunk-9","fig-cap":"","dpi":72,"classes":"","editor-quick-suggestions":"false","fig-width":7,"read-only":"false","message":"true","editor-font-scale":1,"comment":"","results":"markup","editor-max-height":"","fig-height":5,"autorun":"false","out-height":"","context":"interactive","warning":"true"},"code":"lmtp_contrast(treat, ref = dont_treat, type = \"rr\")\nlmtp_contrast(treat, ref = dont_treat, type = \"or\")"}];
+globalThis.qwebrCellDetails = [{"options":{"label":"unnamed-chunk-1","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"true","context":"setup","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/williams_synthetic.csv\", \"williams_synthetic.csv\")\ncovid <- read.csv(\"williams_synthetic.csv\")","id":1},{"options":{"label":"unnamed-chunk-2","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"true","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"d1 <- function(data, trt) {\n  rep(1, nrow(data))\n}","id":2},{"options":{"label":"unnamed-chunk-3","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"d1(covid, \"A\") |> head()\nd1(covid, \"A\") |> length()","id":3},{"options":{"label":"unnamed-chunk-4","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"A <- \"A\"\nY <- \"event\"\nW <- c(\"age\", \"sex\", \"bmi\", \"smoke\", \"o2\", \n       \"num_comorbid\", \"num_symptoms\", \"bilat\", \"dyspnea\", \"hyper\")\n\nset.seed(34465)\n\ntreat <- lmtp_tmle(\n  data = covid, \n  trt = \"A\", \n  outcome = \"event\", \n  baseline = W, \n  outcome_type = \"binomial\", \n  shift = d1, \n  folds = 1, \n  learners_trt = \"SL.mean\", \n  learners_outcome = \"SL.glm\"\n)\n\nprint(treat)","id":4},{"options":{"label":"unnamed-chunk-5","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"tmp <- covid\ntmp$A <- d1(covid, \"A\")\n\nhead(tmp)\n\nset.seed(34465)\n\ntreat <- lmtp_tmle(\n  data = covid, \n  trt = \"A\", \n  outcome = \"event\", \n  baseline = W, \n  outcome_type = \"binomial\", \n  shifted = tmp, \n  folds = 1, \n  learners_trt = \"SL.mean\", \n  learners_outcome = \"SL.glm\"\n)\n\nprint(treat)","id":5},{"options":{"label":"unnamed-chunk-6","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"hist(treat$density_ratios[, 1], \n     main = \"Histogram of density ratios\", \n     xlab = \"Density ratio\")","id":6},{"options":{"label":"unnamed-chunk-7","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"dont_treat <- # Type your code here!","id":7},{"options":{"label":"unnamed-chunk-8","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"lmtp_contrast(treat, ref = dont_treat)","id":8},{"options":{"label":"unnamed-chunk-9","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"lmtp_contrast(treat, ref = dont_treat, type = \"rr\")\nlmtp_contrast(treat, ref = dont_treat, type = \"or\")","id":9}];
 
 </script>
 <script type="module">
@@ -1636,23 +1636,23 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<div id="dhtgmxlbof" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dhtgmxlbof table {
+<div id="igicvedaxl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#igicvedaxl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dhtgmxlbof thead, #dhtgmxlbof tbody, #dhtgmxlbof tfoot, #dhtgmxlbof tr, #dhtgmxlbof td, #dhtgmxlbof th {
+#igicvedaxl thead, #igicvedaxl tbody, #igicvedaxl tfoot, #igicvedaxl tr, #igicvedaxl td, #igicvedaxl th {
   border-style: none;
 }
 
-#dhtgmxlbof p {
+#igicvedaxl p {
   margin: 0;
   padding: 0;
 }
 
-#dhtgmxlbof .gt_table {
+#igicvedaxl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1678,12 +1678,12 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-left-color: #D3D3D3;
 }
 
-#dhtgmxlbof .gt_caption {
+#igicvedaxl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dhtgmxlbof .gt_title {
+#igicvedaxl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1695,7 +1695,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-width: 0;
 }
 
-#dhtgmxlbof .gt_subtitle {
+#igicvedaxl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1707,7 +1707,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-width: 0;
 }
 
-#dhtgmxlbof .gt_heading {
+#igicvedaxl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1719,13 +1719,13 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#dhtgmxlbof .gt_bottom_border {
+#igicvedaxl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dhtgmxlbof .gt_col_headings {
+#igicvedaxl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1740,7 +1740,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#dhtgmxlbof .gt_col_heading {
+#igicvedaxl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1760,7 +1760,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#dhtgmxlbof .gt_column_spanner_outer {
+#igicvedaxl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1772,15 +1772,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 4px;
 }
 
-#dhtgmxlbof .gt_column_spanner_outer:first-child {
+#igicvedaxl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dhtgmxlbof .gt_column_spanner_outer:last-child {
+#igicvedaxl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dhtgmxlbof .gt_column_spanner {
+#igicvedaxl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1792,11 +1792,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   width: 100%;
 }
 
-#dhtgmxlbof .gt_spanner_row {
+#igicvedaxl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dhtgmxlbof .gt_group_heading {
+#igicvedaxl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1822,7 +1822,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   text-align: left;
 }
 
-#dhtgmxlbof .gt_empty_group_heading {
+#igicvedaxl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1837,15 +1837,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: middle;
 }
 
-#dhtgmxlbof .gt_from_md > :first-child {
+#igicvedaxl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dhtgmxlbof .gt_from_md > :last-child {
+#igicvedaxl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dhtgmxlbof .gt_row {
+#igicvedaxl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1864,7 +1864,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#dhtgmxlbof .gt_stub {
+#igicvedaxl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1877,7 +1877,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#dhtgmxlbof .gt_stub_row_group {
+#igicvedaxl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1891,15 +1891,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: top;
 }
 
-#dhtgmxlbof .gt_row_group_first td {
+#igicvedaxl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dhtgmxlbof .gt_row_group_first th {
+#igicvedaxl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dhtgmxlbof .gt_summary_row {
+#igicvedaxl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1909,16 +1909,16 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#dhtgmxlbof .gt_first_summary_row {
+#igicvedaxl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dhtgmxlbof .gt_first_summary_row.thick {
+#igicvedaxl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dhtgmxlbof .gt_last_summary_row {
+#igicvedaxl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1928,7 +1928,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#dhtgmxlbof .gt_grand_summary_row {
+#igicvedaxl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1938,7 +1938,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#dhtgmxlbof .gt_first_grand_summary_row {
+#igicvedaxl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1948,7 +1948,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-color: #D3D3D3;
 }
 
-#dhtgmxlbof .gt_last_grand_summary_row_top {
+#igicvedaxl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1958,11 +1958,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#dhtgmxlbof .gt_striped {
+#igicvedaxl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dhtgmxlbof .gt_table_body {
+#igicvedaxl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1971,7 +1971,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#dhtgmxlbof .gt_footnotes {
+#igicvedaxl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1985,7 +1985,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#dhtgmxlbof .gt_footnote {
+#igicvedaxl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1994,7 +1994,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#dhtgmxlbof .gt_sourcenotes {
+#igicvedaxl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2008,7 +2008,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#dhtgmxlbof .gt_sourcenote {
+#igicvedaxl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2016,63 +2016,63 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#dhtgmxlbof .gt_left {
+#igicvedaxl .gt_left {
   text-align: left;
 }
 
-#dhtgmxlbof .gt_center {
+#igicvedaxl .gt_center {
   text-align: center;
 }
 
-#dhtgmxlbof .gt_right {
+#igicvedaxl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dhtgmxlbof .gt_font_normal {
+#igicvedaxl .gt_font_normal {
   font-weight: normal;
 }
 
-#dhtgmxlbof .gt_font_bold {
+#igicvedaxl .gt_font_bold {
   font-weight: bold;
 }
 
-#dhtgmxlbof .gt_font_italic {
+#igicvedaxl .gt_font_italic {
   font-style: italic;
 }
 
-#dhtgmxlbof .gt_super {
+#igicvedaxl .gt_super {
   font-size: 65%;
 }
 
-#dhtgmxlbof .gt_footnote_marks {
+#igicvedaxl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dhtgmxlbof .gt_asterisk {
+#igicvedaxl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dhtgmxlbof .gt_indent_1 {
+#igicvedaxl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dhtgmxlbof .gt_indent_2 {
+#igicvedaxl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dhtgmxlbof .gt_indent_3 {
+#igicvedaxl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dhtgmxlbof .gt_indent_4 {
+#igicvedaxl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dhtgmxlbof .gt_indent_5 {
+#igicvedaxl .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2086,20 +2086,20 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <thead>
 <tr class="header gt_col_headings">
 <th id="<strong>Characteristic</strong>" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
-<th id="<strong>0</strong>, N = 253<span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>0</strong>, N = 253<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
-<th id="<strong>1</strong>, N = 247<span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>1</strong>, N = 247<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+<th id="<strong>0</strong>, N = 496<span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>0</strong>, N = 496<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+<th id="<strong>1</strong>, N = 504<span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>1</strong>, N = 504<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">event</td>
-<td class="gt_row gt_center" headers="stat_1">64 (25%)</td>
-<td class="gt_row gt_center" headers="stat_2">75 (30%)</td>
+<td class="gt_row gt_center" headers="stat_1">153 (31%)</td>
+<td class="gt_row gt_center" headers="stat_2">142 (28%)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">age</td>
-<td class="gt_row gt_center" headers="stat_1">62 (50, 77)</td>
-<td class="gt_row gt_center" headers="stat_2">69 (52, 81)</td>
+<td class="gt_row gt_center" headers="stat_1">66 (52, 77)</td>
+<td class="gt_row gt_center" headers="stat_2">63 (51, 78)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">sex</td>
@@ -2110,13 +2110,13 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Female</td>
-<td class="gt_row gt_center" headers="stat_1">118 (47%)</td>
-<td class="gt_row gt_center" headers="stat_2">96 (39%)</td>
+<td class="gt_row gt_center" headers="stat_1">210 (42%)</td>
+<td class="gt_row gt_center" headers="stat_2">216 (43%)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Male</td>
-<td class="gt_row gt_center" headers="stat_1">135 (53%)</td>
-<td class="gt_row gt_center" headers="stat_2">151 (61%)</td>
+<td class="gt_row gt_center" headers="stat_1">286 (58%)</td>
+<td class="gt_row gt_center" headers="stat_2">288 (57%)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">bmi</td>
@@ -2132,23 +2132,23 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Active Smoker</td>
-<td class="gt_row gt_center" headers="stat_1">12 (4.7%)</td>
-<td class="gt_row gt_center" headers="stat_2">14 (5.7%)</td>
+<td class="gt_row gt_center" headers="stat_1">31 (6.3%)</td>
+<td class="gt_row gt_center" headers="stat_2">21 (4.2%)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;Former Smoker</td>
-<td class="gt_row gt_center" headers="stat_1">68 (27%)</td>
-<td class="gt_row gt_center" headers="stat_2">71 (29%)</td>
+<td class="gt_row gt_center" headers="stat_1">122 (25%)</td>
+<td class="gt_row gt_center" headers="stat_2">119 (24%)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;No</td>
-<td class="gt_row gt_center" headers="stat_1">173 (68%)</td>
-<td class="gt_row gt_center" headers="stat_2">162 (66%)</td>
+<td class="gt_row gt_center" headers="stat_1">343 (69%)</td>
+<td class="gt_row gt_center" headers="stat_2">364 (72%)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">o2</td>
-<td class="gt_row gt_center" headers="stat_1">103 (41%)</td>
-<td class="gt_row gt_center" headers="stat_2">116 (47%)</td>
+<td class="gt_row gt_center" headers="stat_1">222 (45%)</td>
+<td class="gt_row gt_center" headers="stat_2">223 (44%)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">num_comorbid</td>
@@ -2159,68 +2159,68 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;0</td>
-<td class="gt_row gt_center" headers="stat_1">57 (23%)</td>
-<td class="gt_row gt_center" headers="stat_2">51 (21%)</td>
+<td class="gt_row gt_center" headers="stat_1">115 (23%)</td>
+<td class="gt_row gt_center" headers="stat_2">121 (24%)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;1</td>
-<td class="gt_row gt_center" headers="stat_1">59 (23%)</td>
-<td class="gt_row gt_center" headers="stat_2">60 (24%)</td>
+<td class="gt_row gt_center" headers="stat_1">118 (24%)</td>
+<td class="gt_row gt_center" headers="stat_2">113 (22%)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;2</td>
-<td class="gt_row gt_center" headers="stat_1">50 (20%)</td>
-<td class="gt_row gt_center" headers="stat_2">41 (17%)</td>
+<td class="gt_row gt_center" headers="stat_1">93 (19%)</td>
+<td class="gt_row gt_center" headers="stat_2">97 (19%)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;3</td>
-<td class="gt_row gt_center" headers="stat_1">41 (16%)</td>
-<td class="gt_row gt_center" headers="stat_2">49 (20%)</td>
+<td class="gt_row gt_center" headers="stat_1">86 (17%)</td>
+<td class="gt_row gt_center" headers="stat_2">78 (15%)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;4</td>
-<td class="gt_row gt_center" headers="stat_1">28 (11%)</td>
-<td class="gt_row gt_center" headers="stat_2">20 (8.1%)</td>
+<td class="gt_row gt_center" headers="stat_1">40 (8.1%)</td>
+<td class="gt_row gt_center" headers="stat_2">55 (11%)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;5</td>
-<td class="gt_row gt_center" headers="stat_1">9 (3.6%)</td>
-<td class="gt_row gt_center" headers="stat_2">16 (6.5%)</td>
+<td class="gt_row gt_center" headers="stat_1">20 (4.0%)</td>
+<td class="gt_row gt_center" headers="stat_2">24 (4.8%)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;6</td>
-<td class="gt_row gt_center" headers="stat_1">3 (1.2%)</td>
-<td class="gt_row gt_center" headers="stat_2">8 (3.2%)</td>
+<td class="gt_row gt_center" headers="stat_1">14 (2.8%)</td>
+<td class="gt_row gt_center" headers="stat_2">12 (2.4%)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;7</td>
-<td class="gt_row gt_center" headers="stat_1">5 (2.0%)</td>
-<td class="gt_row gt_center" headers="stat_2">2 (0.8%)</td>
+<td class="gt_row gt_center" headers="stat_1">8 (1.6%)</td>
+<td class="gt_row gt_center" headers="stat_2">4 (0.8%)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;8</td>
-<td class="gt_row gt_center" headers="stat_1">1 (0.4%)</td>
+<td class="gt_row gt_center" headers="stat_1">2 (0.4%)</td>
 <td class="gt_row gt_center" headers="stat_2">0 (0%)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">num_symptoms</td>
-<td class="gt_row gt_center" headers="stat_1">4 (3, 5)</td>
-<td class="gt_row gt_center" headers="stat_2">3 (2, 5)</td>
+<td class="gt_row gt_center" headers="stat_1">3 (2, 4)</td>
+<td class="gt_row gt_center" headers="stat_2">4 (2, 5)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">bilat</td>
-<td class="gt_row gt_center" headers="stat_1">165 (65%)</td>
-<td class="gt_row gt_center" headers="stat_2">158 (64%)</td>
+<td class="gt_row gt_center" headers="stat_1">335 (68%)</td>
+<td class="gt_row gt_center" headers="stat_2">332 (66%)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">dyspnea</td>
-<td class="gt_row gt_center" headers="stat_1">149 (59%)</td>
-<td class="gt_row gt_center" headers="stat_2">154 (62%)</td>
+<td class="gt_row gt_center" headers="stat_1">296 (60%)</td>
+<td class="gt_row gt_center" headers="stat_2">303 (60%)</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">hyper</td>
-<td class="gt_row gt_center" headers="stat_1">144 (57%)</td>
-<td class="gt_row gt_center" headers="stat_2">159 (64%)</td>
+<td class="gt_row gt_center" headers="stat_1">296 (60%)</td>
+<td class="gt_row gt_center" headers="stat_2">296 (59%)</td>
 </tr>
 </tbody><tfoot class="gt_footnotes">
 <tr class="even">
