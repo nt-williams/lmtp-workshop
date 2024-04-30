@@ -35,4 +35,8 @@ By the end of the workshop, participants will be able to:
 
 ### webR
 
-This workshop was prepared using [Quarto](https://quarto.org/) and [webR](https://docs.r-wasm.org/webr/latest/). The source code is available on GitHub. webR is a version of the R programming language compiled to be run directlyin the browser. Using webR for this workshop avoids having to spend time setting up a computing environment and making sure workshop participants are using the same version of R and R packages.
+This workshop was prepared using [Quarto](https://quarto.org/) and [webR](https://docs.r-wasm.org/webr/latest/). The source code is available on GitHub. webR is a version of the R programming language compiled to be run directly in the browser. Using webR for this workshop avoids having to spend time setting up a computing environment and making sure workshop participants are using the same version of R and R packages.
+
+```{webr-r}
+print("Hello, world!")
+```

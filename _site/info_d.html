@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Beyond the ATE - SER 2024 - Modified treatment policies</title>
+<title>Beyond the Average Treatment Effect - Defining General, Hypothetical Interventions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -67,6 +87,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -79,7 +128,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Beyond the ATE - SER 2024</span>
+    <span class="navbar-title">Beyond the Average Treatment Effect</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -93,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="./instructors.html"> 
 <span class="menu-text">Instructors</span></a>
   </li>  
 </ul>
@@ -107,7 +156,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Modified treatment policies</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./info_d.html">2. Defining Interventions</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -148,25 +197,25 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_tldr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Causal Inference TL;DR</span></a>
+ <span class="menu-text">1. Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_d.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Defining Interventions</span></a>
+  <a href="./info_d.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">2. Defining Interventions</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_estimators.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Estimators</span></a>
+ <span class="menu-text">3. Estimators</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Estimating effects with lmtp</span></a>
+ <span class="menu-text">4. Estimating Effects with lmtp</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -174,8 +223,8 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_data_and_superlearner.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Structure and Machine Learning Ensembles</span></a>
+  <a href="./lmtp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The lmtp package</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -187,7 +236,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./R_dynamic.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Dynamic treatment regimes</span></a>
+ <span class="menu-text">Dynamic Treatment Regimes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -198,18 +247,30 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_survival.qmd" class="sidebar-item-text sidebar-link">
+  <a href="./R_stochastic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stochastic Interventions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./R_survival.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Survival Analysis</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_advanced.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Advanced Topics</span></a>
+  <a href="./R_multivariate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Multivariate Exposures</span></a>
   </div>
 </li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./info_conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5. Final Remarks</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -220,9 +281,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-structural-causal-model" id="toc-the-structural-causal-model" class="nav-link active" data-scroll-target="#the-structural-causal-model">The structural causal model</a></li>
-  <li><a href="#assumptions-and-identification" id="toc-assumptions-and-identification" class="nav-link" data-scroll-target="#assumptions-and-identification">Assumptions and Identification</a></li>
-  <li><a href="#estimators" id="toc-estimators" class="nav-link" data-scroll-target="#estimators">Estimators</a></li>
+  <li><a href="#identification-of-the-causal-parameter" id="toc-identification-of-the-causal-parameter" class="nav-link active" data-scroll-target="#identification-of-the-causal-parameter">Identification of the causal parameter</a></li>
+  <li><a href="#static-interventions" id="toc-static-interventions" class="nav-link" data-scroll-target="#static-interventions">Static Interventions</a></li>
+  <li><a href="#dynamic-treatment-regime" id="toc-dynamic-treatment-regime" class="nav-link" data-scroll-target="#dynamic-treatment-regime">Dynamic Treatment Regime</a></li>
+  <li><a href="#treatment-initiation-with-grace-period" id="toc-treatment-initiation-with-grace-period" class="nav-link" data-scroll-target="#treatment-initiation-with-grace-period">Treatment Initiation with Grace Period</a></li>
+  <li><a href="#modified-treatment-policies" id="toc-modified-treatment-policies" class="nav-link" data-scroll-target="#modified-treatment-policies">Modified Treatment Policies</a></li>
+  <li><a href="#stochastic-interventions" id="toc-stochastic-interventions" class="nav-link" data-scroll-target="#stochastic-interventions">Stochastic Interventions</a></li>
   </ul>
 </nav>
     </div>
@@ -231,7 +295,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Modified treatment policies</h1>
+<h1 class="title">Defining General, Hypothetical Interventions</h1>
 </div>
 
 
@@ -248,31 +312,295 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="the-structural-causal-model" class="level3">
-<h3 class="anchored" data-anchor-id="the-structural-causal-model">The structural causal model</h3>
+<div class="hidden">
+<p><span class="math display">\[
+\renewcommand{\P}{\mathsf{P}}
+\newcommand{\m}{\mathsf{m}}
+\newcommand{\p}{\mathsf{p}}
+\newcommand{\q}{\mathsf{q}}
+\newcommand{\bb}{\mathsf{b}}
+\newcommand{\g}{\mathsf{g}}
+\newcommand{\rr}{\mathsf{r}}
+\newcommand{\IF}{\mathbb{IF}}
+\newcommand{\dd}{\mathsf{d}}
+\newcommand{\Pn}{$\mathsf{P}_n$}
+\newcommand{\E}{\mathsf{E}}
+\]</span></p>
+</div>
+<p>How many times have you started to read a paper for a new method in the causal inference literature that contains the sentence “assume the treatment or exposure is binary…”?</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbG9rZ202bDdqNWxoa3Y4MW5vcHhyd3JydnFyNGx0Z2p4cTV1dWlxcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/p8Uw3hzdAE2dO/giphy.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>Well not anymore 🥳. Assume <span class="math inline">\(A\)</span> is a binary, categorical, or continuous variable! Let <span class="math inline">\(\dd(a, w, \epsilon)\)</span> be a function that maps <span class="math inline">\(A\)</span>, <span class="math inline">\(W\)</span>, and potentially a randomizer <span class="math inline">\(\epsilon\)</span> to a new value of <span class="math inline">\(A\)</span>. We will often refer to the function <span class="math inline">\(\dd\)</span> as a <em>shift</em> function.</p>
+<p>Our focus in this workshop is estimating the causal effect of an intervention <span class="math inline">\(d\)</span> on the outcome <span class="math inline">\(Y\)</span>, through the causal parameter</p>
+<p><span class="math display">\[
+\theta = \E[Y(\bar A^{\dd})]\text{,}
+\]</span></p>
+<p>where <span class="math inline">\(Y(\bar A^\dd)\)</span> is the counterfactual outcome in a world, where possibly contrary to fact, each entry of <span class="math inline">\(\bar{A}\)</span> was modified according to the function <span class="math inline">\(\dd\)</span>. When <span class="math inline">\(Y\)</span> is continuous, <span class="math inline">\(\theta\)</span> is the mean population value of <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>; when <span class="math inline">\(Y\)</span> is dichotomous, <span class="math inline">\(\theta\)</span> is the population proportion of event <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>. Similarly, when <span class="math inline">\(Y\)</span> is the indicator of an event by end of the study, <span class="math inline">\(\theta\)</span> is defined as the cumulative incidence of <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>.</p>
+<section id="identification-of-the-causal-parameter" class="level3">
+<h3 class="anchored" data-anchor-id="identification-of-the-causal-parameter">Identification of the causal parameter</h3>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Assumptions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p><em>Positivity</em>. If <span class="math inline">\((a_t, h_t) \in \text{supp}\{A_t, H_t\}\)</span> then <span class="math inline">\(\dd(a_t, h_t) \in \text{supp}\{A_t, H_t\}\)</span> for <span class="math inline">\(t \in \{1, ..., \tau\}\)</span>.</p>
+<blockquote class="blockquote">
+<p>If there is a unit with observed treatment value <span class="math inline">\(a_t\)</span> and covariates <span class="math inline">\(h_t\)</span>, there must also be a unit with treatment value <span class="math inline">\(\dd(a_t, h_t)\)</span> and covariates <span class="math inline">\(h_t\)</span>.</p>
+</blockquote></li>
+<li><p><em>Exchangeability.</em> <span class="math inline">\(A_t \perp \!\!\! \perp Y(\bar{a}) | H_t\)</span> for all <span class="math inline">\(\bar{a} \in \mathop{\mathrm{supp}}\bar{A}\)</span> and <span class="math inline">\(t \in \{1, ..., \tau\}\)</span>.</p></li>
+<li><p><em>Consistency.</em> <span class="math inline">\(\bar{A} = \bar{a} \implies Y = Y(\bar{a})\)</span> for all <span class="math inline">\(\bar{a} \in \mathop{\mathrm{supp}}\bar{A}\)</span>.</p></li>
+</ol>
+</div>
+</div>
+<p>Assuming …, <span class="math inline">\(\theta\)</span> is identified from the observed data by:</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Theorem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Set <span class="math inline">\(\m_{\tau+1} = Y\)</span>&gt; For <span class="math inline">\(t = \tau, ..., 1\)</span>, recursively define</p>
+<p><span class="math display">\[
+\m_t: (a_t, h_t) \rightarrow \E[\m_{t + 1}(A^{\dd}_{t+1}, H_{t + 1}) \mid A_t = a_t, H_t = h_t],
+\]</span></p>
+<p>and define <span class="math inline">\(\theta = E[\m_1(A^{\dd}_1, L_1)]\)</span>.</p>
+</div>
+</div>
+<p>As an example, set <span class="math inline">\(\tau = 2\)</span>. Then we have</p>
+<span class="math display">\[\begin{align} \m_3(A_3^d, H_3) &amp;= Y   \\  \m_2(A_2^d, H_2) &amp;= \E\left[\m_3(A_3^d, H_3)\mid(A_2^d, H_2)\right] \\\m_1(A_1^d, L_1) &amp;= \E\left[\m_2(A_2^d, H_2)\mid(A_1^d, L_1)\right] \\\theta &amp;= \E\left[\m_1(A_1^d, L_1)\right]
+
+\end{align}\]</span>
 </section>
-<section id="assumptions-and-identification" class="level3">
-<h3 class="anchored" data-anchor-id="assumptions-and-identification">Assumptions and Identification</h3>
+<section id="static-interventions" class="level3">
+<h3 class="anchored" data-anchor-id="static-interventions">Static Interventions</h3>
+<p>Let <span class="math inline">\(A\)</span> denote a binary vector, such as receiving a medication, and define <span class="math inline">\(\dd_t(a_t, h_t, \epsilon) = 1\)</span>. This intervention characterizes a hypothetical world where all members of the population receive treatment.</p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Static intervention
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An intervention is static if the function <span class="math inline">\(\dd_t\)</span> always returns the same value regardless of the input.</p>
+</div>
+</div>
 </section>
-<section id="estimators" class="level3">
-<h3 class="anchored" data-anchor-id="estimators">Estimators</h3>
-<section id="g-computation" class="level4">
-<h4 class="anchored" data-anchor-id="g-computation">G-computation</h4>
+<section id="dynamic-treatment-regime" class="level3">
+<h3 class="anchored" data-anchor-id="dynamic-treatment-regime">Dynamic Treatment Regime</h3>
+<p>Let <span class="math inline">\(A_t\)</span> denote a binary vector, such as receiving a medication, and <span class="math inline">\(H_t\)</span> a numeric vector, such as a measure of discomfort. For a given value of <span class="math inline">\(\delta\)</span>, define <span class="math display">\[
+\dd_t(a_t, h_t, \epsilon) = \begin{cases}
+1 &amp;\text{ if } h_t &gt; \delta \\
+0 &amp;\text{ otherwise.}
+\end{cases}
+\]</span></p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Dynamic treatment regime
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Interventions where the output of the function <span class="math inline">\(\dd_t\)</span> depends <strong>only</strong> <strong>on the covariates</strong> <span class="math inline">\(H_t\)</span> are referred to as being dynamic.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="citation" data-cites="rudolph2022buprenorphine">Rudolph, Williams, et al. (<a href="#ref-rudolph2022buprenorphine" role="doc-biblioref">2022</a>)</span> examined a Buprenorphine (BUP-NX) dosing strategy among a population of patients who were taking BUP-NX for opioid use disorder. Under the hypothetical intervention, patients who reported opioid use during the week prior to a physicians exam received a BUP-NX dose increase while patients who did not report prior-week opioid use maintained the same dose. Let <span class="math inline">\(A_t\)</span> be a binary indicator for BUP-NX dose increase at week <span class="math inline">\(t\)</span> compared to week <span class="math inline">\(t-1\)</span> and <span class="math inline">\(X_t\)</span> be an indicator for opioid use at week <span class="math inline">\(t\)</span>. Then,</p>
+<p><span class="math display">\[
+\dd(a_t, h_t, \epsilon) = \begin{cases}
+1 \text{ if } x_{t-1} = 1\\
+0 \text{ otherwise}
+\end{cases}
+\]</span></p>
+</div>
+</div>
 </section>
-<section id="inverse-probability-weighting" class="level4">
-<h4 class="anchored" data-anchor-id="inverse-probability-weighting">Inverse probability weighting</h4>
+<section id="treatment-initiation-with-grace-period" class="level3">
+<h3 class="anchored" data-anchor-id="treatment-initiation-with-grace-period">Treatment Initiation with Grace Period</h3>
 </section>
-<section id="one-step-estimator-sdr" class="level4">
-<h4 class="anchored" data-anchor-id="one-step-estimator-sdr">One-step estimator (SDR)</h4>
+<section id="modified-treatment-policies" class="level3">
+<h3 class="anchored" data-anchor-id="modified-treatment-policies">Modified Treatment Policies</h3>
+<p>Explain why MTPs are useful:</p>
+<ul>
+<li><p>help with positiivty violations</p></li>
+<li><p>help characterize realistic interventions</p></li>
+<li><p>assess interventions you could never run an RCT for</p></li>
+</ul>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Modified treatment policy
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An intervention characterized by a hypothetical world where the <em>natural</em> value of treatment is modified is called a <em>modified treatment policy</em>.</p>
+</div>
+</div>
+<section id="additive-and-multiplicative-shift-mtp" class="level4">
+<h4 class="anchored" data-anchor-id="additive-and-multiplicative-shift-mtp">Additive and multiplicative shift MTP</h4>
+<p>Let <span class="math inline">\(A_t\)</span> denote a numeric vector. Assume that <span class="math inline">\(A_t\)</span> has support in the data such that <span class="math inline">\(P(A_t \leq u(h_t) \mid H_t = h_t) = 1\)</span>. For a value of <span class="math inline">\(\delta\)</span>, define <span class="math display">\[
+\dd(a_t, h_t, \epsilon) = \begin{cases}
+a_t + \delta &amp;\text{ if } a_t + \delta \leq u(h_t) \\
+a_t &amp;\text{ otherwise.}
+\end{cases}
+\]</span></p>
+<p>Under this intervention, the natural value of exposure at time <span class="math inline">\(t\)</span> is increased by the analyst-defined value <span class="math inline">\(\delta\)</span>, whenever such an increase is feasible. This MTP is referred to as an <em>additive shift</em> <em>MTP.</em></p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<p>We can similarly define a multiplicative <em>shift MTP</em> as</p>
+<p><span class="math display">\[
+\dd_t(a_t, h_t, \epsilon) = \begin{cases}
+a_t \times \delta &amp;\text{ if } a_t \times \delta \leq u(h_t) \\
+a_t &amp;\text{ otherwise}.
+\end{cases}
+\]</span></p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="citation" data-cites="nugent2023demonstration">Nugent and Balzer (<a href="#ref-nugent2023demonstration" role="doc-biblioref">2023</a>)</span> evaluated the association between county-level measures of mobility and incident COVID-19 cases in the United States in the Summer and Fall of 2022. They considered both hypothetical additive and multiplicative MTPs; for example, they defined a multiplicative MTP where a measure for the density of mobile devices visiting commercial locations was decreased by 25%:</p>
+<p><span class="math display">\[
+\dd_t(a_t, h_t, \epsilon) = a_t \times 0.75.
+\]</span></p>
+</div>
+</div>
 </section>
-<section id="targeted-minimum-loss-based-tmle" class="level4">
-<h4 class="anchored" data-anchor-id="targeted-minimum-loss-based-tmle">Targeted minimum-loss based (TMLE)</h4>
+<section id="threshold-mtp" class="level4">
+<h4 class="anchored" data-anchor-id="threshold-mtp">Threshold MTP</h4>
+</section>
+</section>
+<section id="stochastic-interventions" class="level3">
+<h3 class="anchored" data-anchor-id="stochastic-interventions">Stochastic Interventions</h3>
+<section id="randomized-interventions" class="level4">
+<h4 class="anchored" data-anchor-id="randomized-interventions">Randomized Interventions</h4>
+</section>
+<section id="incremental-propensity-score-interventions" class="level4">
+<h4 class="anchored" data-anchor-id="incremental-propensity-score-interventions">Incremental Propensity Score Interventions</h4>
+<p>Let <span class="math inline">\(A\)</span> denote a binary vector, <span class="math inline">\(\epsilon \sim U(0, 1)\)</span>, and <span class="math inline">\(\delta\)</span> be an analyst-defined risk ratio limited to be between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>. If we were interested in an intervention that decreased the likelihood of receiving treatment, define<br>
+<span class="math display">\[
+\dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
+a_t &amp;\text{ if } \epsilon_t &lt; \delta \\
+0 &amp;\text{ otherwise.}
+\end{cases}
+\]</span>In this case, we have <span class="math inline">\(\g^\dd(a_t \mid H_t) = a_t \delta \g_t(1 \mid H_t) + (1 - a_t) (1 - \delta \g_t(1\mid H_t))\)</span>, which leads to a risk ratio of <span class="math inline">\(\g_t^\dd(1 \mid H_t)/\g_t(1\mid H_t) = \delta\)</span> for comparing the propensity score post- vs pre-intervention. Conversely, if we were interested in an intervention that increased the likelihood of receiving treatment, define<br>
+<span class="math display">\[
+\dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
+a_t &amp;\text{ if } \epsilon_t &lt; \delta \\
+1 &amp;\text{ otherwise.}
+\end{cases}
+\]</span></p>
+<p>Now <span class="math inline">\(\g_t^\dd(a_t \mid H_t) = a_t (1 - \delta \g_t(0\mid H_t)) + (1 - a_t) \delta \g_t(0 \mid H_t)\)</span>, which implies a risk ratio <span class="math inline">\(\g_t^\dd(0\mid H_t)/\g(0\mid H_t) = \delta\)</span>.</p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Incremental propensity score intervention
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An intervention where the conditional probability of treatment is shifted.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Using electronic health record data, <span class="citation" data-cites="wen2023intervention">Wen, Marcus, and Young (<a href="#ref-wen2023intervention" role="doc-biblioref">2023</a>)</span> estimated the effect of increasing the proportion of PrEP uptake on bacterial STI among cis-gender males being tested for STIs and that do not have HIV. Let <span class="math inline">\(A_t\)</span> be a binary indicator for PrEP initiation at week <span class="math inline">\(t\)</span>, and <span class="math inline">\(L'_t\)</span> be a binary indicator for any STI testing and being HIV-free at week <span class="math inline">\(t\)</span>. They defined a “medium” successful PrEP uptake intervention as</p>
+<p><span class="math display">\[
+\dd(a_t, h_t, \epsilon) = \begin{cases}
+a_t &amp;\text{ if } l'_t = 1 \text{ and } \epsilon_t &lt; 0.85 \\
+1 &amp;\text{ otherwise}.
+\end{cases}
+\]</span></p>
+</div>
+</div>
 
 
+
 </section>
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-diaz2024causal" class="csl-entry" role="listitem">
+Dı́az, Iván, Katherine L Hoffman, and Nima S Hejazi. 2024. <span>“Causal Survival Analysis Under Competing Risks Using Longitudinal Modified Treatment Policies.”</span> <em>Lifetime Data Analysis</em> 30 (1): 213–36.
+</div>
+<div id="ref-diaz2023nonparametric" class="csl-entry" role="listitem">
+Dı́az, Iván, Nicholas Williams, Katherine L Hoffman, and Edward J Schenck. 2023. <span>“Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies.”</span> <em>Journal of the American Statistical Association</em> 118 (542): 846–57.
+</div>
+<div id="ref-haneuse2013estimation" class="csl-entry" role="listitem">
+Haneuse, Sebastian, and Andrea Rotnitzky. 2013. <span>“Estimation of the Effect of Interventions That Modify the Received Treatment.”</span> <em>Statistics in Medicine</em> 32 (30): 5260–77.
+</div>
+<div id="ref-kennedy2019nonparametric" class="csl-entry" role="listitem">
+Kennedy, Edward H. 2019. <span>“Nonparametric Causal Effects Based on Incremental Propensity Score Interventions.”</span> <em>Journal of the American Statistical Association</em> 114 (526): 645–56.
+</div>
+<div id="ref-nugent2023demonstration" class="csl-entry" role="listitem">
+Nugent, Joshua R, and Laura B Balzer. 2023. <span>“A Demonstration of Modified Treatment Policies to Evaluate Shifts in Mobility and COVID-19 Case Rates in US Counties.”</span> <em>American Journal of Epidemiology</em> 192 (5): 762–71.
+</div>
+<div id="ref-rudolph2022effects" class="csl-entry" role="listitem">
+Rudolph, Kara E, Catherine Gimbrone, Ellicott C Matthay, Ivan Diaz, Corey S Davis, Katherine Keyes, and Magdalena Cerdá. 2022. <span>“When Effects Cannot Be Estimated: Redefining Estimands to Understand the Effects of Naloxone Access Laws.”</span> <em>Epidemiology</em> 33 (5): 689–98.
+</div>
+<div id="ref-rudolph2022buprenorphine" class="csl-entry" role="listitem">
+Rudolph, Kara E, Nicholas T Williams, Alicia T Singham Goodwin, Matisyahu Shulman, Marc Fishman, Iván Dı́az, Sean Luo, John Rotrosen, and Edward V Nunes. 2022. <span>“Buprenorphine &amp; Methadone Dosing Strategies to Reduce Risk of Relapse in the Treatment of Opioid Use Disorder.”</span> <em>Drug and Alcohol Dependence</em> 239: 109609.
+</div>
+<div id="ref-wen2023intervention" class="csl-entry" role="listitem">
+Wen, Lan, Julia L Marcus, and Jessica G Young. 2023. <span>“Intervention Treatment Distributions That Depend on the Observed Treatment Process and Model Double Robustness in Causal Survival Analysis.”</span> <em>Statistical Methods in Medical Research</em> 32 (3): 509–23.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Beyond the ATE - SER 2024 - Dynamic treatment regimes</title>
+<title>Beyond the Average Treatment Effect - Stochastic Interventions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -79,7 +99,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Beyond the ATE - SER 2024</span>
+    <span class="navbar-title">Beyond the Average Treatment Effect</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -93,7 +113,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="./instructors.html"> 
 <span class="menu-text">Instructors</span></a>
   </li>  
 </ul>
@@ -107,7 +127,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Dynamic treatment regimes</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_stochastic.html">Stochastic Interventions</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -148,25 +168,25 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_tldr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Causal Inference TL;DR</span></a>
+ <span class="menu-text">1. Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_d.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Defining Interventions</span></a>
+  <a href="./info_d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Defining Interventions</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_estimators.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Estimators</span></a>
+ <span class="menu-text">3. Estimators</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Estimating effects with lmtp</span></a>
+ <span class="menu-text">4. Estimating Effects with lmtp</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -174,8 +194,8 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_data_and_superlearner.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Structure and Machine Learning Ensembles</span></a>
+  <a href="./lmtp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The lmtp package</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -187,7 +207,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./R_dynamic.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Dynamic treatment regimes</span></a>
+ <span class="menu-text">Dynamic Treatment Regimes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -198,32 +218,51 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_survival.qmd" class="sidebar-item-text sidebar-link">
+  <a href="./R_stochastic.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Stochastic Interventions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./R_survival.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Survival Analysis</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_advanced.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Advanced Topics</span></a>
+  <a href="./R_multivariate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Multivariate Exposures</span></a>
   </div>
 </li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./info_conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5. Final Remarks</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#random-interventions" id="toc-random-interventions" class="nav-link active" data-scroll-target="#random-interventions">Random Interventions</a></li>
+  <li><a href="#incremental-propensity-score-interventions" id="toc-incremental-propensity-score-interventions" class="nav-link" data-scroll-target="#incremental-propensity-score-interventions">Incremental Propensity Score Interventions</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_stochastic.html">Stochastic Interventions</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Dynamic treatment regimes</h1>
+<h1 class="title">Stochastic Interventions</h1>
 </div>
 
 
@@ -240,10 +279,31 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="random-interventions" class="level3">
+<h3 class="anchored" data-anchor-id="random-interventions">Random Interventions</h3>
+</section>
+<section id="incremental-propensity-score-interventions" class="level3">
+<h3 class="anchored" data-anchor-id="incremental-propensity-score-interventions">Incremental Propensity Score Interventions</h3>
+<p>blah blah blah</p>
 
 
 
-</main> <!-- /main -->
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-diaz2024causal" class="csl-entry" role="listitem">
+Dı́az, Iván, Katherine L Hoffman, and Nima S Hejazi. 2024. <span>“Causal Survival Analysis Under Competing Risks Using Longitudinal Modified Treatment Policies.”</span> <em>Lifetime Data Analysis</em> 30 (1): 213–36.
+</div>
+<div id="ref-diaz2023nonparametric" class="csl-entry" role="listitem">
+Dı́az, Iván, Nicholas Williams, Katherine L Hoffman, and Edward J Schenck. 2023. <span>“Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies.”</span> <em>Journal of the American Statistical Association</em> 118 (542): 846–57.
+</div>
+<div id="ref-kennedy2019nonparametric" class="csl-entry" role="listitem">
+Kennedy, Edward H. 2019. <span>“Nonparametric Causal Effects Based on Incremental Propensity Score Interventions.”</span> <em>Journal of the American Statistical Association</em> 114 (526): 645–56.
+</div>
+<div id="ref-wen2023intervention" class="csl-entry" role="listitem">
+Wen, Lan, Julia L Marcus, and Jessica G Young. 2023. <span>“Intervention Treatment Distributions That Depend on the Observed Treatment Process and Model Double Robustness in Causal Survival Analysis.”</span> <em>Statistical Methods in Medical Research</em> 32 (3): 509–23.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

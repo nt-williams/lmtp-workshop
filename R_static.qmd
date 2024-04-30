@@ -1,0 +1,216 @@
+---
+title: "Static Interventions"
+engine: knitr
+filters:
+  - webr
+webr:
+  packages: ['lmtp', 'superlearner', 'ranger']
+  autoload-packages: true
+  repos: 
+    - https://nt-williams.r-universe.dev
+    - https://imbs-hl.r-universe.dev
+bibliography: references.bib
+nocite: |
+  @goyal2020clinical
+tbl-cap-location: top
+---
+
+{{< include macros.qmd >}}
+
+```{webr-r}
+#| context: setup
+download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/williams_synthetic.csv", "williams_synthetic.csv")
+covid <- read.csv("williams_synthetic.csv")
+```
+
+### Motivating data
+
+For our first example, we'll use a synthetic dataset of $n = 500$ patients from a hypothetical clinical trial for a treatment to decrease intubation and death among patients hospitalized with COVID-19. The data is based on a database of over 1,500 patients hospitalised at Weill Cornell Medicine New York Presbyterian Hospital prior to 15 May 2020 with COVID-19 confirmed through PCR. To replicate a two-arm randomized clinical trial (RCT), we've simulated a hypothetical treatment variable (`A`) that is randomly assigned for each observation with probability 0.5.
+
+The outcome of interest (`event`) is intubation or death by 14-days post-hospitalization; treatment is associated with increased survival. Baseline covariates include: age, sex, BMI, smoking status, whether the patient required supplemental oxygen within 3 hours of presenting to the emergency department, number of comorbidities, number of relevant symptoms, presence of bilateral infiltrates on chest X-ray, dyspnea, and hypertension. For more information on how these data were generated see @williams2022optimising.
+
+```{r echo=FALSE}
+covid <- read.csv("data/williams_synthetic.csv")
+dplyr::select(covid, -days, -id) |> 
+  gtsummary::tbl_summary(by = A)
+```
+
+### Population mean outcomes
+
+Our goal is to estimate the average treatment effect (ATE) of the hypothetical treatment on intubation or death:
+
+$$
+\begin{align}
+\theta &= \E(Y^{A=1} - Y^{A=0}) \\
+&= \textcolor{blue}{\E(Y^{A=1})} - \textcolor{red}{\E(Y^{A=0})}
+\end{align}
+$$
+
+Notice that the ATE is composed of two parameters: (1) the proportion of patients who receive intubation or die in a hypothetical world where all patients receive treatment, and (2) the proportion of patients who receive intubation or die in a hypothetical world where no patients receive treatment. We refer to these parameters as *population mean outcomes.* Let's rewrite these parameters as functions of interventions using the framework we previously discussed. Let $\dd_1(a, h) = 1$ and $\dd_0(a, h) = 0$. Then,
+
+$$
+\theta = \textcolor{blue}{\E(Y^{\dd_1})} - \textcolor{red}{\E(Y^{\dd_0})}.
+$$
+
+Remember, we refer to these interventions as static because they return the same value regardless of their input.
+
+#### Writing shift functions
+
+So, how do we translate the functions $\dd_1$ and $\dd_0$ into R code to be used with `lmtp`? Policies can be specified using one of two arguments in `lmtp` estimators: `shift` or `shifted`. If using `shift`, we supply a two-argument function of the form
+
+```{r eval=FALSE}
+d <- function(data, trt) {
+  # Insert code here
+}
+```
+
+where the first argument should correspond to a dataset containing all the variables in $O$ and the second argument should expect a string corresponding to the variable(s) $A_t$ in $O$. This function should return a size $n$ vector with the same class as $A_t$ modified according to $d_t$. For $\dd_1$ this function would be:\
+
+```{webr-r}
+#| context: interactive
+#| autorun: true
+d1 <- function(data, trt) {
+  rep(1, nrow(data))
+}
+```
+
+If we apply this function to our data we are returned a vector of 1s with the same length as the number of rows in the observed data.
+
+```{webr-r}
+d1(covid, "A") |> head()
+d1(covid, "A") |> length()
+```
+
+Let's now estimate $\E(Y^{\dd_1})$ using `lmtp`.
+
+::: {.callout-warning icon="false"}
+## Question
+
+Which estimator should we use to estimate these parameters?
+
+```{=html}
+<details>
+<summary style="color: black; font-weight: bold;">Answer</summary>
+<p>Because this is a non-time-varying study, we should use TMLE.</p>
+</details>
+```
+:::
+
+```{webr-r}
+A <- "A"
+Y <- "event"
+W <- c("age", "sex", "bmi", "smoke", "o2", 
+       "num_comorbid", "num_symptoms", "bilat", "dyspnea", "hyper")
+
+set.seed(34465)
+
+treat <- lmtp_tmle(
+  data = covid, 
+  trt = "A", 
+  outcome = "event", 
+  baseline = W, 
+  outcome_type = "binomial", 
+  shift = d1, 
+  folds = 1, 
+  learners_trt = "SL.mean", 
+  learners_outcome = "SL.glm"
+)
+
+print(treat)
+```
+
+Instead of specifying an intervention using `shift`, we could instead supply a modified version of `data` to the `shifted` argument where the variables $A_t$ are replaced with $A^d_t$.\
+
+```{webr-r}
+tmp <- covid
+tmp$A <- d1(covid, "A")
+
+head(tmp)
+
+set.seed(34465)
+
+treat <- lmtp_tmle(
+  data = covid, 
+  trt = "A", 
+  outcome = "event", 
+  baseline = W, 
+  outcome_type = "binomial", 
+  shifted = tmp, 
+  folds = 1, 
+  learners_trt = "SL.mean", 
+  learners_outcome = "SL.glm"
+)
+
+print(treat)
+```
+
+::: {.callout-warning icon="false"}
+## Question
+
+How can we interpret this result?
+
+```{=html}
+<details>
+<summary style="color: black; font-weight: bold;">Answer</summary>
+<p>In a hypothetical world where all patients received treatment, the expected proportion of patients who receive invasive mechanical ventilation by day 15 of hospitalization is 0.2722 (95% CI: 0.24 to 0.30).</p>
+</details>
+```
+:::
+
+#### `lmtp` objects
+
+A call to an `lmtp` estimator returns a list of class `lmtp`.
+
+| Value          | Description                                                                                                                  |
+|----------------|------------------------------------------------------------------------------------------------------------------------------|
+| estimator      | The estimator used.                                                                                                          |
+| theta          | The estimated population LMTP effect.                                                                                        |
+| standard_error | The estimated standard error of the LMTP effect.                                                                             |
+| low            | Lower bound of the 95% confidence interval of the LMTP effect.                                                               |
+| high           | Upper bound of the 95% confidence interval of the LMTP effect.                                                               |
+| eif            | The estimated, un-centered, influence function of the estimate.                                                              |
+| shift          | The shift function specifying the treatment policy of interest.                                                              |
+| outcome_reg    | An $n \times \tau + 1$ matrix of outcome regression predictions. The mean of the first column is used for calculating theta. |
+| density_ratios | An $n \times \tau$ matrix of the estimated, non-cumulative, density ratios.                                                  |
+| fits_m         | A list the same length as `folds`, containing the fits at each time-point for each fold for the outcome regression.          |
+| fits_r         | A list the same length as `folds`, containing the fits at each time-point for each fold of density ratio estimation.         |
+| outcome_type   | The outcome variable type.                                                                                                   |
+
+: Values returned in an `lmtp` object.
+
+Let's inspect some of these values.
+
+```{webr-r}
+hist(treat$density_ratios[, 1], 
+     main = "Histogram of density ratios", 
+     xlab = "Density ratio")
+```
+
+### Problem 1
+
+::: {.callout-warning icon="false"}
+## Practice
+
+Write a function to estimate the population mean outcome if no patients received treatment. Assign the result to an object named `dont_treat`.
+
+```{webr-r}
+dont_treat <- # Type your code here!
+```
+:::
+
+### Average treatment effect
+
+With estimates of $\E(Y^{\dd_1})$ and $\E(Y^{\dd_0})$ we can now calculate the ATE. We'll use the function `lmtp_contrast()`.
+
+```{webr-r}
+lmtp_contrast(treat, ref = dont_treat)
+```
+
+In addition to the ATE, we can also calculate the causal risk ratio and the causal odds ratio.\
+
+```{webr-r}
+lmtp_contrast(treat, ref = dont_treat, type = "rr")
+lmtp_contrast(treat, ref = dont_treat, type = "or")
+```
+
+Confirming what we already know, we've estimated the treatment as being associated with decreased intubation or death.

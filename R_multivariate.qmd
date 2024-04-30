@@ -5,9 +5,85 @@ filters:
   - webr
 webr:
   packages: ['lmtp', 'superlearner']
-  autoload-packages: false
+  autoload-packages: true
 ---
 
-::: callout-note
+{{< include macros.qmd >}}
+
+::: callout-important
 This section requires a version of lmtp that is still underdevelopment. You can install this version from GitHub with `devtools::install_github("nt-williams/lmtp@multviariate")`
 :::
+
+### NIEHS Simulation Data
+
+For our example of estimating the effects of simultaneous interventions on multiple variables, we will use simulated data from the 2015 NIEHS Mixtures Workshop. The data has already been loaded into R in the background as assigned to the object `mixtures`, but you can view and download the raw data [here](https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/mixtures.csv).
+
+```{webr-r}
+#| context: setup
+download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/mixtures.csv", "mixtures.csv")
+mixtures <- read.csv("mixtures.csv")
+```
+
+The simulated data has $n = 500$ observations and is intended to replicate a prospective cohort study. The exposure ($\mathbf{A} \mapsto$ `c("A1", "A2", "A3", "A4", "A5", "A6", "A7"`) consists of 7 log-normally distributed variables, a single continuous outcome ($Y \mapsto$ `"Y"`), and one binary confounder ($W\mapsto$ `"Z"`). There is no missing covariate data, no measurement error, and no censoring. The direction and magnitude of the effect of the exposures on the outcome varies. Notice, to highlight that the exposure is no longer a single variable, we are going to use bold-font when referring to the set of variables to be intervened upon (i.e., $\mathbf{A}$ instead of $A$).
+
+```{webr-r}
+head(mixtures)
+summary(mixtures)
+```
+
+$$
+\dd(\mathbf{a}, w, \epsilon)
+$$
+
+```{webr-r}
+library(lmtp)
+
+A <- lapply(1:7, \(x) paste0("A", x))
+Y <- "Y"
+W <- "Z"
+learners <- c("SL.mean", "SL.glm", "SL.xgboost")
+
+d <- function(data, a) {
+  out = list(
+    data[[a[1]]] - 0.1,
+    data[[a[2]]] - 0.5, 
+    data[[a[2]]] - 0.5, 
+    data[[a[2]]] - 0.5, 
+    data[[a[2]]] - 0.5, 
+    data[[a[2]]] - 0.5, 
+    data[[a[2]]] - 0.5
+  )
+  setNames(out, a)
+}
+
+set.seed(4363754)
+
+ans <- lmtp_tmle(data = mixtures, 
+                 trt = A, 
+                 outcome = Y, 
+                 baseline = W, 
+                 shift = d, 
+                 learners_trt = learners, 
+                 learners_outcome = learners, 
+                 folds = 1)
+```
+
+::: {.callout-caution appearance="minimal" icon="false"}
+## Practice
+
+Compared to what was observed under the natural course of exposure, how did intervening upon the set of exposures effect the outcome? Estimate this effect using the `lmtp_contrast()` function.
+:::
+
+```{webr-r}
+#| context: setup
+obs_y <- mean(mixtures$Y)
+true_1 <- try(lmtp_contrast(ans, ref = obs_y))
+```
+
+```{webr-r}
+# Type your code here
+```
+
+### References
+
+Taylor, Kyla W., et al. "Statistical approaches for assessing health effects of environmental chemical mixtures in epidemiology: lessons from an innovative workshop." *Environmental health perspectives* 124.12 (2016): A227-A229.

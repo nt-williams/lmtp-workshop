@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Beyond the ATE - SER 2024 - Causal Inference in Brief</title>
+<title>Beyond the Average Treatment Effect - Causal Inference in Brief</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,6 +67,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -79,7 +108,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Beyond the ATE - SER 2024</span>
+    <span class="navbar-title">Beyond the Average Treatment Effect</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -93,7 +122,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="./instructors.html"> 
 <span class="menu-text">Instructors</span></a>
   </li>  
 </ul>
@@ -107,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./info_tldr.html">Causal Inference TL;DR</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./info_tldr.html">1. Introduction</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -148,25 +177,25 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_tldr.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Causal Inference TL;DR</span></a>
+ <span class="menu-text">1. Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_d.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Defining Interventions</span></a>
+  <a href="./info_d.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Defining Interventions</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_estimators.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Estimators</span></a>
+ <span class="menu-text">3. Estimators</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Estimating effects with lmtp</span></a>
+ <span class="menu-text">4. Estimating Effects with lmtp</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -174,8 +203,8 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_data_and_superlearner.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Structure and Machine Learning Ensembles</span></a>
+  <a href="./lmtp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The lmtp package</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -187,7 +216,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./R_dynamic.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Dynamic treatment regimes</span></a>
+ <span class="menu-text">Dynamic Treatment Regimes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -198,18 +227,30 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_survival.qmd" class="sidebar-item-text sidebar-link">
+  <a href="./R_stochastic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Stochastic Interventions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./R_survival.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Survival Analysis</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_advanced.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Advanced Topics</span></a>
+  <a href="./R_multivariate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Multivariate Exposures</span></a>
   </div>
 </li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./info_conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5. Final Remarks</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -221,7 +262,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#a-motivating-example" id="toc-a-motivating-example" class="nav-link active" data-scroll-target="#a-motivating-example">A motivating example</a></li>
-  <li><a href="#identifying-causal-estimands-from-observed-data" id="toc-identifying-causal-estimands-from-observed-data" class="nav-link" data-scroll-target="#identifying-causal-estimands-from-observed-data">Identifying causal estimands from observed data</a></li>
+  <li><a href="#notation" id="toc-notation" class="nav-link" data-scroll-target="#notation">Notation</a></li>
   </ul>
 </nav>
     </div>
@@ -247,11 +288,76 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<div class="hidden">
+<p><span class="math display">\[
+\renewcommand{\P}{\mathsf{P}}
+\newcommand{\m}{\mathsf{m}}
+\newcommand{\p}{\mathsf{p}}
+\newcommand{\q}{\mathsf{q}}
+\newcommand{\bb}{\mathsf{b}}
+\newcommand{\g}{\mathsf{g}}
+\newcommand{\rr}{\mathsf{r}}
+\newcommand{\IF}{\mathbb{IF}}
+\newcommand{\dd}{\mathsf{d}}
+\newcommand{\Pn}{$\mathsf{P}_n$}
+\newcommand{\E}{\mathsf{E}}
+\]</span></p>
+</div>
 <section id="a-motivating-example" class="level3">
 <h3 class="anchored" data-anchor-id="a-motivating-example">A motivating example</h3>
 </section>
-<section id="identifying-causal-estimands-from-observed-data" class="level3">
-<h3 class="anchored" data-anchor-id="identifying-causal-estimands-from-observed-data">Identifying causal estimands from observed data</h3>
+<section id="notation" class="level3">
+<h3 class="anchored" data-anchor-id="notation">Notation</h3>
+<table class="table">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 64%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(L_t\)</span></td>
+<td>Time-varying covariates</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(A_t\)</span></td>
+<td>A vector of intervention variables (i..e, treatment or exposure)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(Y = L_t\)</span></td>
+<td>An outcome variable</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(C\)</span></td>
+<td>A indicator variable that a unit is <em>observed</em> at the next time point</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(O_1, ..., O_n\)</span></td>
+<td>A sample of i.i.d observations with <span class="math inline">\(O = (L_1, A_1, L_2, A_2, ..., L_\tau, A_\tau, Y)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\bar{X}_t = (X_1, ..., X_t)\)</span></td>
+<td>The history of a variable up until time <span class="math inline">\(t\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\underline{X}_t = (X_t, ..., X_\tau)\)</span></td>
+<td>The future of a variable, including time <span class="math inline">\(t\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(H_t = (\bar{A}_{t-1}, \bar{L}_t)\)</span></td>
+<td>The history of all variables up until just before <span class="math inline">\(A_t\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\g_t(a_t, h_t) = \P(A_t = a_t \mid H_t = h_t)\)</span></td>
+<td>The probability density function of <span class="math inline">\(A_t\)</span> conditional on <span class="math inline">\(H_t = h_t\)</span></td>
+</tr>
+</tbody>
+</table>
 
 
 </section>

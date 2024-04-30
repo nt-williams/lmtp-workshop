@@ -1,0 +1,196 @@
+---
+title: "Defining General, Hypothetical Interventions"
+engine: knitr
+filters:
+  - webr
+webr:
+  packages: ['lmtp']
+  autoload-packages: true
+bibliography: references.bib
+nocite: |
+  @haneuse2013estimation, @diaz2023nonparametric, @diaz2024causal, @rudolph2022effects, @kennedy2019nonparametric, @wen2023intervention, @rudolph2022buprenorphine
+---
+
+{{< include macros.qmd >}}
+
+How many times have you started to read a paper for a new method in the causal inference literature that contains the sentence "assume the treatment or exposure is binary..."?
+
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbG9rZ202bDdqNWxoa3Y4MW5vcHhyd3JydnFyNGx0Z2p4cTV1dWlxcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/p8Uw3hzdAE2dO/giphy.gif){fig-align="center"}
+
+Well not anymore 🥳. Assume $A$ is a binary, categorical, or continuous variable! Let $\dd(a, w, \epsilon)$ be a function that maps $A$, $W$, and potentially a randomizer $\epsilon$ to a new value of $A$. We will often refer to the function $\dd$ as a *shift* function.
+
+Our focus in this workshop is estimating the causal effect of an intervention $d$ on the outcome $Y$, through the causal parameter
+
+$$
+\theta = \E[Y(\bar A^{\dd})]\text{,}
+$$
+
+where $Y(\bar A^\dd)$ is the counterfactual outcome in a world, where possibly contrary to fact, each entry of $\bar{A}$ was modified according to the function $\dd$. When $Y$ is continuous, $\theta$ is the mean population value of $Y$ under intervention $\dd$; when $Y$ is dichotomous, $\theta$ is the population proportion of event $Y$ under intervention $\dd$. Similarly, when $Y$ is the indicator of an event by end of the study, $\theta$ is defined as the cumulative incidence of $Y$ under intervention $\dd$.
+
+### Identification of the causal parameter
+
+::: callout-important
+## Assumptions
+
+1.  *Positivity*. If $(a_t, h_t) \in \text{supp}\{A_t, H_t\}$ then $\dd(a_t, h_t) \in \text{supp}\{A_t, H_t\}$ for $t \in \{1, ..., \tau\}$.
+
+    > If there is a unit with observed treatment value $a_t$ and covariates $h_t$, there must also be a unit with treatment value $\dd(a_t, h_t)$ and covariates $h_t$.
+
+2.  *Exchangeability.* $A_t \perp \!\!\! \perp Y(\bar{a}) | H_t$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$ and $t \in \{1, ..., \tau\}$.
+
+3.  *Consistency.* $\bar{A} = \bar{a} \implies Y = Y(\bar{a})$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$.
+:::
+
+Assuming ..., $\theta$ is identified from the observed data by:
+
+::: {.callout-tip icon="false"}
+## Theorem
+
+Set $\m_{\tau+1} = Y$\> For $t = \tau, ..., 1$, recursively define
+
+$$
+\m_t: (a_t, h_t) \rightarrow \E[\m_{t + 1}(A^{\dd}_{t+1}, H_{t + 1}) \mid A_t = a_t, H_t = h_t],
+$$
+
+and define $\theta = E[\m_1(A^{\dd}_1, L_1)]$.
+:::
+
+As an example, set $\tau = 2$. Then we have
+
+```{=tex}
+\begin{align} \m_3(A_3^d, H_3) &= Y   \\  \m_2(A_2^d, H_2) &= \E\left[\m_3(A_3^d, H_3)\mid(A_2^d, H_2)\right] \\\m_1(A_1^d, L_1) &= \E\left[\m_2(A_2^d, H_2)\mid(A_1^d, L_1)\right] \\\theta &= \E\left[\m_1(A_1^d, L_1)\right]
+
+\end{align}
+```
+### Static Interventions
+
+Let $A$ denote a binary vector, such as receiving a medication, and define $\dd_t(a_t, h_t, \epsilon) = 1$. This intervention characterizes a hypothetical world where all members of the population receive treatment.
+
+::: {.callout-important icon="false"}
+## Static intervention
+
+An intervention is static if the function $\dd_t$ always returns the same value regardless of the input.
+:::
+
+### Dynamic Treatment Regime
+
+Let $A_t$ denote a binary vector, such as receiving a medication, and $H_t$ a numeric vector, such as a measure of discomfort. For a given value of $\delta$, define $$
+\dd_t(a_t, h_t, \epsilon) = \begin{cases}
+1 &\text{ if } h_t > \delta \\
+0 &\text{ otherwise.}
+\end{cases}
+$$
+
+::: {.callout-important icon="false"}
+## Dynamic treatment regime
+
+Interventions where the output of the function $\dd_t$ depends **only** **on the covariates** $H_t$ are referred to as being dynamic.
+:::
+
+::: {.callout-tip icon="false"}
+## Example
+
+@rudolph2022buprenorphine examined a Buprenorphine (BUP-NX) dosing strategy among a population of patients who were taking BUP-NX for opioid use disorder. Under the hypothetical intervention, patients who reported opioid use during the week prior to a physicians exam received a BUP-NX dose increase while patients who did not report prior-week opioid use maintained the same dose. Let $A_t$ be a binary indicator for BUP-NX dose increase at week $t$ compared to week $t-1$ and $X_t$ be an indicator for opioid use at week $t$. Then,
+
+$$
+\dd(a_t, h_t, \epsilon) = \begin{cases}
+1 \text{ if } x_{t-1} = 1\\
+0 \text{ otherwise}
+\end{cases}
+$$
+:::
+
+### Treatment Initiation with Grace Period
+
+### Modified Treatment Policies
+
+Explain why MTPs are useful:
+
+-   help with positiivty violations
+
+-   help characterize realistic interventions
+
+-   assess interventions you could never run an RCT for
+
+::: {.callout-important icon="false"}
+## Modified treatment policy
+
+An intervention characterized by a hypothetical world where the *natural* value of treatment is modified is called a *modified treatment policy*.
+:::
+
+#### Additive and multiplicative shift MTP
+
+Let $A_t$ denote a numeric vector. Assume that $A_t$ has support in the data such that $P(A_t \leq u(h_t) \mid H_t = h_t) = 1$. For a value of $\delta$, define $$
+\dd(a_t, h_t, \epsilon) = \begin{cases}
+a_t + \delta &\text{ if } a_t + \delta \leq u(h_t) \\
+a_t &\text{ otherwise.}
+\end{cases}
+$$
+
+Under this intervention, the natural value of exposure at time $t$ is increased by the analyst-defined value $\delta$, whenever such an increase is feasible. This MTP is referred to as an *additive shift* *MTP.*
+
+::: {.callout-tip icon="false"}
+## Example
+:::
+
+We can similarly define a multiplicative *shift MTP* as
+
+$$
+\dd_t(a_t, h_t, \epsilon) = \begin{cases}
+a_t \times \delta &\text{ if } a_t \times \delta \leq u(h_t) \\
+a_t &\text{ otherwise}.
+\end{cases}
+$$
+
+::: {.callout-tip icon="false"}
+## Example
+
+@nugent2023demonstration evaluated the association between county-level measures of mobility and incident COVID-19 cases in the United States in the Summer and Fall of 2022. They considered both hypothetical additive and multiplicative MTPs; for example, they defined a multiplicative MTP where a measure for the density of mobile devices visiting commercial locations was decreased by 25%:
+
+$$
+\dd_t(a_t, h_t, \epsilon) = a_t \times 0.75.
+$$
+:::
+
+#### Threshold MTP
+
+### Stochastic Interventions
+
+#### Randomized Interventions
+
+#### Incremental Propensity Score Interventions
+
+Let $A$ denote a binary vector, $\epsilon \sim U(0, 1)$, and $\delta$ be an analyst-defined risk ratio limited to be between $0$ and $1$. If we were interested in an intervention that decreased the likelihood of receiving treatment, define\
+$$
+\dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
+a_t &\text{ if } \epsilon_t < \delta \\
+0 &\text{ otherwise.}
+\end{cases}
+$$In this case, we have $\g^\dd(a_t \mid H_t) = a_t \delta \g_t(1 \mid H_t) + (1 - a_t) (1 - \delta \g_t(1\mid H_t))$, which leads to a risk ratio of $\g_t^\dd(1 \mid H_t)/\g_t(1\mid H_t) = \delta$ for comparing the propensity score post- vs pre-intervention. Conversely, if we were interested in an intervention that increased the likelihood of receiving treatment, define\
+$$
+\dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
+a_t &\text{ if } \epsilon_t < \delta \\
+1 &\text{ otherwise.}
+\end{cases}
+$$
+
+Now $\g_t^\dd(a_t \mid H_t) = a_t (1 - \delta \g_t(0\mid H_t)) + (1 - a_t) \delta \g_t(0 \mid H_t)$, which implies a risk ratio $\g_t^\dd(0\mid H_t)/\g(0\mid H_t) = \delta$.
+
+::: {.callout-important icon="false"}
+## Incremental propensity score intervention
+
+An intervention where the conditional probability of treatment is shifted.
+:::
+
+::: {.callout-tip icon="false"}
+## Example
+
+Using electronic health record data, @wen2023intervention estimated the effect of increasing the proportion of PrEP uptake on bacterial STI among cis-gender males being tested for STIs and that do not have HIV. Let $A_t$ be a binary indicator for PrEP initiation at week $t$, and $L'_t$ be a binary indicator for any STI testing and being HIV-free at week $t$. They defined a "medium" successful PrEP uptake intervention as
+
+$$
+\dd(a_t, h_t, \epsilon) = \begin{cases}
+a_t &\text{ if } l'_t = 1 \text{ and } \epsilon_t < 0.85 \\
+1 &\text{ otherwise}.
+\end{cases}
+$$
+:::

@@ -1,0 +1,109 @@
+---
+title: "Survival Analysis"
+engine: knitr
+filters:
+  - webr
+webr:
+  packages: ['lmtp', 'superlearner', 'progressr']
+  autoload-packages: true
+bibliography: references.bib
+---
+
+{{< include macros.qmd >}}
+
+```{webr-r}
+#| context: setup
+download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/hoffman_toy.csv",
+              "hoffman_toy.csv")
+intubation <- read.csv("hoffman_toy.csv")
+```
+
+### Data structure
+
+Similar to when the outcome is binary, survival outcomes should be coded using zero's and one's where one indicates the occurrence of an event and zero otherwise. In addition, similar to how we encode censoring variables, we consider the outcome to be degenerate. Meaning that once an observation experiences an outcome, all future outcome variables should also be coded with a one.
+
+![Adapted from Hoffman et al., 2022.](images/data_survival.png){fig-align="center" width="85%"}
+
+![Adapted from Hoffman et al., 2022.](images/data_complex.png){fig-align="center"}
+
+### Example: Delaying invasive mechanical ventilation
+
+@hoffman2023introducing demonstrated the use of modified treatment policies for survival outcomes to assess the effect of delaying invasive mechanical ventilation (IMV) on mortality among patients hospitalized with COVID-19 in New York City during the first COVID-19 wave. A synthetic version of the data used for that analysis has been loaded into R as `intubation`.
+
+```{webr-r}
+head(intubation)
+```
+
+The data consists of $n = 2000$ observations hospitalized with COVID-19 and who were followed for $\tau = 14$ days. There are 10 baseline confounders and 4 time-varying confounders. The outcome of interest is an indicator for death on day $t$. Observations are subject to loss-to-follow-up due to either hospital discharge or transfer.
+
+```{webr-r}
+day <- 14
+W <- names(intubation)[1:10]
+Y <- paste0("Y_", sprintf("%02d", 1:day))
+Obs <- paste0("C_", sprintf("%02d", 0:(day - 1)))
+L <- grep("^L_", names(intubation), value = TRUE)
+L <- lapply(0:(day - 1), \(x) L[grepl(sprintf("%02d", x), L)])
+```
+
+Formally, let's consider the following intervention
+
+$$
+\dd_t(a_t, h_t) = \begin{cases}
+1 \text{ if } a_t = 2 \text{ and } a_s \leq 1 \forall s < t \\
+a_t \text{ otherwise},
+\end{cases}
+$$
+
+where $A_t$ is a 3-level categorical variable: 0, no supplemental oxygen; 1, non-IMV supplemental oxygen support; 2, IMV.
+
+```{webr-r}
+A <- paste0("I_", sprintf("%02d", 0:(day - 1)))
+```
+
+In words, this function corresponds to an intervention where patients who were naturally observed as receiving IMV on day $t$ instead had IMV delayed by a day to day $t+1$. Let's translate this policy to an R function that we can use with `lmtp`.
+
+```{webr-r}
+d <- function(data, trt) {
+  # If it's the first time point and intubated, set to 1
+  if (trt == "I_00") {
+    a_d <- ifelse(data$I_00 == "2", 
+                  factor("1", levels = 0:2), 
+                  data$I_00)
+    return(a_d)
+  }
+  # extract time point
+  tau <- as.numeric(gsub("[^\\d]+", "", trt, perl = TRUE))
+  # get the name of previous trt column
+  trt_prev <- paste0("I_", sprintf("%02d", tau - 1))       
+  
+  # If intubated at time T but not T-1, set to 1
+  ifelse(data[[trt]] == "2" & data[[trt_prev]] != "2", 
+         factor("1", levels = 0:2), 
+         data[[trt]])
+}
+```
+
+::: {.callout-warning icon="false"}
+## Question
+
+Why might defining an intervention in terms of an MTP instead of a static intervention be more useful to answer a question about the effect of IMV on death among patients hospitalized with COVID-19?
+:::
+
+```{webr-r}
+#| results: 'asis'
+library(lmtp)
+
+lmtp_sdr(
+  intubation,
+  trt = A,
+  outcome = Y,
+  baseline = W,
+  time_vary = L,
+  cens = Obs,
+  shift = d, 
+  mtp = TRUE,
+  outcome_type = "survival",
+  folds = 1,
+  k = 2
+)
+```

@@ -1,1 +1,16 @@
 /* css styles */
+pre, code, .sourceCode {
+  font-size: 0.9rem;
+}
+
+.qwebr-console-area {
+  font-size: 0.9rem;
+}
+
+.table {
+  font-size: smaller;
+}
+
+.qwebr-output-code-area {
+  background-color: #fbfbfb;
+}

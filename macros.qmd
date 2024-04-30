@@ -1,0 +1,15 @@
+::: {.hidden}
+$$
+\renewcommand{\P}{\mathsf{P}}
+\newcommand{\m}{\mathsf{m}}
+\newcommand{\p}{\mathsf{p}}
+\newcommand{\q}{\mathsf{q}}
+\newcommand{\bb}{\mathsf{b}}
+\newcommand{\g}{\mathsf{g}}
+\newcommand{\rr}{\mathsf{r}}
+\newcommand{\IF}{\mathbb{IF}}
+\newcommand{\dd}{\mathsf{d}}
+\newcommand{\Pn}{$\mathsf{P}_n$}
+\newcommand{\E}{\mathsf{E}}
+$$
+:::

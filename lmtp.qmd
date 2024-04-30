@@ -1,0 +1,84 @@
+---
+title: "The `lmtp` package"
+engine: knitr
+filters:
+  - webr
+webr:
+  packages: ['lmtp', 'superlearner']
+  autoload-packages: true
+bibliography: references.bib
+nocite: |
+  @williams2023lmtp @van2007super
+---
+
+So far, we've (1) defined a causal estimand for general, hypothetical interventions, (2) identified that estimand from observational data, and (3) discussed 4 different algorithms for estimating it. It's now time to move on to doing that in practice.
+
+Flexible and general software for estimation of causal effects in longitudinal studies is limited. The `ipw` and `gfoRmula` packages provide routines for estimating causal effects using inverse probability weighting (IPW) and the parametric g-formula respectively. As we already discussed, however, the validity of these methods requires making unrealistic parametric assumptions. The `ltmle` and `survtmle` packages implement a doubly-robust method for estimating causal effects from longitudinal data, but these packages do not support continuous valued exposures.
+
+First released on CRAN in the Summer of 2021, the `lmtp` package is the software companion to the paper by @diaz2023nonparametric that generalized MTPs to the longitudinal setting. We hope to convince you that `lmtp` should be your default package for conducting causal analyses in R. For this workshop, `lmtp` has already been installed with `webr`. However, you can install the package locally on your machine from CRAN with\
+
+```{r eval=FALSE}
+install.packages("lmtp")
+```
+
+Before we move on to using `lmtp`, here's general information that will be applicable across all examples:
+
+-   Data is passed to estimators through the `data` argument.
+
+-   Data should be in wide format with one column per variable per time point under study (i.e., there should be one column for every variable in $O$). Data may be either a `data.frame` or `tibble` but not a `data.table`.
+
+-   Columns do not have to be in any specific order and the data may contain variables that are not used in estimation.
+
+-   The names of treatment variables are specified with the `trt` argument.
+
+-   The names of censoring variables are specified with the `cens` argument.
+
+-   The names of baseline covariates are specified with the `baseline` argument.
+
+-   The names of time-varying covariates are specified with the `time_vary` argument.
+
+-   The `trt` argument accepts either a character vector or a list of character vectors.
+
+-   The `cens` and `baseline` arguments accept character vectors.
+
+-   The `time_vary` argument accepts a list of character vectors.
+
+-   The `trt`, `cens`, and `time_vary` arguments must be sorted according to the time-ordering of the model with each index containing the name (or names) of variables for the given time.
+
+-   The outcome variable is specified with the `outcome` argument.
+
+-   The `outcome_type` argument specifies the type of outcome. It should be set to `"continuous"` for continuous outcomes, `"binomial"` for dichotomous outcomes, and `"survival"` for time-to–event outcomes.
+
+-   Censoring indicators should be coded using 0 and 1 where 1 indicates an observation is observed at the next time and 0 indicates loss-to-follow-up. Once an observation's censoring status is switched to 0 it cannot change back to 1. Missing data before an observation is censored is not allowed.
+
+-   The \code{outcome\_type} argument should be set to \code{"continuous"} for continuous outcomes, \code{"binomial"} for dichotomous outcomes, and \code{"survival"} for time-to-event outcomes.
+
+### Data structure examples
+
+##### Point treatment
+
+![Adapted from Hoffman et al., 2022.](images/data_point_trt.png){alt="Adapted from Hoffman et al., 2022." fig-align="center" width="60%"}
+
+##### Point-treatment with censoring
+
+![Adapted from Hoffman et al., 2022.](images/data_ltfu.png){alt="Adapted from Hoffman et al., 2022." fig-align="center" width="60%"}
+
+##### Time-varying treatment with censoring
+
+![Adapted from Hoffman et al., 2022.](images/data_time_varying.png){alt="Adapted from Hoffman et al., 2022." fig-align="center" width="90%"}
+
+##### Point-treatment with survival outcome
+
+![Adapted from Hoffman et al., 2022.](images/data_survival.png){alt="Adapted from Hoffman et al., 2022." fig-align="center" width="85%"}
+
+##### Time-varying treatment with survival outcome
+
+![Adapted from Hoffman et al., 2022.](images/data_complex.png){alt="Adapted from Hoffman et al., 2022." fig-align="center" width="100%"}
+
+### Machine learning ensembles
+
+As was already discussed, an attractive property of multiply-robust estimators is that they can incorporate flexible machine-learning algorithms for the estimation of nuisance parameters while remaining $\sqrt{n}$-consistent. `lmtp` uses the super learner algorithm for estimating these nusiance parameters. The super learner algorithm is an ensemble learner than incorporates a set of candidate models through a weighted convex-combination based on cross-validation. Asymptotically, this weighted combination of models, called the meta-learner, will outperform any single one of its components.
+
+`lmtp` uses the implementation of the super learner provided by the `SuperLearner` package. The algorithms to be used in the super learner are specified with the `lrnrs_trt` and `lrnrs_outcome` arguments. The outcome variable type should guide users on selecting the appropriate candidate learners for use with the `lrnrs_outcome` argument. Regardless of whether an exposure is continuous, dichotomous, or categorical, the [exposure mechanism is estimated using classification](info_estimators.html#sec-density-ratio-estimation). Therefore only include candidate learners capable of binary classification with the `lrnrs_trt` argument.
+
+Candidate learners that rely on cross-validation for the tuning of hyper-parameters should support grouped data if used with `lrnrs_trt`. Because estimation of the treatment mechanism relies on the augmented $2n$ duplicated data set, duplicated observations must be put into the same fold during sample-splitting. This is done automatically by the package.

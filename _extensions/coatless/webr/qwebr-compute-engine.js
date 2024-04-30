@@ -64,10 +64,8 @@ globalThis.qwebrComputeEngine = async function(
     // 1. We setup a canvas device to write to by making a namespace call into the {webr} package
     // 2. We use values inside of the options array to set the figure size.
     // 3. We capture the output stream information (STDOUT and STERR)
-    // 4. While parsing the results, we disable image creation.
-
-    // Create a canvas variable for graphics
-    let canvas = undefined;
+    // 4. We disable the current device's image creation.
+    // 5. Piece-wise parse the results into the different output areas
 
     // Create a pager variable for help/file contents
     let pager = [];
@@ -91,23 +89,42 @@ globalThis.qwebrComputeEngine = async function(
     // Initialize webR
     await mainWebR.init();
 
-    // Setup a webR canvas by making a namespace call into the {webr} package
-    await mainWebR.evalRVoid(`webr::canvas(width=${fig_width}, height=${fig_height})`);
-
-    const result = await mainWebRCodeShelter.captureR(codeToRun, {
+    // Configure capture output
+    let captureOutputOptions = {
         withAutoprint: true,
         captureStreams: true,
-        captureConditions: false//,
+        captureConditions: false,
         // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
-    });
+    };
+    
+    // Determine if the browser supports OffScreen
+    if (qwebrOffScreenCanvasSupport()) {
+        // Mirror default options of webr::canvas()
+        // with changes to figure height and width.
+        captureOutputOptions.captureGraphics = {
+            width: fig_width,
+            height: fig_height,
+            bg: "white", // default: transparent
+            pointsize: 12,
+            capture: true
+        };
+    }  else {
+        // Disable generating graphics
+        captureOutputOptions.captureGraphics = false;
+    }
+
+    // Setup a webR canvas by making a namespace call into the {webr} package
+    // Evaluate the R code
+    // Remove the active canvas silently
+    const result = await mainWebRCodeShelter.captureR(
+        `${codeToRun}`,
+        captureOutputOptions
+    );
 
     // -----
 
     // Start attempting to parse the result data
     processResultOutput:try {
-
-        // Stop creating images
-        await mainWebR.evalRVoid("dev.off()");
         
         // Avoid running through output processing
         if (options.results === "hide" || options.output === "false") { 
@@ -130,33 +147,10 @@ globalThis.qwebrComputeEngine = async function(
 
 
         // Clean the state
-        // We're now able to process both graphics and pager events.
+        // We're now able to process pager events.
         // As a result, we cannot maintain a true 1-to-1 output order 
         // without individually feeding each line
         const msgs = await mainWebR.flush();
-
-        // Output each image event stored
-        msgs.forEach((msg) => {
-        // Determine if old canvas can be used or a new canvas is required.
-        if (msg.type === 'canvas'){
-            // Add image to the current canvas
-            if (msg.data.event === 'canvasImage') {
-                canvas.getContext('2d').drawImage(msg.data.image, 0, 0);
-            } else if (msg.data.event === 'canvasNewPage') {
-
-                // Generate a new canvas element
-                canvas = document.createElement("canvas");
-                canvas.setAttribute("width", 2 * fig_width);
-                canvas.setAttribute("height", 2 * fig_height);
-                canvas.style.width = options["out-width"] ? options["out-width"] : `${fig_width}px`;
-                if (options["out-height"]) {
-                    canvas.style.height = options["out-height"];
-                }
-                canvas.style.display = "block";
-                canvas.style.margin = "auto";
-            }
-        } 
-        });
 
         // Use `map` to process the filtered "pager" events asynchronously
         const pager = await Promise.all(
@@ -177,6 +171,13 @@ globalThis.qwebrComputeEngine = async function(
             // Display results as HTML elements to retain output styling
             const div = document.createElement("div");
             div.innerHTML = out;
+
+            // Calculate a scaled font-size value
+            const scaledFontSize = qwebrScaledFontSize(
+                elements.outputCodeDiv, options);
+
+            // Override output code cell size
+            pre.style.fontSize = `${scaledFontSize}px`;
             pre.appendChild(div);
         } else {
             // If nothing is present, hide the element.
@@ -185,13 +186,37 @@ globalThis.qwebrComputeEngine = async function(
 
         elements.outputCodeDiv.appendChild(pre);
 
-        // Place the graphics on the canvas
-        if (canvas) {
+        // Determine if we have graphs to display
+        if (result.images.length > 0) {
             // Create figure element
             const figureElement = document.createElement('figure');
 
-            // Append canvas to figure
-            figureElement.appendChild(canvas);
+            // Place each rendered graphic onto a canvas element
+            result.images.forEach((img) => {
+                // Construct canvas for object
+                const canvas = document.createElement("canvas");
+
+                // Set canvas size to image
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                // Apply output truncations
+                canvas.style.width = options["out-width"] ? options["out-width"] : `${fig_width}px`;
+                if (options["out-height"]) {
+                    canvas.style.height = options["out-height"];
+                }
+
+                // Apply styling
+                canvas.style.display = "block";
+                canvas.style.margin = "auto";
+
+                // Draw image onto Canvas
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+          
+                // Append canvas to figure output area
+                figureElement.appendChild(canvas);
+            });
 
             if (options['fig-cap']) {
                 // Create figcaption element
