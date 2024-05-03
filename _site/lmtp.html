@@ -315,7 +315,10 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data-structure-examples" id="toc-data-structure-examples" class="nav-link active" data-scroll-target="#data-structure-examples">Data structure examples</a></li>
+  <li><a href="#existing-software-and-lmtp" id="toc-existing-software-and-lmtp" class="nav-link active" data-scroll-target="#existing-software-and-lmtp">Existing software and <code>lmtp</code></a></li>
+  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries">Preliminaries</a></li>
+  <li><a href="#data-structure-examples" id="toc-data-structure-examples" class="nav-link" data-scroll-target="#data-structure-examples">Data structure examples</a></li>
   <li><a href="#machine-learning-ensembles" id="toc-machine-learning-ensembles" class="nav-link" data-scroll-target="#machine-learning-ensembles">Machine learning ensembles</a></li>
   </ul>
 </nav>
@@ -342,13 +345,35 @@ window.Quarto = {
 </header>
 
 
-<p>So far, we’ve (1) defined a causal estimand for general, hypothetical interventions, (2) identified that estimand from observational data, and (3) discussed 4 different algorithms for estimating it. It’s now time to move on to doing that in practice.</p>
-<p>Flexible and general software for estimation of causal effects in longitudinal studies is limited. The <code>ipw</code> and <code>gfoRmula</code> packages provide routines for estimating causal effects using inverse probability weighting (IPW) and the parametric g-formula respectively. As we already discussed, however, the validity of these methods requires making unrealistic parametric assumptions. The <code>ltmle</code> and <code>survtmle</code> packages implement a doubly-robust method for estimating causal effects from longitudinal data, but these packages do not support continuous valued exposures.</p>
-<p>First released on CRAN in the Summer of 2021, the <code>lmtp</code> package is the software companion to the paper by <span class="citation" data-cites="diaz2023nonparametric">Dı́az et al. (<a href="#ref-diaz2023nonparametric" role="doc-biblioref">2023</a>)</span> that generalized MTPs to the longitudinal setting. We hope to convince you that <code>lmtp</code> should be your default package for conducting causal analyses in R. For this workshop, <code>lmtp</code> has already been installed with <code>webr</code>. However, you can install the package locally on your machine from CRAN with<br>
+<p>So far, we’ve</p>
+<ol type="1">
+<li><p>Defined a causal estimand for general, hypothetical interventions</p></li>
+<li><p>Identified that estimand from observational data</p></li>
+<li><p>Discussed 4 different estimators.</p></li>
+</ol>
+<p>It’s now time to move on to applying this new knowledge to real data examples.</p>
+<section id="existing-software-and-lmtp" class="level3">
+<h3 class="anchored" data-anchor-id="existing-software-and-lmtp">Existing software and <code>lmtp</code></h3>
+<p>General software for estimation of causal effects in longitudinal studies is limited:</p>
+<ul>
+<li><p>The <code>ipw</code> and <code>gfoRmula</code> packages provide routines for estimating causal effects using inverse probability weighting (IPW) and the parametric g-formula respectively. As we already discussed, however, the validity of these methods requires making unrealistic parametric assumptions.</p></li>
+<li><p>The <code>ltmle</code> and <code>survtmle</code> packages implement a doubly-robust method for estimating causal effects from longitudinal data, but these packages do not support continuous valued exposures.</p></li>
+</ul>
+<p>First released on CRAN in the Summer of 2021, the <code>lmtp</code> package is the software companion to the paper by <span class="citation" data-cites="diaz2023nonparametric">Dı́az et al. (<a href="#ref-diaz2023nonparametric" role="doc-biblioref">2023</a>)</span> that generalized MTPs to the longitudinal setting.</p>
+<ul>
+<li>We hope to convince you that <code>lmtp</code> should be your default package for conducting causal analyses in R.</li>
+</ul>
+</section>
+<section id="installation" class="level3">
+<h3 class="anchored" data-anchor-id="installation">Installation</h3>
+<p>For this workshop, <code>lmtp</code> has already been installed with <code>webr</code>. However, you can install the package locally on your machine from CRAN with<br>
 </p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"lmtp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="preliminaries" class="level3">
+<h3 class="anchored" data-anchor-id="preliminaries">Preliminaries</h3>
 <p>Before we move on to using <code>lmtp</code>, here’s general information that will be applicable across all examples:</p>
 <ul>
 <li><p>Data is passed to estimators through the <code>data</code> argument.</p></li>
@@ -367,6 +392,7 @@ window.Quarto = {
 <li><p>Censoring indicators should be coded using 0 and 1 where 1 indicates an observation is observed at the next time and 0 indicates loss-to-follow-up. Once an observation’s censoring status is switched to 0 it cannot change back to 1. Missing data before an observation is censored is not allowed.</p></li>
 <li><p>The argument should be set to for continuous outcomes, for dichotomous outcomes, and for time-to-event outcomes.</p></li>
 </ul>
+</section>
 <section id="data-structure-examples" class="level3">
 <h3 class="anchored" data-anchor-id="data-structure-examples">Data structure examples</h3>
 <section id="point-treatment" class="level5">
@@ -417,9 +443,16 @@ window.Quarto = {
 </section>
 <section id="machine-learning-ensembles" class="level3">
 <h3 class="anchored" data-anchor-id="machine-learning-ensembles">Machine learning ensembles</h3>
-<p>As was already discussed, an attractive property of multiply-robust estimators is that they can incorporate flexible machine-learning algorithms for the estimation of nuisance parameters while remaining <span class="math inline">\(\sqrt{n}\)</span>-consistent. <code>lmtp</code> uses the super learner algorithm for estimating these nusiance parameters. The super learner algorithm is an ensemble learner than incorporates a set of candidate models through a weighted convex-combination based on cross-validation. Asymptotically, this weighted combination of models, called the meta-learner, will outperform any single one of its components.</p>
-<p><code>lmtp</code> uses the implementation of the super learner provided by the <code>SuperLearner</code> package. The algorithms to be used in the super learner are specified with the <code>lrnrs_trt</code> and <code>lrnrs_outcome</code> arguments. The outcome variable type should guide users on selecting the appropriate candidate learners for use with the <code>lrnrs_outcome</code> argument. Regardless of whether an exposure is continuous, dichotomous, or categorical, the <a href="info_estimators.html#sec-density-ratio-estimation">exposure mechanism is estimated using classification</a>. Therefore only include candidate learners capable of binary classification with the <code>lrnrs_trt</code> argument.</p>
-<p>Candidate learners that rely on cross-validation for the tuning of hyper-parameters should support grouped data if used with <code>lrnrs_trt</code>. Because estimation of the treatment mechanism relies on the augmented <span class="math inline">\(2n\)</span> duplicated data set, duplicated observations must be put into the same fold during sample-splitting. This is done automatically by the package.</p>
+<p>As was already discussed, an attractive property of multiply-robust estimators is that they can incorporate flexible machine-learning algorithms for the estimation of nuisance parameters while remaining <span class="math inline">\(\sqrt{n}\)</span>-consistent.</p>
+<ul>
+<li><p><code>lmtp</code> uses the super learner algorithm for estimating these nuisance parameters.</p></li>
+<li><p>The super learner algorithm is an ensemble learner than incorporates a set of candidate models through a weighted convex-combination based on cross-validation. Asymptotically, this weighted combination of models, called the meta-learner, will outperform any single one of its components.</p></li>
+<li><p><code>lmtp</code> uses the implementation of the super learner provided by the <code>SuperLearner</code> package.</p></li>
+<li><p>The algorithms to be used in the super learner are specified with the <code>lrnrs_trt</code> and <code>lrnrs_outcome</code> arguments.</p></li>
+<li><p>The outcome variable type should guide users on selecting the appropriate candidate learners for use with the <code>lrnrs_outcome</code> argument.</p></li>
+<li><p>Regardless of whether an exposure is continuous, dichotomous, or categorical, the <a href="info_estimators.html#sec-density-ratio-estimation">exposure mechanism is estimated using classification</a>. Therefore only include candidate learners capable of binary classification with the <code>lrnrs_trt</code> argument.</p></li>
+<li><p>Candidate learners that rely on cross-validation for the tuning of hyper-parameters should support grouped data if used with <code>lrnrs_trt</code>. Because estimation of the treatment mechanism relies on the augmented <span class="math inline">\(2n\)</span> duplicated data set, duplicated observations must be put into the same fold during sample-splitting. This is done automatically by the package.</p></li>
+</ul>
 
 
 

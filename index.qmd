@@ -4,7 +4,7 @@ title: "Estimating the causal effects of binary, categorical, continuous, and mu
 
 > SER 2024 - Austin, Texas
 
-::: {.callout-tip appearance="minimal" icon="false"}
+::: tldr
 Modified treatment policies (MTPs) are a class of interventions that generalize static and dynamic interventions for categorical, continuous, and multivariate exposures. MTPs are hypothetical interventions where the post-intervention is defined as a modification of the natural value of the exposure that can depend on the unit’s history. This short course will introduce the **lmtp** R package for estimating the causal effects of MTPs in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice.
 :::
 
@@ -38,5 +38,5 @@ By the end of the workshop, participants will be able to:
 This workshop was prepared using [Quarto](https://quarto.org/) and [webR](https://docs.r-wasm.org/webr/latest/). The source code is available on GitHub. webR is a version of the R programming language compiled to be run directly in the browser. Using webR for this workshop avoids having to spend time setting up a computing environment and making sure workshop participants are using the same version of R and R packages.
 
 ```{webr-r}
-print("Hello, world!")
+print("Welcome to SER 2024!")
 ```

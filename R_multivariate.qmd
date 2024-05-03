@@ -4,19 +4,25 @@ engine: knitr
 filters:
   - webr
 webr:
-  packages: ['lmtp', 'superlearner']
+  packages: ['lmtp', 'superlearner', 'rpart', 'gam']
   autoload-packages: true
+  repos: 
+    - https://nt-williams.r-universe.dev
 ---
 
 {{< include macros.qmd >}}
 
-::: callout-important
-This section requires a version of lmtp that is still underdevelopment. You can install this version from GitHub with `devtools::install_github("nt-williams/lmtp@multviariate")`
+::: tldr
+-   `lmtp` can estimate effects of simultaneous interventions on multiple variables
+
+-   Practically, this is useful for assessing the effects of mixtures on environmental outcomes
+
+-   When intervening on multiple variables, `trt` should be supplied a list of variable names instead of a vector.
 :::
 
 ### NIEHS Simulation Data
 
-For our example of estimating the effects of simultaneous interventions on multiple variables, we will use simulated data from the 2015 NIEHS Mixtures Workshop. The data has already been loaded into R in the background as assigned to the object `mixtures`, but you can view and download the raw data [here](https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/mixtures.csv).
+For our example of estimating the effects of simultaneous interventions on multiple variables, we will use simulated data from the 2015 NIEHS Mixtures Workshop. The data has already been loaded into R in the background as `mixtures`. You can view and download the raw data [here](https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/mixtures.csv).
 
 ```{webr-r}
 #| context: setup
@@ -24,65 +30,149 @@ download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/
 mixtures <- read.csv("mixtures.csv")
 ```
 
-The simulated data has $n = 500$ observations and is intended to replicate a prospective cohort study. The exposure ($\mathbf{A} \mapsto$ `c("A1", "A2", "A3", "A4", "A5", "A6", "A7"`) consists of 7 log-normally distributed variables, a single continuous outcome ($Y \mapsto$ `"Y"`), and one binary confounder ($W\mapsto$ `"Z"`). There is no missing covariate data, no measurement error, and no censoring. The direction and magnitude of the effect of the exposures on the outcome varies. Notice, to highlight that the exposure is no longer a single variable, we are going to use bold-font when referring to the set of variables to be intervened upon (i.e., $\mathbf{A}$ instead of $A$).
+The simulated data has $n = 500$ observations and is intended to replicate a prospective cohort study. The data is composed of 7 log-normally distributed and correlated exposures variables (`"X1", "X2", "X3", "X4", "X5", "X6", "X7"`), a single continuous outcome (`"Y"`), and one binary confounder (`"Z"`). There is no missing covariate data, no measurement error, and no censoring.
 
-```{webr-r}
-head(mixtures)
-summary(mixtures)
+```{r echo=FALSE}
+mixtures <- read.csv("data/mixtures.csv")
+dplyr::select(mixtures, -obs) |> 
+  gtsummary::tbl_summary()
 ```
 
+Only exposure variables `X1`, `X2`, `X4`, `X5`, and `X7` have an effect on the outcome `Y`. However, the direction of the effects varies. Variables `X1`, `X2`, and `X7` are positively associated with the outcome; `X4` and `X5` are negatively associated with the outcome.
+
+Only two things need to change when using `lmtp` estimators with multivariate treatments:
+
+1.  Instead of a vector, you should now pass a list to the `trt` argument
+
+2.  The shift function should return a named list of vectors instead of a single vector.
+
+Let's use `lmtp` to estimate the effect of a modified treatment policy which intervenes on all 7 exposure simultaneously on the outcome:
+
 $$
-\dd(\mathbf{a}, w, \epsilon)
+\dd(\mathbf{a}, h) = 
+\begin{cases} \dd(a_1, h) = 
+\begin{cases}
+a_1 - 0.2 &\text{ if } a_1 - 0.2 > 0 \\
+a_1 &\text{ otherwise }
+\end{cases} \\
+\dd(a_2, h) = 
+\begin{cases}
+a_2 - 0.4 &\text{ if } a_2 - 0.4 > 0 \\
+a_2 &\text{ otherwise }
+\end{cases} \\
+\dd(a_3, h) = a_3 + 0.4 \\
+\dd(a_4, h) = a_4 + 0.1 \\
+\dd(a_5, h) = a_5 + 0.5 \\
+\dd(a_6, h) = 
+\begin{cases}
+a_6 - 0.2 &\text{ if } a_6 - 0.2 > 0 \\
+a_6 &\text{ otherwise }
+\end{cases} \\
+\dd(a_7, h) = 
+\begin{cases}
+a_7 - 0.3 &\text{ if } a_7 - 0.3 > 0 \\
+a_7 &\text{ otherwise }
+\end{cases}
+\end{cases}
 $$
 
 ```{webr-r}
-library(lmtp)
-
-A <- lapply(1:7, \(x) paste0("A", x))
-Y <- "Y"
-W <- "Z"
-learners <- c("SL.mean", "SL.glm", "SL.xgboost")
+#| autorun: true
+A <- list(paste0("X", 1:7))
 
 d <- function(data, a) {
-  out = list(
-    data[[a[1]]] - 0.1,
-    data[[a[2]]] - 0.5, 
-    data[[a[2]]] - 0.5, 
-    data[[a[2]]] - 0.5, 
-    data[[a[2]]] - 0.5, 
-    data[[a[2]]] - 0.5, 
-    data[[a[2]]] - 0.5
+  d1 <- \(x) ifelse(x - 0.2 > 0, x - 0.2, x)
+  d2 <- \(x) ifelse(x - 0.4 > 0, x - 0.4, x)
+  d6 <- \(x) ifelse(x - 0.2 > 0, x - 0.2, x)
+  d7 <- \(x) ifelse(x - 0.3 > 0, x - 0.3, x)
+  
+  out <- list(
+    d1(data[[a[1]]]),
+    d2(data[[a[2]]]), 
+    data[[a[3]]] + 0.4, 
+    data[[a[4]]] + 0.1, 
+    data[[a[5]]] + 0.5, 
+    d6(data[[a[6]]]), 
+    d7(data[[a[7]]])
   )
+  
   setNames(out, a)
 }
+```
 
+### Learning assessment
+
+::: {.callout-warning icon="false"}
+## Problem 1
+
+Using TMLE, estimate the population mean outcome under the simultaneous intervention we just defined. Fit both the treatment mechanism and the outcome regression using this set of learners: `c("SL.mean", "SL.glm", "SL.gam", "SL.rpart", "SL.rpartPrune", "SL.step.interaction")`. Assign the result to `ans`. To save time, don't use crossfitting; `lmtp` has already been loaded into the R session.
+
+```{webr-r}
 set.seed(4363754)
+
+# Type your code here!
+ans <- 
+```
+
+<details/>
+
+<summary style="color: black; font-weight: bold;">
+
+Solution
+
+</summary>
+
+```{r eval=FALSE}
+set.seed(4363754)
+
+learners <- c("SL.mean", 
+              "SL.glm", 
+              "SL.gam", 
+              "SL.rpart", 
+              "SL.rpartPrune", 
+              "SL.step.interaction")
 
 ans <- lmtp_tmle(data = mixtures, 
                  trt = A, 
-                 outcome = Y, 
-                 baseline = W, 
+                 outcome = "Y", 
+                 baseline = "Z", 
                  shift = d, 
+                 mtp = TRUE,
+                 outcome_type = "continuous",
                  learners_trt = learners, 
                  learners_outcome = learners, 
                  folds = 1)
+
+print(ans)
 ```
 
-::: {.callout-caution appearance="minimal" icon="false"}
-## Practice
-
-Compared to what was observed under the natural course of exposure, how did intervening upon the set of exposures effect the outcome? Estimate this effect using the `lmtp_contrast()` function.
+</details>
 :::
 
-```{webr-r}
-#| context: setup
-obs_y <- mean(mixtures$Y)
-true_1 <- try(lmtp_contrast(ans, ref = obs_y))
-```
+::: {.callout-warning icon="false"}
+## Problem 2
+
+Compared to what was observed under the natural course of exposure, how did intervening upon the set of exposures effect the outcome? Estimate this effect using the `lmtp_contrast()` function.
 
 ```{webr-r}
-# Type your code here
+# Type your code here!
 ```
+
+<details/>
+
+<summary style="color: black; font-weight: bold;">
+
+Solution
+
+</summary>
+
+```{r eval=FALSE}
+obs_y <- mean(mixtures$Y)
+lmtp_contrast(ans, ref = obs_y)
+```
+
+</details>
+:::
 
 ### References
 

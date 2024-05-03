@@ -325,7 +325,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"label":"unnamed-chunk-1","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"true","context":"setup","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/williams_synthetic.csv\", \"williams_synthetic.csv\")\ncovid <- read.csv(\"williams_synthetic.csv\")","id":1},{"options":{"label":"unnamed-chunk-2","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"true","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"d1 <- function(data, trt) {\n  rep(1, nrow(data))\n}","id":2},{"options":{"label":"unnamed-chunk-3","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"d1(covid, \"A\") |> head()\nd1(covid, \"A\") |> length()","id":3},{"options":{"label":"unnamed-chunk-4","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"A <- \"A\"\nY <- \"event\"\nW <- c(\"age\", \"sex\", \"bmi\", \"smoke\", \"o2\", \n       \"num_comorbid\", \"num_symptoms\", \"bilat\", \"dyspnea\", \"hyper\")\n\nset.seed(34465)\n\ntreat <- lmtp_tmle(\n  data = covid, \n  trt = \"A\", \n  outcome = \"event\", \n  baseline = W, \n  outcome_type = \"binomial\", \n  shift = d1, \n  folds = 1, \n  learners_trt = \"SL.mean\", \n  learners_outcome = \"SL.glm\"\n)\n\nprint(treat)","id":4},{"options":{"label":"unnamed-chunk-5","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"tmp <- covid\ntmp$A <- d1(covid, \"A\")\n\nhead(tmp)\n\nset.seed(34465)\n\ntreat <- lmtp_tmle(\n  data = covid, \n  trt = \"A\", \n  outcome = \"event\", \n  baseline = W, \n  outcome_type = \"binomial\", \n  shifted = tmp, \n  folds = 1, \n  learners_trt = \"SL.mean\", \n  learners_outcome = \"SL.glm\"\n)\n\nprint(treat)","id":5},{"options":{"label":"unnamed-chunk-6","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"hist(treat$density_ratios[, 1], \n     main = \"Histogram of density ratios\", \n     xlab = \"Density ratio\")","id":6},{"options":{"label":"unnamed-chunk-7","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"dont_treat <- # Type your code here!","id":7},{"options":{"label":"unnamed-chunk-8","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"lmtp_contrast(treat, ref = dont_treat)","id":8},{"options":{"label":"unnamed-chunk-9","comment":"","warning":"true","fig-height":5,"editor-font-scale":1,"editor-quick-suggestions":"false","autorun":"false","context":"interactive","fig-cap":"","output":"true","dpi":72,"classes":"","message":"true","fig-width":7,"results":"markup","editor-max-height":"","read-only":"false","out-width":"700px","out-height":""},"code":"lmtp_contrast(treat, ref = dont_treat, type = \"rr\")\nlmtp_contrast(treat, ref = dont_treat, type = \"or\")","id":9}];
+globalThis.qwebrCellDetails = [{"options":{"message":"true","fig-cap":"","context":"setup","out-width":"700px","editor-quick-suggestions":"false","results":"markup","label":"unnamed-chunk-1","comment":"","dpi":72,"autorun":"true","read-only":"false","fig-height":5,"warning":"true","editor-font-scale":1,"fig-width":7,"out-height":"","editor-max-height":"","output":"true","classes":""},"id":1,"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/williams_synthetic.csv\", \"williams_synthetic.csv\")\ncovid <- read.csv(\"williams_synthetic.csv\")"},{"options":{"message":"true","fig-cap":"","context":"interactive","out-width":"700px","editor-quick-suggestions":"false","results":"markup","label":"unnamed-chunk-2","comment":"","dpi":72,"autorun":"true","read-only":"false","fig-height":5,"warning":"true","editor-font-scale":1,"fig-width":7,"out-height":"","editor-max-height":"","output":"true","classes":""},"id":2,"code":"d1 <- function(data, trt) {\n  rep(1, nrow(data))\n}"},{"options":{"message":"true","fig-cap":"","context":"interactive","out-width":"700px","editor-quick-suggestions":"false","results":"markup","label":"unnamed-chunk-3","comment":"","dpi":72,"autorun":"false","read-only":"false","fig-height":5,"warning":"true","editor-font-scale":1,"fig-width":7,"out-height":"","editor-max-height":"","output":"true","classes":""},"id":3,"code":"d1(covid, \"A\") |> head()\nd1(covid, \"A\") |> length()"},{"options":{"message":"true","fig-cap":"","context":"interactive","out-width":"700px","editor-quick-suggestions":"false","results":"markup","label":"unnamed-chunk-4","comment":"","dpi":72,"autorun":"false","read-only":"false","fig-height":5,"warning":"true","editor-font-scale":1,"fig-width":7,"out-height":"","editor-max-height":"","output":"true","classes":""},"id":4,"code":"A <- \"A\"\nY <- \"event\"\nW <- c(\"age\", \"sex\", \"bmi\", \"smoke\", \"o2\", \n       \"num_comorbid\", \"num_symptoms\", \"bilat\", \"dyspnea\", \"hyper\")\n\nset.seed(34465)\n\ntreat <- lmtp_tmle(\n  data = covid, \n  trt = \"A\", \n  outcome = \"event\", \n  baseline = W, \n  outcome_type = \"binomial\", \n  shift = d1, \n  folds = 1, \n  learners_trt = \"SL.mean\", \n  learners_outcome = \"SL.glm\"\n)\n\nprint(treat)"},{"options":{"message":"true","fig-cap":"","context":"interactive","out-width":"700px","editor-quick-suggestions":"false","results":"markup","label":"unnamed-chunk-5","comment":"","dpi":72,"autorun":"false","read-only":"false","fig-height":5,"warning":"true","editor-font-scale":1,"fig-width":7,"out-height":"","editor-max-height":"","output":"true","classes":""},"id":5,"code":"tmp <- covid\ntmp$A <- d1(covid, \"A\")\n\nhead(tmp)\n\nset.seed(34465)\n\ntreat <- lmtp_tmle(\n  data = covid, \n  trt = \"A\", \n  outcome = \"event\", \n  baseline = W, \n  outcome_type = \"binomial\", \n  shifted = tmp, \n  folds = 1, \n  learners_trt = \"SL.mean\", \n  learners_outcome = \"SL.glm\"\n)\n\nprint(treat)"},{"options":{"message":"true","fig-cap":"","context":"interactive","out-width":"700px","editor-quick-suggestions":"false","results":"markup","label":"unnamed-chunk-6","comment":"","dpi":72,"autorun":"false","read-only":"false","fig-height":5,"warning":"true","editor-font-scale":1,"fig-width":7,"out-height":"","editor-max-height":"","output":"true","classes":""},"id":6,"code":"hist(treat$density_ratios[, 1], \n     main = \"Histogram of density ratios\", \n     xlab = \"Density ratio\")"},{"options":{"message":"true","fig-cap":"","context":"interactive","out-width":"700px","editor-quick-suggestions":"false","results":"markup","label":"unnamed-chunk-7","comment":"","dpi":72,"autorun":"false","read-only":"false","fig-height":5,"warning":"true","editor-font-scale":1,"fig-width":7,"out-height":"","editor-max-height":"","output":"true","classes":""},"id":7,"code":"d0 <- # Write your shift function here!\ndont_treat <- # Type your code here!"},{"options":{"message":"true","fig-cap":"","context":"interactive","out-width":"700px","editor-quick-suggestions":"false","results":"markup","label":"unnamed-chunk-8","comment":"","dpi":72,"autorun":"false","read-only":"false","fig-height":5,"warning":"true","editor-font-scale":1,"fig-width":7,"out-height":"","editor-max-height":"","output":"true","classes":""},"id":8,"code":"lmtp_contrast(treat, ref = dont_treat)"},{"options":{"message":"true","fig-cap":"","context":"interactive","out-width":"700px","editor-quick-suggestions":"false","results":"markup","label":"unnamed-chunk-9","comment":"","dpi":72,"autorun":"false","read-only":"false","fig-height":5,"warning":"true","editor-font-scale":1,"fig-width":7,"out-height":"","editor-max-height":"","output":"true","classes":""},"id":9,"code":"lmtp_contrast(treat, ref = dont_treat, type = \"rr\")\nlmtp_contrast(treat, ref = dont_treat, type = \"or\")"}];
 
 </script>
 <script type="module">
@@ -1358,7 +1358,8 @@ window.Quarto = {
   <ul>
   <li><a href="#motivating-data" id="toc-motivating-data" class="nav-link active" data-scroll-target="#motivating-data">Motivating data</a></li>
   <li><a href="#population-mean-outcomes" id="toc-population-mean-outcomes" class="nav-link" data-scroll-target="#population-mean-outcomes">Population mean outcomes</a></li>
-  <li><a href="#problem-1" id="toc-problem-1" class="nav-link" data-scroll-target="#problem-1">Problem 1</a></li>
+  <li><a href="#lmtp-objects" id="toc-lmtp-objects" class="nav-link" data-scroll-target="#lmtp-objects"><code>lmtp</code> objects</a></li>
+  <li><a href="#learning-assessment" id="toc-learning-assessment" class="nav-link" data-scroll-target="#learning-assessment">Learning assessment</a></li>
   <li><a href="#average-treatment-effect" id="toc-average-treatment-effect" class="nav-link" data-scroll-target="#average-treatment-effect">Average treatment effect</a></li>
   </ul>
 </nav>
@@ -1631,28 +1632,32 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <section id="motivating-data" class="level3">
 <h3 class="anchored" data-anchor-id="motivating-data">Motivating data</h3>
-<p>For our first example, we’ll use a synthetic dataset of <span class="math inline">\(n = 500\)</span> patients from a hypothetical clinical trial for a treatment to decrease intubation and death among patients hospitalized with COVID-19. The data is based on a database of over 1,500 patients hospitalised at Weill Cornell Medicine New York Presbyterian Hospital prior to 15 May 2020 with COVID-19 confirmed through PCR. To replicate a two-arm randomized clinical trial (RCT), we’ve simulated a hypothetical treatment variable (<code>A</code>) that is randomly assigned for each observation with probability 0.5.</p>
-<p>The outcome of interest (<code>event</code>) is intubation or death by 14-days post-hospitalization; treatment is associated with increased survival. Baseline covariates include: age, sex, BMI, smoking status, whether the patient required supplemental oxygen within 3 hours of presenting to the emergency department, number of comorbidities, number of relevant symptoms, presence of bilateral infiltrates on chest X-ray, dyspnea, and hypertension. For more information on how these data were generated see <span class="citation" data-cites="williams2022optimising">Williams, Rosenblum, and Dı́az (<a href="#ref-williams2022optimising" role="doc-biblioref">2022</a>)</span>.</p>
+<p>For our first example, we’ll use a synthetic dataset of <span class="math inline">\(n = 1000\)</span> patients from a hypothetical clinical trial for a treatment to decrease intubation and death among patients hospitalized with COVID-19. The data is based on a database of over 1,500 patients hospitalised at Weill Cornell Medicine New York Presbyterian Hospital prior to 15 May 2020 with COVID-19 confirmed through PCR.</p>
+<ul>
+<li><p>To replicate a two-arm randomized clinical trial (RCT), we’ve simulated a hypothetical treatment variable (<code>A</code>) that is randomly assigned for each observation with probability 0.5.</p></li>
+<li><p>The outcome of interest (<code>event</code>) is intubation or death by 14-days post-hospitalization; treatment is associated with increased survival.</p></li>
+<li><p>Baseline covariates include: age, sex, BMI, smoking status, whether the patient required supplemental oxygen within 3 hours of presenting to the emergency department, number of comorbidities, number of relevant symptoms, presence of bilateral infiltrates on chest X-ray, dyspnea, and hypertension.</p></li>
+</ul>
 <div class="cell">
 <div class="cell-output-display">
 <div>
-<div id="igicvedaxl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#igicvedaxl table {
+<div id="bpzgoclkms" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#bpzgoclkms table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#igicvedaxl thead, #igicvedaxl tbody, #igicvedaxl tfoot, #igicvedaxl tr, #igicvedaxl td, #igicvedaxl th {
+#bpzgoclkms thead, #bpzgoclkms tbody, #bpzgoclkms tfoot, #bpzgoclkms tr, #bpzgoclkms td, #bpzgoclkms th {
   border-style: none;
 }
 
-#igicvedaxl p {
+#bpzgoclkms p {
   margin: 0;
   padding: 0;
 }
 
-#igicvedaxl .gt_table {
+#bpzgoclkms .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1678,12 +1683,12 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-left-color: #D3D3D3;
 }
 
-#igicvedaxl .gt_caption {
+#bpzgoclkms .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#igicvedaxl .gt_title {
+#bpzgoclkms .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1695,7 +1700,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-width: 0;
 }
 
-#igicvedaxl .gt_subtitle {
+#bpzgoclkms .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1707,7 +1712,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-width: 0;
 }
 
-#igicvedaxl .gt_heading {
+#bpzgoclkms .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1719,13 +1724,13 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#igicvedaxl .gt_bottom_border {
+#bpzgoclkms .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#igicvedaxl .gt_col_headings {
+#bpzgoclkms .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1740,7 +1745,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#igicvedaxl .gt_col_heading {
+#bpzgoclkms .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1760,7 +1765,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#igicvedaxl .gt_column_spanner_outer {
+#bpzgoclkms .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1772,15 +1777,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 4px;
 }
 
-#igicvedaxl .gt_column_spanner_outer:first-child {
+#bpzgoclkms .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#igicvedaxl .gt_column_spanner_outer:last-child {
+#bpzgoclkms .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#igicvedaxl .gt_column_spanner {
+#bpzgoclkms .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1792,11 +1797,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   width: 100%;
 }
 
-#igicvedaxl .gt_spanner_row {
+#bpzgoclkms .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#igicvedaxl .gt_group_heading {
+#bpzgoclkms .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1822,7 +1827,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   text-align: left;
 }
 
-#igicvedaxl .gt_empty_group_heading {
+#bpzgoclkms .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1837,15 +1842,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: middle;
 }
 
-#igicvedaxl .gt_from_md > :first-child {
+#bpzgoclkms .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#igicvedaxl .gt_from_md > :last-child {
+#bpzgoclkms .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#igicvedaxl .gt_row {
+#bpzgoclkms .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1864,7 +1869,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#igicvedaxl .gt_stub {
+#bpzgoclkms .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1877,7 +1882,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#igicvedaxl .gt_stub_row_group {
+#bpzgoclkms .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1891,15 +1896,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: top;
 }
 
-#igicvedaxl .gt_row_group_first td {
+#bpzgoclkms .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#igicvedaxl .gt_row_group_first th {
+#bpzgoclkms .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#igicvedaxl .gt_summary_row {
+#bpzgoclkms .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1909,16 +1914,16 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#igicvedaxl .gt_first_summary_row {
+#bpzgoclkms .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#igicvedaxl .gt_first_summary_row.thick {
+#bpzgoclkms .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#igicvedaxl .gt_last_summary_row {
+#bpzgoclkms .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1928,7 +1933,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#igicvedaxl .gt_grand_summary_row {
+#bpzgoclkms .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1938,7 +1943,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#igicvedaxl .gt_first_grand_summary_row {
+#bpzgoclkms .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1948,7 +1953,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-color: #D3D3D3;
 }
 
-#igicvedaxl .gt_last_grand_summary_row_top {
+#bpzgoclkms .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1958,11 +1963,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#igicvedaxl .gt_striped {
+#bpzgoclkms .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#igicvedaxl .gt_table_body {
+#bpzgoclkms .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1971,7 +1976,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#igicvedaxl .gt_footnotes {
+#bpzgoclkms .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1985,7 +1990,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#igicvedaxl .gt_footnote {
+#bpzgoclkms .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1994,7 +1999,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#igicvedaxl .gt_sourcenotes {
+#bpzgoclkms .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2008,7 +2013,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#igicvedaxl .gt_sourcenote {
+#bpzgoclkms .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2016,63 +2021,63 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#igicvedaxl .gt_left {
+#bpzgoclkms .gt_left {
   text-align: left;
 }
 
-#igicvedaxl .gt_center {
+#bpzgoclkms .gt_center {
   text-align: center;
 }
 
-#igicvedaxl .gt_right {
+#bpzgoclkms .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#igicvedaxl .gt_font_normal {
+#bpzgoclkms .gt_font_normal {
   font-weight: normal;
 }
 
-#igicvedaxl .gt_font_bold {
+#bpzgoclkms .gt_font_bold {
   font-weight: bold;
 }
 
-#igicvedaxl .gt_font_italic {
+#bpzgoclkms .gt_font_italic {
   font-style: italic;
 }
 
-#igicvedaxl .gt_super {
+#bpzgoclkms .gt_super {
   font-size: 65%;
 }
 
-#igicvedaxl .gt_footnote_marks {
+#bpzgoclkms .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#igicvedaxl .gt_asterisk {
+#bpzgoclkms .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#igicvedaxl .gt_indent_1 {
+#bpzgoclkms .gt_indent_1 {
   text-indent: 5px;
 }
 
-#igicvedaxl .gt_indent_2 {
+#bpzgoclkms .gt_indent_2 {
   text-indent: 10px;
 }
 
-#igicvedaxl .gt_indent_3 {
+#bpzgoclkms .gt_indent_3 {
   text-indent: 15px;
 }
 
-#igicvedaxl .gt_indent_4 {
+#bpzgoclkms .gt_indent_4 {
   text-indent: 20px;
 }
 
-#igicvedaxl .gt_indent_5 {
+#bpzgoclkms .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2093,8 +2098,8 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_left" headers="label">event</td>
-<td class="gt_row gt_center" headers="stat_1">153 (31%)</td>
-<td class="gt_row gt_center" headers="stat_2">142 (28%)</td>
+<td class="gt_row gt_center" headers="stat_1">149 (30%)</td>
+<td class="gt_row gt_center" headers="stat_2">140 (28%)</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="label">age</td>
@@ -2244,20 +2249,41 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 &amp;= \textcolor{blue}{\E(Y^{A=1})} - \textcolor{red}{\E(Y^{A=0})}
 \end{align}
 \]</span></p>
-<p>Notice that the ATE is composed of two parameters: (1) the proportion of patients who receive intubation or die in a hypothetical world where all patients receive treatment, and (2) the proportion of patients who receive intubation or die in a hypothetical world where no patients receive treatment. We refer to these parameters as <em>population mean outcomes.</em> Let’s rewrite these parameters as functions of interventions using the framework we previously discussed. Let <span class="math inline">\(\dd_1(a, h) = 1\)</span> and <span class="math inline">\(\dd_0(a, h) = 0\)</span>. Then,</p>
+<p>Notice that the ATE is composed of two parameters:</p>
+<ol type="1">
+<li><p>the proportion of patients who receive intubation or die in a hypothetical world where all patients receive treatment (<span class="math inline">\(\textcolor{blue}{\E(Y^{A=1})}\)</span>), and</p></li>
+<li><p>the proportion of patients who receive intubation or die in a hypothetical world where no patients receive treatment (<span class="math inline">\(\textcolor{red}{\E(Y^{A=0})}\)</span>).</p></li>
+</ol>
+<p>We refer to these parameters as <em>population mean outcomes.</em> Let’s rewrite the target parameter as a function of interventions using the framework we previously discussed. Let <span class="math inline">\(\dd_1(a, h) = 1\)</span> and <span class="math inline">\(\dd_0(a, h) = 0\)</span>. Then,</p>
 <p><span class="math display">\[
 \theta = \textcolor{blue}{\E(Y^{\dd_1})} - \textcolor{red}{\E(Y^{\dd_0})}.
 \]</span></p>
 <p>Remember, we refer to these interventions as static because they return the same value regardless of their input.</p>
 <section id="writing-shift-functions" class="level4">
 <h4 class="anchored" data-anchor-id="writing-shift-functions">Writing shift functions</h4>
-<p>So, how do we translate the functions <span class="math inline">\(\dd_1\)</span> and <span class="math inline">\(\dd_0\)</span> into R code to be used with <code>lmtp</code>? Policies can be specified using one of two arguments in <code>lmtp</code> estimators: <code>shift</code> or <code>shifted</code>. If using <code>shift</code>, we supply a two-argument function of the form</p>
+<p>So, how do we translate the functions <span class="math inline">\(\dd_1\)</span> and <span class="math inline">\(\dd_0\)</span> into R code to be used with <code>lmtp</code>?</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Policies can be specified using one of two arguments in <code>lmtp</code> estimators: <code>shift</code> or <code>shifted</code>.</p>
+</div>
+</div>
+</div>
+<p>If using <code>shift</code>, we supply a two-argument function of the form</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="cf">function</span>(data, trt) {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Insert code here</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>where the first argument should correspond to a dataset containing all the variables in <span class="math inline">\(O\)</span> and the second argument should expect a string corresponding to the variable(s) <span class="math inline">\(A_t\)</span> in <span class="math inline">\(O\)</span>. This function should return a size <span class="math inline">\(n\)</span> vector with the same class as <span class="math inline">\(A_t\)</span> modified according to <span class="math inline">\(d_t\)</span>. For <span class="math inline">\(\dd_1\)</span> this function would be:<br>
+<ul>
+<li><p>The first argument should correspond to a dataset containing all the variables in <span class="math inline">\(O\)</span>.</p></li>
+<li><p>The second argument should expect a string corresponding to the variable(s) <span class="math inline">\(A_t\)</span> in <span class="math inline">\(O\)</span>.</p></li>
+<li><p>This function should return a size <span class="math inline">\(n\)</span> vector with the same class as <span class="math inline">\(A_t\)</span> modified according to <span class="math inline">\(d_t\)</span>.</p></li>
+</ul>
+<p>For <span class="math inline">\(\dd_1\)</span> this function would be:<br>
 </p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
@@ -2306,14 +2332,15 @@ Question
 </div>
 </div>
 </section>
-<section id="lmtp-objects" class="level4">
-<h4 class="anchored" data-anchor-id="lmtp-objects"><code>lmtp</code> objects</h4>
+</section>
+<section id="lmtp-objects" class="level3">
+<h3 class="anchored" data-anchor-id="lmtp-objects"><code>lmtp</code> objects</h3>
 <p>A call to an <code>lmtp</code> estimator returns a list of class <code>lmtp</code>.</p>
 <table class="table">
 <caption>Values returned in an <code>lmtp</code> object.</caption>
 <colgroup>
-<col style="width: 11%">
-<col style="width: 88%">
+<col style="width: 27%">
+<col style="width: 72%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -2376,22 +2403,55 @@ Question
 <div id="qwebr-insertion-location-6"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
-</section>
-<section id="problem-1" class="level3">
-<h3 class="anchored" data-anchor-id="problem-1">Problem 1</h3>
+<section id="learning-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="learning-assessment">Learning assessment</h3>
 <div class="callout callout-style-default callout-warning no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Practice
+Problem 1
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Write a function to estimate the population mean outcome if no patients received treatment. Assign the result to an object named <code>dont_treat</code>.</p>
 <div id="qwebr-insertion-location-7"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<details>
+<summary style="color: black; font-weight: bold;">
+<p>Solution</p>
+</summary>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>d0 <span class="ot">&lt;-</span> <span class="cf">function</span>(data, trt) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">nrow</span>(data))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>dont_treat <span class="ot">&lt;-</span> <span class="fu">lmtp_tmle</span>(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> covid, </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">trt =</span> <span class="st">"A"</span>, </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="st">"event"</span>, </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">baseline =</span> W, </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome_type =</span> <span class="st">"binomial"</span>, </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">shift =</span> d0, </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">folds =</span> <span class="dv">1</span>, </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">learners_trt =</span> <span class="st">"SL.mean"</span>, </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">learners_outcome =</span> <span class="st">"SL.glm"</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dont_treat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</details>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><code>lmtp</code> already implements <code>d1</code> and <code>d0</code> as <code>static_binary_on()</code> and <code>static_binary_off()</code>!</p>
+</div>
 </div>
 </div>
 </section>

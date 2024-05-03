@@ -194,3 +194,5 @@ a_t &\text{ if } l'_t = 1 \text{ and } \epsilon_t < 0.85 \\
 \end{cases}
 $$
 :::
+
+### Choosing a policy

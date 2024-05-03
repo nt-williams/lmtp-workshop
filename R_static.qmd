@@ -11,7 +11,7 @@ webr:
     - https://imbs-hl.r-universe.dev
 bibliography: references.bib
 nocite: |
-  @goyal2020clinical
+  @goyal2020clinical, @williams2022optimising
 tbl-cap-location: top
 ---
 
@@ -25,9 +25,13 @@ covid <- read.csv("williams_synthetic.csv")
 
 ### Motivating data
 
-For our first example, we'll use a synthetic dataset of $n = 1000$ patients from a hypothetical clinical trial for a treatment to decrease intubation and death among patients hospitalized with COVID-19. The data is based on a database of over 1,500 patients hospitalised at Weill Cornell Medicine New York Presbyterian Hospital prior to 15 May 2020 with COVID-19 confirmed through PCR. To replicate a two-arm randomized clinical trial (RCT), we've simulated a hypothetical treatment variable (`A`) that is randomly assigned for each observation with probability 0.5.
+For our first example, we'll use a synthetic dataset of $n = 1000$ patients from a hypothetical clinical trial for a treatment to decrease intubation and death among patients hospitalized with COVID-19. The data is based on a database of over 1,500 patients hospitalised at Weill Cornell Medicine New York Presbyterian Hospital prior to 15 May 2020 with COVID-19 confirmed through PCR.
 
-The outcome of interest (`event`) is intubation or death by 14-days post-hospitalization; treatment is associated with increased survival. Baseline covariates include: age, sex, BMI, smoking status, whether the patient required supplemental oxygen within 3 hours of presenting to the emergency department, number of comorbidities, number of relevant symptoms, presence of bilateral infiltrates on chest X-ray, dyspnea, and hypertension. For more information on how these data were generated see @williams2022optimising.
+-   To replicate a two-arm randomized clinical trial (RCT), we've simulated a hypothetical treatment variable (`A`) that is randomly assigned for each observation with probability 0.5.
+
+-   The outcome of interest (`event`) is intubation or death by 14-days post-hospitalization; treatment is associated with increased survival.
+
+-   Baseline covariates include: age, sex, BMI, smoking status, whether the patient required supplemental oxygen within 3 hours of presenting to the emergency department, number of comorbidities, number of relevant symptoms, presence of bilateral infiltrates on chest X-ray, dyspnea, and hypertension.
 
 ```{r echo=FALSE}
 covid <- read.csv("data/williams_synthetic.csv")
@@ -46,7 +50,13 @@ $$
 \end{align}
 $$
 
-Notice that the ATE is composed of two parameters: (1) the proportion of patients who receive intubation or die in a hypothetical world where all patients receive treatment, and (2) the proportion of patients who receive intubation or die in a hypothetical world where no patients receive treatment. We refer to these parameters as *population mean outcomes.* Let's rewrite these parameters as functions of interventions using the framework we previously discussed. Let $\dd_1(a, h) = 1$ and $\dd_0(a, h) = 0$. Then,
+Notice that the ATE is composed of two parameters:
+
+1.  the proportion of patients who receive intubation or die in a hypothetical world where all patients receive treatment ($\textcolor{blue}{\E(Y^{A=1})}$), and
+
+2.  the proportion of patients who receive intubation or die in a hypothetical world where no patients receive treatment ($\textcolor{red}{\E(Y^{A=0})}$).
+
+We refer to these parameters as *population mean outcomes.* Let's rewrite the target parameter as a function of interventions using the framework we previously discussed. Let $\dd_1(a, h) = 1$ and $\dd_0(a, h) = 0$. Then,
 
 $$
 \theta = \textcolor{blue}{\E(Y^{\dd_1})} - \textcolor{red}{\E(Y^{\dd_0})}.
@@ -56,7 +66,13 @@ Remember, we refer to these interventions as static because they return the same
 
 #### Writing shift functions
 
-So, how do we translate the functions $\dd_1$ and $\dd_0$ into R code to be used with `lmtp`? Policies can be specified using one of two arguments in `lmtp` estimators: `shift` or `shifted`. If using `shift`, we supply a two-argument function of the form
+So, how do we translate the functions $\dd_1$ and $\dd_0$ into R code to be used with `lmtp`?
+
+::: {.callout-tip appearance="simple"}
+Policies can be specified using one of two arguments in `lmtp` estimators: `shift` or `shifted`.
+:::
+
+If using `shift`, we supply a two-argument function of the form
 
 ```{r eval=FALSE}
 d <- function(data, trt) {
@@ -64,7 +80,13 @@ d <- function(data, trt) {
 }
 ```
 
-where the first argument should correspond to a dataset containing all the variables in $O$ and the second argument should expect a string corresponding to the variable(s) $A_t$ in $O$. This function should return a size $n$ vector with the same class as $A_t$ modified according to $d_t$. For $\dd_1$ this function would be:\
+-   The first argument should correspond to a dataset containing all the variables in $O$.
+
+-   The second argument should expect a string corresponding to the variable(s) $A_t$ in $O$.
+
+-   This function should return a size $n$ vector with the same class as $A_t$ modified according to $d_t$.
+
+For $\dd_1$ this function would be:\
 
 ```{webr-r}
 #| context: interactive
@@ -157,12 +179,12 @@ How can we interpret this result?
 ```
 :::
 
-#### `lmtp` objects
+### `lmtp` objects
 
 A call to an `lmtp` estimator returns a list of class `lmtp`.
 
 | Value          | Description                                                                                                                  |
-|----------------|------------------------------------------------------------------------------------------------------------------------------|
+|--------------------|----------------------------------------------------|
 | estimator      | The estimator used.                                                                                                          |
 | theta          | The estimated population LMTP effect.                                                                                        |
 | standard_error | The estimated standard error of the LMTP effect.                                                                             |
@@ -186,16 +208,51 @@ hist(treat$density_ratios[, 1],
      xlab = "Density ratio")
 ```
 
-### Problem 1
+### Learning assessment
 
 ::: {.callout-warning icon="false"}
-## Practice
+## Problem 1
 
 Write a function to estimate the population mean outcome if no patients received treatment. Assign the result to an object named `dont_treat`.
 
 ```{webr-r}
+d0 <- # Write your shift function here!
 dont_treat <- # Type your code here!
 ```
+
+<details>
+
+<summary style="color: black; font-weight: bold;">
+
+Solution
+
+</summary>
+
+```{r eval=FALSE}
+d0 <- function(data, trt) {
+  rep(0, nrow(data))
+}
+
+dont_treat <- lmtp_tmle(
+  data = covid, 
+  trt = "A", 
+  outcome = "event", 
+  baseline = W, 
+  outcome_type = "binomial", 
+  shift = d0, 
+  folds = 1, 
+  learners_trt = "SL.mean", 
+  learners_outcome = "SL.glm"
+)
+
+print(dont_treat)
+```
+
+</details>
+:::
+
+::: {.callout-tip appearance="simple"}
+`lmtp` already implements `d1` and `d0` as `static_binary_on()` and `static_binary_off()`!
 :::
 
 ### Average treatment effect

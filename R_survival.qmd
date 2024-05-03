@@ -4,29 +4,98 @@ engine: knitr
 filters:
   - webr
 webr:
-  packages: ['lmtp', 'superlearner', 'progressr']
+  packages: ['lmtp', 'superlearner', 'dplyr', 'tidyr', 'purrr', 'ggplot2']
   autoload-packages: true
+  repos: 
+    - https://nt-williams.r-universe.dev
 bibliography: references.bib
+no-cite:
 ---
 
 {{< include macros.qmd >}}
 
 ```{webr-r}
 #| context: setup
-download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/hoffman_toy.csv",
-              "hoffman_toy.csv")
+# Load hoffman toy data
+download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/hoffman_toy.csv", "hoffman_toy.csv")
 intubation <- read.csv("hoffman_toy.csv")
+# Load williams toy data
+download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/williams_synthetic.csv", "williams_synthetic.csv")
+covid <- read.csv("williams_synthetic.csv")
 ```
 
 ### Data structure
 
-Similar to when the outcome is binary, survival outcomes should be coded using zero's and one's where one indicates the occurrence of an event and zero otherwise. In addition, similar to how we encode censoring variables, we consider the outcome to be degenerate. Meaning that once an observation experiences an outcome, all future outcome variables should also be coded with a one.
+-   Similar to when the outcome is binary, survival outcomes should be coded using zero's and one's where one indicates the occurrence of an event and zero otherwise.
 
-![Adapted from Hoffman et al., 2022.](images/data_survival.png){fig-align="center" width="85%"}
+-   Similar to how we encode censoring variables, we consider the outcome to be degenerate. Meaning that once an observation experiences an outcome, all future outcome variables should also be coded with a one.
 
-![Adapted from Hoffman et al., 2022.](images/data_complex.png){fig-align="center"}
+![Structure of data with survival outcome and point-treatment. Adapted from Hoffman et al., 2022.](images/data_survival.png){fig-align="center" width="85%"}
 
-### Example: Delaying invasive mechanical ventilation
+![Structure of data with survival outcome and time-varying treatment. Adapted from Hoffman et al., 2022.](images/data_complex.png){fig-align="center"}
+
+### Example: Point-treatment
+
+```{webr-r}
+library(dplyr)
+library(tidyr)
+
+covid <- pivot_wider(
+  covid, 
+  values_from = "event", 
+  names_from = "days", 
+  names_prefix = "day_", 
+  names_sort = TRUE
+)
+
+covid <- 
+  event_locf(covid, paste0("day_", 1:15)) |> 
+  mutate(across(starts_with("day_"), ~ replace_na(.x, 0))) |> 
+  as.data.frame()
+
+head(covid)
+```
+
+```{webr-r}
+W <- c("age", "sex", "bmi", "smoke", "o2", 
+       "num_comorbid", "num_symptoms", "bilat", "dyspnea", "hyper")
+
+tau <- 15
+results <- vector("list", length = tau)
+for (t in 1:tau) {
+  results[[t]] <- lmtp_sdr(
+    covid,
+    trt = "A",
+    outcome = paste0("day_", 1:t),
+    baseline = W,
+    shift = static_binary_on, 
+    outcome_type = ifelse(t == 1, "binomial", "survival"),
+    folds = 1, 
+    control = lmtp_control(.learners_outcome_folds = 2, 
+                           .learners_trt_folds = 2)
+  )
+}
+```
+
+```{webr-r}
+library(purrr)
+library(ggplot2)
+
+map_dfr(results, tidy, .id = "t") |> 
+  mutate(estimate = ifelse(t == 1, 1 - estimate, estimate), 
+         t = as.numeric(t)) |> 
+  ggplot(aes(x = t, y = estimate)) + 
+  geom_step() + 
+  labs(x = "Days", y = "Survival probability") + 
+  scale_y_continuous(limits = c(0, 1), 
+                     n.breaks = 10, 
+                     expand = c(0, 0)) + 
+  scale_x_continuous(limits = c(1, 15), 
+                     n.breaks = 15, 
+                     expand = c(0.01, 0))
+```
+
+### Example: Time-varying treatment: Delaying invasive mechanical ventilation
 
 @hoffman2023introducing demonstrated the use of modified treatment policies for survival outcomes to assess the effect of delaying invasive mechanical ventilation (IMV) on mortality among patients hospitalized with COVID-19 in New York City during the first COVID-19 wave. A synthetic version of the data used for that analysis has been loaded into R as `intubation`.
 
@@ -87,12 +156,22 @@ d <- function(data, trt) {
 ## Question
 
 Why might defining an intervention in terms of an MTP instead of a static intervention be more useful to answer a question about the effect of IMV on death among patients hospitalized with COVID-19?
+
+<details>
+
+<summary style="color: black; font-weight: bold;">
+
+Answer
+
+</summary>
+
+<p></p>
+
+</details>
 :::
 
 ```{webr-r}
 #| results: 'asis'
-library(lmtp)
-
 lmtp_sdr(
   intubation,
   trt = A,
