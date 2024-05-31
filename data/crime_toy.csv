@@ -1,4 +1,4 @@
-"","owner_vacancy_rate","renter_vacancy_rate","poverty_line_prop","unemployed_prop","no_car_prop","never_married_prop","separated_prop","maternal_age","edu_level","insurance_status","race_ethnicity","parity","gestational_diabetes","preeclampsia","crime_level","preterm_birth","community_code"
+"","owner_vacancy_rate","renter_vacancy_rate","poverty_line_prop","unemployed_prop","no_car_prop","never_married_prop","separated_prop","maternal_age","edu_level","insurance_status","race_ethnicity","parity","gestational_diabetes","preeclampsia","neighborhood_violence","preterm_birth","community_code"
 "1",0.682762602686174,2.60188663772701,9.05350162762258,33.387280955938,36.1446276864562,44.50293803024,5.11716817723265,24,"1","2","7","3",0,0,69.2006696142772,1,16
 "2",6.8965743246004,8.77953356189333,41.6134871401075,11.5112719209689,40.4722022952396,34.2284748207541,5.14822941801937,37,"2","2","4","3",0,0,87.8466417563485,0,21
 "3",1.4995677014025,16.6475273531862,17.3339668863719,6.15680467471581,9.59082838691452,53.8000950227339,2.16544398949352,24,"1","2","1","1",0,0,21.1321810972451,0,89
