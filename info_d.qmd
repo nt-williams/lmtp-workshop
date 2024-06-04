@@ -14,19 +14,27 @@ nocite: |
 
 {{< include macros.qmd >}}
 
-How many times have you started to read a paper for a new method in the causal inference literature that contains the sentence "assume the treatment or exposure is binary..."?
+Have you ever begun reading a paper in the causal inference literature and encountered the phrase "assume the treatment or exposure is a binary..."? While assuming a variable is binary can simplify a problem, nature rarely reflects this paradigm.
 
-![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbG9rZ202bDdqNWxoa3Y4MW5vcHhyd3JydnFyNGx0Z2p4cTV1dWlxcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/p8Uw3hzdAE2dO/giphy.gif){fig-align="center"}
+Instead, lets:
 
-Well not anymore 🥳. Assume $A$ is a binary, categorical, or continuous variable! Let $\dd(a, w, \epsilon)$ be a function that maps $A$, $W$, and potentially a randomizer $\epsilon$ to a new value of $A$. We will often refer to the function $\dd$ as a *shift* function.
+-   Assume $A$ is a binary, categorical, or continuous variable!
 
-Our focus in this workshop is estimating the causal effect of an intervention $d$ on the outcome $Y$, through the causal parameter
+-   In addition, let $\dd_t(a_t, h_t, \epsilon_t)$ be a function that maps $A_t$, $H_t$, and potentially a randomizer $\epsilon_t$ to a new value of $A_t$. **We will often refer to the function** $\dd_t$ **as a *shift* function or a *general hypothetical intervention*.**
+
+Our focus in this workshop is estimating the causal effect of an intervention, characterized by $\dd$ on the outcome $Y$, through the causal parameter
 
 $$
 \theta = \E[Y(\bar A^{\dd})]\text{,}
 $$
 
-where $Y(\bar A^\dd)$ is the counterfactual outcome in a world, where possibly contrary to fact, each entry of $\bar{A}$ was modified according to the function $\dd$. When $Y$ is continuous, $\theta$ is the mean population value of $Y$ under intervention $\dd$; when $Y$ is dichotomous, $\theta$ is the population proportion of event $Y$ under intervention $\dd$. Similarly, when $Y$ is the indicator of an event by end of the study, $\theta$ is defined as the cumulative incidence of $Y$ under intervention $\dd$.
+where $Y(\bar A^\dd)$ is the counterfactual outcome in a world, where possibly contrary to fact, each entry of $\bar{A}$ was modified according to the function $\dd$.
+
+-   When $Y$ is continuous, $\theta$ is the mean population value of $Y$ under intervention $\dd$.
+
+-   When $Y$ is dichotomous, $\theta$ is the population proportion of event $Y$ under intervention $\dd$.
+
+-   When $Y$ is the indicator of an event by end of the study, $\theta$ is defined as the cumulative incidence of $Y$ under intervention $\dd$.
 
 ### Identification of the causal parameter
 
@@ -71,6 +79,10 @@ Let $A$ denote a binary vector, such as receiving a medication, and define $\dd_
 ## Static intervention
 
 An intervention is static if the function $\dd_t$ always returns the same value regardless of the input.
+:::
+
+::: {.callout-tip icon="false"}
+## Example
 :::
 
 ### Dynamic Treatment Regime
