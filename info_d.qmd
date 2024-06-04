@@ -101,17 +101,15 @@ $$
 $$
 :::
 
-### Treatment Initiation with Grace Period
-
 ### Modified Treatment Policies
 
-Explain why MTPs are useful:
+While much attention is given to static and dynamic interventions, their use is often accompanied by a few key problems.
 
--   help with positiivty violations
+1.  **Defining causal effects in terms of hypothetical interventions where treatment is applied to all units may be inconceivable.** For example, we may be interested to know if reducing surgery time reduces surgical complications. However, it's inconceivable to reduce all surgeries to a set maximum time-length.
 
--   help characterize realistic interventions
+2.  **Defining causal effects in terms of hypothetical interventions where treatment is applied to all units may induce positivity violations.**
 
--   assess interventions you could never run an RCT for
+A solution to these problems is to instead define causal effects using **modified treatment policies (MTP).**
 
 ::: {.callout-important icon="false"}
 ## Modified treatment policy
@@ -121,7 +119,7 @@ An intervention characterized by a hypothetical world where the *natural* value 
 
 #### Additive and multiplicative shift MTP
 
-Let $A_t$ denote a numeric vector. Assume that $A_t$ has support in the data such that $P(A_t \leq u(h_t) \mid H_t = h_t) = 1$. For a value of $\delta$, define $$
+Let $A_t$ denote a numeric vector. Assume that $A_t$ has support in the data such that $P(A_t \leq u(h_t) \mid H_t = h_t) = 1$. For an analyst-defined value of $\delta$, define $$
 \dd(a_t, h_t, \epsilon) = \begin{cases}
 a_t + \delta &\text{ if } a_t + \delta \leq u(h_t) \\
 a_t &\text{ otherwise.}
@@ -132,6 +130,15 @@ Under this intervention, the natural value of exposure at time $t$ is increased 
 
 ::: {.callout-tip icon="false"}
 ## Example
+
+@diaz2023nonparametric estimated the effect of increasing P/F ratio (a measure of hypoxemia) by 50 units on survival among those patients with acute respiratory failure (a P/F ratio \< 300).
+
+$$
+\dd_t(a_t, h_t, \epsilon) = \begin{cases}
+a_t + 50 &\text{ if } a_t \leq 300 \\
+a_t &\text{ otherwise}
+\end{cases}
+$$
 :::
 
 We can similarly define a multiplicative *shift MTP* as
@@ -153,7 +160,16 @@ $$
 $$
 :::
 
-#### Threshold MTP
+### Random Interventions
+
+Let $A$ denote a binary vector, $\epsilon \sim U(0, 1)$, and $\delta$ be an analyst-defined value between 0 and 1. We may then define randomized interventions. For example, imagine we are interested in a hypothetical world where half of all smokers quit smoking. This intervention would be defined as
+
+$$
+\\d_t(a_t, \epsilon_t) = \begin{cases}
+0 &\text{ if } \epsilon_t < 0.5 \text{ and } a_t = 1 \\
+a_t &\text{ otherwise}
+\end{cases}.
+$$
 
 ### Incremental Propensity Score Interventions
 
@@ -161,8 +177,8 @@ Let $A$ denote a binary vector, $\epsilon \sim U(0, 1)$, and $\delta$ be an anal
 $$
 \dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
 a_t &\text{ if } \epsilon_t < \delta \\
-0 &\text{ otherwise.}
-\end{cases}
+0 &\text{ otherwise}
+\end{cases}.
 $$In this case, we have $\g^\dd(a_t \mid H_t) = a_t \delta \g_t(1 \mid H_t) + (1 - a_t) (1 - \delta \g_t(1\mid H_t))$, which leads to a risk ratio of $\g_t^\dd(1 \mid H_t)/\g_t(1\mid H_t) = \delta$ for comparing the propensity score post- vs pre-intervention. Conversely, if we were interested in an intervention that increased the likelihood of receiving treatment, define\
 $$
 \dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
@@ -191,5 +207,3 @@ a_t &\text{ if } l'_t = 1 \text{ and } \epsilon_t < 0.85 \\
 \end{cases}
 $$
 :::
-
-### Choosing a policy
