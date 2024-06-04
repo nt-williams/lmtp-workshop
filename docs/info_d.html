@@ -333,18 +333,22 @@ window.Quarto = {
 \newcommand{\E}{\mathsf{E}}
 \]</span></p>
 </div>
-<p>How many times have you started to read a paper for a new method in the causal inference literature that contains the sentence “assume the treatment or exposure is binary…”?</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbG9rZ202bDdqNWxoa3Y4MW5vcHhyd3JydnFyNGx0Z2p4cTV1dWlxcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/p8Uw3hzdAE2dO/giphy.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
-<p>Well not anymore 🥳. Assume <span class="math inline">\(A\)</span> is a binary, categorical, or continuous variable! Let <span class="math inline">\(\dd(a, w, \epsilon)\)</span> be a function that maps <span class="math inline">\(A\)</span>, <span class="math inline">\(W\)</span>, and potentially a randomizer <span class="math inline">\(\epsilon\)</span> to a new value of <span class="math inline">\(A\)</span>. We will often refer to the function <span class="math inline">\(\dd\)</span> as a <em>shift</em> function.</p>
-<p>Our focus in this workshop is estimating the causal effect of an intervention <span class="math inline">\(d\)</span> on the outcome <span class="math inline">\(Y\)</span>, through the causal parameter</p>
+<p>Have you ever begun reading a paper in the causal inference literature and encountered the phrase “assume the treatment or exposure is a binary…”? While assuming a variable is binary can simplify a problem, nature rarely reflects this paradigm.</p>
+<p>Instead, lets:</p>
+<ul>
+<li><p>Assume <span class="math inline">\(A\)</span> is a binary, categorical, or continuous variable!</p></li>
+<li><p>In addition, let <span class="math inline">\(\dd_t(a_t, h_t, \epsilon_t)\)</span> be a function that maps <span class="math inline">\(A_t\)</span>, <span class="math inline">\(H_t\)</span>, and potentially a randomizer <span class="math inline">\(\epsilon_t\)</span> to a new value of <span class="math inline">\(A_t\)</span>. <strong>We will often refer to the function</strong> <span class="math inline">\(\dd_t\)</span> <strong>as a <em>shift</em> function or a <em>general hypothetical intervention</em>.</strong></p></li>
+</ul>
+<p>Our focus in this workshop is estimating the causal effect of an intervention, characterized by <span class="math inline">\(\dd\)</span> on the outcome <span class="math inline">\(Y\)</span>, through the causal parameter</p>
 <p><span class="math display">\[
 \theta = \E[Y(\bar A^{\dd})]\text{,}
 \]</span></p>
-<p>where <span class="math inline">\(Y(\bar A^\dd)\)</span> is the counterfactual outcome in a world, where possibly contrary to fact, each entry of <span class="math inline">\(\bar{A}\)</span> was modified according to the function <span class="math inline">\(\dd\)</span>. When <span class="math inline">\(Y\)</span> is continuous, <span class="math inline">\(\theta\)</span> is the mean population value of <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>; when <span class="math inline">\(Y\)</span> is dichotomous, <span class="math inline">\(\theta\)</span> is the population proportion of event <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>. Similarly, when <span class="math inline">\(Y\)</span> is the indicator of an event by end of the study, <span class="math inline">\(\theta\)</span> is defined as the cumulative incidence of <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>.</p>
+<p>where <span class="math inline">\(Y(\bar A^\dd)\)</span> is the counterfactual outcome in a world, where possibly contrary to fact, each entry of <span class="math inline">\(\bar{A}\)</span> was modified according to the function <span class="math inline">\(\dd\)</span>.</p>
+<ul>
+<li><p>When <span class="math inline">\(Y\)</span> is continuous, <span class="math inline">\(\theta\)</span> is the mean population value of <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>.</p></li>
+<li><p>When <span class="math inline">\(Y\)</span> is dichotomous, <span class="math inline">\(\theta\)</span> is the population proportion of event <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>.</p></li>
+<li><p>When <span class="math inline">\(Y\)</span> is the indicator of an event by end of the study, <span class="math inline">\(\theta\)</span> is defined as the cumulative incidence of <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>.</p></li>
+</ul>
 <section id="identification-of-the-causal-parameter" class="level3">
 <h3 class="anchored" data-anchor-id="identification-of-the-causal-parameter">Identification of the causal parameter</h3>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -404,6 +408,19 @@ Static intervention
 </div>
 <div class="callout-body-container callout-body">
 <p>An intervention is static if the function <span class="math inline">\(\dd_t\)</span> always returns the same value regardless of the input.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
 </div>
 </div>
 </section>
