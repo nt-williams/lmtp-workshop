@@ -284,10 +284,9 @@ window.Quarto = {
   <li><a href="#identification-of-the-causal-parameter" id="toc-identification-of-the-causal-parameter" class="nav-link active" data-scroll-target="#identification-of-the-causal-parameter">Identification of the causal parameter</a></li>
   <li><a href="#static-interventions" id="toc-static-interventions" class="nav-link" data-scroll-target="#static-interventions">Static Interventions</a></li>
   <li><a href="#dynamic-treatment-regime" id="toc-dynamic-treatment-regime" class="nav-link" data-scroll-target="#dynamic-treatment-regime">Dynamic Treatment Regime</a></li>
-  <li><a href="#treatment-initiation-with-grace-period" id="toc-treatment-initiation-with-grace-period" class="nav-link" data-scroll-target="#treatment-initiation-with-grace-period">Treatment Initiation with Grace Period</a></li>
   <li><a href="#modified-treatment-policies" id="toc-modified-treatment-policies" class="nav-link" data-scroll-target="#modified-treatment-policies">Modified Treatment Policies</a></li>
+  <li><a href="#random-interventions" id="toc-random-interventions" class="nav-link" data-scroll-target="#random-interventions">Random Interventions</a></li>
   <li><a href="#incremental-propensity-score-interventions" id="toc-incremental-propensity-score-interventions" class="nav-link" data-scroll-target="#incremental-propensity-score-interventions">Incremental Propensity Score Interventions</a></li>
-  <li><a href="#choosing-a-policy" id="toc-choosing-a-policy" class="nav-link" data-scroll-target="#choosing-a-policy">Choosing a policy</a></li>
   </ul>
 </nav>
     </div>
@@ -308,7 +307,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">June 3, 2024</p>
+      <p class="date-modified">June 4, 2024</p>
     </div>
   </div>
     
@@ -449,17 +448,14 @@ Example
 </div>
 </div>
 </section>
-<section id="treatment-initiation-with-grace-period" class="level3">
-<h3 class="anchored" data-anchor-id="treatment-initiation-with-grace-period">Treatment Initiation with Grace Period</h3>
-</section>
 <section id="modified-treatment-policies" class="level3">
 <h3 class="anchored" data-anchor-id="modified-treatment-policies">Modified Treatment Policies</h3>
-<p>Explain why MTPs are useful:</p>
-<ul>
-<li><p>help with positiivty violations</p></li>
-<li><p>help characterize realistic interventions</p></li>
-<li><p>assess interventions you could never run an RCT for</p></li>
-</ul>
+<p>While much attention is given to static and dynamic interventions, their use is often accompanied by a few key problems.</p>
+<ol type="1">
+<li><p><strong>Defining causal effects in terms of hypothetical interventions where treatment is applied to all units may be inconceivable.</strong> For example, we may be interested to know if reducing surgery time reduces surgical complications. However, it’s inconceivable to reduce all surgeries to a set maximum time-length.</p></li>
+<li><p><strong>Defining causal effects in terms of hypothetical interventions where treatment is applied to all units may induce positivity violations.</strong></p></li>
+</ol>
+<p>A solution to these problems is to instead define causal effects using <strong>modified treatment policies (MTP).</strong></p>
 <div class="callout callout-style-default callout-important no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -475,7 +471,7 @@ Modified treatment policy
 </div>
 <section id="additive-and-multiplicative-shift-mtp" class="level4">
 <h4 class="anchored" data-anchor-id="additive-and-multiplicative-shift-mtp">Additive and multiplicative shift MTP</h4>
-<p>Let <span class="math inline">\(A_t\)</span> denote a numeric vector. Assume that <span class="math inline">\(A_t\)</span> has support in the data such that <span class="math inline">\(P(A_t \leq u(h_t) \mid H_t = h_t) = 1\)</span>. For a value of <span class="math inline">\(\delta\)</span>, define <span class="math display">\[
+<p>Let <span class="math inline">\(A_t\)</span> denote a numeric vector. Assume that <span class="math inline">\(A_t\)</span> has support in the data such that <span class="math inline">\(P(A_t \leq u(h_t) \mid H_t = h_t) = 1\)</span>. For an analyst-defined value of <span class="math inline">\(\delta\)</span>, define <span class="math display">\[
 \dd(a_t, h_t, \epsilon) = \begin{cases}
 a_t + \delta &amp;\text{ if } a_t + \delta \leq u(h_t) \\
 a_t &amp;\text{ otherwise.}
@@ -492,7 +488,13 @@ Example
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<p><span class="citation" data-cites="diaz2023nonparametric">Dı́az et al. (<a href="#ref-diaz2023nonparametric" role="doc-biblioref">2023</a>)</span> estimated the effect of increasing P/F ratio (a measure of hypoxemia) by 50 units on survival among those patients with acute respiratory failure (a P/F ratio &lt; 300).</p>
+<p><span class="math display">\[
+\dd_t(a_t, h_t, \epsilon) = \begin{cases}
+a_t + 50 &amp;\text{ if } a_t \leq 300 \\
+a_t &amp;\text{ otherwise}
+\end{cases}
+\]</span></p>
 </div>
 </div>
 <p>We can similarly define a multiplicative <em>shift MTP</em> as</p>
@@ -519,9 +521,16 @@ Example
 </div>
 </div>
 </section>
-<section id="threshold-mtp" class="level4">
-<h4 class="anchored" data-anchor-id="threshold-mtp">Threshold MTP</h4>
 </section>
+<section id="random-interventions" class="level3">
+<h3 class="anchored" data-anchor-id="random-interventions">Random Interventions</h3>
+<p>Let <span class="math inline">\(A\)</span> denote a binary vector, <span class="math inline">\(\epsilon \sim U(0, 1)\)</span>, and <span class="math inline">\(\delta\)</span> be an analyst-defined value between 0 and 1. We may then define randomized interventions. For example, imagine we are interested in a hypothetical world where half of all smokers quit smoking. This intervention would be defined as</p>
+<p><span class="math display">\[
+\\d_t(a_t, \epsilon_t) = \begin{cases}
+0 &amp;\text{ if } \epsilon_t &lt; 0.5 \text{ and } a_t = 1 \\
+a_t &amp;\text{ otherwise}
+\end{cases}.
+\]</span></p>
 </section>
 <section id="incremental-propensity-score-interventions" class="level3">
 <h3 class="anchored" data-anchor-id="incremental-propensity-score-interventions">Incremental Propensity Score Interventions</h3>
@@ -529,8 +538,8 @@ Example
 <span class="math display">\[
 \dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
 a_t &amp;\text{ if } \epsilon_t &lt; \delta \\
-0 &amp;\text{ otherwise.}
-\end{cases}
+0 &amp;\text{ otherwise}
+\end{cases}.
 \]</span>In this case, we have <span class="math inline">\(\g^\dd(a_t \mid H_t) = a_t \delta \g_t(1 \mid H_t) + (1 - a_t) (1 - \delta \g_t(1\mid H_t))\)</span>, which leads to a risk ratio of <span class="math inline">\(\g_t^\dd(1 \mid H_t)/\g_t(1\mid H_t) = \delta\)</span> for comparing the propensity score post- vs pre-intervention. Conversely, if we were interested in an intervention that increased the likelihood of receiving treatment, define<br>
 <span class="math display">\[
 \dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
@@ -571,15 +580,12 @@ a_t &amp;\text{ if } l'_t = 1 \text{ and } \epsilon_t &lt; 0.85 \\
 \]</span></p>
 </div>
 </div>
-</section>
-<section id="choosing-a-policy" class="level3">
-
 
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Choosing a policy</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-diaz2024causal" class="csl-entry" role="listitem">
 Dı́az, Iván, Katherine L Hoffman, and Nima S Hejazi. 2024. <span>“Causal Survival Analysis Under Competing Risks Using Longitudinal Modified Treatment Policies.”</span> <em>Lifetime Data Analysis</em> 30 (1): 213–36.
 </div>
