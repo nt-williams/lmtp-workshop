@@ -7,14 +7,14 @@ date-modified: last-modified
 > SER 2024 - Austin, Texas
 
 ::: tldr
-Modified treatment policies (MTPs) are a class of interventions that generalize static and dynamic interventions for categorical, continuous, and multivariate exposures. MTPs are hypothetical interventions where the post-intervention is defined as a modification of the natural value of the exposure that can depend on the unit’s history. This short course will introduce the **lmtp** R package for estimating the causal effects of MTPs in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice.
+In this workshop, we generalize static and dynamic interventions for categorical, continuous, and multivariate exposures. Specifically, we consider a generalization called modified treatment policies (MTPs), which are hypothetical interventions where the post-intervention is defined as a modification of the natural value of the exposure that can depend on the unit’s history. This short course will introduce the **lmtp** R package for estimating the causal effects of these general estimand in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice.
 :::
 
 ### Learning objectives
 
 By the end of the workshop, participants will be able to:
 
-1.  Define MTPs intuitively and using notation, and understand how they generalize static and dynamic interventions.
+1.  Generalize static and dynamic interventions intuitively and using notation.
 
 2.  Estimate the effect of a static or dynamic intervention with \textbf{lmtp} for point-treatment and longitudinal studies.
 
