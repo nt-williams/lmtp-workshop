@@ -235,20 +235,20 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_dynamic.qmd" class="sidebar-item-text sidebar-link">
+  <a href="./R_dtr.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Dynamic Treatment Regimes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_continuous.qmd" class="sidebar-item-text sidebar-link">
+  <a href="./R_mtp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Modified Treatment Policies</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_stochastic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Stochastic Interventions</span></a>
+  <a href="./R_ipsi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">IPSI</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -286,7 +286,7 @@ window.Quarto = {
   <li><a href="#dynamic-treatment-regime" id="toc-dynamic-treatment-regime" class="nav-link" data-scroll-target="#dynamic-treatment-regime">Dynamic Treatment Regime</a></li>
   <li><a href="#treatment-initiation-with-grace-period" id="toc-treatment-initiation-with-grace-period" class="nav-link" data-scroll-target="#treatment-initiation-with-grace-period">Treatment Initiation with Grace Period</a></li>
   <li><a href="#modified-treatment-policies" id="toc-modified-treatment-policies" class="nav-link" data-scroll-target="#modified-treatment-policies">Modified Treatment Policies</a></li>
-  <li><a href="#stochastic-interventions" id="toc-stochastic-interventions" class="nav-link" data-scroll-target="#stochastic-interventions">Stochastic Interventions</a></li>
+  <li><a href="#incremental-propensity-score-interventions" id="toc-incremental-propensity-score-interventions" class="nav-link" data-scroll-target="#incremental-propensity-score-interventions">Incremental Propensity Score Interventions</a></li>
   <li><a href="#choosing-a-policy" id="toc-choosing-a-policy" class="nav-link" data-scroll-target="#choosing-a-policy">Choosing a policy</a></li>
   </ul>
 </nav>
@@ -305,6 +305,12 @@ window.Quarto = {
 
     
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">June 3, 2024</p>
+    </div>
+  </div>
     
   </div>
   
@@ -517,13 +523,8 @@ Example
 <h4 class="anchored" data-anchor-id="threshold-mtp">Threshold MTP</h4>
 </section>
 </section>
-<section id="stochastic-interventions" class="level3">
-<h3 class="anchored" data-anchor-id="stochastic-interventions">Stochastic Interventions</h3>
-<section id="randomized-interventions" class="level4">
-<h4 class="anchored" data-anchor-id="randomized-interventions">Randomized Interventions</h4>
-</section>
-<section id="incremental-propensity-score-interventions" class="level4">
-<h4 class="anchored" data-anchor-id="incremental-propensity-score-interventions">Incremental Propensity Score Interventions</h4>
+<section id="incremental-propensity-score-interventions" class="level3">
+<h3 class="anchored" data-anchor-id="incremental-propensity-score-interventions">Incremental Propensity Score Interventions</h3>
 <p>Let <span class="math inline">\(A\)</span> denote a binary vector, <span class="math inline">\(\epsilon \sim U(0, 1)\)</span>, and <span class="math inline">\(\delta\)</span> be an analyst-defined risk ratio limited to be between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>. If we were interested in an intervention that decreased the likelihood of receiving treatment, define<br>
 <span class="math display">\[
 \dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
@@ -570,7 +571,6 @@ a_t &amp;\text{ if } l'_t = 1 \text{ and } \epsilon_t &lt; 0.85 \\
 \]</span></p>
 </div>
 </div>
-</section>
 </section>
 <section id="choosing-a-policy" class="level3">
 

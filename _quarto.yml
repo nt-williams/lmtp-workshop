@@ -1,5 +1,6 @@
 project:
   type: website
+  output-dir: docs
   
 filters:
   - webr
@@ -30,12 +31,12 @@ website:
             text: The lmtp package
           - href: R_static.qmd
             text: Static effects and the ATE
-          - href: R_dynamic.qmd
+          - href: R_dtr.qmd
             text: Dynamic Treatment Regimes
-          - href: R_continuous.qmd
+          - href: R_mtp.qmd
             text: Modified Treatment Policies
-          - href: R_stochastic.qmd
-            text: Stochastic Interventions
+          - href: R_ipsi.qmd
+            text: IPSI
           - href: R_survival.qmd
             text: Survival Analysis
           - href: R_multivariate.qmd

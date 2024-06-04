@@ -1,10 +1,11 @@
 ---
 title: "Survival Analysis"
 engine: knitr
+date-modified: last-modified
 filters:
   - webr
 webr:
-  packages: ['lmtp', 'superlearner', 'dplyr', 'tidyr', 'purrr', 'ggplot2']
+  packages: ['lmtp', 'superlearner', 'dplyr', 'tidyr', 'purrr', 'ggplot2', 'DT']
   autoload-packages: true
   repos: 
     - https://nt-williams.r-universe.dev
@@ -24,17 +25,23 @@ download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/
 covid <- read.csv("williams_synthetic.csv")
 ```
 
-### Data structure
+### Data considerations
 
 -   Similar to when the outcome is binary, survival outcomes should be coded using zero's and one's where one indicates the occurrence of an event and zero otherwise.
 
--   Similar to how we encode censoring variables, we consider the outcome to be degenerate. Meaning that once an observation experiences an outcome, all future outcome variables should also be coded with a one.
+-   Similar to how we encode censoring variables, we consider the outcome to be degenerate. Meaning that once an observation experiences an outcome, all future outcome variables should also be coded with a one ("last-observation-carried-forward").
+
+### Point-treatment survival problems
+
+Up to this point, we've been ignoring that the `covid` dataset should be treated as a point-treatment survival problem. Let's re-estimate the effect of the randomized treatment with a survival framework.
+
+-   We need to transform the data from long to wide format
+
+-   and impute the outcome using last-observation-carried-forward.
+
+Our modified dataset should look like this:
 
 ![Structure of data with survival outcome and point-treatment. Adapted from Hoffman et al., 2022.](images/data_survival.png){fig-align="center" width="85%"}
-
-![Structure of data with survival outcome and time-varying treatment. Adapted from Hoffman et al., 2022.](images/data_complex.png){fig-align="center"}
-
-### Example: Point-treatment
 
 ```{webr-r}
 library(dplyr)
@@ -55,6 +62,14 @@ covid <-
 
 head(covid)
 ```
+
+::: {.callout-tip appearance="simple"}
+Use the function `event_locf()` to make sure the outcome variables are correctly recorded.
+:::
+
+-   Instead of just estimating the effect of treatment on the outcome at the last time point, we can estimate the effect of a treatment on an outcome at all follow-up intervals.
+
+Let's estimate the effect of the treatment on intubation at each day. To do so, we need to loop over each day and estimate the effect of treatment on the outcome at that day. We'll store the results in a list called `results`.
 
 ```{webr-r}
 W <- c("age", "sex", "bmi", "smoke", "o2", 
@@ -77,14 +92,27 @@ for (t in 1:tau) {
 }
 ```
 
+::: {.callout-tip appearance="simple"}
+For days $t > 1$, set `outcome_type = "survival"`.
+:::
+
+We can now visualize our results using a survival plot.
+
+::: {.callout-tip appearance="simple"}
+The main result of an `lmtp` object can be extracted using the `tidy()` function from the `broom` package.
+:::
+
 ```{webr-r}
 library(purrr)
 library(ggplot2)
 
-map_dfr(results, tidy, .id = "t") |> 
+results_tidy <- map_dfr(results, tidy, .id = "t") |> 
   mutate(estimate = ifelse(t == 1, 1 - estimate, estimate), 
-         t = as.numeric(t)) |> 
-  ggplot(aes(x = t, y = estimate)) + 
+         t = as.numeric(t))
+
+print(results_tidy)
+
+ggplot(results_tidy, aes(x = t, y = estimate)) + 
   geom_step() + 
   labs(x = "Days", y = "Survival probability") + 
   scale_y_continuous(limits = c(0, 1), 
@@ -95,26 +123,28 @@ map_dfr(results, tidy, .id = "t") |>
                      expand = c(0.01, 0))
 ```
 
-### Example: Time-varying treatment: Delaying invasive mechanical ventilation
+### Time-varying treatment
 
 @hoffman2023introducing demonstrated the use of modified treatment policies for survival outcomes to assess the effect of delaying invasive mechanical ventilation (IMV) on mortality among patients hospitalized with COVID-19 in New York City during the first COVID-19 wave. A synthetic version of the data used for that analysis has been loaded into R as `intubation`.
 
-```{webr-r}
-head(intubation)
+![Structure of data with survival outcome and time-varying treatment. Adapted from Hoffman et al., 2022.](images/data_complex.png){fig-align="center"}
+
+-   The data consists of $n = 2000$ observations hospitalized with COVID-19 and who were followed for $\tau = 14$ days.
+
+-   There are 10 baseline confounders and 4 time-varying confounders.
+
+-   The outcome of interest is an indicator for death on day $t$.
+
+-   Observations are subject to loss-to-follow-up due to either hospital discharge or transfer.
+
+```{r echo=FALSE}
+intubation <- read.csv("data/hoffman_toy.csv")
+DT::datatable(intubation)
 ```
 
-The data consists of $n = 2000$ observations hospitalized with COVID-19 and who were followed for $\tau = 14$ days. There are 10 baseline confounders and 4 time-varying confounders. The outcome of interest is an indicator for death on day $t$. Observations are subject to loss-to-follow-up due to either hospital discharge or transfer.
+------------------------------------------------------------------------
 
-```{webr-r}
-day <- 14
-W <- names(intubation)[1:10]
-Y <- paste0("Y_", sprintf("%02d", 1:day))
-Obs <- paste0("C_", sprintf("%02d", 0:(day - 1)))
-L <- grep("^L_", names(intubation), value = TRUE)
-L <- lapply(0:(day - 1), \(x) L[grepl(sprintf("%02d", x), L)])
-```
-
-Formally, let's consider the following intervention
+Let's consider the following intervention
 
 $$
 \dd_t(a_t, h_t) = \begin{cases}
@@ -124,10 +154,6 @@ a_t \text{ otherwise},
 $$
 
 where $A_t$ is a 3-level categorical variable: 0, no supplemental oxygen; 1, non-IMV supplemental oxygen support; 2, IMV.
-
-```{webr-r}
-A <- paste0("I_", sprintf("%02d", 0:(day - 1)))
-```
 
 In words, this function corresponds to an intervention where patients who were naturally observed as receiving IMV on day $t$ instead had IMV delayed by a day to day $t+1$. Let's translate this policy to an R function that we can use with `lmtp`.
 
@@ -152,26 +178,18 @@ d <- function(data, trt) {
 }
 ```
 
-::: {.callout-warning icon="false"}
-## Question
-
-Why might defining an intervention in terms of an MTP instead of a static intervention be more useful to answer a question about the effect of IMV on death among patients hospitalized with COVID-19?
-
-<details>
-
-<summary style="color: black; font-weight: bold;">
-
-Answer
-
-</summary>
-
-<p></p>
-
-</details>
-:::
+We can now estimate the effect of delaying intubation by 1-day on 14-day mortality.
 
 ```{webr-r}
 #| results: 'asis'
+day <- 14
+A <- paste0("I_", sprintf("%02d", 0:(day - 1)))
+W <- names(intubation)[1:10]
+Y <- paste0("Y_", sprintf("%02d", 1:day))
+Obs <- paste0("C_", sprintf("%02d", 0:(day - 1)))
+L <- grep("^L_", names(intubation), value = TRUE)
+L <- lapply(0:(day - 1), \(x) L[grepl(sprintf("%02d", x), L)])
+
 lmtp_sdr(
   intubation,
   trt = A,
@@ -186,3 +204,25 @@ lmtp_sdr(
   k = 2
 )
 ```
+
+### Problem 1
+
+::: {.callout-warning icon="false"}
+## Practice
+
+Why might defining an intervention in terms of an MTP instead of a static intervention be more useful to answer a question about the effect of IMV on death among patients hospitalized with COVID-19?
+
+<details>
+
+<summary style="color: black; font-weight: bold;">
+
+Answer
+
+</summary>
+
+<p>
+
+</p>
+
+</details>
+:::

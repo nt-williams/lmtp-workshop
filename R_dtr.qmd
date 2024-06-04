@@ -1,0 +1,170 @@
+---
+title: "Dynamic treatment regimes"
+engine: knitr
+date-modified: last-modified
+filters:
+  - webr
+webr:
+  packages: ['lmtp', 'superlearner', 'DynTxRegime', 'gam']
+  autoload-packages: true
+  repos: 
+    - https://nt-williams.r-universe.dev
+    - https://imbs-hl.r-universe.dev
+bibliography: references.bib
+nocite: |
+  @diaz2023nonparametric, @hoffman2023introducing, @dtrPackage
+---
+
+{{< include macros.qmd >}}
+
+```{webr-r}
+#| context: setup
+data(bmiData)
+bmi <- bmiData
+# bmi$A1 <- ifelse(bmi$A1 == "MR", 1, 0)
+# bmi$A2 <- ifelse(bmi$A2 == "MR", 1, 0)
+```
+
+Recall that interventions where the output of the function depends only on covariates are referred to as dynamic interventions or dynamic treatment regimes. Let's learn how to estimate the effects of dynamic treatment regimes using `lmtp`.
+
+### Simulated BMI Data
+
+A dataset named `bmi` has been loaded into R in the background.
+
+```{r echo=FALSE}
+data(bmiData, package = "DynTxRegime")
+DT::datatable(bmiData)
+```
+
+\
+
+-   The data, from the `DynTxRegime` package, are simulated to reflect a two-stage RCT ($A$ = {`A1`, `A2`}) that studied the effect of meal replacement (`MR`) shakes versus a calorie deficit (`CD`) diet on adolescent obesity.
+
+-   Baseline variables include gender, race, and parent BMI.
+
+-   Time-varying covariates include BMI collected at stage 1 (`baselineBMI`) and stage 2 (`month4BMI`). The primary outcome is BMI at 12 months (`month12BMI`).
+
+-   There is no censoring.
+
+```{r echo=FALSE}
+gtsummary::tbl_strata(bmiData, strata = A1, 
+                      .tbl_fun = \(x) gtsummary::tbl_summary(x, by = A2) |> 
+                        gtsummary::modify_header(
+                          gtsummary::all_stat_cols() ~ "**Stage 2, {level}**"), 
+                      .header = "**Stage 1, {strata}**")
+```
+
+### Problem 1
+
+Write a shift function that assigns meal replacement to all observations at time 1, but only meal replacement at time 2 to those observations whose 4-month BMI is greater than 30.
+
+$$
+\dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
+\text{Meal replacement} &\text{ if } t = 1 \\
+\text{Meal replacement} &\text{ if } t = 2 \text{ and } \text{4-month BMI} > 30 \\
+\text{Calorie deficit} &\text{ otherwise.}
+\end{cases}
+$$
+
+::: {.callout-warning icon="false"}
+## Practice
+
+```{webr-r}
+d_dtr <- # Write your shift function here!
+```
+
+<details>
+
+<summary style="color: black; font-weight: bold;">
+
+Solution
+
+</summary>
+
+```{r eval=FALSE}
+d_dtr <- function(data, trt) {
+  if (trt == "A1") return(rep("MR", nrow(data)))
+  
+  ifelse(data$month4BMI > 30, "MR", "CD")
+}
+```
+
+</details>
+:::
+
+Let's estimate the effect of the dynamic treatment regime on the 12-month BMI using `lmtp` with the SDR estimator.
+
+```{webr-r}
+fit_dtr <- lmtp_sdr(
+  data = bmi, 
+  trt = c("A1", "A2"), 
+  outcome = "month12BMI", 
+  baseline = c("gender", "race", "parentBMI"), 
+  time_vary = list("baselineBMI", "month4BMI"),
+  shift = d_dtr, 
+  outcome_type = "continuous",
+  folds = 1,
+  learners_trt = "SL.mean", 
+  learners_outcome = c("SL.mean", "SL.glm", "SL.gam")
+)
+```
+
+### Problem 2
+
+Suppose we are interested in comparing the dynamic treatment regime to a static treatment regime where all patients receive meal replacement at both time points. Using the SDR estimator, estimate the effect of this static intervention.
+
+::: {.callout-warning icon="false"}
+## Practice
+
+```{webr-r}
+fit_MR <- # Write your estimation code here!
+```
+
+<details>
+
+<summary style="color: black; font-weight: bold;">
+
+Solution
+
+</summary>
+
+```{r eval=FALSE}
+fit_MR <- lmtp_sdr(
+  data = bmi, 
+  trt = c("A1", "A2"), 
+  outcome = "month12BMI", 
+  baseline = c("gender", "race", "parentBMI"), 
+  time_vary = list("baselineBMI", "month4BMI"),
+  shift = \(data, trt) rep("MR", nrow(data)), 
+  outcome_type = "continuous",
+  folds = 1,
+  learners_trt = "SL.mean", 
+  learners_outcome = c("SL.mean", "SL.glm", "SL.gam")
+)
+```
+
+</details>
+:::
+
+Let's also estimate the effect of an intervention where all patients receive a calorie deficit diet at both time points.
+
+```{webr-r}
+fit_CD <- lmtp_sdr(
+  data = bmi, 
+  trt = c("A1", "A2"), 
+  outcome = "month12BMI", 
+  baseline = c("gender", "race", "parentBMI"), 
+  time_vary = list("baselineBMI", "month4BMI"),
+  shift = \(data, trt) rep("CD", nrow(data)), 
+  outcome_type = "continuous",
+  folds = 1,
+  learners_trt = "SL.mean", 
+  learners_outcome = c("SL.mean", "SL.glm", "SL.gam")
+)
+```
+
+Finally, let's compare the dynamic treatment regime and the always receive meal replacement intervention to the always receive a calorie deficit intervention.
+
+```{webr-r}
+lmtp_contrast(fit_dtr, fit_MR, ref = fit_CD)
+```

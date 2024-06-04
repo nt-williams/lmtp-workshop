@@ -1,0 +1,59 @@
+---
+title: "Concluding Thoughts"
+engine: knitr
+date-modified: last-modified
+---
+
+### Thank you!
+
+Thank you for attending this workshop! We hope you found the material informative and engaging. We encourage you to reach out to us with any questions or feedback.
+
+### Including in a manuscript
+
+If you decide to use `lmtp` in your research, here's a summary that can be included for explaining the methodology:
+
+> blah blah blah
+
+You can cite the package using the following BibTeX entries:
+
+```         
+@article{diaz2023nonparametric,
+  title={Nonparametric causal effects based on longitudinal modified treatment policies},
+  author={D{\'\i}az, Iv{\'a}n and Williams, Nicholas and Hoffman, Katherine L and Schenck, Edward J},
+  journal={Journal of the American Statistical Association},
+  volume={118},
+  number={542},
+  pages={846--857},
+  year={2023},
+  publisher={Taylor \& Francis}
+}
+```
+
+```         
+@article{williams2023lmtp,
+  title={lmtp: An {R} package for estimating the causal effects of modified treatment policies},
+  author={Williams, Nicholas and D{\'\i}az, Iv{\'a}n},
+  journal={Observational Studies},
+  volume={9},
+  number={2},
+  pages={103--122},
+  year={2023},
+  publisher={University of Pennsylvania Press}
+}
+```
+
+You can reference this workshop with:
+
+```         
+@inproceedings{lmtpSER,
+  author = {Williams, Nicholas and D{\'\i}az, Iv{\'a}n and Rudolph, Kara E},
+  title = {Beyond the Average Treatment Effect},
+  booktitle = {Society for Epidemiologic Research Conference},
+  year = {2024},
+  address = {Austin, TX},
+  month = {June},
+  organization = {Society for Epidemiologic Research},
+  note = {Additional Note},
+  url = {https://nt-williams.github.io/lmtp-workshop/}
+}
+```

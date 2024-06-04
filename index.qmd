@@ -1,5 +1,7 @@
 ---
 title: "Estimating the causal effects of binary, categorical, continuous, and multivariate exposures in R"
+engine: knitr
+date-modified: last-modified
 ---
 
 > SER 2024 - Austin, Texas

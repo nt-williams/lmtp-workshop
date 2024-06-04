@@ -4,12 +4,12 @@ title: "Causal Inference in Brief"
 
 {{< include macros.qmd >}}
 
-### A motivating example
+### The Causal Roadmap
 
-### Notation
+### Notation Summary
 
 | Symbol                                          | Definition                                                                             |
-|-------------------------------------------------|----------------------------------------------------------------------------------------|
+|--------------------------|----------------------------------------------|
 | $L_t$                                           | Time-varying covariates                                                                |
 | $A_t$                                           | A vector of intervention variables (i..e, treatment or exposure)                       |
 | $Y = L_t$                                       | An outcome variable                                                                    |

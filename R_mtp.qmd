@@ -1,0 +1,133 @@
+---
+title: "Modified treatment policies"
+engine: knitr
+date-modified: last-modified
+filters:
+  - webr
+webr:
+  packages: ['lmtp', 'superlearner', 'rpart', 'gam', 'rlang']
+  autoload-packages: true
+  repos: 
+    - https://nt-williams.r-universe.dev
+bibliography: references.bib
+nocite: |
+  @diaz2023nonparametric, @haneuse2013estimation
+---
+
+{{< include macros.qmd >}}
+
+```{webr-r}
+#| context: setup
+download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/crime_toy.csv", "crime.csv")
+crime <- read.csv("crime.csv")
+```
+
+As we already discussed, a modified treatment policy is an intervention characterized by a dependence on the natural, or observed, value of treatment. Examples include: 
+
+-   Decreasing surgeries that last more than 4 hours by 1 hour (additive MTP)
+
+-   Decreasing BMI by 2 units for individuals with BMI \> 30 (additive MTP)
+
+-   Decreasing AQI by 20% (multiplicative MTP).
+
+### Synthetic Neighborhood Crime Data
+
+```{r echo=FALSE}
+crime <- read.csv("data/crime_toy.csv")
+dplyr::select(crime, -community_code) |> 
+  gtsummary::tbl_summary()
+```
+
+### Problem 1
+
+Write a shift function (named `d_mtp`) for a modified treatment policy where the natural value of neighborhood violence is decreased by 50%. Using the `lmtp` package, estimate the population mean effect of this intervention on preterm birth. Make sure to use the `id` argument to account for community level clustering in the estimation of standard errors. To save computation time, don't use cross-fitting.
+
+::: {.callout-warning icon="false"}
+## Practice
+
+```{webr-r}
+A <- "neighborhood_violence"
+W <- names(crime)[1:12]
+Y <- "preterm_birth"
+id <- "community_code"
+
+learners <- c("SL.mean", 
+              "SL.glm", 
+              "SL.rpart", 
+              "SL.gam")
+
+d <- # Write your shift function here!
+
+fit_d <- # Write your estimation code here!
+```
+
+<details>
+
+<summary style="color: black; font-weight: bold;">
+
+Solution
+
+</summary>
+
+```{r eval=FALSE}
+d_mtp <- function(data, a) {
+  data[[a]]*0.5
+}
+
+fit_mtp <- lmtp_tmle(
+  data = crime, 
+  trt = A, 
+  outcome = Y, 
+  baseline = W,
+  id = id,
+  shift = d_mtp, 
+  mtp = TRUE,
+  folds = 1, 
+  learners_trt = learners, 
+  learners_outcome = learners
+)
+```
+
+</details>
+:::
+
+Did you get this error? 
+
+```{r eval=FALSE}
+Warning: Detected decimalish `trt` values and `mtp = FALSE`. Consider setting `mtp =
+TRUE` if getting errors.
+Loading required package: nnls
+Error: object 'fit' not found
+```
+
+::: {.callout-tip appearance="simple"}
+Make sure to set `mtp = TRUE` if you're intervention is a modified treatment policy!
+:::
+
+### Problem 2
+
+Let's compare the effect of the intervention on reducing neighborhood violence on preterm birth to the observed preterm birth rate. Use the `lmtp_contrast()` function.
+
+::: {.callout-warning icon="false"}
+## Practice
+
+```{webr-r}
+# Write your code here!
+```
+
+<details>
+
+<summary style="color: black; font-weight: bold;">
+
+Solution
+
+</summary>
+
+```{r eval=FALSE}
+lmtp_contrast(fit_mtp, ref = mean(crime$preterm_birth))
+```
+
+</details>
+:::
+
+With `lmtp` we found that under a hypothetical intervention that reduces neighborhood violence by 50%, preterm birth would decrease by approximately 4.4 percentange points. 

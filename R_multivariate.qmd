@@ -1,6 +1,7 @@
 ---
 title: "Multivariate exposures"
 engine: knitr
+date-modified: last-modified
 filters:
   - webr
 webr:
@@ -8,21 +9,12 @@ webr:
   autoload-packages: true
   repos: 
     - https://nt-williams.r-universe.dev
+bibliography: references.bib
+nocite: |
+  @diaz2023nonparametric, @taylor2016statistical
 ---
 
 {{< include macros.qmd >}}
-
-::: tldr
--   `lmtp` can estimate effects of simultaneous interventions on multiple variables
-
--   Practically, this is useful for assessing the effects of mixtures on environmental outcomes
-
--   When intervening on multiple variables, `trt` should be supplied a list of variable names instead of a vector.
-:::
-
-### NIEHS Simulation Data
-
-For our example of estimating the effects of simultaneous interventions on multiple variables, we will use simulated data from the 2015 NIEHS Mixtures Workshop. The data has already been loaded into R in the background as `mixtures`. You can view and download the raw data [here](https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/mixtures.csv).
 
 ```{webr-r}
 #| context: setup
@@ -30,7 +22,19 @@ download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/
 mixtures <- read.csv("mixtures.csv")
 ```
 
-The simulated data has $n = 500$ observations and is intended to replicate a prospective cohort study. The data is composed of 7 log-normally distributed and correlated exposures variables (`"X1", "X2", "X3", "X4", "X5", "X6", "X7"`), a single continuous outcome (`"Y"`), and one binary confounder (`"Z"`). There is no missing covariate data, no measurement error, and no censoring.
+-   `lmtp` can estimate effects of simultaneous interventions on multiple variables
+
+-   Practically, this is useful for assessing the effects of mixtures on environmental outcomes
+
+### NIEHS Simulation Data
+
+For our example of estimating the effects of simultaneous interventions on multiple variables, we will use simulated data from the 2015 NIEHS Mixtures Workshop. The data has already been loaded into R in the background as `mixtures`. You can view and download the raw data [here](https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/mixtures.csv).
+
+-   The simulated data has $n = 500$ observations and is intended to replicate a prospective cohort study.
+
+-   The data is composed of 7 log-normally distributed and correlated exposures variables (`"X1", "X2", "X3", "X4", "X5", "X6", "X7"`), a single continuous outcome (`"Y"`), and one binary confounder (`"Z"`).
+
+-   There is no missing covariate data, no measurement error, and no censoring.
 
 ```{r echo=FALSE}
 mixtures <- read.csv("data/mixtures.csv")
@@ -38,13 +42,21 @@ dplyr::select(mixtures, -obs) |>
   gtsummary::tbl_summary()
 ```
 
-Only exposure variables `X1`, `X2`, `X4`, `X5`, and `X7` have an effect on the outcome `Y`. However, the direction of the effects varies. Variables `X1`, `X2`, and `X7` are positively associated with the outcome; `X4` and `X5` are negatively associated with the outcome.
+-   Only exposure variables `X1`, `X2`, `X4`, `X5`, and `X7` have an effect on the outcome `Y`. However, the direction of the effects varies.
 
+-   `X1`, `X2`, and `X7` are positively associated with the outcome.
+
+-   `X4` and `X5` are negatively associated with the outcome.
+
+### Multivariate shift functions
+
+::: {.callout-tip appearance="minimal"}
 Only two things need to change when using `lmtp` estimators with multivariate treatments:
 
 1.  Instead of a vector, you should now pass a list to the `trt` argument
 
 2.  The shift function should return a named list of vectors instead of a single vector.
+:::
 
 Let's use `lmtp` to estimate the effect of a modified treatment policy which intervenes on all 7 exposure simultaneously on the outcome:
 
@@ -100,12 +112,12 @@ d <- function(data, a) {
 }
 ```
 
-### Learning assessment
-
-::: {.callout-warning icon="false"}
-## Problem 1
+### Problem 1
 
 Using TMLE, estimate the population mean outcome under the simultaneous intervention we just defined. Fit both the treatment mechanism and the outcome regression using this set of learners: `c("SL.mean", "SL.glm", "SL.gam", "SL.rpart", "SL.rpartPrune", "SL.step.interaction")`. Assign the result to `ans`. To save time, don't use crossfitting; `lmtp` has already been loaded into the R session.
+
+::: {.callout-warning icon="false"}
+## Practice
 
 ```{webr-r}
 set.seed(4363754)
@@ -149,10 +161,12 @@ print(ans)
 </details>
 :::
 
-::: {.callout-warning icon="false"}
-## Problem 2
+### Problem 2
 
-Compared to what was observed under the natural course of exposure, how did intervening upon the set of exposures effect the outcome? Estimate this effect using the `lmtp_contrast()` function.
+Compared to what was observed under the natural course of exposure, how did intervening upon the set of exposures effect the outcome? Estimate this effect using `lmtp_contrast()`.
+
+::: {.callout-warning icon="false"}
+## Practice
 
 ```{webr-r}
 # Type your code here!
@@ -173,7 +187,3 @@ lmtp_contrast(ans, ref = obs_y)
 
 </details>
 :::
-
-### References
-
-Taylor, Kyla W., et al. "Statistical approaches for assessing health effects of environmental chemical mixtures in epidemiology: lessons from an innovative workshop." *Environmental health perspectives* 124.12 (2016): A227-A229.

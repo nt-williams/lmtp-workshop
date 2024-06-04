@@ -1,6 +1,7 @@
 ---
 title: "Defining General, Hypothetical Interventions"
 engine: knitr
+date-modified: last-modified
 filters:
   - webr
 webr:
@@ -154,11 +155,7 @@ $$
 
 #### Threshold MTP
 
-### Stochastic Interventions
-
-#### Randomized Interventions
-
-#### Incremental Propensity Score Interventions
+### Incremental Propensity Score Interventions
 
 Let $A$ denote a binary vector, $\epsilon \sim U(0, 1)$, and $\delta$ be an analyst-defined risk ratio limited to be between $0$ and $1$. If we were interested in an intervention that decreased the likelihood of receiving treatment, define\
 $$

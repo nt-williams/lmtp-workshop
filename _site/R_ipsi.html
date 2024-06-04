@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Beyond the Average Treatment Effect - Multivariate exposures</title>
+<title>Beyond the Average Treatment Effect - Incremental Propensity Score Interventions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -303,10 +303,10 @@ body.reveal.quarto-dark div.qwebr-console-area {
 // Document level settings ----
 
 // Determine if we need to install R packages
-globalThis.qwebrInstallRPackagesList = ['lmtp', 'superlearner', 'rpart', 'gam'];
+globalThis.qwebrInstallRPackagesList = ['lmtp', 'superlearner'];
 
 // Specify possible locations to search for the repository
-globalThis.qwebrPackageRepoURLS = ['https://nt-williams.r-universe.dev', 'https://repo.r-wasm.org/'];
+globalThis.qwebrPackageRepoURLS = ['https://nt-williams.r-universe.dev', 'https://imbs-hl.r-universe.dev', 'https://repo.r-wasm.org/'];
 
 // Check to see if we have an empty array, if we do set to skip the installation.
 globalThis.qwebrSetupRPackages = !(qwebrInstallRPackagesList.indexOf("") !== -1);
@@ -325,7 +325,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"id":1,"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/mixtures.csv\", \"mixtures.csv\")\nmixtures <- read.csv(\"mixtures.csv\")","options":{"out-height":"","comment":"","fig-width":7,"fig-cap":"","output":"true","label":"unnamed-chunk-1","autorun":"true","dpi":72,"editor-quick-suggestions":"false","warning":"true","context":"setup","fig-height":5,"editor-max-height":"","message":"true","classes":"","results":"markup","out-width":"700px","editor-font-scale":1,"read-only":"false"}},{"id":2,"code":"A <- list(paste0(\"X\", 1:7))\n\nd <- function(data, a) {\n  d1 <- \\(x) ifelse(x - 0.2 > 0, x - 0.2, x)\n  d2 <- \\(x) ifelse(x - 0.4 > 0, x - 0.4, x)\n  d6 <- \\(x) ifelse(x - 0.2 > 0, x - 0.2, x)\n  d7 <- \\(x) ifelse(x - 0.3 > 0, x - 0.3, x)\n  \n  out <- list(\n    d1(data[[a[1]]]),\n    d2(data[[a[2]]]), \n    data[[a[3]]] + 0.4, \n    data[[a[4]]] + 0.1, \n    data[[a[5]]] + 0.5, \n    d6(data[[a[6]]]), \n    d7(data[[a[7]]])\n  )\n  \n  setNames(out, a)\n}","options":{"out-height":"","comment":"","fig-width":7,"fig-cap":"","output":"true","label":"unnamed-chunk-2","autorun":"true","dpi":72,"editor-quick-suggestions":"false","warning":"true","context":"interactive","fig-height":5,"editor-max-height":"","message":"true","classes":"","results":"markup","out-width":"700px","editor-font-scale":1,"read-only":"false"}},{"id":3,"code":"set.seed(4363754)\n\n# Type your code here!\nans <- ","options":{"out-height":"","comment":"","fig-width":7,"fig-cap":"","output":"true","label":"unnamed-chunk-3","autorun":"false","dpi":72,"editor-quick-suggestions":"false","warning":"true","context":"interactive","fig-height":5,"editor-max-height":"","message":"true","classes":"","results":"markup","out-width":"700px","editor-font-scale":1,"read-only":"false"}},{"id":4,"code":"# Type your code here!","options":{"out-height":"","comment":"","fig-width":7,"fig-cap":"","output":"true","label":"unnamed-chunk-4","autorun":"false","dpi":72,"editor-quick-suggestions":"false","warning":"true","context":"interactive","fig-height":5,"editor-max-height":"","message":"true","classes":"","results":"markup","out-width":"700px","editor-font-scale":1,"read-only":"false"}}];
+globalThis.qwebrCellDetails = [{"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/williams_synthetic.csv\", \"williams_synthetic.csv\")\ncovid <- read.csv(\"williams_synthetic.csv\")","id":1,"options":{"results":"markup","fig-height":5,"message":"true","label":"unnamed-chunk-1","editor-font-scale":1,"warning":"true","autorun":"true","read-only":"false","out-width":"700px","context":"setup","output":"true","comment":"","editor-quick-suggestions":"false","classes":"","editor-max-height":"","fig-width":7,"dpi":72,"fig-cap":"","out-height":""}},{"code":"delta <- 0.5\nd_ipsi_up <- function(data, trt) {\n  eps <- runif(nrow(data), 0, 1)\n  ifelse(eps < delta, data[[trt]], 1)\n}","id":2,"options":{"results":"markup","fig-height":5,"message":"true","label":"unnamed-chunk-2","editor-font-scale":1,"warning":"true","autorun":"false","read-only":"false","out-width":"700px","context":"interactive","output":"true","comment":"","editor-quick-suggestions":"false","classes":"","editor-max-height":"","fig-width":7,"dpi":72,"fig-cap":"","out-height":""}},{"code":"delta <- 0.5\nd_ipsi_down <- # Write your shift function here!","id":3,"options":{"results":"markup","fig-height":5,"message":"true","label":"unnamed-chunk-3","editor-font-scale":1,"warning":"true","autorun":"false","read-only":"false","out-width":"700px","context":"interactive","output":"true","comment":"","editor-quick-suggestions":"false","classes":"","editor-max-height":"","fig-width":7,"dpi":72,"fig-cap":"","out-height":""}},{"code":"W <- c(\"age\", \"sex\", \"bmi\", \"smoke\", \"o2\", \n       \"num_comorbid\", \"num_symptoms\", \n        \"bilat\", \"dyspnea\", \"hyper\")\n\nlmtp_tmle(\n  data = covid, \n  trt = \"A\", \n  outcome = \"event\", \n  baseline = W, \n  outcome_type = \"binomial\", \n  shift = ipsi(2), \n  folds = 1, \n  learners_trt = \"SL.mean\", \n  learners_outcome = \"SL.glm\"\n)","id":4,"options":{"results":"markup","fig-height":5,"message":"true","label":"unnamed-chunk-4","editor-font-scale":1,"warning":"true","autorun":"false","read-only":"false","out-width":"700px","context":"interactive","output":"true","comment":"","editor-quick-suggestions":"false","classes":"","editor-max-height":"","fig-width":7,"dpi":72,"fig-cap":"","out-height":""}}];
 
 </script>
 <script type="module">
@@ -1231,7 +1231,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_multivariate.html">Multivariate Exposures</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_ipsi.html">IPSI</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -1322,7 +1322,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_ipsi.html" class="sidebar-item-text sidebar-link">
+  <a href="./R_ipsi.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">IPSI</span></a>
   </div>
 </li>
@@ -1334,7 +1334,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_multivariate.html" class="sidebar-item-text sidebar-link active">
+  <a href="./R_multivariate.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Multivariate Exposures</span></a>
   </div>
 </li>
@@ -1356,10 +1356,7 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#niehs-simulation-data" id="toc-niehs-simulation-data" class="nav-link active" data-scroll-target="#niehs-simulation-data">NIEHS Simulation Data</a></li>
-  <li><a href="#multivariate-shift-functions" id="toc-multivariate-shift-functions" class="nav-link" data-scroll-target="#multivariate-shift-functions">Multivariate shift functions</a></li>
-  <li><a href="#problem-1" id="toc-problem-1" class="nav-link" data-scroll-target="#problem-1">Problem 1</a></li>
-  <li><a href="#problem-2" id="toc-problem-2" class="nav-link" data-scroll-target="#problem-2">Problem 2</a></li>
+  <li><a href="#problem-1" id="toc-problem-1" class="nav-link active" data-scroll-target="#problem-1">Problem 1</a></li>
   </ul>
 </nav>
     </div>
@@ -1593,9 +1590,9 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 }
 </script>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_multivariate.html">Multivariate Exposures</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_ipsi.html">IPSI</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Multivariate exposures</h1>
+<h1 class="title">Incremental Propensity Score Interventions</h1>
 </div>
 
 
@@ -1635,574 +1632,24 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </div>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<ul>
-<li><p><code>lmtp</code> can estimate effects of simultaneous interventions on multiple variables</p></li>
-<li><p>Practically, this is useful for assessing the effects of mixtures on environmental outcomes</p></li>
-</ul>
-<section id="niehs-simulation-data" class="level3">
-<h3 class="anchored" data-anchor-id="niehs-simulation-data">NIEHS Simulation Data</h3>
-<p>For our example of estimating the effects of simultaneous interventions on multiple variables, we will use simulated data from the 2015 NIEHS Mixtures Workshop. The data has already been loaded into R in the background as <code>mixtures</code>. You can view and download the raw data <a href="https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/mixtures.csv">here</a>.</p>
-<ul>
-<li><p>The simulated data has <span class="math inline">\(n = 500\)</span> observations and is intended to replicate a prospective cohort study.</p></li>
-<li><p>The data is composed of 7 log-normally distributed and correlated exposures variables (<code>"X1", "X2", "X3", "X4", "X5", "X6", "X7"</code>), a single continuous outcome (<code>"Y"</code>), and one binary confounder (<code>"Z"</code>).</p></li>
-<li><p>There is no missing covariate data, no measurement error, and no censoring.</p></li>
-</ul>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<div id="iorzuayrbg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#iorzuayrbg table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#iorzuayrbg thead, #iorzuayrbg tbody, #iorzuayrbg tfoot, #iorzuayrbg tr, #iorzuayrbg td, #iorzuayrbg th {
-  border-style: none;
-}
-
-#iorzuayrbg p {
-  margin: 0;
-  padding: 0;
-}
-
-#iorzuayrbg .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#iorzuayrbg .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#iorzuayrbg .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#iorzuayrbg .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#iorzuayrbg .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#iorzuayrbg .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iorzuayrbg .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#iorzuayrbg .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#iorzuayrbg .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#iorzuayrbg .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#iorzuayrbg .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#iorzuayrbg .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#iorzuayrbg .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#iorzuayrbg .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#iorzuayrbg .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#iorzuayrbg .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#iorzuayrbg .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#iorzuayrbg .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#iorzuayrbg .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iorzuayrbg .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#iorzuayrbg .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#iorzuayrbg .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#iorzuayrbg .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iorzuayrbg .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#iorzuayrbg .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#iorzuayrbg .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iorzuayrbg .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iorzuayrbg .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#iorzuayrbg .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iorzuayrbg .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#iorzuayrbg .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#iorzuayrbg .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#iorzuayrbg .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iorzuayrbg .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#iorzuayrbg .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#iorzuayrbg .gt_left {
-  text-align: left;
-}
-
-#iorzuayrbg .gt_center {
-  text-align: center;
-}
-
-#iorzuayrbg .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#iorzuayrbg .gt_font_normal {
-  font-weight: normal;
-}
-
-#iorzuayrbg .gt_font_bold {
-  font-weight: bold;
-}
-
-#iorzuayrbg .gt_font_italic {
-  font-style: italic;
-}
-
-#iorzuayrbg .gt_super {
-  font-size: 65%;
-}
-
-#iorzuayrbg .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#iorzuayrbg .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#iorzuayrbg .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#iorzuayrbg .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#iorzuayrbg .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#iorzuayrbg .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#iorzuayrbg .gt_indent_5 {
-  text-indent: 25px;
-}
-</style>
-
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<thead>
-<tr class="header gt_col_headings">
-<th id="<strong>Characteristic</strong>" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
-<th id="<strong>N = 500</strong><span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>N = 500</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
-</tr>
-</thead>
-<tbody class="gt_table_body">
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">Y</td>
-<td class="gt_row gt_center" headers="stat_0">21 (14, 32)</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">X1</td>
-<td class="gt_row gt_center" headers="stat_0">0.86 (0.41, 1.49)</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">X2</td>
-<td class="gt_row gt_center" headers="stat_0">0.93 (0.66, 1.29)</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">X3</td>
-<td class="gt_row gt_center" headers="stat_0">0.85 (0.44, 1.56)</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">X4</td>
-<td class="gt_row gt_center" headers="stat_0">0.97 (0.62, 1.54)</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">X5</td>
-<td class="gt_row gt_center" headers="stat_0">0.92 (0.49, 1.68)</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">X6</td>
-<td class="gt_row gt_center" headers="stat_0">0.92 (0.53, 1.59)</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left" headers="label">X7</td>
-<td class="gt_row gt_center" headers="stat_0">0.84 (0.41, 1.51)</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left" headers="label">Z</td>
-<td class="gt_row gt_center" headers="stat_0">214 (43%)</td>
-</tr>
-</tbody><tfoot class="gt_footnotes">
-<tr class="even">
-<td colspan="2" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> Median (IQR); n (%)</td>
-</tr>
-</tfoot>
-
-</table>
-
-</div>
-</div>
-</div>
-</div>
-<ul>
-<li><p>Only exposure variables <code>X1</code>, <code>X2</code>, <code>X4</code>, <code>X5</code>, and <code>X7</code> have an effect on the outcome <code>Y</code>. However, the direction of the effects varies.</p></li>
-<li><p><code>X1</code>, <code>X2</code>, and <code>X7</code> are positively associated with the outcome.</p></li>
-<li><p><code>X4</code> and <code>X5</code> are negatively associated with the outcome.</p></li>
-</ul>
-</section>
-<section id="multivariate-shift-functions" class="level3">
-<h3 class="anchored" data-anchor-id="multivariate-shift-functions">Multivariate shift functions</h3>
-<div class="callout callout-style-simple callout-tip no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>Only two things need to change when using <code>lmtp</code> estimators with multivariate treatments:</p>
-<ol type="1">
-<li><p>Instead of a vector, you should now pass a list to the <code>trt</code> argument</p></li>
-<li><p>The shift function should return a named list of vectors instead of a single vector.</p></li>
-</ol>
-</div>
-</div>
-</div>
-<p>Let’s use <code>lmtp</code> to estimate the effect of a modified treatment policy which intervenes on all 7 exposure simultaneously on the outcome:</p>
+<p>Recall that an incremental propensity score intervention (IPSI) is a hypothetical intervention where the conditional probability of treatment is shifted. We defined an IPSI, based on the risk ratio, that <em>increased</em> the likelihood of treatment as</p>
 <p><span class="math display">\[
-\dd(\mathbf{a}, h) =
-\begin{cases} \dd(a_1, h) =
-\begin{cases}
-a_1 - 0.2 &amp;\text{ if } a_1 - 0.2 &gt; 0 \\
-a_1 &amp;\text{ otherwise }
-\end{cases} \\
-\dd(a_2, h) =
-\begin{cases}
-a_2 - 0.4 &amp;\text{ if } a_2 - 0.4 &gt; 0 \\
-a_2 &amp;\text{ otherwise }
-\end{cases} \\
-\dd(a_3, h) = a_3 + 0.4 \\
-\dd(a_4, h) = a_4 + 0.1 \\
-\dd(a_5, h) = a_5 + 0.5 \\
-\dd(a_6, h) =
-\begin{cases}
-a_6 - 0.2 &amp;\text{ if } a_6 - 0.2 &gt; 0 \\
-a_6 &amp;\text{ otherwise }
-\end{cases} \\
-\dd(a_7, h) =
-\begin{cases}
-a_7 - 0.3 &amp;\text{ if } a_7 - 0.3 &gt; 0 \\
-a_7 &amp;\text{ otherwise }
+\dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
+a_t &amp;\text{ if } \epsilon_t &lt; \delta \\
+1 &amp;\text{ otherwise.}
 \end{cases}
-\end{cases}
-\]</span></p>
+\]</span>Assume we want to increase the likelihood of initiating treatment by 2-fold. We can implement this in R with</p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-</section>
 <section id="problem-1" class="level3">
 <h3 class="anchored" data-anchor-id="problem-1">Problem 1</h3>
-<p>Using TMLE, estimate the population mean outcome under the simultaneous intervention we just defined. Fit both the treatment mechanism and the outcome regression using this set of learners: <code>c("SL.mean", "SL.glm", "SL.gam", "SL.rpart", "SL.rpartPrune", "SL.step.interaction")</code>. Assign the result to <code>ans</code>. To save time, don’t use crossfitting; <code>lmtp</code> has already been loaded into the R session.</p>
+<p>What if we wanted to <em>decrease</em> the likelihood of initiating treatment by 2-fold? Implement this shift function in R. As a reminder</p>
+<p><span class="math display">\[
+\dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
+a_t &amp;\text{ if } \epsilon_t &lt; \delta \\
+0 &amp;\text{ otherwise.}
+\end{cases}
+\]</span></p>
 <div class="callout callout-style-default callout-warning no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2220,69 +1667,51 @@ Practice
 <p>Solution</p>
 </summary>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4363754</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>learners <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"SL.mean"</span>, </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">"SL.glm"</span>, </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">"SL.gam"</span>, </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">"SL.rpart"</span>, </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">"SL.rpartPrune"</span>, </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">"SL.step.interaction"</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>ans <span class="ot">&lt;-</span> <span class="fu">lmtp_tmle</span>(<span class="at">data =</span> mixtures, </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trt =</span> A, </span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">outcome =</span> <span class="st">"Y"</span>, </span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">baseline =</span> <span class="st">"Z"</span>, </span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                 <span class="at">shift =</span> d, </span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                 <span class="at">mtp =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                 <span class="at">outcome_type =</span> <span class="st">"continuous"</span>,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                 <span class="at">learners_trt =</span> learners, </span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                 <span class="at">learners_outcome =</span> learners, </span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                 <span class="at">folds =</span> <span class="dv">1</span>)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>d_ipsi_down <span class="ot">&lt;-</span> <span class="cf">function</span>(data, trt) {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  eps <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="fu">nrow</span>(data), <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(eps <span class="sc">&lt;</span> delta, data[[trt]], <span class="dv">0</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </details>
 </div>
 </div>
-</section>
-<section id="problem-2" class="level3">
-<h3 class="anchored" data-anchor-id="problem-2">Problem 2</h3>
-<p>Compared to what was observed under the natural course of exposure, how did intervening upon the set of exposures effect the outcome? Estimate this effect using <code>lmtp_contrast()</code>.</p>
-<div class="callout callout-style-default callout-warning no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
+<i class="callout-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-Practice
+<div class="callout-body-container">
+<p><code>lmtp</code> already implements <code>d_ipsi_up</code> and <code>d_ipsi_down</code> as a single shift function factory, <code>ipsi()</code>!</p>
+<ul>
+<li><p>Risk ratio IPSIs that increase the likelihood of treatment should be specified with a value greater than 1 (i.e.&nbsp;a risk ratio IPSI that increases the likelihood of treatment 2-fold is equivalent to <code>ipsi(2)</code>).</p></li>
+<li><p>IPSIs that decrease the likelihood of treatment should be specified with a value less than 1 (i.e.&nbsp;a risk ratio IPSI that decreases the likelihood of treatment 2-fold is equivalent to <code>ipsi(0.5)</code>)</p></li>
+</ul>
 </div>
 </div>
-<div class="callout-body-container callout-body">
+</div>
+<p>Let’s apply the shift function that increases the likelihood of initiating treatment by 2-fold to <code>covid</code> dataset.</p>
 <div id="qwebr-insertion-location-4"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<details>
-<summary style="color: black; font-weight: bold;">
-<p>Solution</p>
-</summary>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>obs_y <span class="ot">&lt;-</span> <span class="fu">mean</span>(mixtures<span class="sc">$</span>Y)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lmtp_contrast</span>(ans, <span class="at">ref =</span> obs_y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</details>
-</div>
-</div>
+<hr>
+<p>Estimating the effect of incremental propensity scores based on the risk ratio are easy to do with <code>lmtp</code>. Just use the <code>ipsi()</code> function as the input for the <code>shift</code> argument!</p>
 
 
 
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-diaz2024causal" class="csl-entry" role="listitem">
+Dı́az, Iván, Katherine L Hoffman, and Nima S Hejazi. 2024. <span>“Causal Survival Analysis Under Competing Risks Using Longitudinal Modified Treatment Policies.”</span> <em>Lifetime Data Analysis</em> 30 (1): 213–36.
+</div>
 <div id="ref-diaz2023nonparametric" class="csl-entry" role="listitem">
 Dı́az, Iván, Nicholas Williams, Katherine L Hoffman, and Edward J Schenck. 2023. <span>“Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies.”</span> <em>Journal of the American Statistical Association</em> 118 (542): 846–57.
 </div>
-<div id="ref-taylor2016statistical" class="csl-entry" role="listitem">
-Taylor, Kyla W, Bonnie R Joubert, Joe M Braun, Caroline Dilworth, Chris Gennings, Russ Hauser, Jerry J Heindel, Cynthia V Rider, Thomas F Webster, and Danielle J Carlin. 2016. <span>“Statistical Approaches for Assessing Health Effects of Environmental Chemical Mixtures in Epidemiology: Lessons from an Innovative Workshop.”</span> <em>Environmental Health Perspectives</em> 124 (12): A227–29.
+<div id="ref-kennedy2019nonparametric" class="csl-entry" role="listitem">
+Kennedy, Edward H. 2019. <span>“Nonparametric Causal Effects Based on Incremental Propensity Score Interventions.”</span> <em>Journal of the American Statistical Association</em> 114 (526): 645–56.
+</div>
+<div id="ref-wen2023intervention" class="csl-entry" role="listitem">
+Wen, Lan, Julia L Marcus, and Jessica G Young. 2023. <span>“Intervention Treatment Distributions That Depend on the Observed Treatment Process and Model Double Robustness in Causal Survival Analysis.”</span> <em>Statistical Methods in Medical Research</em> 32 (3): 509–23.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -1,10 +1,11 @@
 ---
 title: "Static Interventions"
 engine: knitr
+date-modified: last-modified
 filters:
   - webr
 webr:
-  packages: ['lmtp', 'superlearner', 'ranger']
+  packages: ['lmtp', 'superlearner']
   autoload-packages: true
   repos: 
     - https://nt-williams.r-universe.dev
@@ -23,13 +24,24 @@ download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/
 covid <- read.csv("williams_synthetic.csv")
 ```
 
-### Motivating data
+### Synthetic COVID RCT Data
 
-For our first example, we'll use a synthetic dataset of $n = 1000$ patients from a hypothetical clinical trial for a treatment to decrease intubation and death among patients hospitalized with COVID-19. The data is based on a database of over 1,500 patients hospitalised at Weill Cornell Medicine New York Presbyterian Hospital prior to 15 May 2020 with COVID-19 confirmed through PCR.
+For our first example, we'll use a synthetic dataset of $n = 1000$ patients from a hypothetical clinical trial for a treatment to decrease intubation and death among patients hospitalized with COVID-19.
+
+```{r echo=FALSE}
+read.csv("data/williams_synthetic.csv") |> 
+  DT::datatable()
+```
+
+\
+
+-   The data is based on a database of over 1,500 patients hospitalized at Weill Cornell Medicine New York Presbyterian Hospital prior to 15 May 2020 with COVID-19 confirmed through PCR.
 
 -   To replicate a two-arm randomized clinical trial (RCT), we've simulated a hypothetical treatment variable (`A`) that is randomly assigned for each observation with probability 0.5.
 
--   The outcome of interest (`event`) is intubation or death by 14-days post-hospitalization; treatment is associated with increased survival.
+-   The outcome of interest (`event`) is intubation or death by 15-days post-hospitalization.
+
+-   Treatment is associated with increased survival.
 
 -   Baseline covariates include: age, sex, BMI, smoking status, whether the patient required supplemental oxygen within 3 hours of presenting to the emergency department, number of comorbidities, number of relevant symptoms, presence of bilateral infiltrates on chest X-ray, dyspnea, and hypertension.
 
@@ -103,7 +115,7 @@ d1(covid, "A") |> head()
 d1(covid, "A") |> length()
 ```
 
-Let's now estimate $\E(Y^{\dd_1})$ using `lmtp`.
+### Problem 1
 
 ::: {.callout-warning icon="false"}
 ## Question
@@ -117,6 +129,10 @@ Which estimator should we use to estimate these parameters?
 </details>
 ```
 :::
+
+------------------------------------------------------------------------
+
+Let's now estimate $\E(Y^{\dd_1})$ using `lmtp`.
 
 ```{webr-r}
 A <- "A"
@@ -166,6 +182,8 @@ treat <- lmtp_tmle(
 print(treat)
 ```
 
+### Problem 2
+
 ::: {.callout-warning icon="false"}
 ## Question
 
@@ -184,7 +202,7 @@ How can we interpret this result?
 A call to an `lmtp` estimator returns a list of class `lmtp`.
 
 | Value          | Description                                                                                                                  |
-|--------------------|----------------------------------------------------|
+|-----------------|-------------------------------------------------------|
 | estimator      | The estimator used.                                                                                                          |
 | theta          | The estimated population LMTP effect.                                                                                        |
 | standard_error | The estimated standard error of the LMTP effect.                                                                             |
@@ -208,12 +226,14 @@ hist(treat$density_ratios[, 1],
      xlab = "Density ratio")
 ```
 
-### Learning assessment
+### Problem 3
 
 ::: {.callout-warning icon="false"}
-## Problem 1
-
 Write a function to estimate the population mean outcome if no patients received treatment. Assign the result to an object named `dont_treat`.
+:::
+
+::: {.callout-warning icon="false"}
+## Practice
 
 ```{webr-r}
 d0 <- # Write your shift function here!
@@ -257,13 +277,13 @@ print(dont_treat)
 
 ### Average treatment effect
 
-With estimates of $\E(Y^{\dd_1})$ and $\E(Y^{\dd_0})$ we can now calculate the ATE. We'll use the function `lmtp_contrast()`.
+With estimates of $\E(Y^{\dd_1})$ and $\E(Y^{\dd_0})$ we can now calculate the ATE. To do so, we'll use the function `lmtp_contrast()`.
 
 ```{webr-r}
 lmtp_contrast(treat, ref = dont_treat)
 ```
 
-In addition to the ATE, we can also calculate the causal risk ratio and the causal odds ratio.\
+In addition to the ATE, we can also calculate the causal risk ratio and the causal odds ratio.
 
 ```{webr-r}
 lmtp_contrast(treat, ref = dont_treat, type = "rr")
