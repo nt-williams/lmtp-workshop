@@ -16,11 +16,11 @@ By the end of the workshop, participants will be able to:
 
 1.  Generalize static and dynamic interventions intuitively and using notation.
 
-2.  Estimate the effect of a static or dynamic intervention with \textbf{lmtp} for point-treatment and longitudinal studies.
+2.  Estimate the effect of a static or dynamic intervention with **lmtp** for point-treatment and longitudinal studies.
 
-3.  Estimate the effect of an MTP on a continuous-valued exposure with \textbf{lmtp} for point-treatment and longitudinal studies.
+3.  Estimate the effect of an MTP on a continuous-valued exposure with **lmtp** for point-treatment and longitudinal studies.
 
-4.  Estimate the effect of multivariate exposures with \textbf{lmtp} for point-treatment and longitudinal studies.
+4.  Estimate the effect of multivariate exposures with **lmtp** for point-treatment and longitudinal studies.
 
 ### Schedule
 
