@@ -63,6 +63,26 @@ Before we move on to using `lmtp`, here's general information that will be appli
 
 -   The `time_vary` argument accepts a list of character vectors.
 
+::: callout-tip
+## What are vectors and lists?
+
+Vectors and lists are basic data structures in R. A vector can be thought of as a 1-dimensional collection of homogeneous elements. For example a character vector is a collection of values with the class `character`. \
+
+```{r eval=FALSE}
+a_character_vector <- c("this", "is", "a", "character", "vector")
+```
+
+A list is similar, except that it can hold elements of different types. \
+
+```{r eval=FALSE}
+a_list <- list(
+  a_character_vector = c("this", "is", "a", "character", "vector"), 
+  a_numeric_vector = 1:10, 
+  a_list_whithin_a_list = list(1, 2, 3, 4)
+)
+```
+:::
+
 -   The `trt`, `cens`, and `time_vary` arguments must be sorted according to the time-ordering of the model with each index containing the name (or names) of variables for the given time.
 
 -   The outcome variable is specified with the `outcome` argument.
