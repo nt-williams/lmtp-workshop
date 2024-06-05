@@ -12,9 +12,9 @@ title: "Causal Inference in Brief"
 |--------------------------|----------------------------------------------|
 | $L_t$                                           | Time-varying covariates                                                                |
 | $A_t$                                           | A vector of intervention variables (i..e, treatment or exposure)                       |
-| $Y = L_t$                                       | An outcome variable                                                                    |
-| $C$                                             | A indicator variable that a unit is *observed* at the next time point                  |
-| $O_1, ..., O_n$                                 | A sample of i.i.d observations with $O = (L_1, A_1, L_2, A_2, ..., L_\tau, A_\tau, Y)$ |
+| $Y$                                             | An outcome variable. Earlier measures of the outcome can be included in $L_t$.         |          
+| $C_t$                                           | A indicator variable that a unit is *observed* at the next time point                  |
+| $O_1, ..., O_n$                                 | A sample of i.i.d observations with $O = (L_1, A_1, C_1, L_2, A_2, C_2, ..., L_\tau, A_\tau, C_\tau, Y)$ |
 | $\bar{X}_t = (X_1, ..., X_t)$                   | The history of a variable up until time $t$                                            |
 | $\underline{X}_t = (X_t, ..., X_\tau)$          | The future of a variable, including time $t$                                           |
 | $H_t = (\bar{A}_{t-1}, \bar{L}_t)$              | The history of all variables up until just before $A_t$                                |
