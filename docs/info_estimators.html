@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.551">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -24,7 +24,6 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -65,13 +64,7 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -80,42 +73,13 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-submit-button-title": "Submit"
   }
 }</script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -124,9 +88,9 @@ window.Quarto = {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
+      <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Beyond the Average Treatment Effect</span>
     </a>
@@ -138,28 +102,28 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
-<span class="menu-text">Home</span></a>
+    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./instructors.html"> 
-<span class="menu-text">Instructors</span></a>
+    <a class="nav-link" href="./instructors.html" rel="" target="">
+ <span class="menu-text">Instructors</span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools ms-auto">
 </div>
+          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./info_estimators.html">3. Estimators</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./info_estimators.html">3. Estimators</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -168,7 +132,7 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
@@ -274,7 +238,7 @@ window.Quarto = {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -308,9 +272,7 @@ window.Quarto = {
   </div>
   
 
-
 </header>
-
 
 <div class="hidden">
 <p><span class="math display">\[
@@ -344,11 +306,12 @@ window.Quarto = {
 <ol type="1">
 <li><p>Set <span class="math inline">\(\m_{i,\tau +1} = Y_i\)</span>.</p>
 <p>For <span class="math inline">\(t = \tau, ..., 1\)</span>:</p>
-<ol type="1">
+<ol type="a">
 <li><p>Using a pre-specified parametric model, regress <span class="math inline">\(\m_{i,t+1}\)</span> on <span class="math inline">\(\{A_{i, t}, H_{i,t}\}\)</span>.</p></li>
-<li><p>Generate predictions from this model with <span class="math inline">\(A_{i,t}\)</span> changed to <span class="math inline">\(A^{\dd}_{i,t}\)</span>. Set <span class="math inline">\(\m_{i, t}\)</span> as these predictions.</p></li>
+<li><p>Generate predictions from this model with <span class="math inline">\(A_{i,t}\)</span> changed to <span class="math inline">\(A^{\dd}_{i,t}\)</span>. Set <span class="math inline">\(\m_{i, t}\)</span> to be these predicted values.</p></li>
+<li><p>Repeat (iterate) the above two steps until setting <span class="math inline">\(\m_{i, 1}\)</span> to the predicted values.</p></li>
 </ol></li>
-<li><p>Take the final estimate as <span class="math inline">\(\hat{\theta} = \frac{1}{n}\sum_{i=1}^n \m_{i, 1}\)</span>.</p></li>
+<li><p>Take the final estimate as <span class="math inline">\(\hat{\theta} = \frac{1}{n}\sum_{i=1}^n \hat\m_{i, 1}\)</span>.</p></li>
 <li><p>Compute standard errors using a bootstrap of steps 1 and 2.</p></li>
 </ol>
 </div>
@@ -356,7 +319,7 @@ window.Quarto = {
 <table class="table">
 <colgroup>
 <col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 28%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -367,7 +330,8 @@ window.Quarto = {
 <tbody>
 <tr class="odd">
 <td style="text-align: center;"><ul>
-<li>Simple to implement</li>
+<li><p>Simple to implement</p></li>
+<li><p>Substitution estimator</p></li>
 </ul></td>
 <td style="text-align: center;"><ul>
 <li><p>Requires correct estimation of all regressions</p></li>
@@ -376,25 +340,26 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
+<p>A substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome.</p>
 </section>
 <section id="sec-density-ratio-estimation" class="level3">
 <h3 class="anchored" data-anchor-id="sec-density-ratio-estimation">Density-ratio estimation</h3>
-<p>The following three estimators all rely on estimating the density ratio <span class="math inline">\(r_t(a_t, h_t) = \frac{\g_t^\dd(a_t \mid h_t)}{\g_t(a_t \mid h_t)}\)</span>. We will often refer to this ratio as the <em>intervention mechanism</em> throughout the workshop.</p>
+<p>The next three estimators all rely on estimating the density ratio <span class="math inline">\(r_t(a_t, h_t) = \frac{\g_t^\dd(a_t \mid h_t)}{\g_t(a_t \mid h_t)}\)</span>. We will often refer to this ratio as the <em>intervention mechanism</em> throughout the workshop.</p>
 <ul>
 <li><p>We can directly estimate this density ratio with a classification trick. This process is fully automated and hidden from the user.</p></li>
-<li><p>Can compute the odds in a classification problem in an augmented dataset with <span class="math inline">\(2n\)</span> observations where the outcome is the auxiliary variable <span class="math inline">\(\Lambda\)</span> (defined below) and the predictors are the variables <span class="math inline">\(A_t\)</span> and <span class="math inline">\(H_t\)</span>. In the <span class="math inline">\(2n\)</span> augmented data set, the data structure at time <span class="math inline">\(t\)</span> is redefined as</p></li>
+<li><p>Can compute the density ratio (which we can see is also the odds) in a classification problem. We use an augmented dataset with <span class="math inline">\(2n\)</span> observations. In this new dataset, the outcome is a new variable that we make, <span class="math inline">\(\Lambda\)</span>, (defined below) and the predictors are the variables <span class="math inline">\(A_t\)</span> and <span class="math inline">\(H_t\)</span>. In this new dataset, the data structure at time <span class="math inline">\(t\)</span> is redefined as</p></li>
 </ul>
 <p><span class="math display">\[
 (H_{\lambda, i, t}, A_{\lambda, i, t}, \Lambda_{\lambda, i} : \lambda = 0, 1; i = 1, ..., n)
 \]</span></p>
 <ul>
-<li><p><span class="math inline">\(\Lambda_{\lambda, i} = \lambda_i\)</span> indexes duplicate values</p>
+<li><p><span class="math inline">\(\Lambda_{\lambda, i} = \lambda_i\)</span> indexes duplicate values. So if <span class="math inline">\(\Lambda_i =1\)</span> if observation <span class="math inline">\(i\)</span> is a duplicated value and <span class="math inline">\(\Lambda_i =0\)</span> otherwise.</p>
 <ul>
 <li><p>For all duplicated observations <span class="math inline">\(\lambda\in\{0,1\}\)</span> with the same <span class="math inline">\(i\)</span>, <span class="math inline">\(H_{\lambda, i, t}\)</span> is the same</p></li>
-<li><p>For <span class="math inline">\(\lambda = 0\)</span>, <span class="math inline">\(A_{\lambda, i, t}\)</span> equals the observed exposure values <span class="math inline">\(A_{i, t}\)</span></p></li>
-<li><p>For <span class="math inline">\(\lambda=1\)</span>, <span class="math inline">\(A_{\lambda, i, t}\)</span> equals the exposure values under the intervention <span class="math inline">\(\dd\)</span>, <span class="math inline">\(A^{\dd}_t\)</span></p></li>
+<li><p>For all the non-duplicated observations, <span class="math inline">\(\lambda = 0\)</span>, <span class="math inline">\(A_{\lambda=0, i, t}\)</span> equals the observed exposure values <span class="math inline">\(A_{i, t}\)</span></p></li>
+<li><p>For all the duplicated observations, <span class="math inline">\(\lambda=1\)</span>, <span class="math inline">\(A_{\lambda=1, i, t}\)</span> equals the exposure values under the intervention <span class="math inline">\(\dd\)</span>, <span class="math inline">\(A^{\dd}_{i,t}\)</span></p></li>
 </ul></li>
-<li><p>The classification approach to density ratio estimation proceeds by estimating the conditional probability that <span class="math inline">\(\Delta=1\)</span> in this dataset, and dividing it by the corresponding estimate of the conditional probability that <span class="math inline">\(\Delta=0\)</span>. Specifically, denoting <span class="math inline">\(p^\lambda\)</span> the distribution of the data in the augmented dataset, we have:</p></li>
+<li><p>We then estimate the conditional probability that <span class="math inline">\(\Lambda=1\)</span> in this dataset, and divide it by the corresponding estimate of the conditional probability that <span class="math inline">\(\Lambda=0\)</span>. Specifically, denoting <span class="math inline">\(p^\lambda\)</span> to be the distribution of the data in the augmented dataset, we have:</p></li>
 </ul>
 <p><span class="math display">\[
 r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
@@ -416,7 +381,7 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 <ol type="1">
 <li><p>Construct estimates of <span class="math inline">\(r_{i,t}(a_t, h_t)\)</span> using the density ratio classification trick and a pre-specified parametric model.</p></li>
 <li><p>Define the weights <span class="math inline">\(w_{i} = \prod_{t=1}^\tau r_{i,t}(a_t, h_t)\)</span>.</p></li>
-<li><p>Take the final estimate as <span class="math inline">\(\hat{\theta} = \frac{1}{n}\sum_{i=1}^n w_{i}\times y_i\)</span>.</p></li>
+<li><p>Take the final estimate as <span class="math inline">\(\hat{\theta} = \frac{1}{n}\sum_{i=1}^n \hat{w}_{i}\times y_i\)</span>.</p></li>
 <li><p>Compute standard errors using a bootstrap of steps 1-3.</p></li>
 </ol>
 </div>
@@ -447,11 +412,17 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 </section>
 <section id="doubly-robust-estimators" class="level3">
 <h3 class="anchored" data-anchor-id="doubly-robust-estimators">Doubly Robust Estimators</h3>
-<p>G-computation and IPW estimators require the estimation of nuisance parameters with parametric models. We will now turn our attention to two non-parametric estimators:</p>
+<p>G-computation and IPW estimators require the estimation of nuisance parameters with correctly specified parametric models. We will now turn our attention to two non-parametric estimators:</p>
 <ol type="1">
 <li><p>targeted minimum-loss based estimator (TMLE), and</p></li>
 <li><p>a sequentially doubly-robust estimator (SDR).</p></li>
 </ol>
+<p>Wait, what does it mean for an estimator to be doubly robust?</p>
+<ul>
+<li><p>For the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as either the outcome model is consistently estimated or the treatment (and censoring) model(s) are consistently estimated.</p></li>
+<li><p>For time-varying setting, an estimator is doubly robust if, for some time <span class="math inline">\(s\)</span>, all outcome regressions for <span class="math inline">\(t &gt;s\)</span> are consistently estimated and all intervention mechanisms (treatment + censoring) for <span class="math inline">\(t \leq s\)</span> are consistently estimated.</p></li>
+<li><p>Sequential double robustness (often also referred to as <span class="math inline">\(2^\tau\)</span>-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated.</p></li>
+</ul>
 <section id="efficient-influence-function" class="level4">
 <h4 class="anchored" data-anchor-id="efficient-influence-function">Efficient Influence Function</h4>
 <p>Key to constructing the TMLE and SDR is the <em>efficient influence function</em> (EIF).</p>
@@ -503,9 +474,9 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 <li><p>Set <span class="math inline">\(\tilde{\m}_{i,\tau +1}(A^\dd_{i,t+1}, H_{i,t+1}) = Y_i\)</span>.</p>
 <p>For <span class="math inline">\(t = \tau, ..., 1\)</span>:</p>
 <ol type="1">
-<li><p>Regress <span class="math inline">\(\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})\)</span> on <span class="math inline">\(\{A_{i, t}, H_{i,t}\}\)</span>.</p></li>
+<li><p>Regress <span class="math inline">\(\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})\)</span> on <span class="math inline">\(\{A_{i, t}, H_{i,t}\}\)</span>. Denote the predictions as <span class="math inline">\(\tilde{\m}_t(A_{i,t}, H_{i,t})\)</span>.</p></li>
 <li><p>Fit the generalized linear tilting model:</p>
-<p><span class="math inline">\(\text{link }\tilde{\m}^\epsilon_t(A_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_t(A_{i,t}, H_{i,t})\)</span></p>
+<p><span class="math inline">\(\text{link }\tilde{\m}^\epsilon_t(A_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})\)</span></p>
 <p>with weights <span class="math inline">\(w_{i,t}\)</span>.</p></li>
 <li><p>Let <span class="math inline">\(\hat\epsilon\)</span> be the maximum likelihood estimate, and update the estimates as:</p>
 <p><span class="math inline">\(\text{link }\tilde{\m}^\hat\epsilon_t(A^\dd_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_t(A^\dd_{i,t}, H_{i,t})\)</span></p>
@@ -555,7 +526,7 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 <ol type="1">
 <li><p>Compute the pseudo-outcome <span class="math inline">\(\check{Y}_{i,t+1} = \phi_{t+1}(O_i)\)</span>.</p></li>
 <li><p>Regress <span class="math inline">\(\check{Y}_{i,t+1}\)</span> on <span class="math inline">\(\{A_{i, t}, H_{i,t}\}\)</span>.</p></li>
-<li><p>Let <span class="math inline">\(\check\m_{i,t}\)</span> denote the output. Update <span class="math inline">\(\m_{i,t} = \check\m_{i,t}\)</span> and iterate.</p></li>
+<li><p>Let <span class="math inline">\(\check\m_{i,t}\)</span> denote the predicted values. Update <span class="math inline">\(\m_{i,t} = \check\m_{i,t}\)</span> and iterate.</p></li>
 </ol></li>
 <li><p>The final estimate is defined as <span class="math inline">\(\hat\theta = \frac{1}{n}\sum_{i=1}^n\phi_1(O_i).\)</span></p></li>
 </ol>
@@ -593,12 +564,6 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 <ul>
 <li><p>In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference (ya right 😂).</p></li>
 <li><p>The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining <span class="math inline">\(\sqrt{n}\)</span>-consistent.</p></li>
-</ul>
-<p>Wait, what does it mean for an estimator to be doubly robust?</p>
-<ul>
-<li><p>For the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as at least one of the nuisance parameters is consistently estimated.</p></li>
-<li><p>For time-varying setting, an estimator is doubly robust if, for some time <span class="math inline">\(s\)</span>, all outcome regressions for <span class="math inline">\(t &gt;s\)</span> are consistently estimated and all intervention mechanisms for <span class="math inline">\(t \leq s\)</span> are consistently estimated.</p></li>
-<li><p>Sequential double robustness (often also referred to as <span class="math inline">\(2^\tau\)</span>-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism is consistently estimated.</p></li>
 </ul>
 <p>While the SDR estimator may be more robust to model misspecification, the TMLE does have the advantage of being a substitution estimator. Because of this, estimates from the TMLE are guaranteed to stay within the valid range of the outcome. Taken together, this leads to the following recommendations for choosing between the TMLE and SDR:</p>
 <div class="callout callout-style-simple callout-tip">
@@ -681,7 +646,7 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </section>
 <section id="cross-fitting" class="level3">
 <h3 class="anchored" data-anchor-id="cross-fitting">Cross-fitting</h3>
-<p>When estimating nuisance parameters with data adaptive algorithms, you should perform a process similar to cross-validation called cross-fitting. Cross-fitting ensures:</p>
+<p>When estimating nuisance parameters with data adaptive algorithms, you should perform a process similar to cross-validation called cross-fitting. Cross-fitting helps ensure:</p>
 <ul>
 <li><p>that standard errors will be correct, and</p></li>
 <li><p>can help reduce estimator bias.</p></li>
@@ -692,7 +657,7 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-bickel1993efficient" class="csl-entry" role="listitem">
 Bickel, Peter J, Chris AJ Klaassen, Peter J Bickel, Ya’acov Ritov, J Klaassen, Jon A Wellner, and YA’Acov Ritov. 1993. <em>Efficient and Adaptive Estimation for Semiparametric Models</em>. Vol. 4. Springer.
 </div>
@@ -797,27 +762,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -827,17 +775,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -849,130 +788,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
+      return note.innerHTML;
     });
   }
       let selectedAnnoteEl;
@@ -1016,7 +832,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1042,32 +857,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1128,7 +917,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
 
 
 

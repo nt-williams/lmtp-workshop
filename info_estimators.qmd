@@ -29,11 +29,13 @@ Algorithm: Sequential regressions
 
     For $t = \tau, ..., 1$:
 
-    1.  Using a pre-specified parametric model, regress $\m_{i,t+1}$ on $\{A_{i, t}, H_{i,t}\}$.
+    a.  Using a pre-specified parametric model, regress $\m_{i,t+1}$ on $\{A_{i, t}, H_{i,t}\}$.
 
-    2.  Generate predictions from this model with $A_{i,t}$ changed to $A^{\dd}_{i,t}$. Set $\m_{i, t}$ as these predictions.
+    b.  Generate predictions from this model with $A_{i,t}$ changed to $A^{\dd}_{i,t}$. Set $\m_{i, t}$ to be these predicted values.
+    
+    c.  Repeat (iterate) the above two steps until setting $\m_{i, 1}$ to the predicted values.
 
-2.  Take the final estimate as $\hat{\theta} = \frac{1}{n}\sum_{i=1}^n \m_{i, 1}$.
+2.  Take the final estimate as $\hat{\theta} = \frac{1}{n}\sum_{i=1}^n \hat\m_{i, 1}$.
 
 3.  Compute standard errors using a bootstrap of steps 1 and 2.
 :::
@@ -42,34 +44,36 @@ Algorithm: Sequential regressions
 +-------------------------+----------------------------------------------------+
 | Pros ✅                 | Cons ❌                                            |
 +:=======================:+:==================================================:+
-| -   Simple to implement | -   Requires correct estimation of all regressions |
+| - Simple to implement   | -   Requires correct estimation of all regressions |
 |                         |                                                    |
-|                         | -   Requires pre-specified parametric models       |
+| - Substitution estimator| -   Requires pre-specified parametric models       |
 +-------------------------+----------------------------------------------------+
 
-: {tbl-colwidths="\[25,25\]"}
+: {tbl-colwidths="\[25,29\]"}
+
+A substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome.
 
 ### Density-ratio estimation {#sec-density-ratio-estimation}
 
-The following three estimators all rely on estimating the density ratio $r_t(a_t, h_t) = \frac{\g_t^\dd(a_t \mid h_t)}{\g_t(a_t \mid h_t)}$. We will often refer to this ratio as the *intervention mechanism* throughout the workshop.
+The next three estimators all rely on estimating the density ratio $r_t(a_t, h_t) = \frac{\g_t^\dd(a_t \mid h_t)}{\g_t(a_t \mid h_t)}$. We will often refer to this ratio as the *intervention mechanism* throughout the workshop.
 
 -   We can directly estimate this density ratio with a classification trick. This process is fully automated and hidden from the user.
 
--   Can compute the odds in a classification problem in an augmented dataset with $2n$ observations where the outcome is the auxiliary variable $\Lambda$ (defined below) and the predictors are the variables $A_t$ and $H_t$. In the $2n$ augmented data set, the data structure at time $t$ is redefined as
+-   Can compute the density ratio (which we can see is also the odds) in a classification problem. We use an augmented dataset with $2n$ observations. In this new dataset, the outcome is a new variable that we make, $\Lambda$, (defined below) and the predictors are the variables $A_t$ and $H_t$. In this new dataset, the data structure at time $t$ is redefined as
 
 $$
 (H_{\lambda, i, t}, A_{\lambda, i, t}, \Lambda_{\lambda, i} : \lambda = 0, 1; i = 1, ..., n)
 $$
 
--   $\Lambda_{\lambda, i} = \lambda_i$ indexes duplicate values
+-   $\Lambda_{\lambda, i} = \lambda_i$ indexes duplicate values. So if $\Lambda_i =1$ if observation $i$ is a duplicated value and $\Lambda_i =0$ otherwise.
 
     -   For all duplicated observations $\lambda\in\{0,1\}$ with the same $i$, $H_{\lambda, i, t}$ is the same
 
-    -   For $\lambda = 0$, $A_{\lambda, i, t}$ equals the observed exposure values $A_{i, t}$
+    -   For all the non-duplicated observations, $\lambda = 0$, $A_{\lambda=0, i, t}$ equals the observed exposure values $A_{i, t}$
 
-    -   For $\lambda=1$, $A_{\lambda, i, t}$ equals the exposure values under the intervention $\dd$, $A^{\dd}_t$
+    -   For all the duplicated observations, $\lambda=1$, $A_{\lambda=1, i, t}$ equals the exposure values under the intervention $\dd$, $A^{\dd}_{i,t}$
 
--   The classification approach to density ratio estimation proceeds by estimating the conditional probability that $\Delta=1$ in this dataset, and dividing it by the corresponding estimate of the conditional probability that $\Delta=0$. Specifically, denoting $p^\lambda$ the distribution of the data in the augmented dataset, we have:
+-   We then estimate the conditional probability that $\Lambda=1$ in this dataset, and divide it by the corresponding estimate of the conditional probability that $\Lambda=0$. Specifically, denoting $p^\lambda$ to be the distribution of the data in the augmented dataset, we have:
 
 $$
 r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
@@ -94,7 +98,7 @@ Algorithm: IPW Estimator
 
 2.  Define the weights $w_{i} = \prod_{t=1}^\tau r_{i,t}(a_t, h_t)$.
 
-3.  Take the final estimate as $\hat{\theta} = \frac{1}{n}\sum_{i=1}^n w_{i}\times y_i$.
+3.  Take the final estimate as $\hat{\theta} = \frac{1}{n}\sum_{i=1}^n \hat{w}_{i}\times y_i$.
 
 4.  Compute standard errors using a bootstrap of steps 1-3.
 :::
@@ -112,11 +116,19 @@ Algorithm: IPW Estimator
 
 ### Doubly Robust Estimators
 
-G-computation and IPW estimators require the estimation of nuisance parameters with parametric models. We will now turn our attention to two non-parametric estimators:
+G-computation and IPW estimators require the estimation of nuisance parameters with correctly specified parametric models. We will now turn our attention to two non-parametric estimators:
 
 1.  targeted minimum-loss based estimator (TMLE), and
 
 2.  a sequentially doubly-robust estimator (SDR).
+
+Wait, what does it mean for an estimator to be doubly robust?
+
+-   For the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as either the outcome model is consistently estimated or the treatment (and censoring) model(s) are consistently estimated.
+
+-   For time-varying setting, an estimator is doubly robust if, for some time $s$, all outcome regressions for $t >s$ are consistently estimated and all intervention mechanisms (treatment + censoring) for $t \leq s$ are consistently estimated.
+
+-   Sequential double robustness (often also referred to as $2^\tau$-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated.
 
 #### Efficient Influence Function
 
@@ -170,11 +182,11 @@ Algorithm: TMLE
 
     For $t = \tau, ..., 1$:
 
-    1.  Regress $\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})$ on $\{A_{i, t}, H_{i,t}\}$.
+    1.  Regress $\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})$ on $\{A_{i, t}, H_{i,t}\}$. Denote the predictions as $\tilde{\m}_t(A_{i,t}, H_{i,t})$.
 
     2.  Fit the generalized linear tilting model:
 
-        $\text{link }\tilde{\m}^\epsilon_t(A_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_t(A_{i,t}, H_{i,t})$
+        $\text{link }\tilde{\m}^\epsilon_t(A_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})$
 
         with weights $w_{i,t}$.
 
@@ -220,7 +232,7 @@ Algorithm: SDR Estimator
 
     2.  Regress $\check{Y}_{i,t+1}$ on $\{A_{i, t}, H_{i,t}\}$.
 
-    3.  Let $\check\m_{i,t}$ denote the output. Update $\m_{i,t} = \check\m_{i,t}$ and iterate.
+    3.  Let $\check\m_{i,t}$ denote the predicted values. Update $\m_{i,t} = \check\m_{i,t}$ and iterate.
 
 3.  The final estimate is defined as $\hat\theta = \frac{1}{n}\sum_{i=1}^n\phi_1(O_i).$
 :::
@@ -246,13 +258,6 @@ How should we choose which estimator to use?
 
 -   The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining $\sqrt{n}$-consistent.
 
-Wait, what does it mean for an estimator to be doubly robust?
-
--   For the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as at least one of the nuisance parameters is consistently estimated.
-
--   For time-varying setting, an estimator is doubly robust if, for some time $s$, all outcome regressions for $t >s$ are consistently estimated and all intervention mechanisms for $t \leq s$ are consistently estimated.
-
--   Sequential double robustness (often also referred to as $2^\tau$-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism is consistently estimated.
 
 While the SDR estimator may be more robust to model misspecification, the TMLE does have the advantage of being a substitution estimator. Because of this, estimates from the TMLE are guaranteed to stay within the valid range of the outcome. Taken together, this leads to the following recommendations for choosing between the TMLE and SDR:
 
@@ -277,7 +282,7 @@ While the SDR estimator may be more robust to model misspecification, the TMLE d
 
 ### Cross-fitting
 
-When estimating nuisance parameters with data adaptive algorithms, you should perform a process similar to cross-validation called cross-fitting. Cross-fitting ensures:
+When estimating nuisance parameters with data adaptive algorithms, you should perform a process similar to cross-validation called cross-fitting. Cross-fitting helps ensure:
 
 -   that standard errors will be correct, and
 
