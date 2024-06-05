@@ -55,7 +55,7 @@ Assuming ..., $\theta$ is identified from the observed data by:
 ::: {.callout-tip icon="false"}
 ## Theorem
 
-Set $\m_{\tau+1} = Y$\> For $t = \tau, ..., 1$, recursively define
+Set $\m_{\tau+1} = Y$ For $t = \tau, ..., 1$, recursively define
 
 $$
 \m_t: (a_t, h_t) \rightarrow \E[\m_{t + 1}(A^{\dd}_{t+1}, H_{t + 1}) \mid A_t = a_t, H_t = h_t],
