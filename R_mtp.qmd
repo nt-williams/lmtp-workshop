@@ -31,6 +31,7 @@ As we already discussed, a modified treatment policy is an intervention characte
 -   Decreasing AQI by 20% (multiplicative MTP).
 
 ### Synthetic Neighborhood Crime Data
+In some current work, we are interested in estimating the effect of decreasing the level of community violence (violent crime rate) on risk of preterm birth. Research suggests community violence may impact infant health through physiological responses to stress, worsening maternal mental health, and unhealthy coping behaviors. Community violence is a highly endogenous exposure, which, motivates the use of such a shift intervention.  
 
 ```{r echo=FALSE}
 crime <- read.csv("data/crime_toy.csv")

@@ -83,6 +83,10 @@ An intervention is static if the function $\dd_t$ always returns the same value 
 
 ::: {.callout-tip icon="false"}
 ## Example
+Let's say we were interested in the effect of randomizing patients with opioid use disorder to injection naltrexone ($A=1$) vs. sublingual buprenorphine ($A=0$). We would contrast the counterfactual
+  outcomes in a hypothetical world in which all units were treated with injection naltrexone $\dd_1=1$ versus a hypothetical world in which all units were treated with buprenorphine $\dd_0=0$. This gives us the well-known average (comparative) treatment effect (ATE). 
+  $$\E[Y(A^{\dd_1}) - Y(A^{\dd_0})] = \E[Y(A=1) - Y(A=0)] $$.
+  
 :::
 
 ### Dynamic Treatment Regime
@@ -210,11 +214,11 @@ An intervention where the conditional probability of treatment is shifted.
 ::: {.callout-tip icon="false"}
 ## Example
 
-Using electronic health record data, @wen2023intervention estimated the effect of increasing the proportion of PrEP uptake on bacterial STI among cis-gender males being tested for STIs and that do not have HIV. Let $A_t$ be a binary indicator for PrEP initiation at week $t$, and $L'_t$ be a binary indicator for any STI testing and being HIV-free at week $t$. They defined a "medium" successful PrEP uptake intervention as
+Using electronic health record data, @wen2023intervention estimated the effect of increasing the proportion of PrEP uptake on bacterial STI among cis-gender males being tested for STIs and that do not have HIV. Let $A_t$ be a binary indicator for PrEP initiation at week $t$, and $L_t$ be a binary indicator for any STI testing and being HIV-free at week $t$. They defined a "medium" successful PrEP uptake intervention as
 
 $$
 \dd(a_t, h_t, \epsilon) = \begin{cases}
-a_t &\text{ if } l'_t = 1 \text{ and } \epsilon_t < 0.85 \\
+a_t &\text{ if } l_t = 1 \text{ and } \epsilon_t < 0.85 \\
 1 &\text{ otherwise}.
 \end{cases}
 $$

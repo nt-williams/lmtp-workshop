@@ -2,17 +2,32 @@
 title: "Concluding Thoughts"
 engine: knitr
 date-modified: last-modified
+
+bibliography: references.bib
+nocite: |
+  @rudolph2024associations, @diaz2023nonparametric, @williams2023lmtp, @young2014identification, @munoz2012population, @vanderLaanPolleyHubbard07
 ---
+
+{{< include macros.qmd >}}
+
 
 ### Thank you!
 
-Thank you for attending this workshop! We hope you found the material informative and engaging. We encourage you to reach out to us with any questions or feedback.
+Thank you for attending this workshop! We encourage you to reach out to us with any questions or feedback.
 
 ### Including in a manuscript
 
-If you decide to use `lmtp` in your research, here's a summary that can be included for explaining the methodology:
+If you decide to use `lmtp` in your research, here's a summary that can be included for explaining the methodology. It is based on the explanation in @rudolph2024associations:
 
-> blah blah blah
+ We estimated the effect of [exposure] on [outcome], adjusting for covariates. This effect can be written: $\E(Y^{\dd, C=1} - Y^{C=1}),$ [change the preceding to correspond to your effect] where $\E(Y^{C=1})$ [change as applicable] denotes the expected value of the counterfactual outcome had the exposure not been intervened on (i.e., remained as observed) and had no one been censored, and where $\E(Y^{\dd, C=1})$ [change as applicable] denotes the expected value of the counterfactual outcome had the exposure been intervened on as dictated by the function $\dd(A)$ and had no one been censored. We defined $\dd(A)$ as a hypothetical intervention that increased the value of the exposure by 20\% (i.e., multiplied each person's value by 1.2). [change the preceding to correspond to your intervention, $\dd$]
+
+ The above statistical estimand is a type of ``modified treatment policy'' (@haneuse2013estimation, @munoz2012population, @young2014identification, @diaz2023nonparametric). The statistical estimand can be interpreted causally under the identifying assumptions of: 1) conditional exchangeability, meaning that there is no unobserved/unmeasured confounding of the relationship between the set of treatments and outcome conditional on covariates and that there is no unobserved/unmeasured confounding between censoring and the outcome conditional on the covariates and treatment; 2) positivity, and 3) consistency.
+
+ We estimated this statistical estimand using a doubly robust, nonparametric targeted minimum loss-based estimator (@diaz2023nonparametric, @williams2023lmtp). A cross-fitted version of this estimator was used with [fill in number]-folds. This estimator fits regressions for the outcome mechanism, treatment mechanism, and censoring mechanism. These regressions were fit using an ensemble of machine learning algorithms (@vanderLaanPolleyHubbard07) consisting of [fill in the algorithms included in your superlearner library]. 
+
+
+
+
 
 You can cite the package using the following BibTeX entries:
 

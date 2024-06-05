@@ -25,11 +25,11 @@ General software for estimation of causal effects in longitudinal studies is lim
 
 -   The `ipw` and `gfoRmula` packages provide routines for estimating causal effects using inverse probability weighting (IPW) and the parametric g-formula respectively. As we already discussed, however, the validity of these methods requires making unrealistic parametric assumptions.
 
--   The `ltmle` and `survtmle` packages implement a doubly-robust method for estimating causal effects from longitudinal data, but these packages do not support continuous valued exposures.
+-   The `ltmle` and `survtmle` packages implement a doubly-robust method for estimating causal effects from longitudinal data, but these packages do not support continuous valued exposures, multiple exposures, interventions that depend on the natural value of the exposure, or stochastic interventions.
 
-First released on CRAN in the Summer of 2021, the `lmtp` package is the software companion to the paper by @diaz2023nonparametric that generalized MTPs to the longitudinal setting.
+In contrast, the `lmtp` package (software companion to the paper by @diaz2023nonparametric) can be used to doubly robustly and flexibly estimate point-in-time and longitudinal effects of the general set of interventions that we've talked about today.
 
--   We hope to convince you that `lmtp` should be your default package for conducting causal analyses in R.
+-   `lmtp` could be your default package for conducting causal analyses in R!
 
 ### Installation
 
