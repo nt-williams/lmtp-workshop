@@ -32,7 +32,7 @@ Algorithm: Sequential regressions
     a.  Using a pre-specified parametric model, regress $\m_{i,t+1}$ on $\{A_{i, t}, H_{i,t}\}$.
 
     b.  Generate predictions from this model with $A_{i,t}$ changed to $A^{\dd}_{i,t}$. Set $\m_{i, t}$ to be these predicted values.
-    
+
     c.  Repeat (iterate) the above two steps until setting $\m_{i, 1}$ to the predicted values.
 
 2.  Take the final estimate as $\hat{\theta} = \frac{1}{n}\sum_{i=1}^n \hat\m_{i, 1}$.
@@ -41,13 +41,13 @@ Algorithm: Sequential regressions
 :::
 :::
 
-+-------------------------+----------------------------------------------------+
-| Pros ✅                 | Cons ❌                                            |
-+:=======================:+:==================================================:+
-| - Simple to implement   | -   Requires correct estimation of all regressions |
-|                         |                                                    |
-| - Substitution estimator| -   Requires pre-specified parametric models       |
-+-------------------------+----------------------------------------------------+
++----------------------------+----------------------------------------------------+
+| Pros ✅                    | Cons ❌                                            |
++:==========================:+:==================================================:+
+| -   Simple to implement    | -   Requires correct estimation of all regressions |
+|                            |                                                    |
+| -   Substitution estimator | -   Requires pre-specified parametric models       |
++----------------------------+----------------------------------------------------+
 
 : {tbl-colwidths="\[25,29\]"}
 
@@ -55,9 +55,15 @@ A substitution estimator is nice, because its estimates are guaranteed to stay w
 
 ### Density-ratio estimation {#sec-density-ratio-estimation}
 
-The next three estimators all rely on estimating the density ratio $r_t(a_t, h_t) = \frac{\g_t^\dd(a_t \mid h_t)}{\g_t(a_t \mid h_t)}$. We will often refer to this ratio as the *intervention mechanism* throughout the workshop.
+::: {.callout-caution appearance="simple"}
+The next three estimators all rely on estimating the density ratio
 
--   We can directly estimate this density ratio with a classification trick. This process is fully automated and hidden from the user.
+$$
+r_t(a_t, h_t) = \frac{\g_t^\dd(a_t \mid h_t)}{\g_t(a_t \mid h_t)}.
+$$We will often refer to this ratio as the *intervention mechanism* throughout the workshop. Estimation of $r_t(a_t, h_t)$ is fully automated in `lmtp` and hidden from the user. **A comprehensive understanding of this process isn't necessary to use `lmtp`!**
+:::
+
+-   We can directly estimate this density ratio with a classification trick.
 
 -   Can compute the density ratio (which we can see is also the odds) in a classification problem. We use an augmented dataset with $2n$ observations. In this new dataset, the outcome is a new variable that we make, $\Lambda$, (defined below) and the predictors are the variables $A_t$ and $H_t$. In this new dataset, the data structure at time $t$ is redefined as
 
@@ -176,7 +182,7 @@ Algorithm: TMLE
 ::: algorithm-body
 1.  Construct estimates of $r_{i,t}(a_t, h_t)$ using the density ratio classification trick and your favorite regression method.
 
-2.  For $s = 1, ..., \tau$, compute the weights: $w_{i,s} = \prod_{k=1}^s r_{i,k}(a_{i,k}, h_{i,k})$
+2.  For $t = 1, ..., \tau$, compute the weights: $w_{i,t} = \prod_{k=1}^t r_{i,k}(a_{i,k}, h_{i,k})$
 
 3.  Set $\tilde{\m}_{i,\tau +1}(A^\dd_{i,t+1}, H_{i,t+1}) = Y_i$.
 
@@ -257,7 +263,6 @@ How should we choose which estimator to use?
 -   In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference (ya right 😂).
 
 -   The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining $\sqrt{n}$-consistent.
-
 
 While the SDR estimator may be more robust to model misspecification, the TMLE does have the advantage of being a substitution estimator. Because of this, estimates from the TMLE are guaranteed to stay within the valid range of the outcome. Taken together, this leads to the following recommendations for choosing between the TMLE and SDR:
 
