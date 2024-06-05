@@ -174,7 +174,7 @@ $$
 
 ### Random Interventions
 
-Let $A$ denote a binary vector, $\epsilon \sim U(0, 1)$, and $\delta$ be an analyst-defined value between 0 and 1. We may then define randomized interventions. For example, imagine we are interested in a hypothetical world where half of all smokers quit smoking. This intervention would be defined as
+Let $A$ denote a binary vector, $\epsilon \sim U(0, 1)$, and $\epsilon$ be an analyst-defined value between 0 and 1. We may then define randomized interventions. For example, imagine we are interested in a hypothetical world where half of all smokers quit smoking. This intervention would be defined as
 
 $$
 \\d_t(a_t, \epsilon_t) = \begin{cases}
