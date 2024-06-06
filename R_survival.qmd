@@ -139,7 +139,8 @@ ggplot(results_tidy, aes(x = t, y = estimate)) +
 
 ```{r echo=FALSE}
 intubation <- read.csv("data/hoffman_toy.csv")
-DT::datatable(intubation)
+DT::datatable(intubation) |> 
+  DT::formatRound(columns = "age", digits = 0)
 ```
 
 ------------------------------------------------------------------------

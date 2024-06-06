@@ -37,9 +37,13 @@ For our example of estimating the effects of simultaneous interventions on multi
 -   There is no missing covariate data, no measurement error, and no censoring.
 
 ```{r echo=FALSE}
-mixtures <- read.csv("data/mixtures.csv")
-dplyr::select(mixtures, -obs) |> 
-  gtsummary::tbl_summary()
+mixtures <- read.csv("data/mixtures.csv") |> 
+  dplyr::select(-obs)
+
+DT::datatable(mixtures) |> 
+  DT::formatRound(columns = setdiff(names(mixtures), "Z"), digits = 2)
+
+gtsummary::tbl_summary(mixtures)
 ```
 
 -   Only exposure variables `X1`, `X2`, `X4`, `X5`, and `X7` have an effect on the outcome `Y`. However, the direction of the effects varies.

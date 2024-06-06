@@ -16,19 +16,17 @@ nocite: |
 
 Have you ever begun reading a paper in the causal inference literature and encountered the phrase "assume the treatment or exposure is a binary..."? While assuming a variable is binary can simplify a problem, nature rarely reflects this paradigm.
 
-Instead, lets:
+**Instead, lets assume** $A$ **is a binary, categorical, or continuous variable!**
 
--   Assume $A$ is a binary, categorical, or continuous variable!
+------------------------------------------------------------------------
 
--   In addition, let $\dd_t(a_t, h_t, \epsilon_t)$ be a function that maps $A_t$, $H_t$, and potentially a randomizer $\epsilon_t$ to a new value of $A_t$. **We will often refer to the function** $\dd_t$ **as a *shift* function or a *general hypothetical intervention*.**
-
-Our focus in this workshop is estimating the causal effect of an intervention, characterized by $\dd$ on the outcome $Y$, through the causal parameter
+In the previous section, we defined $\dd_t(a_t, h_t, \epsilon_t)$ as a function that maps $A_t$, $H_t$, and potentially a randomizer $\epsilon_t$ to a new value of $A_t$. Our focus henceforth is estimating the causal effect of an intervention, characterized by $\dd$ on the outcome $Y$, through the causal parameter
 
 $$
-\theta = \E[Y(\bar A^{\dd})]\text{,}
+\theta = \E[Y^{\bar A^{\dd}}]\text{,}
 $$
 
-where $Y(\bar A^\dd)$ is the counterfactual outcome in a world, where possibly contrary to fact, each entry of $\bar{A}$ was modified according to the function $\dd$.
+where $Y^{\bar A^{\dd}}$ is the counterfactual outcome in a world, where possibly contrary to fact, each entry of $\bar{A}$ was modified according to the function $\dd$.
 
 -   When $Y$ is continuous, $\theta$ is the mean population value of $Y$ under intervention $\dd$.
 
@@ -38,19 +36,25 @@ where $Y(\bar A^\dd)$ is the counterfactual outcome in a world, where possibly c
 
 ### Identification of the causal parameter
 
+Recall that the fundamental problem of causal inference is that we can't observe the alternative worlds which we use to define causal effects. If we can't observe counterfactual variables, then how can we learn a causal effect? Under a set of certain assumptions, we can *identify* a causal parameter from observed data. These assumptions are called identification assumptions.
+
 ::: callout-important
-## Assumptions
+## Identification Assumptions
 
 1.  *Positivity*. If $(a_t, h_t) \in \text{supp}\{A_t, H_t\}$ then $\dd(a_t, h_t) \in \text{supp}\{A_t, H_t\}$ for $t \in \{1, ..., \tau\}$.
 
     > If there is a unit with observed treatment value $a_t$ and covariates $h_t$, there must also be a unit with treatment value $\dd(a_t, h_t)$ and covariates $h_t$.
 
-2.  *Exchangeability.* $A_t \perp \!\!\! \perp Y(\bar{a}) | H_t$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$ and $t \in \{1, ..., \tau\}$.
+2.  *Conditional Exchangeability.* $A_t \perp \!\!\! \perp Y^{\bar{a}} | H_t$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$ and $t \in \{1, ..., \tau\}$.
+
+    > For all times $t$, the potential outcomes $Y^{\bar{a}}$ are independent of treatment assignment.
 
 3.  *Consistency.* $\bar{A} = \bar{a} \implies Y = Y(\bar{a})$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$.
+
+    > The observed outcome for a unit who received a particular treatment level is the same as the potential outcome that would have been observed if that unit had been assigned to that treatment level.
 :::
 
-Assuming ..., $\theta$ is identified from the observed data by:
+Assuming the above, $\theta$ is identified from the observed data with:
 
 ::: {.callout-tip icon="false"}
 ## Theorem
@@ -83,10 +87,8 @@ An intervention is static if the function $\dd_t$ always returns the same value 
 
 ::: {.callout-tip icon="false"}
 ## Example
-Let's say we were interested in the effect of randomizing patients with opioid use disorder to injection naltrexone ($A=1$) vs. sublingual buprenorphine ($A=0$). We would contrast the counterfactual
-  outcomes in a hypothetical world in which all units were treated with injection naltrexone $\dd_1=1$ versus a hypothetical world in which all units were treated with buprenorphine $\dd_0=0$. This gives us the well-known average (comparative) treatment effect (ATE). 
-  $$\E[Y(A^{\dd_1}) - Y(A^{\dd_0})] = \E[Y(A=1) - Y(A=0)] $$.
-  
+
+Let's say we were interested in the effect of randomizing patients with opioid use disorder to injection naltrexone ($A=1$) vs. sublingual buprenorphine ($A=0$). We would contrast the counterfactual outcomes in a hypothetical world in which all units were treated with injection naltrexone $\dd_1=1$ versus a hypothetical world in which all units were treated with buprenorphine $\dd_0=0$. This gives us the well-known average (comparative) treatment effect (ATE). $$\E[Y^{\bar A^{\dd_1}} - Y^{\bar A^{\dd_0}}] = \E[Y^{A=1} - Y^{A=0}] $$.
 :::
 
 ### Dynamic Treatment Regime

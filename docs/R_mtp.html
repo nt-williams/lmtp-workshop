@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -98,7 +99,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -107,8 +114,10 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/editor/editor.main.css">
@@ -316,7 +325,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"id":1,"options":{"fig-cap":"","read-only":"false","autorun":"true","fig-width":7,"editor-font-scale":1,"dpi":72,"out-width":"700px","editor-quick-suggestions":"false","editor-max-height":"","label":"unnamed-chunk-1","results":"markup","fig-height":5,"warning":"true","message":"true","output":"true","comment":"","out-height":"","context":"setup","classes":""},"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/crime_toy.csv\", \"crime.csv\")\ncrime <- read.csv(\"crime.csv\")"},{"id":2,"options":{"fig-cap":"","read-only":"false","autorun":"false","fig-width":7,"editor-font-scale":1,"dpi":72,"out-width":"700px","editor-quick-suggestions":"false","editor-max-height":"","label":"unnamed-chunk-2","results":"markup","fig-height":5,"warning":"true","message":"true","output":"true","comment":"","out-height":"","context":"interactive","classes":""},"code":"A <- \"neighborhood_violence\"\nW <- names(crime)[1:12]\nY <- \"preterm_birth\"\nid <- \"community_code\"\n\nlearners <- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.rpart\", \n              \"SL.gam\")\n\nd <- # Write your shift function here!\n\nfit_d <- # Write your estimation code here!"},{"id":3,"options":{"fig-cap":"","read-only":"false","autorun":"false","fig-width":7,"editor-font-scale":1,"dpi":72,"out-width":"700px","editor-quick-suggestions":"false","editor-max-height":"","label":"unnamed-chunk-3","results":"markup","fig-height":5,"warning":"true","message":"true","output":"true","comment":"","out-height":"","context":"interactive","classes":""},"code":"# Write your code here!"}];
+globalThis.qwebrCellDetails = [{"id":1,"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/crime_toy.csv\", \"crime.csv\")\ncrime <- read.csv(\"crime.csv\")","options":{"comment":"","autorun":"true","results":"markup","output":"true","out-width":"700px","message":"true","warning":"true","dpi":72,"fig-height":5,"editor-font-scale":1,"out-height":"","fig-cap":"","editor-quick-suggestions":"false","context":"setup","classes":"","read-only":"false","label":"unnamed-chunk-1","fig-width":7,"editor-max-height":""}},{"id":2,"code":"A <- \"neighborhood_violence\"\nW <- names(crime)[1:12]\nY <- \"preterm_birth\"\nid <- \"community_code\"\n\nlearners <- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.rpart\", \n              \"SL.gam\")\n\nd <- # Write your shift function here!\n\nfit_d <- # Write your estimation code here!","options":{"comment":"","autorun":"false","results":"markup","output":"true","out-width":"700px","message":"true","warning":"true","dpi":72,"fig-height":5,"editor-font-scale":1,"out-height":"","fig-cap":"","editor-quick-suggestions":"false","context":"interactive","classes":"","read-only":"false","label":"unnamed-chunk-2","fig-width":7,"editor-max-height":""}},{"id":3,"code":"# Write your code here!","options":{"comment":"","autorun":"false","results":"markup","output":"true","out-width":"700px","message":"true","warning":"true","dpi":72,"fig-height":5,"editor-font-scale":1,"out-height":"","fig-cap":"","editor-quick-suggestions":"false","context":"interactive","classes":"","read-only":"false","label":"unnamed-chunk-3","fig-width":7,"editor-max-height":""}}];
 
 </script>
 <script type="module">
@@ -1156,6 +1165,33 @@ globalThis.qwebrExecuteCode = async function (
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -1163,9 +1199,9 @@ globalThis.qwebrExecuteCode = async function (
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Beyond the Average Treatment Effect</span>
     </a>
@@ -1177,28 +1213,28 @@ globalThis.qwebrExecuteCode = async function (
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./instructors.html" rel="" target="">
- <span class="menu-text">Instructors</span></a>
+    <a class="nav-link" href="./instructors.html"> 
+<span class="menu-text">Instructors</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_mtp.html">Modified Treatment Policies</a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_mtp.html">Modified Treatment Policies</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -1207,7 +1243,7 @@ globalThis.qwebrExecuteCode = async function (
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
@@ -1313,7 +1349,7 @@ globalThis.qwebrExecuteCode = async function (
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -1556,7 +1592,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 }
 </script>
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_mtp.html">Modified Treatment Policies</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Modified treatment policies</h1>
 </div>
@@ -1577,7 +1613,9 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   </div>
   
 
+
 </header>
+
 
 <div class="hidden">
 <p><span class="math display">\[
@@ -1607,24 +1645,24 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <p>In some current work, we are interested in estimating the effect of decreasing the level of community violence (violent crime rate) on risk of preterm birth. Research suggests community violence may impact infant health through physiological responses to stress, worsening maternal mental health, and unhealthy coping behaviors. Community violence is a highly endogenous exposure, which, motivates the use of such a shift intervention.</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<div id="buwdkimkcc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#buwdkimkcc table {
+<div>
+<div id="zzslauvnqq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zzslauvnqq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#buwdkimkcc thead, #buwdkimkcc tbody, #buwdkimkcc tfoot, #buwdkimkcc tr, #buwdkimkcc td, #buwdkimkcc th {
+#zzslauvnqq thead, #zzslauvnqq tbody, #zzslauvnqq tfoot, #zzslauvnqq tr, #zzslauvnqq td, #zzslauvnqq th {
   border-style: none;
 }
 
-#buwdkimkcc p {
+#zzslauvnqq p {
   margin: 0;
   padding: 0;
 }
 
-#buwdkimkcc .gt_table {
+#zzslauvnqq .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1650,12 +1688,12 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-left-color: #D3D3D3;
 }
 
-#buwdkimkcc .gt_caption {
+#zzslauvnqq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#buwdkimkcc .gt_title {
+#zzslauvnqq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1667,7 +1705,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-width: 0;
 }
 
-#buwdkimkcc .gt_subtitle {
+#zzslauvnqq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1679,7 +1717,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-width: 0;
 }
 
-#buwdkimkcc .gt_heading {
+#zzslauvnqq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1691,13 +1729,13 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#buwdkimkcc .gt_bottom_border {
+#zzslauvnqq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#buwdkimkcc .gt_col_headings {
+#zzslauvnqq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1712,7 +1750,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#buwdkimkcc .gt_col_heading {
+#zzslauvnqq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1732,7 +1770,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#buwdkimkcc .gt_column_spanner_outer {
+#zzslauvnqq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1744,15 +1782,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 4px;
 }
 
-#buwdkimkcc .gt_column_spanner_outer:first-child {
+#zzslauvnqq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#buwdkimkcc .gt_column_spanner_outer:last-child {
+#zzslauvnqq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#buwdkimkcc .gt_column_spanner {
+#zzslauvnqq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1764,11 +1802,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   width: 100%;
 }
 
-#buwdkimkcc .gt_spanner_row {
+#zzslauvnqq .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#buwdkimkcc .gt_group_heading {
+#zzslauvnqq .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1794,7 +1832,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   text-align: left;
 }
 
-#buwdkimkcc .gt_empty_group_heading {
+#zzslauvnqq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1809,15 +1847,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: middle;
 }
 
-#buwdkimkcc .gt_from_md > :first-child {
+#zzslauvnqq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#buwdkimkcc .gt_from_md > :last-child {
+#zzslauvnqq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#buwdkimkcc .gt_row {
+#zzslauvnqq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1836,7 +1874,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#buwdkimkcc .gt_stub {
+#zzslauvnqq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1849,7 +1887,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#buwdkimkcc .gt_stub_row_group {
+#zzslauvnqq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1863,15 +1901,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: top;
 }
 
-#buwdkimkcc .gt_row_group_first td {
+#zzslauvnqq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#buwdkimkcc .gt_row_group_first th {
+#zzslauvnqq .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#buwdkimkcc .gt_summary_row {
+#zzslauvnqq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1881,16 +1919,16 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#buwdkimkcc .gt_first_summary_row {
+#zzslauvnqq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#buwdkimkcc .gt_first_summary_row.thick {
+#zzslauvnqq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#buwdkimkcc .gt_last_summary_row {
+#zzslauvnqq .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1900,7 +1938,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#buwdkimkcc .gt_grand_summary_row {
+#zzslauvnqq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1910,7 +1948,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#buwdkimkcc .gt_first_grand_summary_row {
+#zzslauvnqq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1920,7 +1958,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-color: #D3D3D3;
 }
 
-#buwdkimkcc .gt_last_grand_summary_row_top {
+#zzslauvnqq .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1930,11 +1968,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#buwdkimkcc .gt_striped {
+#zzslauvnqq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#buwdkimkcc .gt_table_body {
+#zzslauvnqq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1943,7 +1981,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#buwdkimkcc .gt_footnotes {
+#zzslauvnqq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1957,7 +1995,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#buwdkimkcc .gt_footnote {
+#zzslauvnqq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1966,7 +2004,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#buwdkimkcc .gt_sourcenotes {
+#zzslauvnqq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1980,7 +2018,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#buwdkimkcc .gt_sourcenote {
+#zzslauvnqq .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1988,144 +2026,216 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#buwdkimkcc .gt_left {
+#zzslauvnqq .gt_left {
   text-align: left;
 }
 
-#buwdkimkcc .gt_center {
+#zzslauvnqq .gt_center {
   text-align: center;
 }
 
-#buwdkimkcc .gt_right {
+#zzslauvnqq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#buwdkimkcc .gt_font_normal {
+#zzslauvnqq .gt_font_normal {
   font-weight: normal;
 }
 
-#buwdkimkcc .gt_font_bold {
+#zzslauvnqq .gt_font_bold {
   font-weight: bold;
 }
 
-#buwdkimkcc .gt_font_italic {
+#zzslauvnqq .gt_font_italic {
   font-style: italic;
 }
 
-#buwdkimkcc .gt_super {
+#zzslauvnqq .gt_super {
   font-size: 65%;
 }
 
-#buwdkimkcc .gt_footnote_marks {
+#zzslauvnqq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#buwdkimkcc .gt_asterisk {
+#zzslauvnqq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#buwdkimkcc .gt_indent_1 {
+#zzslauvnqq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#buwdkimkcc .gt_indent_2 {
+#zzslauvnqq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#buwdkimkcc .gt_indent_3 {
+#zzslauvnqq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#buwdkimkcc .gt_indent_4 {
+#zzslauvnqq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#buwdkimkcc .gt_indent_5 {
+#zzslauvnqq .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
-<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-  <thead>
-    <tr class="gt_col_headings">
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="<strong>Characteristic</strong>"><strong>Characteristic</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="<strong>N = 1,000</strong><span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>"><strong>N = 1,000</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
-    </tr>
-  </thead>
-  <tbody class="gt_table_body">
-    <tr><td headers="label" class="gt_row gt_left">owner_vacancy_rate</td>
-<td headers="stat_0" class="gt_row gt_center">4.3 (1.9, 8.3)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">renter_vacancy_rate</td>
-<td headers="stat_0" class="gt_row gt_center">3.9 (1.8, 9.0)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">poverty_line_prop</td>
-<td headers="stat_0" class="gt_row gt_center">16 (9, 24)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">unemployed_prop</td>
-<td headers="stat_0" class="gt_row gt_center">12 (8, 20)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">no_car_prop</td>
-<td headers="stat_0" class="gt_row gt_center">14 (9, 24)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">never_married_prop</td>
-<td headers="stat_0" class="gt_row gt_center">38 (29, 57)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">separated_prop</td>
-<td headers="stat_0" class="gt_row gt_center">3.23 (2.07, 4.62)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">maternal_age</td>
-<td headers="stat_0" class="gt_row gt_center">28 (22, 37)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">edu_level</td>
-<td headers="stat_0" class="gt_row gt_center"><br></td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;1</td>
-<td headers="stat_0" class="gt_row gt_center">292 (29%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;2</td>
-<td headers="stat_0" class="gt_row gt_center">452 (45%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;3</td>
-<td headers="stat_0" class="gt_row gt_center">256 (26%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">insurance_status</td>
-<td headers="stat_0" class="gt_row gt_center"><br></td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;1</td>
-<td headers="stat_0" class="gt_row gt_center">489 (49%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;2</td>
-<td headers="stat_0" class="gt_row gt_center">493 (49%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;3</td>
-<td headers="stat_0" class="gt_row gt_center">18 (1.8%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">race_ethnicity</td>
-<td headers="stat_0" class="gt_row gt_center"><br></td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;1</td>
-<td headers="stat_0" class="gt_row gt_center">216 (22%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;2</td>
-<td headers="stat_0" class="gt_row gt_center">53 (5.3%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;3</td>
-<td headers="stat_0" class="gt_row gt_center">3 (0.3%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;4</td>
-<td headers="stat_0" class="gt_row gt_center">139 (14%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;5</td>
-<td headers="stat_0" class="gt_row gt_center">4 (0.4%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;6</td>
-<td headers="stat_0" class="gt_row gt_center">19 (1.9%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;7</td>
-<td headers="stat_0" class="gt_row gt_center">525 (53%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;8</td>
-<td headers="stat_0" class="gt_row gt_center">41 (4.1%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">parity</td>
-<td headers="stat_0" class="gt_row gt_center"><br></td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;1</td>
-<td headers="stat_0" class="gt_row gt_center">406 (41%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;2</td>
-<td headers="stat_0" class="gt_row gt_center">300 (30%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">&nbsp;&nbsp;&nbsp;&nbsp;3</td>
-<td headers="stat_0" class="gt_row gt_center">294 (29%)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">neighborhood_violence</td>
-<td headers="stat_0" class="gt_row gt_center">47 (34, 69)</td></tr>
-    <tr><td headers="label" class="gt_row gt_left">preterm_birth</td>
-<td headers="stat_0" class="gt_row gt_center">79 (7.9%)</td></tr>
-  </tbody>
-  
-  <tfoot class="gt_footnotes">
-    <tr>
-      <td class="gt_footnote" colspan="2"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> Median (IQR); n (%)</td>
-    </tr>
-  </tfoot>
+
+<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header gt_col_headings">
+<th id="<strong>Characteristic</strong>" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
+<th id="<strong>N = 1,000</strong><span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>N = 1,000</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">owner_vacancy_rate</td>
+<td class="gt_row gt_center" headers="stat_0">4.3 (1.9, 8.3)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">renter_vacancy_rate</td>
+<td class="gt_row gt_center" headers="stat_0">3.9 (1.8, 9.0)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">poverty_line_prop</td>
+<td class="gt_row gt_center" headers="stat_0">16 (9, 24)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">unemployed_prop</td>
+<td class="gt_row gt_center" headers="stat_0">12 (8, 20)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">no_car_prop</td>
+<td class="gt_row gt_center" headers="stat_0">14 (9, 24)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">never_married_prop</td>
+<td class="gt_row gt_center" headers="stat_0">38 (29, 57)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">separated_prop</td>
+<td class="gt_row gt_center" headers="stat_0">3.23 (2.07, 4.62)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">maternal_age</td>
+<td class="gt_row gt_center" headers="stat_0">28 (22, 37)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">edu_level</td>
+<td class="gt_row gt_center" headers="stat_0"><br>
+</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+<td class="gt_row gt_center" headers="stat_0">292 (29%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+<td class="gt_row gt_center" headers="stat_0">452 (45%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;3</td>
+<td class="gt_row gt_center" headers="stat_0">256 (26%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">insurance_status</td>
+<td class="gt_row gt_center" headers="stat_0"><br>
+</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+<td class="gt_row gt_center" headers="stat_0">489 (49%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+<td class="gt_row gt_center" headers="stat_0">493 (49%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;3</td>
+<td class="gt_row gt_center" headers="stat_0">18 (1.8%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">race_ethnicity</td>
+<td class="gt_row gt_center" headers="stat_0"><br>
+</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+<td class="gt_row gt_center" headers="stat_0">216 (22%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+<td class="gt_row gt_center" headers="stat_0">53 (5.3%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;3</td>
+<td class="gt_row gt_center" headers="stat_0">3 (0.3%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;4</td>
+<td class="gt_row gt_center" headers="stat_0">139 (14%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;5</td>
+<td class="gt_row gt_center" headers="stat_0">4 (0.4%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;6</td>
+<td class="gt_row gt_center" headers="stat_0">19 (1.9%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;7</td>
+<td class="gt_row gt_center" headers="stat_0">525 (53%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;8</td>
+<td class="gt_row gt_center" headers="stat_0">41 (4.1%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">parity</td>
+<td class="gt_row gt_center" headers="stat_0"><br>
+</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+<td class="gt_row gt_center" headers="stat_0">406 (41%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+<td class="gt_row gt_center" headers="stat_0">300 (30%)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;3</td>
+<td class="gt_row gt_center" headers="stat_0">294 (29%)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">neighborhood_violence</td>
+<td class="gt_row gt_center" headers="stat_0">47 (34, 69)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">preterm_birth</td>
+<td class="gt_row gt_center" headers="stat_0">79 (7.9%)</td>
+</tr>
+</tbody><tfoot class="gt_footnotes">
+<tr class="even">
+<td colspan="2" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> Median (IQR); n (%)</td>
+</tr>
+</tfoot>
+
 </table>
+
+</div>
 </div>
 </div>
 </div>
@@ -2219,7 +2329,7 @@ Practice
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-diaz2023nonparametric" class="csl-entry" role="listitem">
 Dı́az, Iván, Nicholas Williams, Katherine L Hoffman, and Edward J Schenck. 2023. <span>“Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies.”</span> <em>Journal of the American Statistical Association</em> 118 (542): 846–57.
 </div>
@@ -2306,10 +2416,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -2319,8 +2446,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -2332,7 +2468,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -2376,6 +2635,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -2401,6 +2661,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -2573,6 +2859,7 @@ qwebrInstance.then(
   }
 );
 </script>
+
 
 
 

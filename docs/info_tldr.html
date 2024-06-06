@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Beyond the Average Treatment Effect - Causal Inference in Brief</title>
+<title>Beyond the Average Treatment Effect - The Causal Model and Notation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -45,7 +65,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -54,13 +80,52 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -69,9 +134,9 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Beyond the Average Treatment Effect</span>
     </a>
@@ -83,28 +148,28 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./instructors.html" rel="" target="">
- <span class="menu-text">Instructors</span></a>
+    <a class="nav-link" href="./instructors.html"> 
+<span class="menu-text">Instructors</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./info_tldr.html">1. Introduction</a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./info_tldr.html">1. Introduction</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -113,7 +178,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
@@ -219,24 +284,17 @@ ul.task-list li input[type="checkbox"] {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#the-causal-roadmap" id="toc-the-causal-roadmap" class="nav-link active" data-scroll-target="#the-causal-roadmap">The Causal Roadmap</a></li>
-  <li><a href="#notation-summary" id="toc-notation-summary" class="nav-link" data-scroll-target="#notation-summary">Notation Summary</a></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Causal Inference in Brief</h1>
+<h1 class="title">The Causal Model and Notation</h1>
 </div>
 
 
@@ -245,11 +303,19 @@ ul.task-list li input[type="checkbox"] {
 
     
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">June 6, 2024</p>
+    </div>
+  </div>
     
   </div>
   
 
+
 </header>
+
 
 <div class="hidden">
 <p><span class="math display">\[
@@ -266,11 +332,98 @@ ul.task-list li input[type="checkbox"] {
 \newcommand{\E}{\mathsf{E}}
 \]</span></p>
 </div>
-<section id="the-causal-roadmap" class="level3">
-<h3 class="anchored" data-anchor-id="the-causal-roadmap">The Causal Roadmap</h3>
-</section>
-<section id="notation-summary" class="level3">
-<h3 class="anchored" data-anchor-id="notation-summary">Notation Summary</h3>
+<p>Consider the set of random variables:</p>
+<p><span class="math display">\[
+\begin{align}
+L &amp;= f_L(U_L)\\
+A &amp;= f_A(L, U_A)\\
+Y &amp;= f_Y(A, L, U_Y)
+\end{align}
+\]</span></p>
+<ul>
+<li><p>The functions <span class="math inline">\(f\)</span> are assumed fixed, but likely unknown.</p></li>
+<li><p><span class="math inline">\(U = (U_L, U_A, U_Y)\)</span> is a vector of exogenous, unmeasured random variables.</p></li>
+<li><p>This system is referred to as a Non-parametric Structural Equation Model (NPSEM).</p></li>
+<li><p>We will assume that this system of equations exists in nature and is responsible for generating our observed data.</p></li>
+</ul>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>We will often refer to <span class="math inline">\(L\)</span> as confounders, <span class="math inline">\(A\)</span> as the treatment or exposure, and <span class="math inline">\(Y\)</span> as the outcome.</p>
+</div>
+</div>
+</div>
+<hr>
+<p>Take for example the following sample of data:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e4f7fb849d6eff5f756a" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e4f7fb849d6eff5f756a">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Male","Male","Male","Male","Female","Female","Male","Male","Male","Female"],[23.6,29,30.7,36.1,38,21.5,16.5,24.4,31.9,32.5],[53.5167693360712,77.3333333333333,58.7542778918549,55.6084873374401,45.2977412731006,61.2867898699521,90.72689938398361,31.4688569472964,48.3860369609856,56.8514715947981],["No","No","Former Smoker","Former Smoker","No","No","Former Smoker","No","No","Former Smoker"],[0,0,1,0,1,1,0,0,1,0],[1,0,1,0,0,0,1,0,0,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,5,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+</div>
+</div>
+<p><br>
+Let, <span class="math inline">\(L\)</span> = <code>sex</code>, <code>bmi</code>, <code>age</code>, and <code>smoke</code>; <span class="math inline">\(A\)</span> = <code>trt</code>; and <span class="math inline">\(Y\)</span> = <code>event</code>. When we say that we assume the previous NPSEM, we are positing that:</p>
+<ul>
+<li><p>the variable <code>trt</code> was generated from an unknown function of the random variables <code>sex</code>, <code>bmi</code>, <code>age</code>, and <code>smoke</code>, as well as a set of unmeasured random variables not present in our data.</p></li>
+<li><p>that the variable <code>event</code> was generated from an unknown function of the variables that generated <code>trt</code> in addition to <code>trt</code> itself.</p></li>
+</ul>
+<p>Note that in some cases, we may know one or more of the functions <span class="math inline">\(f\)</span>. For example, if our data came from a randomized clinical trial for <span class="math inline">\(A\)</span>, then we are likely to know the true value of <span class="math inline">\(f_A\)</span>.</p>
+<hr>
+<p>Central to how we will define causal effects is the concept of <em>counterfactual random variables.</em></p>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Counterfactual random variables
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Hypothetical random variables that would have been observed, possibly contrary to fact, in an alternative world.</p>
+</div>
+</div>
+<p>For example, consider a scenario where we are interested in the value of <span class="math inline">\(Y\)</span> in a hypothetical situation where, instead of the variable <span class="math inline">\(A\)</span> being equal to its observed value, <span class="math inline">\(A\)</span> is set to some other value.</p>
+<ul>
+<li><p>The value of <span class="math inline">\(Y\)</span> in this hypothetical situation is a counterfactual random variable.</p></li>
+<li><p>let <span class="math inline">\(\dd(A, L)\)</span> be a function that returns a new value of <span class="math inline">\(A\)</span>. <strong>We will refer to the function</strong> <span class="math inline">\(\dd\)</span> <strong>as a <em>shift</em> function or a <em>general hypothetical intervention</em>.</strong></p></li>
+<li><p>Denote the value of <span class="math inline">\(Y\)</span> in the hypothetical world where <span class="math inline">\(A\)</span> is set to the output of <span class="math inline">\(\dd\)</span> as <span class="math inline">\(Y^{\dd}\)</span>.</p></li>
+</ul>
+<p>Returning to the data example, imagine we are interested in the value of <code>event</code> if <code>trt</code> was replaced with the output of a function <span class="math inline">\(\dd\)</span> that always returns 1:</p>
+<p><span class="math display">\[
+\begin{align}
+L &amp;= f_L(U_L)\\
+A &amp;= \dd(A, L) = 1 \\
+Y^{\dd} &amp;= f_Y(1, L, U_Y)
+\end{align}
+\]</span></p>
+<p>If we had the ability to collect data from this alternative NPSEM, the data may instead look like this:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-45b606793312013caa1b" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-45b606793312013caa1b">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Male","Male","Female","Male","Male","Female","Female","Female","Male","Male"],[32.6,30.7,21.5,26.9,32,30.9,28.8,23.7,21,25.1],[69.1663244353183,58.7542778918549,60.8952772073922,49.1581108829569,41.0896646132786,95.9260780287474,81.35249828884329,54.9705681040383,82.6666666666667,61.8124572210815],["No","Former Smoker","No","No","No","Former Smoker","No","No","Former Smoker","No"],[1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[2,3,5,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Unfortunately, we are never able to collect data from this alternative world. This is called the <em>fundamental problem of causal inference.</em></p>
+</div>
+</div>
+</div>
+<hr>
+<p>The previous NPSEM is the simplest causal model we will assume in this workshop. However, real data is often much more complex and may be characterized by:</p>
+<ul>
+<li><p>time-varying variables</p></li>
+<li><p>loss-to-follow-up</p></li>
+</ul>
+<p>As such, we need to modify and introudce some additional notation:</p>
 <table class="table">
 <colgroup>
 <col style="width: 36%">
@@ -284,24 +437,32 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
+<td><span class="math inline">\(i\)</span></td>
+<td>The index (i.e.&nbsp;a row in a dataset) of an observation from a data set with <span class="math inline">\(n\)</span> total units (i.e., the total number of rows)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(t\)</span></td>
+<td>The index of time for a total number of time points <span class="math inline">\(\tau\)</span></td>
+</tr>
+<tr class="odd">
 <td><span class="math inline">\(L_t\)</span></td>
-<td>Time-varying covariates</td>
+<td>Confounders at time <span class="math inline">\(t\)</span></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(A_t\)</span></td>
-<td>A vector of intervention variables (i..e, treatment or exposure)</td>
+<td>A vector of intervention variables (i..e, treatment or exposure) at time <span class="math inline">\(t\)</span></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(Y\)</span></td>
-<td>An outcome variable. Earlier measures of the outcome can be included in <span class="math inline">\(L_t\)</span>.</td>
+<td>An outcome variable observed at time <span class="math inline">\(\tau + 1\)</span>. Earlier measures of the outcome can be included in <span class="math inline">\(L_t\)</span>.</td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(C_t\)</span></td>
-<td>A indicator variable that a unit is <em>observed</em> at the next time point</td>
+<td>A indicator variable that a unit is <em>observed</em> at time <span class="math inline">\(t+1\)</span></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(O_1, ..., O_n\)</span></td>
-<td>A sample of i.i.d observations with <span class="math inline">\(O = (L_1, A_1, C_1, L_2, A_2, C_2, ..., L_\tau, A_\tau, C_\tau, Y)\)</span></td>
+<td>A sample of <span class="math inline">\(n\)</span> i.i.d observations with <span class="math inline">\(O = (L_1, A_1, C_1, L_2, A_2, C_2, ..., L_\tau, A_\tau, C_\tau, Y)\)</span></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(\bar{X}_t = (X_1, ..., X_t)\)</span></td>
@@ -316,16 +477,24 @@ ul.task-list li input[type="checkbox"] {
 <td>The history of all variables up until just before <span class="math inline">\(A_t\)</span></td>
 </tr>
 <tr class="odd">
-<td><span class="math inline">\(\g_t(a_t, h_t) = \P(A_t = a_t \mid H_t = h_t)\)</span></td>
-<td>The probability density function of <span class="math inline">\(A_t\)</span> conditional on <span class="math inline">\(H_t = h_t\)</span></td>
+<td><span class="math inline">\(\epsilon_t\)</span></td>
+<td>A randomizer</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\dd_t(a_t, h_t, \epsilon_t)\)</span></td>
+<td>A function that maps <span class="math inline">\(A_t\)</span>, <span class="math inline">\(H_t\)</span>, and <span class="math inline">\(\epsilon_t\)</span> to a new value of <span class="math inline">\(A_t\)</span></td>
 </tr>
 </tbody>
 </table>
 
 
-</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-diaz2023nonparametric" class="csl-entry" role="listitem">
+Dı́az, Iván, Nicholas Williams, Katherine L Hoffman, and Edward J Schenck. 2023. <span>“Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies.”</span> <em>Journal of the American Statistical Association</em> 118 (542): 846–57.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -405,10 +574,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -418,8 +604,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -431,7 +626,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -475,6 +793,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -500,6 +819,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -560,6 +905,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

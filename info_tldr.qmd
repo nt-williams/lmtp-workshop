@@ -1,21 +1,121 @@
 ---
-title: "Causal Inference in Brief"
+title: "The Causal Model and Notation"
+engine: knitr
+date-modified: last-modified
+bibliography: references.bib
+nocite: |
+  @diaz2023nonparametric
 ---
 
 {{< include macros.qmd >}}
 
-### The Causal Roadmap
+Consider the set of random variables:
 
-### Notation Summary
+$$
+\begin{align}
+L &= f_L(U_L)\\
+A &= f_A(L, U_A)\\
+Y &= f_Y(A, L, U_Y)
+\end{align}
+$$
 
-| Symbol                                          | Definition                                                                             |
+-   The functions $f$ are assumed fixed, but likely unknown.
+
+-   $U = (U_L, U_A, U_Y)$ is a vector of exogenous, unmeasured random variables.
+
+-   This system is referred to as a Non-parametric Structural Equation Model (NPSEM).
+
+-   We will assume that this system of equations exists in nature and is responsible for generating our observed data.
+
+::: {.callout-note appearance="simple"}
+We will often refer to $L$ as confounders, $A$ as the treatment or exposure, and $Y$ as the outcome.
+:::
+
+------------------------------------------------------------------------
+
+Take for example the following sample of data:
+
+```{r echo=FALSE}
+read.csv("data/williams_synthetic.csv") |>
+  dplyr::select(sex, bmi, age, smoke, trt = A, event) |> 
+  dplyr::sample_n(10) |> 
+  DT::datatable() |> 
+  DT::formatRound(columns = "age", digits = 0)
+```
+
+\
+Let, $L$ = `sex`, `bmi`, `age`, and `smoke`; $A$ = `trt`; and $Y$ = `event`. When we say that we assume the previous NPSEM, we are positing that:
+
+-   the variable `trt` was generated from an unknown function of the random variables `sex`, `bmi`, `age`, and `smoke`, as well as a set of unmeasured random variables not present in our data.
+
+-   that the variable `event` was generated from an unknown function of the variables that generated `trt` in addition to `trt` itself.
+
+Note that in some cases, we may know one or more of the functions $f$. For example, if our data came from a randomized clinical trial for $A$, then we are likely to know the true value of $f_A$.
+
+------------------------------------------------------------------------
+
+Central to how we will define causal effects is the concept of *counterfactual random variables.*
+
+::: {.callout-important icon="false"}
+## Counterfactual random variables
+
+Hypothetical random variables that would have been observed, possibly contrary to fact, in an alternative world.
+:::
+
+For example, consider a scenario where we are interested in the value of $Y$ in a hypothetical situation where, instead of the variable $A$ being equal to its observed value, $A$ is set to some other value.
+
+-   The value of $Y$ in this hypothetical situation is a counterfactual random variable.
+
+-   let $\dd(A, L)$ be a function that returns a new value of $A$. **We will refer to the function** $\dd$ **as a *shift* function or a *general hypothetical intervention*.**
+
+-   Denote the value of $Y$ in the hypothetical world where $A$ is set to the output of $\dd$ as $Y^{\dd}$.
+
+Returning to the data example, imagine we are interested in the value of `event` if `trt` was replaced with the output of a function $\dd$ that always returns 1:
+
+$$
+\begin{align}
+L &= f_L(U_L)\\
+A &= \dd(A, L) = 1 \\
+Y^{\dd} &= f_Y(1, L, U_Y)
+\end{align}
+$$
+
+If we had the ability to collect data from this alternative NPSEM, the data may instead look like this:
+
+```{r echo=FALSE}
+read.csv("data/williams_synthetic.csv") |>
+  dplyr::select(sex, bmi, age, smoke, trt = A, event) |> 
+  dplyr::slice(1:10) |> 
+  dplyr::mutate(trt = 1, event = 0) |> 
+  DT::datatable() |> 
+  DT::formatRound(columns = "age", digits = 0)
+```
+
+::: {.callout-note appearance="simple"}
+Unfortunately, we are never able to collect data from this alternative world. This is called the *fundamental problem of causal inference.*
+:::
+
+------------------------------------------------------------------------
+
+The previous NPSEM is the simplest causal model we will assume in this workshop. However, real data is often much more complex and may be characterized by:
+
+-   time-varying variables
+
+-   loss-to-follow-up
+
+As such, we need to modify and introudce some additional notation:
+
+| Symbol                                 | Definition                                                                                                                  |
 |--------------------------|----------------------------------------------|
-| $L_t$                                           | Time-varying covariates                                                                |
-| $A_t$                                           | A vector of intervention variables (i..e, treatment or exposure)                       |
-| $Y$                                             | An outcome variable. Earlier measures of the outcome can be included in $L_t$.         |          
-| $C_t$                                           | A indicator variable that a unit is *observed* at the next time point                  |
-| $O_1, ..., O_n$                                 | A sample of $n$ i.i.d observations with $O = (L_1, A_1, C_1, L_2, A_2, C_2, ..., L_\tau, A_\tau, C_\tau, Y)$ |
-| $\bar{X}_t = (X_1, ..., X_t)$                   | The history of a variable up until time $t$                                            |
-| $\underline{X}_t = (X_t, ..., X_\tau)$          | The future of a variable, including time $t$                                           |
-| $H_t = (\bar{A}_{t-1}, \bar{L}_t)$              | The history of all variables up until just before $A_t$                                |
-| $\g_t(a_t, h_t) = \P(A_t = a_t \mid H_t = h_t)$ | The probability density function of $A_t$ conditional on $H_t = h_t$                   |
+| $i$                                    | The index (i.e. a row in a dataset) of an observation from a data set with $n$ total units (i.e., the total number of rows) |
+| $t$                                    | The index of time for a total number of time points $\tau$                                                                  |
+| $L_t$                                  | Confounders at time $t$                                                                                                     |
+| $A_t$                                  | A vector of intervention variables (i..e, treatment or exposure) at time $t$                                                |
+| $Y$                                    | An outcome variable observed at time $\tau + 1$. Earlier measures of the outcome can be included in $L_t$.                  |
+| $C_t$                                  | A indicator variable that a unit is *observed* at time $t+1$                                                                |
+| $O_1, ..., O_n$                        | A sample of $n$ i.i.d observations with $O = (L_1, A_1, C_1, L_2, A_2, C_2, ..., L_\tau, A_\tau, C_\tau, Y)$                |
+| $\bar{X}_t = (X_1, ..., X_t)$          | The history of a variable up until time $t$                                                                                 |
+| $\underline{X}_t = (X_t, ..., X_\tau)$ | The future of a variable, including time $t$                                                                                |
+| $H_t = (\bar{A}_{t-1}, \bar{L}_t)$     | The history of all variables up until just before $A_t$                                                                     |
+| $\epsilon_t$                           | A randomizer                                                                                                                |
+| $\dd_t(a_t, h_t, \epsilon_t)$          | A function that maps $A_t$, $H_t$, and $\epsilon_t$ to a new value of $A_t$                                                 |

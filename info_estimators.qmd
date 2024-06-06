@@ -258,21 +258,9 @@ Algorithm: SDR Estimator
 
 ### Choosing an Estimator
 
-How should we choose which estimator to use?
-
 -   In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference (ya right 😂).
 
 -   The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining $\sqrt{n}$-consistent.
-
-While the SDR estimator may be more robust to model misspecification, the TMLE does have the advantage of being a substitution estimator. Because of this, estimates from the TMLE are guaranteed to stay within the valid range of the outcome. Taken together, this leads to the following recommendations for choosing between the TMLE and SDR:
-
-::: {.callout-tip appearance="simple"}
--   If treatment is not time-varying, use the TMLE.
-
--   If treatment is time-varying first try the SDR.
-
--   If the SDR estimator produces "out-of-bounds" estimates, instead use the TMLE.
-:::
 
 |                                       | IPW | G-comp. | TMLE | SDR |
 |---------------------------------------|:---:|:-------:|:----:|:---:|
@@ -284,6 +272,18 @@ While the SDR estimator may be more robust to model misspecification, the TMLE d
 | Sequentially doubly robust            |     |         |      | ⭐  |
 
 : **Table 1.** Summary of estimator properties. {tbl-colwidths="\[40,15,15,15,15\]"}
+
+::: callout-tip
+## Which estimator should I use?
+
+While the SDR estimator may be more robust to model misspecification, the TMLE does have the advantage of being a substitution estimator. Because of this, estimates from the TMLE are guaranteed to stay within the valid range of the outcome. Taken together, this leads to the following recommendations for choosing between the TMLE and SDR:
+
+-   If treatment is not time-varying, use the TMLE.
+
+-   If treatment is time-varying first try the SDR.
+
+-   If the SDR estimator produces "out-of-bounds" estimates, instead use the TMLE.
+:::
 
 ### Cross-fitting
 

@@ -30,7 +30,8 @@ For our first example, we'll use a synthetic dataset of $n = 1000$ patients from
 
 ```{r echo=FALSE}
 read.csv("data/williams_synthetic.csv") |> 
-  DT::datatable()
+  DT::datatable() |> 
+  DT::formatRound(columns = "age", digits = 0)
 ```
 
 \
@@ -202,12 +203,12 @@ How can we interpret this result?
 A call to an `lmtp` estimator returns a list of class `lmtp`.
 
 | Value          | Description                                                                                                                  |
-|-----------------|-------------------------------------------------------|
+|------------------|------------------------------------------------------|
 | estimator      | The estimator used.                                                                                                          |
-| theta          | The estimated population LMTP estimand.                                                                                        |
-| standard_error | The estimated standard error of the LMTP estimand.                                                                             |
-| low            | Lower bound of the 95% confidence interval of the LMTP estimand.                                                               |
-| high           | Upper bound of the 95% confidence interval of the LMTP estimand.                                                               |
+| theta          | The estimated population LMTP estimand.                                                                                      |
+| standard_error | The estimated standard error of the LMTP estimand.                                                                           |
+| low            | Lower bound of the 95% confidence interval of the LMTP estimand.                                                             |
+| high           | Upper bound of the 95% confidence interval of the LMTP estimand.                                                             |
 | eif            | The estimated, un-centered, influence function of the estimate.                                                              |
 | shift          | The shift function specifying the treatment policy of interest.                                                              |
 | outcome_reg    | An $n \times \tau + 1$ matrix of outcome regression predictions. The mean of the first column is used for calculating theta. |

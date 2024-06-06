@@ -33,7 +33,8 @@ A dataset named `bmi` has been loaded into R in the background.
 
 ```{r echo=FALSE}
 data(bmiData, package = "DynTxRegime")
-DT::datatable(bmiData)
+DT::datatable(bmiData) |> 
+  DT::formatRound(columns = paste0(c("parent", "baseline", "month4", "month12"), "BMI"), digits = 1)
 ```
 
 \
