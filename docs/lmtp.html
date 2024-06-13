@@ -340,7 +340,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">June 5, 2024</p>
+      <p class="date-modified">June 13, 2024</p>
     </div>
   </div>
     
@@ -377,6 +377,11 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"lmtp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Alternatively, you can download the developmental version from GitHub with</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(devtools)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"nt-williams/lmtp@devel"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="preliminaries" class="level3">
 <h3 class="anchored" data-anchor-id="preliminaries">Preliminaries</h3>
@@ -406,16 +411,16 @@ What are vectors and lists?
 <p>Vectors and lists are basic data structures in R. A vector can be thought of as a 1-dimensional collection of homogeneous elements. For example a character vector is a collection of values with the class <code>character</code>.<br>
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>a_character_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"this"</span>, <span class="st">"is"</span>, <span class="st">"a"</span>, <span class="st">"character"</span>, <span class="st">"vector"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a_character_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"this"</span>, <span class="st">"is"</span>, <span class="st">"a"</span>, <span class="st">"character"</span>, <span class="st">"vector"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A list is similar, except that it can hold elements of different types.<br>
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">a_character_vector =</span> <span class="fu">c</span>(<span class="st">"this"</span>, <span class="st">"is"</span>, <span class="st">"a"</span>, <span class="st">"character"</span>, <span class="st">"vector"</span>), </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">a_numeric_vector =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">a_list_whithin_a_list =</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>a_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">a_character_vector =</span> <span class="fu">c</span>(<span class="st">"this"</span>, <span class="st">"is"</span>, <span class="st">"a"</span>, <span class="st">"character"</span>, <span class="st">"vector"</span>), </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">a_numeric_vector =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">a_list_whithin_a_list =</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -482,10 +487,10 @@ What are vectors and lists?
 <li><p><code>lmtp</code> uses the super learner algorithm for estimating these nuisance parameters.</p></li>
 <li><p>The super learner algorithm is an ensemble learner than incorporates a set of candidate models through a weighted convex-combination based on cross-validation. Asymptotically, this weighted combination of models, called the meta-learner, will outperform any single one of its components.</p></li>
 <li><p><code>lmtp</code> uses the implementation of the super learner provided by the <code>SuperLearner</code> package.</p></li>
-<li><p>The algorithms to be used in the super learner are specified with the <code>lrnrs_trt</code> and <code>lrnrs_outcome</code> arguments.</p></li>
-<li><p>The outcome variable type should guide users on selecting the appropriate candidate learners for use with the <code>lrnrs_outcome</code> argument.</p></li>
-<li><p>Regardless of whether an exposure is continuous, dichotomous, or categorical, the <a href="info_estimators.html#sec-density-ratio-estimation">exposure mechanism is estimated using classification</a>. Therefore only include candidate learners capable of binary classification with the <code>lrnrs_trt</code> argument.</p></li>
-<li><p>Candidate learners that rely on cross-validation for the tuning of hyper-parameters should support grouped data if used with <code>lrnrs_trt</code>. Because estimation of the treatment mechanism relies on the augmented <span class="math inline">\(2n\)</span> duplicated data set, duplicated observations must be put into the same fold during sample-splitting. This is done automatically by the package.</p></li>
+<li><p>The algorithms to be used in the super learner are specified with the <code>learners_trt</code> and <code>learners_outcome</code> arguments.</p></li>
+<li><p>The outcome variable type should guide users on selecting the appropriate candidate learners for use with the <code>learners_outcome</code> argument.</p></li>
+<li><p>Regardless of whether an exposure is continuous, dichotomous, or categorical, the <a href="info_estimators.html#sec-density-ratio-estimation">exposure mechanism is estimated using classification</a>. Therefore only include candidate learners capable of binary classification with the <code>learners_trt</code> argument.</p></li>
+<li><p>Candidate learners that rely on cross-validation for the tuning of hyper-parameters should support grouped data if used with <code>learners_trt</code>. Because estimation of the treatment mechanism relies on the augmented <span class="math inline">\(2n\)</span> duplicated data set, duplicated observations must be put into the same fold during sample-splitting. This is done automatically by the package.</p></li>
 </ul>
 
 

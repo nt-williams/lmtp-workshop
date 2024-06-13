@@ -39,6 +39,13 @@ For this workshop, `lmtp` has already been installed with `webr`. However, you c
 install.packages("lmtp")
 ```
 
+Alternatively, you can download the developmental version from GitHub with
+
+```{r eval=FALSE}
+# install.packages(devtools)
+devtools::install_github("nt-williams/lmtp@devel")
+```
+
 ### Preliminaries
 
 Before we move on to using `lmtp`, here's general information that will be applicable across all examples:
@@ -66,13 +73,13 @@ Before we move on to using `lmtp`, here's general information that will be appli
 ::: callout-tip
 ## What are vectors and lists?
 
-Vectors and lists are basic data structures in R. A vector can be thought of as a 1-dimensional collection of homogeneous elements. For example a character vector is a collection of values with the class `character`. \
+Vectors and lists are basic data structures in R. A vector can be thought of as a 1-dimensional collection of homogeneous elements. For example a character vector is a collection of values with the class `character`.\
 
 ```{r eval=FALSE}
 a_character_vector <- c("this", "is", "a", "character", "vector")
 ```
 
-A list is similar, except that it can hold elements of different types. \
+A list is similar, except that it can hold elements of different types.\
 
 ```{r eval=FALSE}
 a_list <- list(
@@ -125,10 +132,10 @@ As was already discussed, an attractive property of multiply-robust estimators i
 
 -   `lmtp` uses the implementation of the super learner provided by the `SuperLearner` package.
 
--   The algorithms to be used in the super learner are specified with the `lrnrs_trt` and `lrnrs_outcome` arguments.
+-   The algorithms to be used in the super learner are specified with the `learners_trt` and `learners_outcome` arguments.
 
--   The outcome variable type should guide users on selecting the appropriate candidate learners for use with the `lrnrs_outcome` argument.
+-   The outcome variable type should guide users on selecting the appropriate candidate learners for use with the `learners_outcome` argument.
 
--   Regardless of whether an exposure is continuous, dichotomous, or categorical, the [exposure mechanism is estimated using classification](info_estimators.html#sec-density-ratio-estimation). Therefore only include candidate learners capable of binary classification with the `lrnrs_trt` argument.
+-   Regardless of whether an exposure is continuous, dichotomous, or categorical, the [exposure mechanism is estimated using classification](info_estimators.html#sec-density-ratio-estimation). Therefore only include candidate learners capable of binary classification with the `learners_trt` argument.
 
--   Candidate learners that rely on cross-validation for the tuning of hyper-parameters should support grouped data if used with `lrnrs_trt`. Because estimation of the treatment mechanism relies on the augmented $2n$ duplicated data set, duplicated observations must be put into the same fold during sample-splitting. This is done automatically by the package.
+-   Candidate learners that rely on cross-validation for the tuning of hyper-parameters should support grouped data if used with `learners_trt`. Because estimation of the treatment mechanism relies on the augmented $2n$ duplicated data set, duplicated observations must be put into the same fold during sample-splitting. This is done automatically by the package.
