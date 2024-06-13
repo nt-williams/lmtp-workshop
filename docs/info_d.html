@@ -281,12 +281,12 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#identification-of-the-causal-parameter" id="toc-identification-of-the-causal-parameter" class="nav-link active" data-scroll-target="#identification-of-the-causal-parameter">Identification of the causal parameter</a></li>
-  <li><a href="#static-interventions" id="toc-static-interventions" class="nav-link" data-scroll-target="#static-interventions">Static Interventions</a></li>
+  <li><a href="#static-interventions" id="toc-static-interventions" class="nav-link active" data-scroll-target="#static-interventions">Static Interventions</a></li>
   <li><a href="#dynamic-treatment-regime" id="toc-dynamic-treatment-regime" class="nav-link" data-scroll-target="#dynamic-treatment-regime">Dynamic Treatment Regime</a></li>
   <li><a href="#modified-treatment-policies" id="toc-modified-treatment-policies" class="nav-link" data-scroll-target="#modified-treatment-policies">Modified Treatment Policies</a></li>
   <li><a href="#random-interventions" id="toc-random-interventions" class="nav-link" data-scroll-target="#random-interventions">Random Interventions</a></li>
   <li><a href="#incremental-propensity-score-interventions" id="toc-incremental-propensity-score-interventions" class="nav-link" data-scroll-target="#incremental-propensity-score-interventions">Incremental Propensity Score Interventions</a></li>
+  <li><a href="#identification-of-the-causal-parameter" id="toc-identification-of-the-causal-parameter" class="nav-link" data-scroll-target="#identification-of-the-causal-parameter">Identification of the causal parameter</a></li>
   </ul>
 </nav>
     </div>
@@ -307,7 +307,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">June 6, 2024</p>
+      <p class="date-modified">June 13, 2024</p>
     </div>
   </div>
     
@@ -346,58 +346,6 @@ window.Quarto = {
 <li><p>When <span class="math inline">\(Y\)</span> is dichotomous, <span class="math inline">\(\theta\)</span> is the population proportion of event <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>.</p></li>
 <li><p>When <span class="math inline">\(Y\)</span> is the indicator of an event by end of the study, <span class="math inline">\(\theta\)</span> is defined as the cumulative incidence of <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>.</p></li>
 </ul>
-<section id="identification-of-the-causal-parameter" class="level3">
-<h3 class="anchored" data-anchor-id="identification-of-the-causal-parameter">Identification of the causal parameter</h3>
-<p>Recall that the fundamental problem of causal inference is that we can’t observe the alternative worlds which we use to define causal effects. If we can’t observe counterfactual variables, then how can we learn a causal effect? Under a set of certain assumptions, we can <em>identify</em> a causal parameter from observed data. These assumptions are called identification assumptions.</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Identification Assumptions
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ol type="1">
-<li><p><em>Positivity</em>. If <span class="math inline">\((a_t, h_t) \in \text{supp}\{A_t, H_t\}\)</span> then <span class="math inline">\(\dd(a_t, h_t) \in \text{supp}\{A_t, H_t\}\)</span> for <span class="math inline">\(t \in \{1, ..., \tau\}\)</span>.</p>
-<blockquote class="blockquote">
-<p>If there is a unit with observed treatment value <span class="math inline">\(a_t\)</span> and covariates <span class="math inline">\(h_t\)</span>, there must also be a unit with treatment value <span class="math inline">\(\dd(a_t, h_t)\)</span> and covariates <span class="math inline">\(h_t\)</span>.</p>
-</blockquote></li>
-<li><p><em>Conditional Exchangeability.</em> <span class="math inline">\(A_t \perp \!\!\! \perp Y^{\bar{a}} | H_t\)</span> for all <span class="math inline">\(\bar{a} \in \mathop{\mathrm{supp}}\bar{A}\)</span> and <span class="math inline">\(t \in \{1, ..., \tau\}\)</span>.</p>
-<blockquote class="blockquote">
-<p>For all times <span class="math inline">\(t\)</span>, the potential outcomes <span class="math inline">\(Y^{\bar{a}}\)</span> are independent of treatment assignment.</p>
-</blockquote></li>
-<li><p><em>Consistency.</em> <span class="math inline">\(\bar{A} = \bar{a} \implies Y = Y(\bar{a})\)</span> for all <span class="math inline">\(\bar{a} \in \mathop{\mathrm{supp}}\bar{A}\)</span>.</p>
-<blockquote class="blockquote">
-<p>The observed outcome for a unit who received a particular treatment level is the same as the potential outcome that would have been observed if that unit had been assigned to that treatment level.</p>
-</blockquote></li>
-</ol>
-</div>
-</div>
-<p>Assuming the above, <span class="math inline">\(\theta\)</span> is identified from the observed data with:</p>
-<div class="callout callout-style-default callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Theorem
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Set <span class="math inline">\(\m_{\tau+1} = Y\)</span> For <span class="math inline">\(t = \tau, ..., 1\)</span>, recursively define</p>
-<p><span class="math display">\[
-\m_t: (a_t, h_t) \rightarrow \E[\m_{t + 1}(A^{\dd}_{t+1}, H_{t + 1}) \mid A_t = a_t, H_t = h_t],
-\]</span></p>
-<p>and define <span class="math inline">\(\theta = E[\m_1(A^{\dd}_1, L_1)]\)</span>.</p>
-</div>
-</div>
-<p>As an example, set <span class="math inline">\(\tau = 2\)</span>. Then we have</p>
-<span class="math display">\[\begin{align} \m_3(A_3^d, H_3) &amp;= Y   \\  \m_2(A_2^d, H_2) &amp;= \E\left[\m_3(A_3^d, H_3)\mid(A_2^d, H_2)\right] \\\m_1(A_1^d, L_1) &amp;= \E\left[\m_2(A_2^d, H_2)\mid(A_1^d, L_1)\right] \\\theta &amp;= \E\left[\m_1(A_1^d, L_1)\right]
-
-\end{align}\]</span>
-</section>
 <section id="static-interventions" class="level3">
 <h3 class="anchored" data-anchor-id="static-interventions">Static Interventions</h3>
 <p>Let <span class="math inline">\(A\)</span> denote a binary vector, such as receiving a medication, and define <span class="math inline">\(\dd_t(a_t, h_t, \epsilon) = 1\)</span>. This intervention characterizes a hypothetical world where all members of the population receive treatment.</p>
@@ -547,7 +495,7 @@ Example
 <h3 class="anchored" data-anchor-id="random-interventions">Random Interventions</h3>
 <p>Let <span class="math inline">\(A\)</span> denote a binary vector, <span class="math inline">\(\epsilon \sim U(0, 1)\)</span>, and <span class="math inline">\(\epsilon\)</span> be an analyst-defined value between 0 and 1. We may then define randomized interventions. For example, imagine we are interested in a hypothetical world where half of all smokers quit smoking. This intervention would be defined as</p>
 <p><span class="math display">\[
-\\d_t(a_t, \epsilon_t) = \begin{cases}
+\dd_t(a_t, \epsilon_t) = \begin{cases}
 0 &amp;\text{ if } \epsilon_t &lt; 0.5 \text{ and } a_t = 1 \\
 a_t &amp;\text{ otherwise}
 \end{cases}.
@@ -601,6 +549,71 @@ a_t &amp;\text{ if } l_t = 1 \text{ and } \epsilon_t &lt; 0.85 \\
 \]</span></p>
 </div>
 </div>
+</section>
+<section id="identification-of-the-causal-parameter" class="level3">
+<h3 class="anchored" data-anchor-id="identification-of-the-causal-parameter">Identification of the causal parameter</h3>
+<p>Recall that the fundamental problem of causal inference is that we can’t observe the alternative worlds which we use to define causal effects. If we can’t observe counterfactual variables, then how can we learn a causal effect? Under a set of certain assumptions, we can <em>identify</em> a causal parameter from observed data. These assumptions are called identification assumptions.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Identification Assumptions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p><em>Positivity</em>. If <span class="math inline">\((a_t, h_t) \in \text{supp}\{A_t, H_t\}\)</span> then <span class="math inline">\(\dd(a_t, h_t) \in \text{supp}\{A_t, H_t\}\)</span> for <span class="math inline">\(t \in \{1, ..., \tau\}\)</span>.</p>
+<blockquote class="blockquote">
+<p>If there is a unit with observed treatment value <span class="math inline">\(a_t\)</span> and covariates <span class="math inline">\(h_t\)</span>, there must also be a unit with treatment value <span class="math inline">\(\dd(a_t, h_t)\)</span> and covariates <span class="math inline">\(h_t\)</span>.</p>
+</blockquote></li>
+<li><p><em>Conditional Exchangeability.</em> <span class="math inline">\(A_t \perp \!\!\! \perp Y^{\bar{a}} | H_t\)</span> for all <span class="math inline">\(\bar{a} \in \mathop{\mathrm{supp}}\bar{A}\)</span> and <span class="math inline">\(t \in \{1, ..., \tau\}\)</span>.</p>
+<blockquote class="blockquote">
+<p>For all times <span class="math inline">\(t\)</span>, the potential outcomes <span class="math inline">\(Y^{\bar{a}}\)</span> are independent of treatment assignment.</p>
+</blockquote></li>
+<li><p><em>Consistency.</em> <span class="math inline">\(\bar{A} = \bar{a} \implies Y = Y(\bar{a})\)</span> for all <span class="math inline">\(\bar{a} \in \mathop{\mathrm{supp}}\bar{A}\)</span>.</p>
+<blockquote class="blockquote">
+<p>The observed outcome for a unit who received a particular treatment level is the same as the potential outcome that would have been observed if that unit had been assigned to that treatment level.</p>
+</blockquote></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Question
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When might these assumptions be violated?</p>
+</div>
+</div>
+<p>Assuming the above, <span class="math inline">\(\theta\)</span> is identified from the observed data with:</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Theorem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Set <span class="math inline">\(\m_{\tau+1} = Y\)</span> For <span class="math inline">\(t = \tau, ..., 1\)</span>, recursively define</p>
+<p><span class="math display">\[
+\m_t: (a_t, h_t) \rightarrow \E[\m_{t + 1}(A^{\dd}_{t+1}, H_{t + 1}) \mid A_t = a_t, H_t = h_t],
+\]</span></p>
+<p>and define <span class="math inline">\(\theta = E[\m_1(A^{\dd}_1, L_1)]\)</span>.</p>
+</div>
+</div>
+<p>As an example, set <span class="math inline">\(\tau = 2\)</span>. Then we have</p>
+<span class="math display">\[\begin{align} \m_3(A_3^\dd, H_3) &amp;= Y   \\  \m_2(A_2^d, H_2) &amp;= \E\left[\m_3(A_3^\dd, H_3)\mid(A_2^\dd, H_2)\right] \\\m_1(A_1^\dd, L_1) &amp;= \E\left[\m_2(A_2^\dd, H_2)\mid(A_1^\dd, L_1)\right] \\\theta &amp;= \E\left[\m_1(A_1^\dd, L_1)\right]
+
+\end{align}\]</span>
 
 
 

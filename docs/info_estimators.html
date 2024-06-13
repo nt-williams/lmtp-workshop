@@ -524,13 +524,21 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 <li><p>Set <span class="math inline">\(\tilde{\m}_{i,\tau +1}(A^\dd_{i,t+1}, H_{i,t+1}) = Y_i\)</span>.</p>
 <p>For <span class="math inline">\(t = \tau, ..., 1\)</span>:</p>
 <ol type="1">
-<li><p>Regress <span class="math inline">\(\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})\)</span> on <span class="math inline">\(\{A_{i, t}, H_{i,t}\}\)</span>. Denote the predictions as <span class="math inline">\(\tilde{\m}_t(A_{i,t}, H_{i,t})\)</span>.</p></li>
+<li><p>Regress <span class="math inline">\(\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})\)</span> on <span class="math inline">\(\{A_{i, t}, H_{i,t}\}\)</span>.</p>
+<ul>
+<li><p>Using this regression, generate predictions from <span class="math inline">\(\{A_{i, t}, H_{i,t}\}\)</span> and <span class="math inline">\(\{A^\dd_{i, t}, H_{i,t}\}\)</span>.</p></li>
+<li><p>Denote the predictions as <span class="math inline">\(\tilde{\m}_t(A_{i,t}, H_{i,t})\)</span> and <span class="math inline">\(\tilde{\m}_t(A^\dd_{i,t}, H_{i,t})\)</span> respectively.</p></li>
+</ul></li>
 <li><p>Fit the generalized linear tilting model:</p>
-<p><span class="math inline">\(\text{link }\tilde{\m}^\epsilon_t(A_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})\)</span></p>
-<p>with weights <span class="math inline">\(w_{i,t}\)</span>.</p></li>
+<p><span class="math inline">\(\text{link }\tilde{\m}^\epsilon_t(A_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_{i,t}(A_{i,t}, H_{i,t})\)</span></p>
+<p>with weights <span class="math inline">\(w_{i,t}\)</span>.</p>
+<ul>
+<li><p><span class="math inline">\(\text{link }\tilde{\m}_{i,t}(A_{i,t}, H_{i,t})\)</span> is an offset variable (i.e., a variable with known parameter value equal to one).</p></li>
+<li><p>The parameter <span class="math inline">\(\epsilon\)</span> may be estimated by running a generalized linear model of <span class="math inline">\(\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})\)</span> with only an intercept term, an offset term equal to <span class="math inline">\(\text{link }\tilde{\m}_{i,t}(A_{i,t}, H_{i,t})\)</span>, and weights <span class="math inline">\(w_{i,t}\)</span>.</p></li>
+</ul></li>
 <li><p>Let <span class="math inline">\(\hat\epsilon\)</span> be the maximum likelihood estimate, and update the estimates as:</p>
-<p><span class="math inline">\(\text{link }\tilde{\m}^\hat\epsilon_t(A^\dd_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_t(A^\dd_{i,t}, H_{i,t})\)</span></p>
-<p><span class="math inline">\(\text{link }\tilde{\m}^\hat\epsilon_t(A_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_t(A_{i,t}, H_{i,t})\)</span></p></li>
+<p><span class="math inline">\(\text{link }\tilde{\m}^\hat\epsilon_t(A^\dd_{i,t}, H_{i,t}) = \hat\epsilon + \text{link }\tilde{\m}_t(A^\dd_{i,t}, H_{i,t})\)</span></p>
+<p><span class="math inline">\(\text{link }\tilde{\m}^\hat\epsilon_t(A_{i,t}, H_{i,t}) = \hat\epsilon + \text{link }\tilde{\m}_t(A_{i,t}, H_{i,t})\)</span></p></li>
 <li><p>Update <span class="math inline">\(\tilde{\m}_{i,t} = \tilde{\m}^\hat\epsilon_{i,t}\)</span>, <span class="math inline">\(t = t-1\)</span>, and iterate.</p></li>
 </ol></li>
 <li><p>The final estimate is defined as <span class="math inline">\(\hat\theta = \frac{1}{n}\sum_{i=1}^n\tilde{m}_{i, 1}(A^\dd_{i, 1}, L_{i, 1})\)</span>.</p></li>
@@ -677,6 +685,25 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </tr>
 </tbody>
 </table>
+<div class="callout callout-style-default callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Question
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Why can’t we use machine learning with the G-computation and IPW estimators?</p>
+<details>
+<summary style="color: black; font-weight: bold;">
+<p>Answer</p>
+</summary>
+<p>The G-computation and IPW estimators require models that converge to the truth at a <span class="math inline">\(\sqrt{n}\)</span>-rate. Machine learning algorithms are not guaranteed to do this.</p>
+</details>
+</div>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

@@ -188,19 +188,27 @@ Algorithm: TMLE
 
     For $t = \tau, ..., 1$:
 
-    1.  Regress $\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})$ on $\{A_{i, t}, H_{i,t}\}$. Denote the predictions as $\tilde{\m}_t(A_{i,t}, H_{i,t})$.
+    1.  Regress $\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})$ on $\{A_{i, t}, H_{i,t}\}$.
+
+        -   Using this regression, generate predictions from $\{A_{i, t}, H_{i,t}\}$ and $\{A^\dd_{i, t}, H_{i,t}\}$.
+
+        -   Denote the predictions as $\tilde{\m}_t(A_{i,t}, H_{i,t})$ and $\tilde{\m}_t(A^\dd_{i,t}, H_{i,t})$ respectively.
 
     2.  Fit the generalized linear tilting model:
 
-        $\text{link }\tilde{\m}^\epsilon_t(A_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})$
+        $\text{link }\tilde{\m}^\epsilon_t(A_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_{i,t}(A_{i,t}, H_{i,t})$
 
         with weights $w_{i,t}$.
 
+        -   $\text{link }\tilde{\m}_{i,t}(A_{i,t}, H_{i,t})$ is an offset variable (i.e., a variable with known parameter value equal to one).
+
+        -   The parameter $\epsilon$ may be estimated by running a generalized linear model of $\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})$ with only an intercept term, an offset term equal to $\text{link }\tilde{\m}_{i,t}(A_{i,t}, H_{i,t})$, and weights $w_{i,t}$.
+
     3.  Let $\hat\epsilon$ be the maximum likelihood estimate, and update the estimates as:
 
-        $\text{link }\tilde{\m}^\hat\epsilon_t(A^\dd_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_t(A^\dd_{i,t}, H_{i,t})$
+        $\text{link }\tilde{\m}^\hat\epsilon_t(A^\dd_{i,t}, H_{i,t}) = \hat\epsilon + \text{link }\tilde{\m}_t(A^\dd_{i,t}, H_{i,t})$
 
-        $\text{link }\tilde{\m}^\hat\epsilon_t(A_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_t(A_{i,t}, H_{i,t})$
+        $\text{link }\tilde{\m}^\hat\epsilon_t(A_{i,t}, H_{i,t}) = \hat\epsilon + \text{link }\tilde{\m}_t(A_{i,t}, H_{i,t})$
 
     4.  Update $\tilde{\m}_{i,t} = \tilde{\m}^\hat\epsilon_{i,t}$, $t = t-1$, and iterate.
 
@@ -272,6 +280,24 @@ Algorithm: SDR Estimator
 | Sequentially doubly robust            |     |         |      | ⭐  |
 
 : **Table 1.** Summary of estimator properties. {tbl-colwidths="\[40,15,15,15,15\]"}
+
+::: {.callout-warning icon="false"}
+## Question
+
+Why can't we use machine learning with the G-computation and IPW estimators?
+
+<details>
+
+<summary style="color: black; font-weight: bold;">
+
+Answer
+
+</summary>
+
+The G-computation and IPW estimators require models that converge to the truth at a $\sqrt{n}$-rate. Machine learning algorithms are not guaranteed to do this.
+
+</details>
+:::
 
 ::: callout-tip
 ## Which estimator should I use?

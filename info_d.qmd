@@ -34,47 +34,7 @@ where $Y^{\bar A^{\dd}}$ is the counterfactual outcome in a world, where possibl
 
 -   When $Y$ is the indicator of an event by end of the study, $\theta$ is defined as the cumulative incidence of $Y$ under intervention $\dd$.
 
-### Identification of the causal parameter
 
-Recall that the fundamental problem of causal inference is that we can't observe the alternative worlds which we use to define causal effects. If we can't observe counterfactual variables, then how can we learn a causal effect? Under a set of certain assumptions, we can *identify* a causal parameter from observed data. These assumptions are called identification assumptions.
-
-::: callout-important
-## Identification Assumptions
-
-1.  *Positivity*. If $(a_t, h_t) \in \text{supp}\{A_t, H_t\}$ then $\dd(a_t, h_t) \in \text{supp}\{A_t, H_t\}$ for $t \in \{1, ..., \tau\}$.
-
-    > If there is a unit with observed treatment value $a_t$ and covariates $h_t$, there must also be a unit with treatment value $\dd(a_t, h_t)$ and covariates $h_t$.
-
-2.  *Conditional Exchangeability.* $A_t \perp \!\!\! \perp Y^{\bar{a}} | H_t$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$ and $t \in \{1, ..., \tau\}$.
-
-    > For all times $t$, the potential outcomes $Y^{\bar{a}}$ are independent of treatment assignment.
-
-3.  *Consistency.* $\bar{A} = \bar{a} \implies Y = Y(\bar{a})$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$.
-
-    > The observed outcome for a unit who received a particular treatment level is the same as the potential outcome that would have been observed if that unit had been assigned to that treatment level.
-:::
-
-Assuming the above, $\theta$ is identified from the observed data with:
-
-::: {.callout-tip icon="false"}
-## Theorem
-
-Set $\m_{\tau+1} = Y$ For $t = \tau, ..., 1$, recursively define
-
-$$
-\m_t: (a_t, h_t) \rightarrow \E[\m_{t + 1}(A^{\dd}_{t+1}, H_{t + 1}) \mid A_t = a_t, H_t = h_t],
-$$
-
-and define $\theta = E[\m_1(A^{\dd}_1, L_1)]$.
-:::
-
-As an example, set $\tau = 2$. Then we have
-
-```{=tex}
-\begin{align} \m_3(A_3^d, H_3) &= Y   \\  \m_2(A_2^d, H_2) &= \E\left[\m_3(A_3^d, H_3)\mid(A_2^d, H_2)\right] \\\m_1(A_1^d, L_1) &= \E\left[\m_2(A_2^d, H_2)\mid(A_1^d, L_1)\right] \\\theta &= \E\left[\m_1(A_1^d, L_1)\right]
-
-\end{align}
-```
 ### Static Interventions
 
 Let $A$ denote a binary vector, such as receiving a medication, and define $\dd_t(a_t, h_t, \epsilon) = 1$. This intervention characterizes a hypothetical world where all members of the population receive treatment.
@@ -183,7 +143,7 @@ $$
 Let $A$ denote a binary vector, $\epsilon \sim U(0, 1)$, and $\epsilon$ be an analyst-defined value between 0 and 1. We may then define randomized interventions. For example, imagine we are interested in a hypothetical world where half of all smokers quit smoking. This intervention would be defined as
 
 $$
-\\d_t(a_t, \epsilon_t) = \begin{cases}
+\dd_t(a_t, \epsilon_t) = \begin{cases}
 0 &\text{ if } \epsilon_t < 0.5 \text{ and } a_t = 1 \\
 a_t &\text{ otherwise}
 \end{cases}.
@@ -225,3 +185,51 @@ a_t &\text{ if } l_t = 1 \text{ and } \epsilon_t < 0.85 \\
 \end{cases}
 $$
 :::
+
+### Identification of the causal parameter
+
+Recall that the fundamental problem of causal inference is that we can't observe the alternative worlds which we use to define causal effects. If we can't observe counterfactual variables, then how can we learn a causal effect? Under a set of certain assumptions, we can *identify* a causal parameter from observed data. These assumptions are called identification assumptions.
+
+::: callout-important
+## Identification Assumptions
+
+1.  *Positivity*. If $(a_t, h_t) \in \text{supp}\{A_t, H_t\}$ then $\dd(a_t, h_t) \in \text{supp}\{A_t, H_t\}$ for $t \in \{1, ..., \tau\}$.
+
+    > If there is a unit with observed treatment value $a_t$ and covariates $h_t$, there must also be a unit with treatment value $\dd(a_t, h_t)$ and covariates $h_t$.
+
+2.  *Conditional Exchangeability.* $A_t \perp \!\!\! \perp Y^{\bar{a}} | H_t$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$ and $t \in \{1, ..., \tau\}$.
+
+    > For all times $t$, the potential outcomes $Y^{\bar{a}}$ are independent of treatment assignment.
+
+3.  *Consistency.* $\bar{A} = \bar{a} \implies Y = Y(\bar{a})$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$.
+
+    > The observed outcome for a unit who received a particular treatment level is the same as the potential outcome that would have been observed if that unit had been assigned to that treatment level.
+:::
+
+::: {.callout-warning icon="false"}
+## Question
+
+When might these assumptions be violated?
+:::
+
+Assuming the above, $\theta$ is identified from the observed data with:
+
+::: {.callout-tip icon="false"}
+## Theorem
+
+Set $\m_{\tau+1} = Y$ For $t = \tau, ..., 1$, recursively define
+
+$$
+\m_t: (a_t, h_t) \rightarrow \E[\m_{t + 1}(A^{\dd}_{t+1}, H_{t + 1}) \mid A_t = a_t, H_t = h_t],
+$$
+
+and define $\theta = E[\m_1(A^{\dd}_1, L_1)]$.
+:::
+
+As an example, set $\tau = 2$. Then we have
+
+```{=tex}
+\begin{align} \m_3(A_3^\dd, H_3) &= Y   \\  \m_2(A_2^d, H_2) &= \E\left[\m_3(A_3^\dd, H_3)\mid(A_2^\dd, H_2)\right] \\\m_1(A_1^\dd, L_1) &= \E\left[\m_2(A_2^\dd, H_2)\mid(A_1^\dd, L_1)\right] \\\theta &= \E\left[\m_1(A_1^\dd, L_1)\right]
+
+\end{align}
+```

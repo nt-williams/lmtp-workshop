@@ -203,7 +203,7 @@ How can we interpret this result?
 A call to an `lmtp` estimator returns a list of class `lmtp`.
 
 | Value          | Description                                                                                                                  |
-|------------------|------------------------------------------------------|
+|-------------------|-----------------------------------------------------|
 | estimator      | The estimator used.                                                                                                          |
 | theta          | The estimated population LMTP estimand.                                                                                      |
 | standard_error | The estimated standard error of the LMTP estimand.                                                                           |
@@ -229,9 +229,7 @@ hist(treat$density_ratios[, 1],
 
 ### Problem 3
 
-::: {.callout-warning icon="false"}
 Write a function to estimate the population mean outcome if no patients received treatment. Assign the result to an object named `dont_treat`.
-:::
 
 ::: {.callout-warning icon="false"}
 ## Practice
