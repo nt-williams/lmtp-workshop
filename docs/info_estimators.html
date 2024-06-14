@@ -327,15 +327,15 @@ window.Quarto = {
 \newcommand{\E}{\mathsf{E}}
 \]</span></p>
 </div>
-<p>To recap, we’ve</p>
+<p>To recap, we have</p>
 <ol type="1">
-<li><p>defined a causal parameter <span class="math inline">\(\theta\)</span> that is a function of a general hypothetical intervention, <span class="math inline">\(\dd_t(a_t, h_t, \epsilon)\)</span>, and</p></li>
-<li><p>defined the necessary assumptions to identify the expected value of <span class="math inline">\(Y\)</span> when <span class="math inline">\(A\)</span> is replaced with the output of <span class="math inline">\(\dd_t(a_t, h_t, \epsilon)\)</span> from observed data.</p></li>
+<li><p>defined a causal parameter <span class="math inline">\(\theta\)</span> that is represents the outcome <span class="math inline">\(Y\)</span> under a general hypothetical intervention, <span class="math inline">\(\dd(a_t, h_t, \epsilon)\)</span>, and</p></li>
+<li><p>defined the necessary assumptions to identify the expected value of <span class="math inline">\(Y\)</span> under an intervention that replaces <span class="math inline">\(A\)</span> with the output of <span class="math inline">\(\dd_t(a, h_t, \epsilon)\)</span>.</p></li>
 </ol>
-<p>It’s now time to discussing how to estimate these parameters.</p>
+<p>The parameter <span class="math inline">\(\theta\)</span> is a function that could be computed if we knew the distribution of the variables (e.g., outcome regressions). Because we do not know this distribution, we need to estimate it from a sample of observed data. We now discuss how to estimate the parameter <span class="math inline">\(\theta\)</span> from a sample.</p>
 <section id="sequential-regression-estimator" class="level3">
 <h3 class="anchored" data-anchor-id="sequential-regression-estimator">Sequential Regression Estimator</h3>
-<p>One possible estimator is simply a <em>plug-in</em> estimator of the identification result. This estimator is often referred to as G-computation.</p>
+<p>One possible estimator is simply a <em>plug-in</em> estimator of the identification result. This estimator is often referred to as G-computation, and it proceeds by simply estimating the regressions described in the identification result. Another way to describe this algorithm is as follows:</p>
 <div class="algorithm">
 <div class="algorithm-header">
 <p>Algorithm: Sequential regressions</p>
@@ -378,7 +378,11 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>A substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome.</p>
+<p>A substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome and it is simple to estimate. That said, its cons are major:</p>
+<ul>
+<li>In studies with multiple time points, the adjustment set can become large very quickly. For instance, consider a study with 3 covariates measured at every time point, and 10 time points. Even though we have only 3 covariates at each time point, the number of coviariates in the regression of <span class="math inline">\(Y\)</span> is 33.</li>
+<li>Imagine trying to correctly specify (e.g., include the approproate interactions) a parametric model (e.g., logistic, Cox) with 33 variables.</li>
+</ul>
 </section>
 <section id="sec-density-ratio-estimation" class="level3">
 <h3 class="anchored" data-anchor-id="sec-density-ratio-estimation">Density-ratio estimation</h3>
@@ -391,7 +395,9 @@ window.Quarto = {
 <p>The next three estimators all rely on estimating the density ratio</p>
 <p><span class="math display">\[
 r_t(a_t, h_t) = \frac{\g_t^\dd(a_t \mid h_t)}{\g_t(a_t \mid h_t)}.
-\]</span>We will often refer to this ratio as the <em>intervention mechanism</em> throughout the workshop. Estimation of <span class="math inline">\(r_t(a_t, h_t)\)</span> is fully automated in <code>lmtp</code> and hidden from the user. <strong>A comprehensive understanding of this process isn’t necessary to use <code>lmtp</code>!</strong></p>
+\]</span></p>
+<p>Recall that <span class="math inline">\(\g_t^\dd(a_t \mid h_t)\)</span> denotes the density of treatment <em>post-intervention</em> and that <span class="math inline">\(\g_t(a_t \mid h_t)\)</span> denotes the density of the observed treatment under no intervention.</p>
+<p>We will often refer to this ratio as the <em>intervention mechanism</em> throughout the workshop. Estimation of <span class="math inline">\(r_t(a_t, h_t)\)</span> is fully automated in <code>lmtp</code> and hidden from the user. <strong>A comprehensive understanding of this process isn’t necessary to use <code>lmtp</code>!</strong></p>
 </div>
 </div>
 </div>
@@ -420,6 +426,7 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 </section>
 <section id="inverse-probability-weighting" class="level3">
 <h3 class="anchored" data-anchor-id="inverse-probability-weighting">Inverse Probability Weighting</h3>
+<p>We call this estimator IPW due to its similarity with the inverse-probability weighted estimator for binary treatments, but it would be more accurately referred to as simply reweighted estimator. It is based on the following alternative identification formula:</p>
 <p><span class="math display">\[
 \theta = \E \bigg[ \bigg\{\prod_{t=1}^\tau r_t(a_t, h_t) \bigg\} Y \bigg]
 \]</span></p>
@@ -470,9 +477,85 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 <p>Wait, what does it mean for an estimator to be doubly robust?</p>
 <ul>
 <li><p>For the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as either the outcome model is consistently estimated or the treatment (and censoring) model(s) are consistently estimated.</p></li>
-<li><p>For time-varying setting, an estimator is doubly robust if, for some time <span class="math inline">\(s\)</span>, all outcome regressions for <span class="math inline">\(t &gt;s\)</span> are consistently estimated and all intervention mechanisms (treatment + censoring) for <span class="math inline">\(t \leq s\)</span> are consistently estimated.</p></li>
-<li><p>Sequential double robustness (often also referred to as <span class="math inline">\(2^\tau\)</span>-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated.</p></li>
+<li><p>For time-varying setting, an estimator is doubly robust if, for some time <span class="math inline">\(s\)</span>, all outcome regressions for <span class="math inline">\(t &gt;s\)</span> are consistently estimated and all intervention mechanisms (treatment + censoring) for <span class="math inline">\(t \leq s\)</span> are consistently estimated. Consider for example <span class="math inline">\(5\)</span> time points:</p></li>
 </ul>
+<table class="table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Time</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Treatment</td>
+<td>Correct</td>
+<td>Correct</td>
+<td>Wrong</td>
+<td>Wrong</td>
+<td>Wrong</td>
+</tr>
+<tr class="odd">
+<td>Outcome</td>
+<td>Wrong</td>
+<td>Wrong</td>
+<td>Correct</td>
+<td>Correct</td>
+<td>Correct</td>
+</tr>
+</tbody>
+</table>
+<p><br>
+</p>
+<ul>
+<li>Sequential double robustness (often also referred to as <span class="math inline">\(2^\tau\)</span>-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated. For example:</li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Time</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Treatment</td>
+<td>Correct</td>
+<td>Wrong</td>
+<td>Correct</td>
+<td>Wrong</td>
+<td>Correct</td>
+</tr>
+<tr class="odd">
+<td>Outcome</td>
+<td>Wrong</td>
+<td>Correct</td>
+<td>Wrong</td>
+<td>Correct</td>
+<td>Wrong</td>
+</tr>
+</tbody>
+</table>
 <section id="efficient-influence-function" class="level4">
 <h4 class="anchored" data-anchor-id="efficient-influence-function">Efficient Influence Function</h4>
 <p>Key to constructing the TMLE and SDR is the <em>efficient influence function</em> (EIF).</p>
@@ -494,7 +577,7 @@ Assumptions
 <ol type="1">
 <li><p>The treatment <span class="math inline">\(A\)</span> is discrete, or</p></li>
 <li><p>If <span class="math inline">\(A\)</span> is continuous, the function <span class="math inline">\(\dd\)</span> is piecewise smooth invertible</p></li>
-<li><p>The function <span class="math inline">\(\dd\)</span> does not depend on the observed distribution <span class="math inline">\(\P\)</span></p></li>
+<li><p>The function <span class="math inline">\(\dd\)</span> does not depend on the observed distribution <span class="math inline">\(\P\)</span> (this means that we cannot apply these methods to odds ratio IPSI, although we can apply them to risk ratio IPSI)</p></li>
 </ol>
 </div>
 </div>
@@ -506,7 +589,8 @@ Assumptions
 <p><span class="math display">\[
 \phi_t: O \mapsto \sum_{s=t}^\tau \bigg( \prod_{k=t}^s r_k(a_k, h_k)\bigg) \big\{\m_{s+1}(a_{s+1}^\dd, h_{s+1}) - \m_s(a_s, h_s) \big\} + \m_t(a_t^\dd, h_t).
 \]</span></p>
-<p>The efficient influence function for estimating <span class="math inline">\(\theta = \E[\m_1(A^\dd, L_1)]\)</span> in the non-parametric model is given by <span class="math inline">\(\phi_1(O) - \theta\)</span>. In the case of single time-point, the influence function simplifies to</p>
+<p>The efficient influence function for estimating <span class="math inline">\(\theta = \E[\m_1(A^\dd, L_1)]\)</span> in the non-parametric model is given by <span class="math inline">\(\phi_1(O) - \theta\)</span>.</p>
+<p>In the case of single time-point, the influence function simplifies to</p>
 <p><span class="math display">\[
 r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 \]</span></p>
@@ -620,7 +704,7 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 <h3 class="anchored" data-anchor-id="choosing-an-estimator">Choosing an Estimator</h3>
 <ul>
 <li><p>In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference (ya right 😂).</p></li>
-<li><p>The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining <span class="math inline">\(\sqrt{n}\)</span>-consistent.</p></li>
+<li><p>The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining <span class="math inline">\(\sqrt{n}\)</span>-consistent under reasonable assumptions.</p></li>
 </ul>
 <table class="table">
 <caption><strong>Table 1.</strong> Summary of estimator properties.</caption>
@@ -717,8 +801,7 @@ Which estimator should I use?
 <p>While the SDR estimator may be more robust to model misspecification, the TMLE does have the advantage of being a substitution estimator. Because of this, estimates from the TMLE are guaranteed to stay within the valid range of the outcome. Taken together, this leads to the following recommendations for choosing between the TMLE and SDR:</p>
 <ul>
 <li><p>If treatment is not time-varying, use the TMLE.</p></li>
-<li><p>If treatment is time-varying first try the SDR.</p></li>
-<li><p>If the SDR estimator produces “out-of-bounds” estimates, instead use the TMLE.</p></li>
+<li><p>If treatment is time-varying and the parameter <span class="math inline">\(\theta\)</span> has clear bounds, such as probabilities, beware of the SDR estimator. Use TMLE preferably.</p></li>
 </ul>
 </div>
 </div>
@@ -728,7 +811,7 @@ Which estimator should I use?
 <p>When estimating nuisance parameters with data adaptive algorithms, you should perform a process similar to cross-validation called cross-fitting. Cross-fitting helps ensure:</p>
 <ul>
 <li><p>that standard errors will be correct, and</p></li>
-<li><p>can help reduce estimator bias.</p></li>
+<li><p>can help reduce estimator bias and improve coverage of the confidence intervals.</p></li>
 </ul>
 <p>Cross-fitting is fully automated in <code>lmtp</code>, but for more information we recommend reviewing <span class="citation" data-cites="chernozhukov2018double">Chernozhukov et al. (<a href="#ref-chernozhukov2018double" role="doc-biblioref">2018</a>)</span>, <span class="citation" data-cites="diaz2020machine">Dı́az (<a href="#ref-diaz2020machine" role="doc-biblioref">2020</a>)</span>, and <span class="citation" data-cites="zivich2021machine">Zivich and Breskin (<a href="#ref-zivich2021machine" role="doc-biblioref">2021</a>)</span>.</p>
 

@@ -271,7 +271,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"print(\"Welcome to SER 2024!\")","id":1,"options":{"warning":"true","autorun":"false","results":"markup","editor-font-scale":1,"out-height":"","message":"true","fig-width":7,"editor-max-height":"","label":"unnamed-chunk-1","output":"true","dpi":72,"comment":"","out-width":"700px","fig-height":5,"classes":"","read-only":"false","editor-quick-suggestions":"false","context":"interactive","fig-cap":""}}];
+globalThis.qwebrCellDetails = [{"options":{"comment":"","message":"true","editor-font-scale":1,"label":"unnamed-chunk-1","fig-cap":"","output":"true","dpi":72,"warning":"true","out-height":"","editor-max-height":"","fig-height":5,"out-width":"700px","context":"interactive","editor-quick-suggestions":"false","read-only":"false","autorun":"false","results":"markup","classes":"","fig-width":7},"id":1,"code":"print(\"Welcome to SER 2024!\")"}];
 
 </script>
 <script type="module">
@@ -1523,7 +1523,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">June 6, 2024</p>
+      <p class="date-modified">June 14, 2024</p>
     </div>
   </div>
     
@@ -1538,7 +1538,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <p>SER 2024 - Austin, Texas</p>
 </blockquote>
 <div class="tldr">
-<p>In this workshop, we generalize static and dynamic interventions for categorical, continuous, and multivariate exposures. Specifically, we consider a generalization called modified treatment policies (MTPs), which are hypothetical interventions where the post-intervention is defined as a modification of the natural value of the exposure that can depend on the unit’s history. This short course will introduce the <strong>lmtp</strong> R package for estimating the causal effects of these general estimand in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice.</p>
+<p>In this workshop, we present methods to define and estimate the causal effects of categorical, continuous, and multivariate exposures. The methods are based on a generalization of the static and dynamic interventions that may be familiar to some of you. This generalization has been recently called modified treatment policies (MTPs). MTPs are hypothetical interventions where the post-intervention exposure is defined as a modification of the natural value of the exposure that can also depend on the unit’s history. This short course will introduce the <strong>lmtp</strong> R package for estimating the causal effects of these general estimand in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice and software usage.</p>
 </div>
 <section id="learning-objectives" class="level3">
 <h3 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h3>
@@ -1555,7 +1555,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>This workshop assumes the participant has a basic understanding of fundamental concepts in causal inference and some experience with the R programming language.</p>
+<p>This workshop assumes the participant has a basic understanding of fundamental concepts in causal inference such as the concept of counterfactuals, and some experience with the R programming language.</p>
 </div>
 </div>
 </div>
@@ -1580,7 +1580,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </tr>
 <tr class="odd">
 <td>1:30 PM - 2:30 PM</td>
-<td>Generalizing interventions using MTPs</td>
+<td>Defining causal effects using MTPs</td>
 </tr>
 <tr class="even">
 <td>2:30 PM - 2:50 PM</td>
