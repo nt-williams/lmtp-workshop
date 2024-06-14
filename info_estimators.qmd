@@ -7,17 +7,17 @@ nocite: |
 
 {{< include macros.qmd >}}
 
-To recap, we've
+To recap, we have
 
-1.  defined a causal parameter $\theta$ that is a function of a general hypothetical intervention, $\dd_t(a_t, h_t, \epsilon)$, and
+1.  defined a causal parameter $\theta$ that is represents the outcome $Y$ under a general hypothetical intervention, $\dd(a_t, h_t, \epsilon)$, and
 
-2.  defined the necessary assumptions to identify the expected value of $Y$ when $A$ is replaced with the output of $\dd_t(a_t, h_t, \epsilon)$ from observed data.
+2.  defined the necessary assumptions to identify the expected value of $Y$ under an intervention that replaces $A$ with the output of $\dd_t(a, h_t, \epsilon)$.
 
-It's now time to discussing how to estimate these parameters.
+The parameter $\theta$ is a function that could be computed if we knew the distribution of the variables (e.g., outcome regressions). Because we do not know this distribution, we need to estimate it from a sample of observed data. We now discuss how to estimate the parameter $\theta$ from a sample.
 
 ### Sequential Regression Estimator
 
-One possible estimator is simply a *plug-in* estimator of the identification result. This estimator is often referred to as G-computation.
+One possible estimator is simply a *plug-in* estimator of the identification result. This estimator is often referred to as G-computation, and it proceeds by simply estimating the regressions described in the identification result. Another way to describe this algorithm is as follows:
 
 ::: algorithm
 ::: algorithm-header
@@ -51,7 +51,10 @@ Algorithm: Sequential regressions
 
 : {tbl-colwidths="\[25,29\]"}
 
-A substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome.
+A substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome and it is simple to estimate. That said, its cons are major:
+
+- In studies with multiple time points, the adjustment set can become large very quickly. For instance, consider a study with 3 covariates measured at every time point, and 10 time points. Even though we have only 3 covariates at each time point, the number of coviariates in the regression of $Y$ is 33.
+- Imagine trying to correctly specify (e.g., include the approproate interactions) a parametric model (e.g., logistic, Cox) with 33 variables. 
 
 ### Density-ratio estimation {#sec-density-ratio-estimation}
 
@@ -60,7 +63,11 @@ The next three estimators all rely on estimating the density ratio
 
 $$
 r_t(a_t, h_t) = \frac{\g_t^\dd(a_t \mid h_t)}{\g_t(a_t \mid h_t)}.
-$$We will often refer to this ratio as the *intervention mechanism* throughout the workshop. Estimation of $r_t(a_t, h_t)$ is fully automated in `lmtp` and hidden from the user. **A comprehensive understanding of this process isn't necessary to use `lmtp`!**
+$$
+
+Recall that $\g_t^\dd(a_t \mid h_t)$ denotes the density of treatment *post-intervention* and that $\g_t(a_t \mid h_t)$ denotes the density of the observed treatment under no intervention.
+
+We will often refer to this ratio as the *intervention mechanism* throughout the workshop. Estimation of $r_t(a_t, h_t)$ is fully automated in `lmtp` and hidden from the user. **A comprehensive understanding of this process isn't necessary to use `lmtp`!**
 :::
 
 -   We can directly estimate this density ratio with a classification trick.
@@ -89,6 +96,8 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 $$
 
 ### Inverse Probability Weighting
+
+We call this estimator IPW due to its similarity with the inverse-probability weighted estimator for binary treatments, but it would be more accurately referred to as simply reweighted estimator. It is based on the following alternative identification formula:
 
 $$
 \theta = \E \bigg[ \bigg\{\prod_{t=1}^\tau r_t(a_t, h_t) \bigg\} Y \bigg]
@@ -132,9 +141,26 @@ Wait, what does it mean for an estimator to be doubly robust?
 
 -   For the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as either the outcome model is consistently estimated or the treatment (and censoring) model(s) are consistently estimated.
 
--   For time-varying setting, an estimator is doubly robust if, for some time $s$, all outcome regressions for $t >s$ are consistently estimated and all intervention mechanisms (treatment + censoring) for $t \leq s$ are consistently estimated.
+-   For time-varying setting, an estimator is doubly robust if, for some time $s$, all outcome regressions for $t >s$ are consistently estimated and all intervention mechanisms (treatment + censoring) for $t \leq s$ are consistently estimated. Consider for example $5$ time points. 
 
--   Sequential double robustness (often also referred to as $2^\tau$-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated.
++-----------+---------+---------+---------+---------+---------+
+| Time      | 1       |       2 |       3 |       4 |       5 |
++-----------+---------+---------+---------+---------+---------+
+| Treatment | Correct | Correct | Wrong   | Wrong   | Wrong   |
++-----------+---------+---------+---------+---------+---------+
+| Outcome   | Wrong   | Wrong   | Correct | Correct | Correct |
++-----------+---------+---------+---------+---------+---------+
+
+-   Sequential double robustness (often also referred to as $2^\tau$-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated. Example:
+
++-----------+---------+---------+---------+---------+---------+
+| Time      | 1       |       2 |       3 |       4 |       5 |
++-----------+---------+---------+---------+---------+---------+
+| Treatment | Correct | Wrong   | Correct | Wrong   | Correct |
++-----------+---------+---------+---------+---------+---------+
+| Outcome   | Wrong   | Correct | Wrong   | Correct | Wrong   |
++-----------+---------+---------+---------+---------+---------+
+
 
 #### Efficient Influence Function
 
@@ -153,7 +179,7 @@ Before we introduce the EIF, it's necessary to make some additional assumptions 
 
 2.  If $A$ is continuous, the function $\dd$ is piecewise smooth invertible
 
-3.  The function $\dd$ does not depend on the observed distribution $\P$
+3.  The function $\dd$ does not depend on the observed distribution $\P$ (this means that we cannot apply these methods to odds ratio IPSI, although we can apply them to risk ratio IPSI)
 :::
 
 -   These assumptions ensure that the efficient influence function of $\theta$ for interventions $\dd$ have a structure similar to the influence function for the effect of dynamic regimes.
@@ -166,7 +192,9 @@ $$
 \phi_t: O \mapsto \sum_{s=t}^\tau \bigg( \prod_{k=t}^s r_k(a_k, h_k)\bigg) \big\{\m_{s+1}(a_{s+1}^\dd, h_{s+1}) - \m_s(a_s, h_s) \big\} + \m_t(a_t^\dd, h_t).
 $$
 
-The efficient influence function for estimating $\theta = \E[\m_1(A^\dd, L_1)]$ in the non-parametric model is given by $\phi_1(O) - \theta$. In the case of single time-point, the influence function simplifies to
+The efficient influence function for estimating $\theta = \E[\m_1(A^\dd, L_1)]$ in the non-parametric model is given by $\phi_1(O) - \theta$.
+
+In the case of single time-point, the influence function simplifies to
 
 $$
 r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
@@ -268,7 +296,7 @@ Algorithm: SDR Estimator
 
 -   In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference (ya right 😂).
 
--   The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining $\sqrt{n}$-consistent.
+-   The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining $\sqrt{n}$-consistent under reasonable assumptions.
 
 |                                       | IPW | G-comp. | TMLE | SDR |
 |---------------------------------------|:---:|:-------:|:----:|:---:|
@@ -306,9 +334,8 @@ While the SDR estimator may be more robust to model misspecification, the TMLE d
 
 -   If treatment is not time-varying, use the TMLE.
 
--   If treatment is time-varying first try the SDR.
+-   If treatment is time-varying and the parameter $\theta$ has clear bounds, such as probabilities, beware of the SDR estimator. Use TMLE preferably.
 
--   If the SDR estimator produces "out-of-bounds" estimates, instead use the TMLE.
 :::
 
 ### Cross-fitting
@@ -317,6 +344,6 @@ When estimating nuisance parameters with data adaptive algorithms, you should pe
 
 -   that standard errors will be correct, and
 
--   can help reduce estimator bias.
+-   can help reduce estimator bias and improve coverage of the confidence intervals.
 
 Cross-fitting is fully automated in `lmtp`, but for more information we recommend reviewing @chernozhukov2018double, @diaz2020machine, and @zivich2021machine.

@@ -14,19 +14,19 @@ nocite: |
 
 {{< include macros.qmd >}}
 
-Have you ever begun reading a paper in the causal inference literature and encountered the phrase "assume the treatment or exposure is a binary..."? While assuming a variable is binary can simplify a problem, nature rarely reflects this paradigm.
+Have you ever begun reading a paper in the methodological causal inference literature and encountered the phrase "assume the treatment or exposure is a binary..."? (Most papers we read assume this!!) While assuming exposure variables are binary can simplify the definition of causal effects, many exposures of interest in reality are not binary.
 
-**Instead, lets assume** $A$ **is a binary, categorical, or continuous variable!**
+**Instead, we will work in situations where** $A$ **is a binary, categorical, multivariate, or continuous variable!**
 
 ------------------------------------------------------------------------
 
-In the previous section, we defined $\dd_t(a_t, h_t, \epsilon_t)$ as a function that maps $A_t$, $H_t$, and potentially a randomizer $\epsilon_t$ to a new value of $A_t$. Our focus henceforth is estimating the causal effect of an intervention, characterized by $\dd$ on the outcome $Y$, through the causal parameter
+In the previous section, we defined $\dd(a_t, h_t, \epsilon_t)$ as a function that maps $A_t$, $H_t$, and potentially a randomizer $\epsilon_t$ to a new value of $A_t$. Our focus henceforth is estimating the causal effect of an intervention, characterized by $\dd$ on the outcome $Y$, through the causal parameter
 
 $$
 \theta = \E[Y^{\bar A^{\dd}}]\text{,}
 $$
 
-where $Y^{\bar A^{\dd}}$ is the counterfactual outcome in a world, where possibly contrary to fact, each entry of $\bar{A}$ was modified according to the function $\dd$.
+where $Y^{\bar A^{\dd}}$ is the counterfactual outcome in a world, where possibly contrary to fact, each entry of $\bar{A} = (A_1, \ldots, A_\tau)$ was modified according to the function $\dd$.
 
 -   When $Y$ is continuous, $\theta$ is the mean population value of $Y$ under intervention $\dd$.
 
@@ -34,10 +34,11 @@ where $Y^{\bar A^{\dd}}$ is the counterfactual outcome in a world, where possibl
 
 -   When $Y$ is the indicator of an event by end of the study, $\theta$ is defined as the cumulative incidence of $Y$ under intervention $\dd$.
 
+But what is this function $\dd$, how can it be defined, and how does using this function to define interventions solve the problem? Let's start from simple to more complex examples of functions $\dd$.
 
 ### Static Interventions
 
-Let $A$ denote a binary vector, such as receiving a medication, and define $\dd_t(a_t, h_t, \epsilon) = 1$. This intervention characterizes a hypothetical world where all members of the population receive treatment.
+Let $A$ denote a binary vector, such as receiving a medication, and define $\dd(a_t, h_t, \epsilon) = 1$. This intervention characterizes a hypothetical world where all members of the population receive treatment.
 
 ::: {.callout-important icon="false"}
 ## Static intervention
@@ -54,7 +55,7 @@ Let's say we were interested in the effect of randomizing patients with opioid u
 ### Dynamic Treatment Regime
 
 Let $A_t$ denote a binary vector, such as receiving a medication, and $H_t$ a numeric vector, such as a measure of discomfort. For a given value of $\delta$, define $$
-\dd_t(a_t, h_t, \epsilon) = \begin{cases}
+\dd(a_t, h_t, \epsilon) = \begin{cases}
 1 &\text{ if } h_t > \delta \\
 0 &\text{ otherwise.}
 \end{cases}
@@ -63,7 +64,7 @@ $$
 ::: {.callout-important icon="false"}
 ## Dynamic treatment regime
 
-Interventions where the output of the function $\dd_t$ depends **only** **on the covariates** $H_t$ are referred to as being dynamic.
+Interventions where the output of the function $\dd$ depends **only** **on the covariates** $H_t$ are referred to as being dynamic.
 :::
 
 ::: {.callout-tip icon="false"}
@@ -83,7 +84,7 @@ $$
 
 While much attention is given to static and dynamic interventions, their use is often accompanied by a few key problems.
 
-1.  **Defining causal effects in terms of hypothetical interventions where treatment is applied to all units may be inconceivable.** For example, we may be interested to know if reducing surgery time reduces surgical complications. However, it's inconceivable to reduce all surgeries to a set maximum time-length.
+1.  **Defining causal effects in terms of hypothetical interventions where treatment is applied to all units may be inconceivable.** For example, we may be interested to know if reducing surgery time reduces surgical complications. However, it's inconceivable to set all surgeries to a given duration, even if this duration depends on patient covariates. 
 
 2.  **Defining causal effects in terms of hypothetical interventions where treatment is applied to all units may induce positivity violations.**
 
@@ -122,7 +123,7 @@ $$
 We can similarly define a multiplicative *shift MTP* as
 
 $$
-\dd_t(a_t, h_t, \epsilon) = \begin{cases}
+\dd(a_t, h_t, \epsilon) = \begin{cases}
 a_t \times \delta &\text{ if } a_t \times \delta \leq u(h_t) \\
 a_t &\text{ otherwise}.
 \end{cases}
@@ -134,30 +135,30 @@ $$
 @nugent2023demonstration evaluated the association between county-level measures of mobility and incident COVID-19 cases in the United States in the Summer and Fall of 2022. They considered both hypothetical additive and multiplicative MTPs; for example, they defined a multiplicative MTP where a measure for the density of mobile devices visiting commercial locations was decreased by 25%:
 
 $$
-\dd_t(a_t, h_t, \epsilon) = a_t \times 0.75.
+\dd(a_t, h_t, \epsilon) = a_t \times 0.75.
 $$
 :::
 
-### Random Interventions
+### Randomized Interventions
 
 Let $A$ denote a binary vector, $\epsilon \sim U(0, 1)$, and $\epsilon$ be an analyst-defined value between 0 and 1. We may then define randomized interventions. For example, imagine we are interested in a hypothetical world where half of all smokers quit smoking. This intervention would be defined as
 
 $$
-\dd_t(a_t, \epsilon_t) = \begin{cases}
+\dd(a_t, \epsilon_t) = \begin{cases}
 0 &\text{ if } \epsilon_t < 0.5 \text{ and } a_t = 1 \\
 a_t &\text{ otherwise}
 \end{cases}.
 $$
 
-### Incremental Propensity Score Interventions
+### Incremental Propensity Score Interventions Based on the Risk Ratio
 
-Let $A$ denote a binary vector, $\epsilon \sim U(0, 1)$, and $\delta$ be an analyst-defined risk ratio limited to be between $0$ and $1$. If we were interested in an intervention that decreased the likelihood of receiving treatment, define\
+Let $A$ denote a binary variable, $\epsilon \sim U(0, 1)$, and $\delta$ be an analyst-defined risk ratio limited to be between $0$ and $1$. If we were interested in an intervention that decreased the likelihood of receiving treatment, define\
 $$
 \dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
 a_t &\text{ if } \epsilon_t < \delta \\
 0 &\text{ otherwise}
 \end{cases}.
-$$In this case, we have $\g^\dd(a_t \mid H_t) = a_t \delta \g_t(1 \mid H_t) + (1 - a_t) (1 - \delta \g_t(1\mid H_t))$, which leads to a risk ratio of $\g_t^\dd(1 \mid H_t)/\g_t(1\mid H_t) = \delta$ for comparing the propensity score post- vs pre-intervention. Conversely, if we were interested in an intervention that increased the likelihood of receiving treatment, define\
+$$In this case, we have $P(A^\dd_t = a_t\mid H_t)= \g^\dd(a_t \mid H_t) = a_t \delta \g_t(1 \mid H_t) + (1 - a_t) (1 - \delta \g_t(1\mid H_t))$, which leads to a risk ratio of $\g_t^\dd(1 \mid H_t)/\g_t(1\mid H_t) = \delta$ for comparing the propensity score post- vs pre-intervention. Conversely, if we were interested in an intervention that increased the likelihood of receiving treatment, define\
 $$
 \dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
 a_t &\text{ if } \epsilon_t < \delta \\
@@ -170,7 +171,7 @@ Now $\g_t^\dd(a_t \mid H_t) = a_t (1 - \delta \g_t(0\mid H_t)) + (1 - a_t) \delt
 ::: {.callout-important icon="false"}
 ## Incremental propensity score intervention
 
-An intervention where the conditional probability of treatment is shifted.
+An intervention where the conditional probability of treatment is shifted. (As an aside, interventions where the shift is in the odds ratio scale where previously proposed, but the effects of odds-ratio shifts should not be estimated with the lmtp package, we will discuss this further.
 :::
 
 ::: {.callout-tip icon="false"}
@@ -197,13 +198,10 @@ Recall that the fundamental problem of causal inference is that we can't observe
 
     > If there is a unit with observed treatment value $a_t$ and covariates $h_t$, there must also be a unit with treatment value $\dd(a_t, h_t)$ and covariates $h_t$.
 
-2.  *Conditional Exchangeability.* $A_t \perp \!\!\! \perp Y^{\bar{a}} | H_t$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$ and $t \in \{1, ..., \tau\}$.
+2.  *No unmeasured confounders.* All the common causes of $A_t$ and $(L_s, A_s, Y) are measured and contained in $H_t$ for all $s \in \{t+1, ..., \tau\}$.
 
-    > For all times $t$, the potential outcomes $Y^{\bar{a}}$ are independent of treatment assignment.
+    > For all times $t$, the history $H_t$ contains sufficient variables to adjust for confounding of $A_t$ and any subsequent variables, including future treatment.
 
-3.  *Consistency.* $\bar{A} = \bar{a} \implies Y = Y(\bar{a})$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$.
-
-    > The observed outcome for a unit who received a particular treatment level is the same as the potential outcome that would have been observed if that unit had been assigned to that treatment level.
 :::
 
 ::: {.callout-warning icon="false"}
@@ -226,10 +224,12 @@ $$
 and define $\theta = E[\m_1(A^{\dd}_1, L_1)]$.
 :::
 
-As an example, set $\tau = 2$. Then we have
+As an example, set $\tau = 2$. Then we can compute the identification formula in the following steps:
 
-```{=tex}
-\begin{align} \m_3(A_3^\dd, H_3) &= Y   \\  \m_2(A_2^d, H_2) &= \E\left[\m_3(A_3^\dd, H_3)\mid(A_2^\dd, H_2)\right] \\\m_1(A_1^\dd, L_1) &= \E\left[\m_2(A_2^\dd, H_2)\mid(A_1^\dd, L_1)\right] \\\theta &= \E\left[\m_1(A_1^\dd, L_1)\right]
+- Set $\m_3(A_3^\dd, H_3) = Y$
+- Compute the regression of $\m_3(A_3^\dd, H_3)$ on $(A_2, H_2)$. This gives a predictive function, call that predictive function $m_2(A_2,H_2)$.
+- Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=2$, i.e., compute $m_2(A_2^\dd,H_2)$.
+- Compute the regression of $m_2(A_2^\dd,H_2)$ on $(A_1, H_1)$. This gives a predictive function, call that predictive function $m_1(A_1,H_1)$.
+- Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=1$, i.e., compute $m_1(A_1^\dd,H_1)$.
+- Compute the mean of $m_1(A_1^\dd,H_1)$. This mean is equal to $\theta$.
 
-\end{align}
-```
