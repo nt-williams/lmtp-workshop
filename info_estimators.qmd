@@ -139,7 +139,17 @@ G-computation and IPW estimators require the estimation of nuisance parameters w
 
 Wait, what does it mean for an estimator to be doubly robust?
 
--   For the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as either the outcome model is consistently estimated or the treatment (and censoring) model(s) are consistently estimated.
+-   For the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as either the outcome model is consistently estimated or the treatment (and censoring) model(s) are consistently estimated. For example:
+
+::: {.center-table style="width: 50%;   margin-left: auto;   margin-right: auto;"}
+|           |         |
+|-----------|---------|
+| Time      | 1       |
+| Treatment | Correct |
+| Outcome   | Wrong   |
+:::
+
+\
 
 -   For time-varying setting, an estimator is doubly robust if, for some time $s$, all outcome regressions for $t >s$ are consistently estimated and all intervention mechanisms (treatment + censoring) for $t \leq s$ are consistently estimated. Consider for example $5$ time points:
 
