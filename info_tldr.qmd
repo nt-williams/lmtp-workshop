@@ -105,17 +105,17 @@ The previous NPSEM is the simplest causal model we will assume in this workshop.
 
 As such, we need to modify and introudce some additional notation:
 
-| Symbol                                 | Definition																			|
+| Symbol                                 | Definition                                                                                                                                  |
 |--------------------------|----------------------------------------------|
-| $i$                                    | The index (i.e. a row in a dataset) of an observation from a data set with $n$ total units (i.e., the total number of rows)					|
-| $t$                                    | The index of time for a total number of time points $\tau$                                                                  					|
-| $L_t$                                  | Confounders at time $t$																	|
-| $A_t$                                  | A vector of intervention variables (i..e, treatment or exposure) at time $t$                                                					|
-| $Y$                                    | An outcome variable observed at the end of the study, that is at time $\tau + 1$. Earlier measures of the outcome can be included in $L_t$.                  |
-| $C_t$                                  | A indicator variable that a unit is *observed* (not censored) at time $t+1$										     	|
-| $O_1, ..., O_n$                        | A sample of $n$ i.i.d observations with $O = (L_1, A_1, C_1, L_2, A_2, C_2, ..., L_\tau, A_\tau, C_\tau, Y)$                					|
-| $\bar{X}_t = (X_1, ..., X_t)$          | The history of a variable up until time $t$                                                                                 					|
-| $\underline{X}_t = (X_t, ..., X_\tau)$ | The future of a variable, including time $t$                                                                                					|
-| $H_t = (\bar{A}_{t-1}, \bar{L}_t)$     | The history of all variables up until just before $A_t$                                                                     					|
-| $\epsilon_t$                           | A randomizer                                                                                                                					|
-| $\dd_t(a_t, h_t, \epsilon_t)$          | A function that maps $A_t$, $H_t$, and $\epsilon_t$ to a new value of treatment $A^{\dd}_t$                                 					|
+| $i$                                    | The index (i.e. a row in a dataset) of an observation from a data set with $n$ total units (i.e., the total number of rows)                 |
+| $t$                                    | The index of time for a total number of time points $\tau$                                                                                  |
+| $L_t$                                  | Confounders at time $t$                                                                                                                     |
+| $A_t$                                  | A vector of intervention variables (i..e, treatment or exposure) at time $t$                                                                |
+| $Y$                                    | An outcome variable observed at the end of the study, that is at time $\tau + 1$. Earlier measures of the outcome can be included in $L_t$. |
+| $C_t$                                  | A indicator variable that a unit is *observed* (not censored) at time $t+1$                                                                 |
+| $O_1, ..., O_n$                        | A sample of $n$ i.i.d observations with $O = (L_1, A_1, C_1, L_2, A_2, C_2, ..., L_\tau, A_\tau, C_\tau, Y)$                                |
+| $\bar{X}_t = (X_1, ..., X_t)$          | The history of a variable up until time $t$                                                                                                 |
+| $\underline{X}_t = (X_t, ..., X_\tau)$ | The future of a variable, including time $t$                                                                                                |
+| $H_t = (\bar{A}_{t-1}, \bar{L}_t)$     | The history of all variables up until just before $A_t$                                                                                     |
+| $\epsilon_t$                           | A randomizer                                                                                                                                |
+| $\dd(a_t, h_t, \epsilon_t)$            | A function that maps $A_t$, $H_t$, and $\epsilon_t$ to a new value of treatment $A^{\dd}_t$                                                 |

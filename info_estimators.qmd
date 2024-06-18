@@ -53,8 +53,8 @@ Algorithm: Sequential regressions
 
 A substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome and it is simple to estimate. That said, its cons are major:
 
-- In studies with multiple time points, the adjustment set can become large very quickly. For instance, consider a study with 3 covariates measured at every time point, and 10 time points. Even though we have only 3 covariates at each time point, the number of coviariates in the regression of $Y$ is 33.
-- Imagine trying to correctly specify (e.g., include the approproate interactions) a parametric model (e.g., logistic, Cox) with 33 variables. 
+-   In studies with multiple time points, the adjustment set can become large very quickly. For instance, consider a study with 3 covariates measured at every time point, and 10 time points. Even though we have only 3 covariates at each time point, the number of coviariates in the regression of $Y$ is 33.
+-   Imagine trying to correctly specify (e.g., include the approproate interactions) a parametric model (e.g., logistic, Cox) with 33 variables.
 
 ### Density-ratio estimation {#sec-density-ratio-estimation}
 
@@ -141,26 +141,27 @@ Wait, what does it mean for an estimator to be doubly robust?
 
 -   For the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as either the outcome model is consistently estimated or the treatment (and censoring) model(s) are consistently estimated.
 
--   For time-varying setting, an estimator is doubly robust if, for some time $s$, all outcome regressions for $t >s$ are consistently estimated and all intervention mechanisms (treatment + censoring) for $t \leq s$ are consistently estimated. Consider for example $5$ time points. 
+-   For time-varying setting, an estimator is doubly robust if, for some time $s$, all outcome regressions for $t >s$ are consistently estimated and all intervention mechanisms (treatment + censoring) for $t \leq s$ are consistently estimated. Consider for example $5$ time points:
 
 +-----------+---------+---------+---------+---------+---------+
-| Time      | 1       |       2 |       3 |       4 |       5 |
+| Time      | 1       | 2       | 3       | 4       | 5       |
 +-----------+---------+---------+---------+---------+---------+
 | Treatment | Correct | Correct | Wrong   | Wrong   | Wrong   |
 +-----------+---------+---------+---------+---------+---------+
 | Outcome   | Wrong   | Wrong   | Correct | Correct | Correct |
 +-----------+---------+---------+---------+---------+---------+
 
--   Sequential double robustness (often also referred to as $2^\tau$-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated. Example:
+\
+
+-   Sequential double robustness (often also referred to as $2^\tau$-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated. For example:
 
 +-----------+---------+---------+---------+---------+---------+
-| Time      | 1       |       2 |       3 |       4 |       5 |
+| Time      | 1       | 2       | 3       | 4       | 5       |
 +-----------+---------+---------+---------+---------+---------+
 | Treatment | Correct | Wrong   | Correct | Wrong   | Correct |
 +-----------+---------+---------+---------+---------+---------+
 | Outcome   | Wrong   | Correct | Wrong   | Correct | Wrong   |
 +-----------+---------+---------+---------+---------+---------+
-
 
 #### Efficient Influence Function
 
@@ -335,7 +336,6 @@ While the SDR estimator may be more robust to model misspecification, the TMLE d
 -   If treatment is not time-varying, use the TMLE.
 
 -   If treatment is time-varying and the parameter $\theta$ has clear bounds, such as probabilities, beware of the SDR estimator. Use TMLE preferably.
-
 :::
 
 ### Cross-fitting

@@ -54,7 +54,7 @@ gtsummary::tbl_summary(mixtures)
 
 ### Multivariate shift functions
 
-::: {.callout-tip appearance="minimal"}
+::: {.callout-tip appearance="simple"}
 Only two things need to change when using `lmtp` estimators with multivariate treatments:
 
 1.  Instead of a vector, you should now pass a list to the `trt` argument

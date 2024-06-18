@@ -84,7 +84,7 @@ $$
 
 While much attention is given to static and dynamic interventions, their use is often accompanied by a few key problems.
 
-1.  **Defining causal effects in terms of hypothetical interventions where treatment is applied to all units may be inconceivable.** For example, we may be interested to know if reducing surgery time reduces surgical complications. However, it's inconceivable to set all surgeries to a given duration, even if this duration depends on patient covariates. 
+1.  **Defining causal effects in terms of hypothetical interventions where treatment is applied to all units may be inconceivable.** For example, we may be interested to know if reducing surgery time reduces surgical complications. However, it's inconceivable to set all surgeries to a given duration, even if this duration depends on patient covariates.
 
 2.  **Defining causal effects in terms of hypothetical interventions where treatment is applied to all units may induce positivity violations.**
 
@@ -152,13 +152,19 @@ $$
 
 ### Incremental Propensity Score Interventions Based on the Risk Ratio
 
-Let $A$ denote a binary variable, $\epsilon \sim U(0, 1)$, and $\delta$ be an analyst-defined risk ratio limited to be between $0$ and $1$. If we were interested in an intervention that decreased the likelihood of receiving treatment, define\
+Let $A$ denote a binary variable, $\epsilon \sim U(0, 1)$, and $\delta$ be an analyst-defined risk ratio limited to be between $0$ and $1$. In addition, define $P(A_t = a_t\mid H_t)= \g(a_t \mid H_t)$.
+
+If we were interested in an intervention that decreased the likelihood of receiving treatment, define
+
 $$
 \dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
 a_t &\text{ if } \epsilon_t < \delta \\
 0 &\text{ otherwise}
 \end{cases}.
-$$In this case, we have $P(A^\dd_t = a_t\mid H_t)= \g^\dd(a_t \mid H_t) = a_t \delta \g_t(1 \mid H_t) + (1 - a_t) (1 - \delta \g_t(1\mid H_t))$, which leads to a risk ratio of $\g_t^\dd(1 \mid H_t)/\g_t(1\mid H_t) = \delta$ for comparing the propensity score post- vs pre-intervention. Conversely, if we were interested in an intervention that increased the likelihood of receiving treatment, define\
+$$ In this case, we have $\g^\dd(a_t \mid H_t) = a_t \delta \g_t(1 \mid H_t) + (1 - a_t) (1 - \delta \g_t(1\mid H_t))$, which leads to a risk ratio of $\g_t^\dd(1 \mid H_t)/\g_t(1\mid H_t) = \delta$ for comparing the propensity score post- vs pre-intervention.
+
+Conversely, if we were interested in an intervention that increased the likelihood of receiving treatment, define
+
 $$
 \dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
 a_t &\text{ if } \epsilon_t < \delta \\
@@ -172,6 +178,10 @@ Now $\g_t^\dd(a_t \mid H_t) = a_t (1 - \delta \g_t(0\mid H_t)) + (1 - a_t) \delt
 ## Incremental propensity score intervention
 
 An intervention where the conditional probability of treatment is shifted. (As an aside, interventions where the shift is in the odds ratio scale where previously proposed, but the effects of odds-ratio shifts should not be estimated with the lmtp package, we will discuss this further.
+:::
+
+::: {.callout-caution appearance="simple"}
+Interventions where the shift is in the odds ratio scale were previously proposed, but the effects of odds-ratio shifts should not be estimated with `lmtp`, we will discuss this more later.
 :::
 
 ::: {.callout-tip icon="false"}
@@ -198,10 +208,9 @@ Recall that the fundamental problem of causal inference is that we can't observe
 
     > If there is a unit with observed treatment value $a_t$ and covariates $h_t$, there must also be a unit with treatment value $\dd(a_t, h_t)$ and covariates $h_t$.
 
-2.  *No unmeasured confounders.* All the common causes of $A_t$ and $(L_s, A_s, Y) are measured and contained in $H_t$ for all $s \in \{t+1, ..., \tau\}$.
+2.  *No unmeasured confounders.* All the common causes of $A_t$ and \$(L_s, A_s, Y) are measured and contained in $H_t$ for all $s \in \{t+1, ..., \tau\}$.
 
     > For all times $t$, the history $H_t$ contains sufficient variables to adjust for confounding of $A_t$ and any subsequent variables, including future treatment.
-
 :::
 
 ::: {.callout-warning icon="false"}
@@ -226,10 +235,9 @@ and define $\theta = E[\m_1(A^{\dd}_1, L_1)]$.
 
 As an example, set $\tau = 2$. Then we can compute the identification formula in the following steps:
 
-- Set $\m_3(A_3^\dd, H_3) = Y$
-- Compute the regression of $\m_3(A_3^\dd, H_3)$ on $(A_2, H_2)$. This gives a predictive function, call that predictive function $m_2(A_2,H_2)$.
-- Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=2$, i.e., compute $m_2(A_2^\dd,H_2)$.
-- Compute the regression of $m_2(A_2^\dd,H_2)$ on $(A_1, H_1)$. This gives a predictive function, call that predictive function $m_1(A_1,H_1)$.
-- Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=1$, i.e., compute $m_1(A_1^\dd,H_1)$.
-- Compute the mean of $m_1(A_1^\dd,H_1)$. This mean is equal to $\theta$.
-
+-   Set $\m_3(A_3^\dd, H_3) = Y$
+-   Compute the regression of $\m_3(A_3^\dd, H_3)$ on $(A_2, H_2)$. This gives a predictive function, call that predictive function $\m_2(A_2,H_2)$.
+-   Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=2$, i.e., compute $\m_2(A_2^\dd,H_2)$.
+-   Compute the regression of $\m_2(A_2^\dd,H_2)$ on $(A_1, H_1)$. This gives a predictive function, call that predictive function $\m_1(A_1,H_1)$.
+-   Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=1$, i.e., compute $\m_1(A_1^\dd,H_1)$.
+-   Compute the mean of $\m_1(A_1^\dd,H_1)$. This mean is equal to $\theta$.

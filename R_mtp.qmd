@@ -22,7 +22,7 @@ download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/
 crime <- read.csv("crime.csv")
 ```
 
-As we already discussed, a modified treatment policy is an intervention characterized by a dependence on the natural, or observed, value of treatment. Examples include: 
+As we already discussed, a modified treatment policy is an intervention characterized by a dependence on the natural, or observed, value of treatment. Examples include:
 
 -   Decreasing surgeries that last more than 4 hours by 1 hour (additive MTP)
 
@@ -30,8 +30,11 @@ As we already discussed, a modified treatment policy is an intervention characte
 
 -   Decreasing AQI by 20% (multiplicative MTP).
 
-### Synthetic Neighborhood Crime Data
-In some current work, we are interested in estimating the effect of decreasing the level of community violence (violent crime rate) on risk of preterm birth. Research suggests community violence may impact infant health through physiological responses to stress, worsening maternal mental health, and unhealthy coping behaviors. Community violence is a highly endogenous exposure, which, motivates the use of such a shift intervention.  
+### Synthetic Neighborhood Community Violence Data
+
+In some current work, we are interested in estimating the effect of decreasing the level of community violence (violent crime rate) on risk of preterm birth. Research suggests community violence may impact infant health through physiological responses to stress, worsening maternal mental health, and unhealthy coping behaviors. Community violence is a highly endogenous exposure, which, motivates the use of such a shift intervention.[^1]
+
+[^1]: Thank you to Chris Dharma, who simulated this data!
 
 ```{r echo=FALSE}
 crime <- read.csv("data/crime_toy.csv")
@@ -92,7 +95,7 @@ fit_mtp <- lmtp_tmle(
 </details>
 :::
 
-Did you get this error? 
+Did you get this error?
 
 ```{r eval=FALSE}
 Warning: Detected decimalish `trt` values and `mtp = FALSE`. Consider setting `mtp =
@@ -131,4 +134,4 @@ lmtp_contrast(fit_mtp, ref = mean(crime$preterm_birth))
 </details>
 :::
 
-With `lmtp` we found that under a hypothetical intervention that reduces neighborhood violence by 50%, preterm birth would decrease by approximately 4.4 percentange points. 
+With `lmtp` we found that under a hypothetical intervention that reduces neighborhood violence by 50%, preterm birth would decrease by approximately 4.4 percentange points.
