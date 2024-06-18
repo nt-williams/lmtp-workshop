@@ -209,7 +209,7 @@ lmtp_sdr(
 ### Problem 1
 
 ::: {.callout-warning icon="false"}
-## Practice
+## Question
 
 Why might defining an intervention in terms of an MTP instead of a static intervention be more useful to answer a question about the effect of IMV on death among patients hospitalized with COVID-19?
 
@@ -222,6 +222,8 @@ Answer
 </summary>
 
 <p>
+
+Intubation may increase the likelihood of mortality through factors separate from COVID (by increasing the likelihood of AKI, for example); however, not intubating a patient who is in respiratory distress may also increase the likelihood of mortality. Thus, some patients do need to be intubated and an intervention that eliminated intubation all together would be non-nonsensical.
 
 </p>
 
