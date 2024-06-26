@@ -4,7 +4,24 @@
   font-size: 0.9rem;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap');
+
+body {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+p, li, blockquote {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100; /* This sets the font to Roboto Thin */
+}
+
 .qwebr-console-area {
+  font-family: 'IBM Plex Mono', monospace;
   font-size: 0.9rem;
 }
 
