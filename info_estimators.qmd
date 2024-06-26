@@ -153,25 +153,21 @@ Wait, what does it mean for an estimator to be doubly robust?
 
 -   For time-varying setting, an estimator is doubly robust if, for some time $s$, all outcome regressions for $t >s$ are consistently estimated and all intervention mechanisms (treatment + censoring) for $t \leq s$ are consistently estimated. Consider for example $5$ time points:
 
-+-----------+---------+---------+---------+---------+---------+
+|           |         |         |         |         |         |
+|-----------|---------|---------|---------|---------|---------|
 | Time      | 1       | 2       | 3       | 4       | 5       |
-+-----------+---------+---------+---------+---------+---------+
 | Treatment | Correct | Correct | Wrong   | Wrong   | Wrong   |
-+-----------+---------+---------+---------+---------+---------+
 | Outcome   | Wrong   | Wrong   | Correct | Correct | Correct |
-+-----------+---------+---------+---------+---------+---------+
 
 \
 
 -   Sequential double robustness (often also referred to as $2^\tau$-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated. For example:
 
-+-----------+---------+---------+---------+---------+---------+
+|           |         |         |         |         |         |
+|-----------|---------|---------|---------|---------|---------|
 | Time      | 1       | 2       | 3       | 4       | 5       |
-+-----------+---------+---------+---------+---------+---------+
 | Treatment | Correct | Wrong   | Correct | Wrong   | Correct |
-+-----------+---------+---------+---------+---------+---------+
 | Outcome   | Wrong   | Correct | Wrong   | Correct | Wrong   |
-+-----------+---------+---------+---------+---------+---------+
 
 #### Efficient Influence Function
 

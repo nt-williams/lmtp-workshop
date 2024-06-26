@@ -5,7 +5,7 @@ date-modified: last-modified
 filters:
   - webr
 webr:
-  packages: ['lmtp']
+  packages: ['lmtp', 'dplyr']
   autoload-packages: true
 bibliography: references.bib
 nocite: |
@@ -208,7 +208,7 @@ Recall that the fundamental problem of causal inference is that we can't observe
 
     > If there is a unit with observed treatment value $a_t$ and covariates $h_t$, there must also be a unit with treatment value $\dd(a_t, h_t)$ and covariates $h_t$.
 
-2.  *No unmeasured confounders.* All the common causes of $A_t$ and \$(L_s, A_s, Y) are measured and contained in $H_t$ for all $s \in \{t+1, ..., \tau\}$.
+2.  *No unmeasured confounders.* All the common causes of $A_t$ and $(L_s, A_s, Y)$ are measured and contained in $H_t$ for all $s \in \{t+1, ..., \tau\}$.
 
     > For all times $t$, the history $H_t$ contains sufficient variables to adjust for confounding of $A_t$ and any subsequent variables, including future treatment.
 :::
@@ -233,11 +233,80 @@ $$
 and define $\theta = E[\m_1(A^{\dd}_1, L_1)]$.
 :::
 
-As an example, set $\tau = 2$. Then we can compute the identification formula in the following steps:
+As an example, consider the following data where $\tau = 2$.
 
--   Set $\m_3(A_3^\dd, H_3) = Y$
--   Compute the regression of $\m_3(A_3^\dd, H_3)$ on $(A_2, H_2)$. This gives a predictive function, call that predictive function $\m_2(A_2,H_2)$.
--   Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=2$, i.e., compute $\m_2(A_2^\dd,H_2)$.
--   Compute the regression of $\m_2(A_2^\dd,H_2)$ on $(A_1, H_1)$. This gives a predictive function, call that predictive function $\m_1(A_1,H_1)$.
--   Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=1$, i.e., compute $\m_1(A_1^\dd,H_1)$.
--   Compute the mean of $\m_1(A_1^\dd,H_1)$. This mean is equal to $\theta$.
+```{webr-r}
+#| context: setup
+set.seed(786543)
+n <- 500
+l0 <- rnorm(n)
+a1 <- rbinom(n, 1, plogis(-1 + l0*1.5))
+l1 <- rnorm(n)
+a2 <- rbinom(n, 1, plogis(-1 + l1*1.5 + a1*2))
+y <- rnorm(n, -1 - 1.2*l0 + 2.4*a1 - 2*l1 + 1.2*a2)
+foo <- data.frame(
+  L1 = l0, 
+  A1 = a1, 
+  L2 = l1, 
+  A2 = a2, 
+  Y = y
+)
+```
+
+```{r echo=FALSE}
+set.seed(786543)
+n <- 500
+l0 <- rnorm(n)
+a1 <- rbinom(n, 1, plogis(-1 + l0*1.5))
+l1 <- rnorm(n)
+a2 <- rbinom(n, 1, plogis(-1 + l1*1.5 + a1*2))
+y <- rnorm(n, -1 - 1.2*l0 + 2.4*a1 - 2*l1 + 1.2*a2)
+foo <- data.frame(
+  L1 = l0, 
+  A1 = a1, 
+  L2 = l1, 
+  A2 = a2, 
+  Y = y
+)
+DT::datatable(foo) |> 
+  DT::formatRound(columns = c("L1", "L2", "Y"), digits = 2)
+```
+
+We can compute the identification formula in the following steps:
+
+1.  Set $\m_3(A_3^\dd, H_3) = Y$
+
+    ```{webr-r}
+    m3_d <- foo$Y
+    ```
+
+2.  Compute the regression of $\m_3(A_3^\dd, H_3)$ on $(A_2, H_2)$. This gives a predictive function, call that predictive function $\m_2(A_2,H_2)$.
+
+    ```{webr-r}
+    m2 <- glm(m3_d ~ L1 + A1 + L2 + A2, 
+              data = dplyr::rename(foo, m3_d = Y))
+    ```
+
+3.  Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=2$, i.e., compute $\m_2(A_2^\dd,H_2)$.
+
+    ```{webr-r}
+    m2_d <- predict(m2, dplyr::mutate(foo, A2 = 1))
+    ```
+
+4.  Compute the regression of $\m_2(A_2^\dd,H_2)$ on $(A_1, H_1)$. This gives a predictive function, call that predictive function $\m_1(A_1,H_1)$.
+
+    ```{webr-r}
+    m1 <- glm(m2_d ~ L1 + A1, data = dplyr::mutate(foo, m2_d = m2_d))
+    ```
+
+5.  Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=1$, i.e., compute $\m_1(A_1^\dd,H_1)$.
+
+    ```{webr-r}
+    m1_d <- predict(m1, dplyr::mutate(foo, A1 = 1))
+    ```
+
+6.  Compute the mean of $\m_1(A_1^\dd,H_1)$. This mean is equal to $\theta$.
+
+    ```{webr}
+    mean(m1_d)
+    ```
