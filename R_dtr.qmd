@@ -105,7 +105,7 @@ fit_dtr <- lmtp_sdr(
   shift = d_dtr, 
   outcome_type = "continuous",
   folds = 1,
-  learners_trt = "SL.mean", 
+  learners_trt = "SL.glm", 
   learners_outcome = c("SL.mean", "SL.glm", "SL.gam")
 )
 ```
@@ -139,7 +139,7 @@ fit_MR <- lmtp_sdr(
   shift = \(data, trt) rep("MR", nrow(data)), 
   outcome_type = "continuous",
   folds = 1,
-  learners_trt = "SL.mean", 
+  learners_trt = "SL.glm", 
   learners_outcome = c("SL.mean", "SL.glm", "SL.gam")
 )
 ```
@@ -159,7 +159,7 @@ fit_CD <- lmtp_sdr(
   shift = \(data, trt) rep("CD", nrow(data)), 
   outcome_type = "continuous",
   folds = 1,
-  learners_trt = "SL.mean", 
+  learners_trt = "SL.glm", 
   learners_outcome = c("SL.mean", "SL.glm", "SL.gam")
 )
 ```

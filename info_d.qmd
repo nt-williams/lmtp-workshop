@@ -307,6 +307,6 @@ We can compute the identification formula in the following steps:
 
 6.  Compute the mean of $\m_1(A_1^\dd,H_1)$. This mean is equal to $\theta$.
 
-    ```{webr}
+    ```{webr-r}
     mean(m1_d)
     ```
