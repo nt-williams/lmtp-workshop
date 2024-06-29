@@ -69,32 +69,24 @@ Use the function `event_locf()` to make sure the outcome variables are correctly
 
 -   Instead of just estimating the effect of treatment on the outcome at the last time point, we can estimate the effect of a treatment on an outcome at all follow-up intervals.
 
-Let's estimate the effect of the treatment on intubation at each day. To do so, we need to loop over each day and estimate the effect of treatment on the outcome at that day. We'll store the results in a list called `results`.
+Let's estimate the effect of the treatment on intubation at each day. To do so, we can use the function `lmtp_survival()` .
 
 ```{webr-r}
 W <- c("age", "sex", "bmi", "smoke", "o2", 
        "num_comorbid", "num_symptoms", "bilat", "dyspnea", "hyper")
 
-tau <- 15
-results <- vector("list", length = tau)
-for (t in 1:tau) {
-  results[[t]] <- lmtp_sdr(
-    covid,
-    trt = "A",
-    outcome = paste0("day_", 1:t),
-    baseline = W,
-    shift = static_binary_on, 
-    outcome_type = ifelse(t == 1, "binomial", "survival"),
-    folds = 1, 
-    control = lmtp_control(.learners_outcome_folds = 2, 
-                           .learners_trt_folds = 2)
-  )
-}
+fit <- lmtp_survival(
+  data = covid, 
+  trt = "A", 
+  outcomes = grep("^day", names(covid), value = TRUE),
+  baseline = W, 
+  shift = static_binary_on, 
+  folds = 1, 
+  estimator = "lmtp_sdr", 
+  control = lmtp_control(.learners_outcome_folds = 2, 
+                         .learners_trt_folds = 2)
+)
 ```
-
-::: {.callout-tip appearance="simple"}
-For days $t > 1$, set `outcome_type = "survival"`.
-:::
 
 We can now visualize our results using a survival plot.
 
@@ -103,19 +95,14 @@ The main result of an `lmtp` object can be extracted using the `tidy()` function
 :::
 
 ```{webr-r}
-library(purrr)
 library(ggplot2)
 
-results_tidy <- map_dfr(results, tidy, .id = "t") |> 
-  mutate(estimate = ifelse(t == 1, 1 - estimate, estimate), 
-         t = as.numeric(t))
+results <- tidy(fit)
 
-print(results_tidy)
-
-ggplot(results_tidy, aes(x = t, y = estimate)) + 
+ggplot(results, aes(x = t, y = estimate)) + 
   geom_step() + 
   labs(x = "Days", y = "Survival probability") + 
-  scale_y_continuous(limits = c(0, 1), 
+  scale_y_continuous(limits = c(0.65, 1), 
                      n.breaks = 10, 
                      expand = c(0, 0)) + 
   scale_x_continuous(limits = c(1, 15), 
@@ -221,11 +208,7 @@ Answer
 
 </summary>
 
-<p>
-
-Intubation may increase the likelihood of mortality through factors separate from COVID (by increasing the likelihood of AKI, for example); however, not intubating a patient who is in respiratory distress may also increase the likelihood of mortality. Thus, some patients do need to be intubated and an intervention that eliminated intubation all together would be non-nonsensical.
-
-</p>
+<p>Intubation may increase the likelihood of mortality through factors separate from COVID (by increasing the likelihood of AKI, for example); however, not intubating a patient who is in respiratory distress may also increase the likelihood of mortality. Thus, some patients do need to be intubated and an intervention that eliminated intubation all together would be non-nonsensical.</p>
 
 </details>
 :::
