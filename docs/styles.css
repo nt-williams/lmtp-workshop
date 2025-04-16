@@ -69,13 +69,14 @@ p, li, blockquote {
 
 div.tldr {
     padding: 1em;
-    margin: 1em 0;
+    margin: 2em 0;
     background-size: 70px;
     color: black;
-    background-color: #f0f0f0;
-    border: solid 3px #364958;
+    background-color: hsl(0 0% 100%);
+    border: solid 2px hsl(0 0% 0%);
+    border-radius: 0.15rem;
+    font-family: var(--ff);
     font-size: 1rem;
-    border-radius: 5px;
 }
 
 div.prize {
