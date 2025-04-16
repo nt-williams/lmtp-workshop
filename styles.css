@@ -1,23 +1,34 @@
 /* css styles */
 
+--ff: "Inter", sans-serif;
+
 .sourceCode {
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-body {
-  font-family: 'IBM Plex Mono', monospace;
+h1 {
+  font-weight: bold;
+  font-size: 1.25rem;
+  line-height: 1.4em;
+  font-family: var(--ff);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'IBM Plex Mono', monospace;
+h2 {
+  font-weight: bold;
+  font-size: 1.125rem;
+  line-height: 1.4em;
+  font-family: var(--ff);
+  border-bottom: 0px solid;
+  padding-top: 1em;
 }
 
 p, li, blockquote {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 100; /* This sets the font to Roboto Thin */
+  font-family: var(--ff);
+  font-size: 16px;
+  font-weight: regular;
+  line-height: 1.7em;
 }
 
 .qwebr-console-area {
