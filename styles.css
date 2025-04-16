@@ -1,32 +1,113 @@
 /* css styles */
 
+--ff: "Inter", sans-serif;
+
+--h1: bold 1.25rem/1.4em var(--ff);
+--h2: bold 1.125rem/1.4em var(--ff);
+--p: 1rem/1.4em var(--ff);
+
+--gray100: hsl(0,0%,100%);
+--gray70: hsl(0,0%,70%);
+
+--deep-purple: hsl(275, 50%, 30%);
+--vibrant-purple: hsl(275, 50%, 45%);
+--soft-pink: hsl(330, 50%, 90%);
+--iridescent-blue: hsl(200, 80%, 65%);
+--warm-gold: hsl(30, 70%, 50%);
+--bright-magenta: hsl(300, 80%, 70%);
+
 .sourceCode {
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-body {
-  font-family: 'IBM Plex Mono', monospace;
+h1 {
+  font-weight: bold;
+  font-size: 1.25rem;
+  line-height: 1.4em;
+  font-family: var(--ff);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'IBM Plex Mono', monospace;
+h2 {
+  font-weight: bold;
+  font-size: 1.125rem;
+  line-height: 1.4em;
+  font-family: var(--ff);
+  border-bottom: 0px solid;
+  padding-top: 1em;
 }
 
 p, li, blockquote {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 100; /* This sets the font to Roboto Thin */
+  font-family: var(--ff);
+  font-size: 16px;
+  font-weight: regular;
+  line-height: 1.7em;
+}
+
+.navbar-expand-lg {
+  background-color: hsl(275, 50%, 45%) !important;
+}
+
+#quarto-margin-sidebar {
+  font-family: var(--ff);
+  font-size: 1rem;
+  font-weight: 300;
+  color: hsl(0,0%,50%) !important;
+}
+
+.nav-link {
+  border: none !important;
+}
+
+#quarto-sidebar {
+  font-family: var(--ff);
+  font-size: 1rem;
+  font-weight: 300;
+  color: hsl(0,0%,50%) !important;
+}
+
+.menu-text {
+  padding: 0.5rem;
+  line-height: 1.2em;
+}
+
+
+.sidebar nav[role=doc-toc] ul>li>a.active {
+  background-color: hsl(275, 50%, 45%);
+  border-radius: 0.15rem;
+  color: hsl(0,0%,100%) !important;
+  border-color: hsl(0,0%,100%) !important;
+}
+
+.sidebar nav[role=doc-toc]>h2 {
+  font-family: var(--ff);
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: var(--gray70);
+}
+
+div.sidebar-item-container .active {
+  background-color: hsl(275, 50%, 45%);
+  border-radius: 0.15rem;
+  color: hsl(0,0%,100%) !important;
+  border-color: hsl(0,0%,100%) !important;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+div.sidebar-item-container:hover {
+  color: black;
 }
 
 .qwebr-console-area {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.9rem;
+  font-family: var(--ff);
+  font-size: 16px;
 }
 
 .table {
-  font-size: 0.9rem;
+  font-family: var(--ff);
+  font-size: 16px;
   width: 75%;
   margin-left: auto;
   margin-right: auto;
@@ -47,7 +128,7 @@ p, li, blockquote {
 }
 
 .callout-title-container {
-  font-size: 1.2rem;
+  font-size: 1.125rem;
   color: black;
   padding-bottom: 3px
 }
@@ -58,13 +139,13 @@ p, li, blockquote {
 
 div.tldr {
     padding: 1em;
-    margin: 1em 0;
+    margin: 2em 0;
     background-size: 70px;
     color: black;
-    background-color: #f0f0f0;
-    border: solid 3px #364958;
+    background-color: hsl(330, 50%, 90%);
+    border-radius: 0.15rem;
+    font-family: var(--ff);
     font-size: 1rem;
-    border-radius: 5px;
 }
 
 div.prize {
@@ -78,7 +159,8 @@ div.prize {
   color: black;
   background-color: white;
   border: solid 3px black;
-  font-size: 1.1rem;
+  font-family: var(--ff);
+  font-size: 16px;
 }
   
 div.prize {
@@ -96,8 +178,9 @@ div.algorithm {
 
 .algorithm-header {
   border-bottom: none;
+  font-family: var(--ff);
+  font-size: 18px;
   font-weight: 600;
-  font-size: 1.2rem;
   padding-left: 50px;
   padding-right: 0.5em;
   background-color: #B4D4EE !important;  
@@ -108,24 +191,78 @@ div.algorithm {
 }
 
 .algorithm-body {
-  font-size: 0.9rem;
-  font-weight: 400;
+  font-family: var(--ff);
+  font-size: 16px;
   padding-left: 0.5em;
   padding-right: 0.5em;  
-    padding-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
   margin-bottom: 0;
+}
+
+a {
+  color: hsl(300, 80%, 70%); /* Change to your desired color */
+  text-decoration: none;
 }
 
 /* Callout Types */
 
+.importantbox {
+  padding: 0.5em 1em;
+  padding-bottom: 0em;
+  border: none;
+  display: flex;
+  background-color: hsl(275, 50%, 45%);
+  font-size: 1rem;
+  font-weight: regular;
+  margin-top: 1em;
+  margin-bottom: 1em;  
+  border-radius: .25rem;
+  font-family: var(--ff);
+  font-size: 1rem;
+  color: white;
+}
+
+div.callout-tip {
+  background-color: hsl(200, 80%, 90%);
+  color: black;
+  border: none !important;
+}
+
+div.callout-note {
+  background-color: hsl(275, 50%, 45%);
+  color: white;
+  border: none !important;
+}
+
+.callout-icon {
+  display: none;
+}
+
+div.callout-important {
+  background-color: hsl(330, 50%, 90%);
+  border: none !important;
+  border-radius: 0.25rem;
+}
+
+div.callout-title-container.flex-fill {
+  color: hsl(0,0%,30%);
+  font-weight: 300 !important;
+  font-size: 1rem;
+}
+
+div.callout.callout-style-default.callout-important.callout-titled > div.callout-header.d-flex.align-content-center {
+  background-color: hsl(330, 50%, 90%)
+}
+
 div.callout-warning {
-  border-left-color: #F18805 !important;
+  background-color: hsl(330, 50%, 90%) !important;
+  border: none !important;
 }
 
 div.callout-warning .callout-header {
-  background-color: #FDC85D !important;
+  background-color: hsl(330, 50%, 90%) !important;
 }
 
 div.callout-warning.callout-style-default .callout-title {
-  background-color: #FDC85D
+  background-color: hsl(330, 50%, 90%)
 }

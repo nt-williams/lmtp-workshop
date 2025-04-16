@@ -27,7 +27,7 @@ bmi <- bmiData
 
 Recall that interventions where the output of the function depends only on covariates are referred to as dynamic interventions or dynamic treatment regimes. Let's learn how to estimate the effects of dynamic treatment regimes using `lmtp`.
 
-### Simulated BMI Data
+## Simulated BMI Data
 
 A dataset named `bmi` has been loaded into R in the background.
 
@@ -55,7 +55,7 @@ gtsummary::tbl_strata(bmiData, strata = A1,
                       .header = "**Stage 1, {strata}**")
 ```
 
-### Problem 1
+## Problem 1
 
 Write a shift function that assigns meal replacement to all observations at time 1, but only meal replacement at time 2 to those observations whose 4-month BMI is greater than 30.
 
@@ -110,7 +110,7 @@ fit_dtr <- lmtp_sdr(
 )
 ```
 
-### Problem 2
+## Problem 2
 
 Suppose we are interested in comparing the dynamic treatment regime to a static treatment regime where all patients receive meal replacement at both time points. Using the SDR estimator, estimate the effect of this static intervention.
 

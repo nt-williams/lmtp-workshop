@@ -5,7 +5,7 @@
 
 Nick Williams, Kara Rudolph, and Iván Díaz
 
-### [LMTP](https://github.com/nt-williams/lmtp) Workshop for [SER 2024](https://epiresearch.org/annual-meeting/2024-meeting/)
+## [LMTP](https://github.com/nt-williams/lmtp) Workshop for [SER 2024](https://epiresearch.org/annual-meeting/2024-meeting/)
 
 > Modified treatment policies (MTPs) are a class of interventions that
 > generalize static and dynamic interventions for categorical,

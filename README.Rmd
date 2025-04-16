@@ -8,7 +8,7 @@ output: github_document
 
 Nick Williams, Kara Rudolph, and Iván Díaz
 
-### [LMTP](https://github.com/nt-williams/lmtp) Workshop for [SER 2024](https://epiresearch.org/annual-meeting/2024-meeting/)
+## [LMTP](https://github.com/nt-williams/lmtp) Workshop for [SER 2024](https://epiresearch.org/annual-meeting/2024-meeting/)
 
 > Modified treatment policies (MTPs) are a class of interventions that generalize static and dynamic interventions for categorical, continuous, and multivariate exposures. MTPs are hypothetical interventions where the post-intervention is defined as a modification of the natural value of the exposure that can depend on the unit’s history. This short course will introduce the lmtp R package for estimating the causal effects of MTPs in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice.
 >

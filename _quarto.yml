@@ -7,6 +7,7 @@ filters:
 
 website:
   title: "Beyond the \n Average Treatment Effect"
+  bread-crumbs: false
   navbar:
     left:
       - href: index.qmd
@@ -18,21 +19,21 @@ website:
     search: true
     contents:
       - href: index.qmd
-        text: Welcome!
+        text: Welcome
       - href: info_tldr.qmd
-        text: 1. Introduction
+        text: Introduction
       - href: info_d.qmd
-        text: 2. Defining Interventions
+        text: Defining Interventions
       - href: info_estimators.qmd
-        text: 3. Estimators
-      - section: 4. Estimating Effects with lmtp
+        text: Estimators
+      - section: Estimation with lmtp
         contents:
           - href: lmtp.qmd
             text: The lmtp package
           - href: R_static.qmd
             text: Static effects and the ATE
           - href: R_dtr.qmd
-            text: Dynamic Treatment Regimes
+            text: Dynamic Regimes
           - href: R_mtp.qmd
             text: Modified Treatment Policies
           - href: R_ipsi.qmd
@@ -42,7 +43,7 @@ website:
           - href: R_multivariate.qmd
             text: Multivariate Exposures
       - href: info_conclusion.qmd
-        text: 5. Final Remarks
+        text: Final Remarks
         
     tools:
       - icon: github
@@ -52,7 +53,7 @@ website:
 
 format:
   html:
-    theme: [default,callout_tweet.scss]
+    theme: [default,styles.scss]
     css: styles.css
     toc: true
     include-in-body: macros.qmd

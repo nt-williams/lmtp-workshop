@@ -15,7 +15,7 @@ To recap, we have
 
 The parameter $\theta$ is a function that could be computed if we knew the distribution of the variables (e.g., outcome regressions). Because we do not know this distribution, we need to estimate it from a sample of observed data. We now discuss how to estimate the parameter $\theta$ from a sample.
 
-### Sequential Regression Estimator
+## Sequential Regression Estimator
 
 One possible estimator is simply a *plug-in* estimator of the identification result. This estimator is often referred to as G-computation, and it proceeds by simply estimating the regressions described in the identification result. Another way to describe this algorithm is as follows:
 
@@ -56,7 +56,7 @@ A substitution estimator is nice, because its estimates are guaranteed to stay w
 -   In studies with multiple time points, the adjustment set can become large very quickly. For instance, consider a study with 3 covariates measured at every time point, and 10 time points. Even though we have only 3 covariates at each time point, the number of coviariates in the regression of $Y$ is 33.
 -   Imagine trying to correctly specify (e.g., include the approproate interactions) a parametric model (e.g., logistic, Cox) with 33 variables.
 
-### Density-ratio estimation {#sec-density-ratio-estimation}
+## Density-ratio estimation {#sec-density-ratio-estimation}
 
 ::: {.callout-caution appearance="simple"}
 The next three estimators all rely on estimating the density ratio
@@ -95,7 +95,7 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
     H_t=h_t)}{p^\lambda(\Lambda = 0\mid A_t=a_t, H_t=h_t)}
 $$
 
-### Inverse Probability Weighting
+## Inverse Probability Weighting
 
 We call this estimator IPW due to its similarity with the inverse-probability weighted estimator for binary treatments, but it would be more accurately referred to as simply reweighted estimator. It is based on the following alternative identification formula:
 
@@ -129,7 +129,7 @@ Algorithm: IPW Estimator
 
 : {tbl-colwidths="\[25,25\]"}
 
-### Doubly Robust Estimators
+## Doubly Robust Estimators
 
 G-computation and IPW estimators require the estimation of nuisance parameters with correctly specified parametric models. We will now turn our attention to two non-parametric estimators:
 
@@ -169,7 +169,7 @@ Wait, what does it mean for an estimator to be doubly robust?
 | Treatment | Correct | Wrong   | Correct | Wrong   | Correct |
 | Outcome   | Wrong   | Correct | Wrong   | Correct | Wrong   |
 
-#### Efficient Influence Function
+### Efficient Influence Function
 
 Key to constructing the TMLE and SDR is the *efficient influence function* (EIF).
 
@@ -207,7 +207,7 @@ $$
 r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 $$
 
-#### Targeted Minimum-Loss Based Estimation
+### Targeted Minimum-Loss Based Estimation
 
 ::: algorithm
 ::: algorithm-header
@@ -263,7 +263,7 @@ Algorithm: TMLE
 
 : {tbl-colwidths="\[25,25\]"}
 
-#### Sequentially Doubly Robust Estimator
+### Sequentially Doubly Robust Estimator
 
 ::: algorithm
 ::: algorithm-header
@@ -299,7 +299,7 @@ Algorithm: SDR Estimator
 
 : {tbl-colwidths="\[25,25\]"}
 
-### Choosing an Estimator
+## Choosing an Estimator
 
 -   In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference (ya right 😂).
 
@@ -344,7 +344,7 @@ While the SDR estimator may be more robust to model misspecification, the TMLE d
 -   If treatment is time-varying and the parameter $\theta$ has clear bounds, such as probabilities, beware of the SDR estimator. Use TMLE preferably.
 :::
 
-### Cross-fitting
+## Cross-fitting
 
 When estimating nuisance parameters with data adaptive algorithms, you should perform a process similar to cross-validation called cross-fitting. Cross-fitting helps ensure:
 

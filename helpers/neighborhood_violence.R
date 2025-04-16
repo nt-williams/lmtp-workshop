@@ -36,7 +36,7 @@ Vehicles0<-betadist(min=0,max=75.2,shape1=1,shape=19,N=community_max)
 Marital1<-betadist(min=7.9,max=93.7,shape1=3,shape=7,N=community_max) #%never married
 Marital3<-betadist(min=0,max=7.6,shape1=2,shape=4,N=community_max) #%separated
 
-###Predict the crime level (exposure) according to other variables at the community level, later will call this A
+##Predict the crime level (exposure) according to other variables at the community level, later will call this A
 x.pred.exp<-scale(cbind(Income,OwnerVac,RenterVac,edu,PubAssist,Poor,Unemployed,Vehicles0,Marital1,Marital3))
 x.matrix.A<-as.matrix(cbind(rep(1,community_max),x.pred.exp))
 coef.A<-as.matrix(c(32.64,-5,4.1,2.5,-5.6,10.5,10.1,10.2,2.1,0.4,0.1))
@@ -45,7 +45,7 @@ pred.A <- (x.matrix.A %*% coef.A) + error_com
 summary(pred.A)
 hist(pred.A)
 #Original data = 32.64 ( 2.03 - 223.2)
-###Add by a factor of 21 to ensure that there were no negative values. Just wanted to follow the distribution
+##Add by a factor of 21 to ensure that there were no negative values. Just wanted to follow the distribution
 Ascore <- pred.A + 21
 summary(Ascore)
 hist(Ascore)
@@ -99,7 +99,7 @@ parity.cat<-sample(x=seq(0:2),size=N,prob=c(0.40,0.30,0.30),replace=T)
 #Individual variables
 W <- cbind(ed,ins.pdd,concept.season,concept.yr,parity.cat,race.eth,mage,mage.sq,maxt)
 
-###Create the two M variables (mediators, diabetes and preeclampsia) to be a function of A, W, and V 
+##Create the two M variables (mediators, diabetes and preeclampsia) to be a function of A, W, and V 
 x.pred<-scale(cbind(ARIMA.pred.12moavg_yr,pEd_LThs,mage,mage.sq,pctPoor,pctUnemployedCLF))
 ed2<-ifelse(ed==2,1,0)
 ed3<-ifelse(ed==3,1,0)

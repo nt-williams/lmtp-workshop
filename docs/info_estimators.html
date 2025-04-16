@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.551">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Beyond the Average Treatment Effect - Estimators</title>
+<title>Estimators – Beyond the Average Treatment Effect</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -87,7 +87,7 @@ div.csl-indent {
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -132,7 +132,7 @@ window.Quarto = {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -147,19 +147,19 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./info_estimators.html">3. Estimators</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">Estimators</h1>
+        </a>     
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -176,7 +176,7 @@ window.Quarto = {
         </div>
         <div class="sidebar-tools-collapse">
     <div class="dropdown">
-      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
             <a class="dropdown-item sidebar-tools-collapse-item" href="https://github.com/nt-williams/lmtp-workshop">
@@ -191,32 +191,32 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Welcome!</span></a>
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_tldr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">1. Introduction</span></a>
+ <span class="menu-text">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_d.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2. Defining Interventions</span></a>
+ <span class="menu-text">Defining Interventions</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_estimators.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">3. Estimators</span></a>
+ <span class="menu-text">Estimators</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">4. Estimating Effects with lmtp</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Estimation with lmtp</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -236,7 +236,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./R_dtr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Dynamic Treatment Regimes</span></a>
+ <span class="menu-text">Dynamic Regimes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -268,7 +268,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">5. Final Remarks</span></a>
+ <span class="menu-text">Final Remarks</span></a>
   </div>
 </li>
     </ul>
@@ -284,7 +284,12 @@ window.Quarto = {
   <li><a href="#sequential-regression-estimator" id="toc-sequential-regression-estimator" class="nav-link active" data-scroll-target="#sequential-regression-estimator">Sequential Regression Estimator</a></li>
   <li><a href="#sec-density-ratio-estimation" id="toc-sec-density-ratio-estimation" class="nav-link" data-scroll-target="#sec-density-ratio-estimation">Density-ratio estimation</a></li>
   <li><a href="#inverse-probability-weighting" id="toc-inverse-probability-weighting" class="nav-link" data-scroll-target="#inverse-probability-weighting">Inverse Probability Weighting</a></li>
-  <li><a href="#doubly-robust-estimators" id="toc-doubly-robust-estimators" class="nav-link" data-scroll-target="#doubly-robust-estimators">Doubly Robust Estimators</a></li>
+  <li><a href="#doubly-robust-estimators" id="toc-doubly-robust-estimators" class="nav-link" data-scroll-target="#doubly-robust-estimators">Doubly Robust Estimators</a>
+  <ul class="collapse">
+  <li><a href="#efficient-influence-function" id="toc-efficient-influence-function" class="nav-link" data-scroll-target="#efficient-influence-function">Efficient Influence Function</a></li>
+  <li><a href="#targeted-minimum-loss-based-estimation" id="toc-targeted-minimum-loss-based-estimation" class="nav-link" data-scroll-target="#targeted-minimum-loss-based-estimation">Targeted Minimum-Loss Based Estimation</a></li>
+  <li><a href="#sequentially-doubly-robust-estimator" id="toc-sequentially-doubly-robust-estimator" class="nav-link" data-scroll-target="#sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</a></li>
+  </ul></li>
   <li><a href="#choosing-an-estimator" id="toc-choosing-an-estimator" class="nav-link" data-scroll-target="#choosing-an-estimator">Choosing an Estimator</a></li>
   <li><a href="#cross-fitting" id="toc-cross-fitting" class="nav-link" data-scroll-target="#cross-fitting">Cross-fitting</a></li>
   </ul>
@@ -295,7 +300,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Estimators</h1>
+<h1 class="title d-none d-lg-block">Estimators</h1>
 </div>
 
 
@@ -333,8 +338,8 @@ window.Quarto = {
 <li><p>defined the necessary assumptions to identify the expected value of <span class="math inline">\(Y\)</span> under an intervention that replaces <span class="math inline">\(A\)</span> with the output of <span class="math inline">\(\dd_t(a, h_t, \epsilon)\)</span>.</p></li>
 </ol>
 <p>The parameter <span class="math inline">\(\theta\)</span> is a function that could be computed if we knew the distribution of the variables (e.g., outcome regressions). Because we do not know this distribution, we need to estimate it from a sample of observed data. We now discuss how to estimate the parameter <span class="math inline">\(\theta\)</span> from a sample.</p>
-<section id="sequential-regression-estimator" class="level3">
-<h3 class="anchored" data-anchor-id="sequential-regression-estimator">Sequential Regression Estimator</h3>
+<section id="sequential-regression-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="sequential-regression-estimator">Sequential Regression Estimator</h2>
 <p>One possible estimator is simply a <em>plug-in</em> estimator of the identification result. This estimator is often referred to as G-computation, and it proceeds by simply estimating the regressions described in the identification result. Another way to describe this algorithm is as follows:</p>
 <div class="algorithm">
 <div class="algorithm-header">
@@ -354,7 +359,7 @@ window.Quarto = {
 </ol>
 </div>
 </div>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
 <col style="width: 28%">
@@ -384,8 +389,8 @@ window.Quarto = {
 <li>Imagine trying to correctly specify (e.g., include the approproate interactions) a parametric model (e.g., logistic, Cox) with 33 variables.</li>
 </ul>
 </section>
-<section id="sec-density-ratio-estimation" class="level3">
-<h3 class="anchored" data-anchor-id="sec-density-ratio-estimation">Density-ratio estimation</h3>
+<section id="sec-density-ratio-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="sec-density-ratio-estimation">Density-ratio estimation</h2>
 <div class="callout callout-style-simple callout-caution">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -424,8 +429,8 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
     H_t=h_t)}{p^\lambda(\Lambda = 0\mid A_t=a_t, H_t=h_t)}
 \]</span></p>
 </section>
-<section id="inverse-probability-weighting" class="level3">
-<h3 class="anchored" data-anchor-id="inverse-probability-weighting">Inverse Probability Weighting</h3>
+<section id="inverse-probability-weighting" class="level2">
+<h2 class="anchored" data-anchor-id="inverse-probability-weighting">Inverse Probability Weighting</h2>
 <p>We call this estimator IPW due to its similarity with the inverse-probability weighted estimator for binary treatments, but it would be more accurately referred to as simply reweighted estimator. It is based on the following alternative identification formula:</p>
 <p><span class="math display">\[
 \theta = \E \bigg[ \bigg\{\prod_{t=1}^\tau r_t(a_t, h_t) \bigg\} Y \bigg]
@@ -443,7 +448,7 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 </ol>
 </div>
 </div>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
 <col style="width: 25%">
@@ -467,8 +472,8 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 </tbody>
 </table>
 </section>
-<section id="doubly-robust-estimators" class="level3">
-<h3 class="anchored" data-anchor-id="doubly-robust-estimators">Doubly Robust Estimators</h3>
+<section id="doubly-robust-estimators" class="level2">
+<h2 class="anchored" data-anchor-id="doubly-robust-estimators">Doubly Robust Estimators</h2>
 <p>G-computation and IPW estimators require the estimation of nuisance parameters with correctly specified parametric models. We will now turn our attention to two non-parametric estimators:</p>
 <ol type="1">
 <li><p>targeted minimum-loss based estimator (TMLE), and</p></li>
@@ -479,7 +484,7 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 <li>For the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as either the outcome model is consistently estimated or the treatment (and censoring) model(s) are consistently estimated. For example:</li>
 </ul>
 <div class="center-table" style="width: 50%;   margin-left: auto;   margin-right: auto;">
-<table class="table">
+<table class="caption-top table">
 <tbody>
 <tr class="odd">
 <td>Time</td>
@@ -501,7 +506,7 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 <ul>
 <li>For time-varying setting, an estimator is doubly robust if, for some time <span class="math inline">\(s\)</span>, all outcome regressions for <span class="math inline">\(t &gt;s\)</span> are consistently estimated and all intervention mechanisms (treatment + censoring) for <span class="math inline">\(t \leq s\)</span> are consistently estimated. Consider for example <span class="math inline">\(5\)</span> time points:</li>
 </ul>
-<table class="table">
+<table class="caption-top table">
 <tbody>
 <tr class="odd">
 <td>Time</td>
@@ -534,7 +539,7 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 <ul>
 <li>Sequential double robustness (often also referred to as <span class="math inline">\(2^\tau\)</span>-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated. For example:</li>
 </ul>
-<table class="table">
+<table class="caption-top table">
 <tbody>
 <tr class="odd">
 <td>Time</td>
@@ -562,8 +567,8 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 </tr>
 </tbody>
 </table>
-<section id="efficient-influence-function" class="level4">
-<h4 class="anchored" data-anchor-id="efficient-influence-function">Efficient Influence Function</h4>
+<section id="efficient-influence-function" class="level3">
+<h3 class="anchored" data-anchor-id="efficient-influence-function">Efficient Influence Function</h3>
 <p>Key to constructing the TMLE and SDR is the <em>efficient influence function</em> (EIF).</p>
 <ul>
 <li><p>The EIF characterizes the asymptotic behavior of all regular and efficient estimators.</p></li>
@@ -601,8 +606,8 @@ Assumptions
 r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 \]</span></p>
 </section>
-<section id="targeted-minimum-loss-based-estimation" class="level4">
-<h4 class="anchored" data-anchor-id="targeted-minimum-loss-based-estimation">Targeted Minimum-Loss Based Estimation</h4>
+<section id="targeted-minimum-loss-based-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="targeted-minimum-loss-based-estimation">Targeted Minimum-Loss Based Estimation</h3>
 <div class="algorithm">
 <div class="algorithm-header">
 <p>Algorithm: TMLE</p>
@@ -635,7 +640,7 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </ol>
 </div>
 </div>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
 <col style="width: 25%">
@@ -660,8 +665,8 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </tbody>
 </table>
 </section>
-<section id="sequentially-doubly-robust-estimator" class="level4">
-<h4 class="anchored" data-anchor-id="sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</h4>
+<section id="sequentially-doubly-robust-estimator" class="level3">
+<h3 class="anchored" data-anchor-id="sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</h3>
 <div class="algorithm">
 <div class="algorithm-header">
 <p>Algorithm: SDR Estimator</p>
@@ -680,7 +685,7 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </ol>
 </div>
 </div>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
 <col style="width: 25%">
@@ -706,13 +711,13 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </table>
 </section>
 </section>
-<section id="choosing-an-estimator" class="level3">
-<h3 class="anchored" data-anchor-id="choosing-an-estimator">Choosing an Estimator</h3>
+<section id="choosing-an-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-an-estimator">Choosing an Estimator</h2>
 <ul>
 <li><p>In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference (ya right 😂).</p></li>
 <li><p>The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining <span class="math inline">\(\sqrt{n}\)</span>-consistent under reasonable assumptions.</p></li>
 </ul>
-<table class="table">
+<table class="caption-top table">
 <caption><strong>Table 1.</strong> Summary of estimator properties.</caption>
 <colgroup>
 <col style="width: 40%">
@@ -812,8 +817,8 @@ Which estimator should I use?
 </div>
 </div>
 </section>
-<section id="cross-fitting" class="level3">
-<h3 class="anchored" data-anchor-id="cross-fitting">Cross-fitting</h3>
+<section id="cross-fitting" class="level2">
+<h2 class="anchored" data-anchor-id="cross-fitting">Cross-fitting</h2>
 <p>When estimating nuisance parameters with data adaptive algorithms, you should perform a process similar to cross-validation called cross-fitting. Cross-fitting helps ensure:</p>
 <ul>
 <li><p>that standard errors will be correct, and</p></li>
@@ -886,18 +891,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -929,7 +923,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -937,7 +953,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

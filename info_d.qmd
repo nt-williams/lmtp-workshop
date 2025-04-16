@@ -18,8 +18,6 @@ Have you ever begun reading a paper in the methodological causal inference liter
 
 **Instead, we will work in situations where** $A$ **is a binary, categorical, multivariate, or continuous variable!**
 
-------------------------------------------------------------------------
-
 In the previous section, we defined $\dd(a_t, h_t, \epsilon_t)$ as a function that maps $A_t$, $H_t$, and potentially a randomizer $\epsilon_t$ to a new value of $A_t$. Our focus henceforth is estimating the causal effect of an intervention, characterized by $\dd$ on the outcome $Y$, through the causal parameter
 
 $$
@@ -36,23 +34,21 @@ where $Y^{\bar A^{\dd}}$ is the counterfactual outcome in a world, where possibl
 
 But what is this function $\dd$, how can it be defined, and how does using this function to define interventions solve the problem? Let's start from simple to more complex examples of functions $\dd$.
 
-### Static Interventions
+## Static Interventions
 
 Let $A$ denote a binary vector, such as receiving a medication, and define $\dd(a_t, h_t, \epsilon) = 1$. This intervention characterizes a hypothetical world where all members of the population receive treatment.
 
-::: {.callout-important icon="false"}
-## Static intervention
-
-An intervention is static if the function $\dd_t$ always returns the same value regardless of the input.
+::: {.callout-important appearance="simple"}
+## 📚 Definition
+**Static intervention**: An intervention is static if the function $\dd_t$ always returns the same value regardless of the input.
 :::
 
-::: {.callout-tip icon="false"}
-## Example
-
-Let's say we were interested in the effect of randomizing patients with opioid use disorder to injection naltrexone ($A=1$) vs. sublingual buprenorphine ($A=0$). We would contrast the counterfactual outcomes in a hypothetical world in which all units were treated with injection naltrexone $\dd_1=1$ versus a hypothetical world in which all units were treated with buprenorphine $\dd_0=0$. This gives us the well-known average (comparative) treatment effect (ATE). $$\E[Y^{\bar A^{\dd_1}} - Y^{\bar A^{\dd_0}}] = \E[Y^{A=1} - Y^{A=0}] $$.
+::: {.callout-tip appearance="simple"}
+## 💡 Example
+Let's say we were interested in the effect of randomizing patients with opioid use disorder to injection naltrexone ($A=1$) vs. sublingual buprenorphine ($A=0$). We would contrast the counterfactual outcomes in a hypothetical world in which all units were treated with injection naltrexone $\dd_1=1$ versus a hypothetical world in which all units were treated with buprenorphine $\dd_0=0$. This gives us the well-known average (comparative) treatment effect (ATE). $$\E[Y^{\bar A^{\dd_1}} - Y^{\bar A^{\dd_0}}] = \E[Y^{A=1} - Y^{A=0}] $$
 :::
 
-### Dynamic Treatment Regime
+## Dynamic Treatment Regime
 
 Let $A_t$ denote a binary vector, such as receiving a medication, and $H_t$ a numeric vector, such as a measure of discomfort. For a given value of $\delta$, define $$
 \dd(a_t, h_t, \epsilon) = \begin{cases}
@@ -61,15 +57,13 @@ Let $A_t$ denote a binary vector, such as receiving a medication, and $H_t$ a nu
 \end{cases}
 $$
 
-::: {.callout-important icon="false"}
-## Dynamic treatment regime
-
-Interventions where the output of the function $\dd$ depends **only** **on the covariates** $H_t$ are referred to as being dynamic.
+::: {.callout-important appearance="simple"}
+## 📚 Definition
+**Dynamic treatment regime**: Interventions where the output of the function $\dd$ depends *only on the covariates* $H_t$ are referred to as being dynamic.
 :::
 
-::: {.callout-tip icon="false"}
-## Example
-
+::: {.callout-tip appearance="simple"}
+## 💡 Example
 @rudolph2022buprenorphine examined a Buprenorphine (BUP-NX) dosing strategy among a population of patients who were taking BUP-NX for opioid use disorder. Under the hypothetical intervention, patients who reported opioid use during the week prior to a physicians exam received a BUP-NX dose increase while patients who did not report prior-week opioid use maintained the same dose. Let $A_t$ be a binary indicator for BUP-NX dose increase at week $t$ compared to week $t-1$ and $X_t$ be an indicator for opioid use at week $t$. Then,
 
 $$
@@ -80,7 +74,7 @@ $$
 $$
 :::
 
-### Modified Treatment Policies
+## Modified Treatment Policies
 
 While much attention is given to static and dynamic interventions, their use is often accompanied by a few key problems.
 
@@ -90,13 +84,12 @@ While much attention is given to static and dynamic interventions, their use is 
 
 A solution to these problems is to instead define causal effects using **modified treatment policies (MTP).**
 
-::: {.callout-important icon="false"}
-## Modified treatment policy
-
-An intervention characterized by a hypothetical world where the *natural* value of treatment is modified is called a *modified treatment policy*.
+::: {.callout-important appearance="simple"}
+## 📚 Definition
+**Modified treatment policy**: An intervention characterized by a hypothetical world where the *natural* value of treatment is modified is called a *modified treatment policy*.
 :::
 
-#### Additive and multiplicative shift MTP
+### Additive and multiplicative shift MTP
 
 Let $A_t$ denote a numeric vector. Assume that $A_t$ has support in the data such that $P(A_t \leq u(h_t) \mid H_t = h_t) = 1$. For an analyst-defined value of $\delta$, define $$
 \dd(a_t, h_t, \epsilon) = \begin{cases}
@@ -107,9 +100,8 @@ $$
 
 Under this intervention, the natural value of exposure at time $t$ is increased by the analyst-defined value $\delta$, whenever such an increase is feasible. This MTP is referred to as an *additive shift* *MTP.*
 
-::: {.callout-tip icon="false"}
-## Example
-
+::: {.callout-tip appearance="simple"}
+## 💡 Example
 @diaz2023nonparametric estimated the effect of increasing P/F ratio (a measure of hypoxemia) by 50 units on survival among those patients with acute respiratory failure (a P/F ratio \< 300).
 
 $$
@@ -129,9 +121,8 @@ a_t &\text{ otherwise}.
 \end{cases}
 $$
 
-::: {.callout-tip icon="false"}
-## Example
-
+::: {.callout-tip appearance="simple"}
+## 💡 Example
 @nugent2023demonstration evaluated the association between county-level measures of mobility and incident COVID-19 cases in the United States in the Summer and Fall of 2022. They considered both hypothetical additive and multiplicative MTPs; for example, they defined a multiplicative MTP where a measure for the density of mobile devices visiting commercial locations was decreased by 25%:
 
 $$
@@ -139,7 +130,7 @@ $$
 $$
 :::
 
-### Randomized Interventions
+## Randomized Interventions
 
 Let $A$ denote a binary vector, $\epsilon \sim U(0, 1)$, and $\epsilon$ be an analyst-defined value between 0 and 1. We may then define randomized interventions. For example, imagine we are interested in a hypothetical world where half of all smokers quit smoking. This intervention would be defined as
 
@@ -150,7 +141,7 @@ a_t &\text{ otherwise}
 \end{cases}.
 $$
 
-### Incremental Propensity Score Interventions Based on the Risk Ratio
+## Incremental Propensity Score Interventions Based on the Risk Ratio
 
 Let $A$ denote a binary variable, $\epsilon \sim U(0, 1)$, and $\delta$ be an analyst-defined risk ratio limited to be between $0$ and $1$. In addition, define $P(A_t = a_t\mid H_t)= \g(a_t \mid H_t)$.
 
@@ -174,19 +165,15 @@ $$
 
 Now $\g_t^\dd(a_t \mid H_t) = a_t (1 - \delta \g_t(0\mid H_t)) + (1 - a_t) \delta \g_t(0 \mid H_t)$, which implies a risk ratio $\g_t^\dd(0\mid H_t)/\g(0\mid H_t) = \delta$.
 
-::: {.callout-important icon="false"}
-## Incremental propensity score intervention
-
-An intervention where the conditional probability of treatment is shifted. (As an aside, interventions where the shift is in the odds ratio scale where previously proposed, but the effects of odds-ratio shifts should not be estimated with the lmtp package, we will discuss this further.
+::: {.callout-important appearance="simple"}
+## 📚 Definition
+**Incremental propensity score intervention**: An intervention where the conditional probability of treatment is shifted. 
 :::
 
-::: {.callout-caution appearance="simple"}
 Interventions where the shift is in the odds ratio scale were previously proposed, but the effects of odds-ratio shifts should not be estimated with `lmtp`, we will discuss this more later.
-:::
 
-::: {.callout-tip icon="false"}
-## Example
-
+::: {.callout-tip appearance="simple"}
+## 💡 Example
 Using electronic health record data, @wen2023intervention estimated the effect of increasing the proportion of PrEP uptake on bacterial STI among cis-gender males being tested for STIs and that do not have HIV. Let $A_t$ be a binary indicator for PrEP initiation at week $t$, and $L_t$ be a binary indicator for any STI testing and being HIV-free at week $t$. They defined a "medium" successful PrEP uptake intervention as
 
 $$
@@ -197,12 +184,9 @@ a_t &\text{ if } l_t = 1 \text{ and } \epsilon_t < 0.85 \\
 $$
 :::
 
-### Identification of the causal parameter
+## Identification of the causal parameter
 
-Recall that the fundamental problem of causal inference is that we can't observe the alternative worlds which we use to define causal effects. If we can't observe counterfactual variables, then how can we learn a causal effect? Under a set of certain assumptions, we can *identify* a causal parameter from observed data. These assumptions are called identification assumptions.
-
-::: callout-important
-## Identification Assumptions
+Recall that the fundamental problem of causal inference is that we can't observe the alternative worlds which we use to define causal effects. If we can't observe counterfactual variables, then how can we learn a causal effect? Under a set of certain assumptions, we can *identify* a causal parameter from observed data. These assumptions are called identification assumptions:
 
 1.  *Positivity*. If $(a_t, h_t) \in \text{supp}\{A_t, H_t\}$ then $\dd(a_t, h_t) \in \text{supp}\{A_t, H_t\}$ for $t \in \{1, ..., \tau\}$.
 
@@ -211,18 +195,16 @@ Recall that the fundamental problem of causal inference is that we can't observe
 2.  *No unmeasured confounders.* All the common causes of $A_t$ and $(L_s, A_s, Y)$ are measured and contained in $H_t$ for all $s \in \{t+1, ..., \tau\}$.
 
     > For all times $t$, the history $H_t$ contains sufficient variables to adjust for confounding of $A_t$ and any subsequent variables, including future treatment.
-:::
 
-::: {.callout-warning icon="false"}
-## Question
-
+::: {.callout-warning appearance="simple"}
+## 🤔 Question
 When might these assumptions be violated?
 :::
 
 Assuming the above, $\theta$ is identified from the observed data with:
 
-::: {.callout-tip icon="false"}
-## Theorem
+::: {.callout-tip appearance="simple"}
+## 🎲 Theorem
 
 Set $\m_{\tau+1} = Y$ For $t = \tau, ..., 1$, recursively define
 

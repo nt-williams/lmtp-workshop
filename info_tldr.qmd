@@ -27,11 +27,9 @@ $$
 
 -   We will assume that this system of equations exists in nature and is responsible for generating our observed data.
 
-::: {.callout-note appearance="simple"}
+::: {.importantbox}
 We will often refer to $L$ as confounders, $A$ as the treatment or exposure, and $Y$ as the outcome.
 :::
-
-------------------------------------------------------------------------
 
 Take for example the following sample of data:
 
@@ -52,14 +50,10 @@ Let, $L$ = `sex`, `bmi`, `age`, and `smoke`; $A$ = `trt`; and $Y$ = `event`. Whe
 
 Note that in some cases, we may know one or more of the functions $f$. For example, if our data came from a randomized clinical trial for $A$, then we know the function $f_A$.
 
-------------------------------------------------------------------------
-
 Central to how we will define causal effects is the concept of *counterfactual random variables.*
 
-::: {.callout-important icon="false"}
-## Counterfactual random variables
-
-Hypothetical random variables that would have been observed, possibly contrary to fact, in an alternative world.
+::: {.callout-important appearance="simple"}
+📚 **Counterfactual random variables**: Hypothetical random variables that would have been observed, possibly contrary to fact, in an alternative world.
 :::
 
 For example, consider a scenario where we are interested in the value of $Y$ in a hypothetical situation where, instead of the variable $A$ being equal to its observed value, $A$ is set to some other value.
@@ -91,11 +85,9 @@ read.csv("data/williams_synthetic.csv") |>
   DT::formatRound(columns = "age", digits = 0)
 ```
 
-::: {.callout-note appearance="simple"}
+:::{.importantbox}
 Unfortunately, we are never able to collect data from this alternative world. This is called the *fundamental problem of causal inference.*
 :::
-
-------------------------------------------------------------------------
 
 The previous NPSEM is the simplest causal model we will assume in this workshop. However, real data is often much more complex and may be characterized by:
 
@@ -103,7 +95,7 @@ The previous NPSEM is the simplest causal model we will assume in this workshop.
 
 -   loss-to-follow-up
 
-As such, we need to modify and introudce some additional notation:
+As such, we need to modify and introduce some additional notation:
 
 | Symbol                                 | Definition                                                                                                                                  |
 |--------------------------|----------------------------------------------|

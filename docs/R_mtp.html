@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.551">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Beyond the Average Treatment Effect - Modified treatment policies</title>
+<title>Modified treatment policies – Beyond the Average Treatment Effect</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -325,7 +325,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"editor-max-height":"","fig-height":5,"autorun":"true","comment":"","results":"markup","fig-cap":"","output":"true","dpi":72,"read-only":"false","context":"setup","label":"unnamed-chunk-1","classes":"","message":"true","out-width":"700px","editor-quick-suggestions":"false","warning":"true","fig-width":7,"editor-font-scale":1,"out-height":""},"id":1,"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/crime_toy.csv\", \"crime.csv\")\ncrime <- read.csv(\"crime.csv\")"},{"options":{"editor-max-height":"","fig-height":5,"autorun":"false","comment":"","results":"markup","fig-cap":"","output":"true","dpi":72,"read-only":"false","context":"interactive","label":"unnamed-chunk-2","classes":"","message":"true","out-width":"700px","editor-quick-suggestions":"false","warning":"true","fig-width":7,"editor-font-scale":1,"out-height":""},"id":2,"code":"A <- \"neighborhood_violence\"\nW <- names(crime)[1:12]\nY <- \"preterm_birth\"\nid <- \"community_code\"\n\nlearners <- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.rpart\", \n              \"SL.gam\")\n\nd <- # Write your shift function here!\n\nfit_d <- # Write your estimation code here!"},{"options":{"editor-max-height":"","fig-height":5,"autorun":"false","comment":"","results":"markup","fig-cap":"","output":"true","dpi":72,"read-only":"false","context":"interactive","label":"unnamed-chunk-3","classes":"","message":"true","out-width":"700px","editor-quick-suggestions":"false","warning":"true","fig-width":7,"editor-font-scale":1,"out-height":""},"id":3,"code":"# Write your code here!"}];
+globalThis.qwebrCellDetails = [{"id":1,"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/crime_toy.csv\", \"crime.csv\")\ncrime <- read.csv(\"crime.csv\")","options":{"fig-width":7,"dpi":72,"editor-quick-suggestions":"false","context":"setup","message":"true","results":"markup","fig-cap":"","fig-height":5,"out-width":"700px","classes":"","editor-font-scale":1,"output":"true","comment":"","read-only":"false","warning":"true","label":"unnamed-chunk-1","out-height":"","editor-max-height":"","autorun":"true"}},{"id":2,"code":"A <- \"neighborhood_violence\"\nW <- names(crime)[1:12]\nY <- \"preterm_birth\"\nid <- \"community_code\"\n\nlearners <- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.rpart\", \n              \"SL.gam\")\n\nd <- # Write your shift function here!\n\nfit_d <- # Write your estimation code here!","options":{"fig-width":7,"dpi":72,"editor-quick-suggestions":"false","context":"interactive","message":"true","results":"markup","fig-cap":"","fig-height":5,"out-width":"700px","classes":"","editor-font-scale":1,"output":"true","comment":"","read-only":"false","warning":"true","label":"unnamed-chunk-2","out-height":"","editor-max-height":"","autorun":"false"}},{"id":3,"code":"# Write your code here!","options":{"fig-width":7,"dpi":72,"editor-quick-suggestions":"false","context":"interactive","message":"true","results":"markup","fig-cap":"","fig-height":5,"out-width":"700px","classes":"","editor-font-scale":1,"output":"true","comment":"","read-only":"false","warning":"true","label":"unnamed-chunk-3","out-height":"","editor-max-height":"","autorun":"false"}}];
 
 </script>
 <script type="module">
@@ -1162,7 +1162,7 @@ globalThis.qwebrExecuteCode = async function (
 
 </script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -1207,7 +1207,7 @@ window.Quarto = {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -1222,19 +1222,19 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_mtp.html">Modified Treatment Policies</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">Modified treatment policies</h1>
+        </a>     
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -1251,7 +1251,7 @@ window.Quarto = {
         </div>
         <div class="sidebar-tools-collapse">
     <div class="dropdown">
-      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
             <a class="dropdown-item sidebar-tools-collapse-item" href="https://github.com/nt-williams/lmtp-workshop">
@@ -1266,32 +1266,32 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Welcome!</span></a>
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_tldr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">1. Introduction</span></a>
+ <span class="menu-text">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_d.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2. Defining Interventions</span></a>
+ <span class="menu-text">Defining Interventions</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_estimators.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">3. Estimators</span></a>
+ <span class="menu-text">Estimators</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">4. Estimating Effects with lmtp</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Estimation with lmtp</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -1311,7 +1311,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./R_dtr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Dynamic Treatment Regimes</span></a>
+ <span class="menu-text">Dynamic Regimes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1343,7 +1343,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./info_conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">5. Final Remarks</span></a>
+ <span class="menu-text">Final Remarks</span></a>
   </div>
 </li>
     </ul>
@@ -1592,9 +1592,9 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 }
 </script>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_mtp.html">Modified Treatment Policies</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Modified treatment policies</h1>
+<h1 class="title d-none d-lg-block">Modified treatment policies</h1>
 </div>
 
 
@@ -1606,7 +1606,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">June 17, 2024</p>
+      <p class="date-modified">March 25, 2025</p>
     </div>
   </div>
     
@@ -1640,29 +1640,28 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <li><p>Decreasing BMI by 2 units for individuals with BMI &gt; 30 (additive MTP)</p></li>
 <li><p>Decreasing AQI by 20% (multiplicative MTP).</p></li>
 </ul>
-<section id="synthetic-neighborhood-community-violence-data" class="level3">
-<h3 class="anchored" data-anchor-id="synthetic-neighborhood-community-violence-data">Synthetic Neighborhood Community Violence Data</h3>
+<section id="synthetic-neighborhood-community-violence-data" class="level2">
+<h2 class="anchored" data-anchor-id="synthetic-neighborhood-community-violence-data">Synthetic Neighborhood Community Violence Data</h2>
 <p>In some current work, we are interested in estimating the effect of decreasing the level of community violence (violent crime rate) on risk of preterm birth. Research suggests community violence may impact infant health through physiological responses to stress, worsening maternal mental health, and unhealthy coping behaviors. Community violence is a highly endogenous exposure, which, motivates the use of such a shift intervention.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<div id="lvgepxfmez" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lvgepxfmez table {
+<div id="ljcdqnmnsq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ljcdqnmnsq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lvgepxfmez thead, #lvgepxfmez tbody, #lvgepxfmez tfoot, #lvgepxfmez tr, #lvgepxfmez td, #lvgepxfmez th {
+#ljcdqnmnsq thead, #ljcdqnmnsq tbody, #ljcdqnmnsq tfoot, #ljcdqnmnsq tr, #ljcdqnmnsq td, #ljcdqnmnsq th {
   border-style: none;
 }
 
-#lvgepxfmez p {
+#ljcdqnmnsq p {
   margin: 0;
   padding: 0;
 }
 
-#lvgepxfmez .gt_table {
+#ljcdqnmnsq .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1688,12 +1687,12 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-left-color: #D3D3D3;
 }
 
-#lvgepxfmez .gt_caption {
+#ljcdqnmnsq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lvgepxfmez .gt_title {
+#ljcdqnmnsq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1705,7 +1704,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-width: 0;
 }
 
-#lvgepxfmez .gt_subtitle {
+#ljcdqnmnsq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1717,7 +1716,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-width: 0;
 }
 
-#lvgepxfmez .gt_heading {
+#ljcdqnmnsq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1729,13 +1728,13 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#lvgepxfmez .gt_bottom_border {
+#ljcdqnmnsq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lvgepxfmez .gt_col_headings {
+#ljcdqnmnsq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1750,7 +1749,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#lvgepxfmez .gt_col_heading {
+#ljcdqnmnsq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1770,7 +1769,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#lvgepxfmez .gt_column_spanner_outer {
+#ljcdqnmnsq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1782,15 +1781,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 4px;
 }
 
-#lvgepxfmez .gt_column_spanner_outer:first-child {
+#ljcdqnmnsq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lvgepxfmez .gt_column_spanner_outer:last-child {
+#ljcdqnmnsq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lvgepxfmez .gt_column_spanner {
+#ljcdqnmnsq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1802,11 +1801,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   width: 100%;
 }
 
-#lvgepxfmez .gt_spanner_row {
+#ljcdqnmnsq .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lvgepxfmez .gt_group_heading {
+#ljcdqnmnsq .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1832,7 +1831,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   text-align: left;
 }
 
-#lvgepxfmez .gt_empty_group_heading {
+#ljcdqnmnsq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1847,15 +1846,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: middle;
 }
 
-#lvgepxfmez .gt_from_md > :first-child {
+#ljcdqnmnsq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lvgepxfmez .gt_from_md > :last-child {
+#ljcdqnmnsq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lvgepxfmez .gt_row {
+#ljcdqnmnsq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1874,7 +1873,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#lvgepxfmez .gt_stub {
+#ljcdqnmnsq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1887,7 +1886,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#lvgepxfmez .gt_stub_row_group {
+#ljcdqnmnsq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1901,15 +1900,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: top;
 }
 
-#lvgepxfmez .gt_row_group_first td {
+#ljcdqnmnsq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lvgepxfmez .gt_row_group_first th {
+#ljcdqnmnsq .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lvgepxfmez .gt_summary_row {
+#ljcdqnmnsq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1919,16 +1918,16 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#lvgepxfmez .gt_first_summary_row {
+#ljcdqnmnsq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lvgepxfmez .gt_first_summary_row.thick {
+#ljcdqnmnsq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lvgepxfmez .gt_last_summary_row {
+#ljcdqnmnsq .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1938,7 +1937,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#lvgepxfmez .gt_grand_summary_row {
+#ljcdqnmnsq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1948,7 +1947,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#lvgepxfmez .gt_first_grand_summary_row {
+#ljcdqnmnsq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1958,7 +1957,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-color: #D3D3D3;
 }
 
-#lvgepxfmez .gt_last_grand_summary_row_top {
+#ljcdqnmnsq .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1968,11 +1967,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#lvgepxfmez .gt_striped {
+#ljcdqnmnsq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lvgepxfmez .gt_table_body {
+#ljcdqnmnsq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1981,7 +1980,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#lvgepxfmez .gt_footnotes {
+#ljcdqnmnsq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1995,7 +1994,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#lvgepxfmez .gt_footnote {
+#ljcdqnmnsq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2004,7 +2003,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#lvgepxfmez .gt_sourcenotes {
+#ljcdqnmnsq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2018,7 +2017,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#lvgepxfmez .gt_sourcenote {
+#ljcdqnmnsq .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2026,76 +2025,85 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#lvgepxfmez .gt_left {
+#ljcdqnmnsq .gt_left {
   text-align: left;
 }
 
-#lvgepxfmez .gt_center {
+#ljcdqnmnsq .gt_center {
   text-align: center;
 }
 
-#lvgepxfmez .gt_right {
+#ljcdqnmnsq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lvgepxfmez .gt_font_normal {
+#ljcdqnmnsq .gt_font_normal {
   font-weight: normal;
 }
 
-#lvgepxfmez .gt_font_bold {
+#ljcdqnmnsq .gt_font_bold {
   font-weight: bold;
 }
 
-#lvgepxfmez .gt_font_italic {
+#ljcdqnmnsq .gt_font_italic {
   font-style: italic;
 }
 
-#lvgepxfmez .gt_super {
+#ljcdqnmnsq .gt_super {
   font-size: 65%;
 }
 
-#lvgepxfmez .gt_footnote_marks {
+#ljcdqnmnsq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lvgepxfmez .gt_asterisk {
+#ljcdqnmnsq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lvgepxfmez .gt_indent_1 {
+#ljcdqnmnsq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lvgepxfmez .gt_indent_2 {
+#ljcdqnmnsq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lvgepxfmez .gt_indent_3 {
+#ljcdqnmnsq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lvgepxfmez .gt_indent_4 {
+#ljcdqnmnsq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lvgepxfmez .gt_indent_5 {
+#ljcdqnmnsq .gt_indent_5 {
   text-indent: 25px;
+}
+
+#ljcdqnmnsq .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#ljcdqnmnsq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
 }
 </style>
 
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header gt_col_headings">
-<th id="<strong>Characteristic</strong>" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
-<th id="<strong>N = 1,000</strong><span class=&quot;gt_footnote_marks&quot; style=&quot;white-space:nowrap;font-style:italic;font-weight:normal;&quot;><sup>1</sup></span>" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>N = 1,000</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span></th>
+<th id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
+<th id="stat_0" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>N = 1,000</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
@@ -2229,7 +2237,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </tr>
 </tbody><tfoot class="gt_footnotes">
 <tr class="even">
-<td colspan="2" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;"><sup>1</sup></span> Median (IQR); n (%)</td>
+<td colspan="2" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> Median (Q1, Q3); n (%)</td>
 </tr>
 </tfoot>
 
@@ -2238,10 +2246,9 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </div>
 </div>
 </div>
-</div>
 </section>
-<section id="problem-1" class="level3">
-<h3 class="anchored" data-anchor-id="problem-1">Problem 1</h3>
+<section id="problem-1" class="level2">
+<h2 class="anchored" data-anchor-id="problem-1">Problem 1</h2>
 <p>Write a shift function (named <code>d_mtp</code>) for a modified treatment policy where the natural value of neighborhood violence is decreased by 50%. Using the <code>lmtp</code> package, estimate the population mean effect of this intervention on preterm birth. Make sure to use the <code>id</code> argument to account for community level clustering in the estimation of standard errors. To save computation time, don’t use cross-fitting.</p>
 <div class="callout callout-style-default callout-warning no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2298,8 +2305,8 @@ Practice
 </div>
 </div>
 </section>
-<section id="problem-2" class="level3">
-<h3 class="anchored" data-anchor-id="problem-2">Problem 2</h3>
+<section id="problem-2" class="level2">
+<h2 class="anchored" data-anchor-id="problem-2">Problem 2</h2>
 <p>Let’s compare the effect of the intervention on reducing neighborhood violence on preterm birth to the observed preterm birth rate. Use the <code>lmtp_contrast()</code> function.</p>
 <div class="callout callout-style-default callout-warning no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2378,18 +2385,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -2421,7 +2417,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -2429,7 +2447,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

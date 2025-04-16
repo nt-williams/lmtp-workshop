@@ -25,13 +25,13 @@ download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/
 covid <- read.csv("williams_synthetic.csv")
 ```
 
-### Data considerations
+## Data considerations
 
 -   Similar to when the outcome is binary, survival outcomes should be coded using 0's and 1's where 1 indicates the occurrence of an event and 0 otherwise.
 
 -   Similar to how we encode censoring variables, we consider the outcome to be degenerate. Meaning that once an observation experiences an outcome, all future outcome variables should also be coded with a 1 ("last-observation-carried-forward").
 
-### Point-treatment survival problems
+## Point-treatment survival problems
 
 Up to this point, we've been ignoring that the `covid` dataset should be treated as a point-treatment survival problem. Let's re-estimate the effect of the randomized treatment with a survival framework.
 
@@ -110,7 +110,7 @@ ggplot(results, aes(x = t, y = estimate)) +
                      expand = c(0.01, 0))
 ```
 
-### Time-varying treatment
+## Time-varying treatment
 
 @hoffman2023introducing demonstrated the use of modified treatment policies for survival outcomes to assess the effect of delaying invasive mechanical ventilation (IMV) on mortality among patients hospitalized with COVID-19 in New York City during the first COVID-19 wave. A synthetic version of the data used for that analysis has been loaded into R as `intubation`.
 
@@ -193,7 +193,7 @@ lmtp_sdr(
 )
 ```
 
-### Problem 1
+## Problem 1
 
 ::: {.callout-warning icon="false"}
 ## Question

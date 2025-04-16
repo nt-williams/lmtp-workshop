@@ -19,7 +19,7 @@ So far, we've
 
 It's now time to move on to applying this new knowledge to real data examples.
 
-### Existing software and `lmtp`
+## Existing software and `lmtp`
 
 General software for estimation of causal effects in longitudinal studies is limited:
 
@@ -31,7 +31,7 @@ In contrast, the `lmtp` package (software companion to the paper by @diaz2023non
 
 -   `lmtp` could be your default package for conducting causal analyses in R!
 
-### Installation
+## Installation
 
 For this workshop, `lmtp` has already been installed with `webr`. However, you can install the package locally on your machine from CRAN with\
 
@@ -46,7 +46,7 @@ Alternatively, you can download the developmental version from GitHub with
 devtools::install_github("nt-williams/lmtp@devel")
 ```
 
-### Preliminaries
+## Preliminaries
 
 Before we move on to using `lmtp`, here's general information that will be applicable across all examples:
 
@@ -100,29 +100,29 @@ a_list <- list(
 
 -   The \code{outcome\_type} argument should be set to \code{"continuous"} for continuous outcomes, \code{"binomial"} for dichotomous outcomes, and \code{"survival"} for time-to-event outcomes.
 
-### Data structure examples
+## Data structure examples
 
-##### Point treatment
+#### Point treatment
 
 ![Adapted from Hoffman et al., 2022.](images/data_point_trt.png){fig-align="center" width="60%"}
 
-##### Point-treatment with censoring
+#### Point-treatment with censoring
 
 ![Adapted from Hoffman et al., 2022.](images/data_ltfu.png){fig-align="center" width="60%"}
 
-##### Time-varying treatment with censoring
+#### Time-varying treatment with censoring
 
 ![Adapted from Hoffman et al., 2022.](images/data_time_varying.png){fig-align="center" width="90%"}
 
-##### Point-treatment with survival outcome
+#### Point-treatment with survival outcome
 
 ![Adapted from Hoffman et al., 2022.](images/data_survival.png){fig-align="center" width="85%"}
 
-##### Time-varying treatment with survival outcome
+#### Time-varying treatment with survival outcome
 
 ![Adapted from Hoffman et al., 2022.](images/data_complex.png){fig-align="center" width="100%"}
 
-### Machine learning ensembles
+## Machine learning ensembles
 
 As was already discussed, an attractive property of multiply-robust estimators is that they can incorporate flexible machine-learning algorithms for the estimation of nuisance parameters while remaining $\sqrt{n}$-consistent.
 

@@ -40,7 +40,7 @@ d_ipsi_up <- function(data, trt) {
 }
 ```
 
-### Problem 1
+## Problem 1
 
 What if we wanted to *decrease* the likelihood of initiating treatment by 2-fold? Implement this shift function in R. As a reminder
 
