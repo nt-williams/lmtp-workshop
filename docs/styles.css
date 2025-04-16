@@ -77,8 +77,8 @@ p, li, blockquote {
 .navbar-title {
   font-family: var(--ff);
   font-size: 1rem;
-  font-weight: 600;
-  color: hsl(0,0%,50%) !important;
+  font-weight: 400;
+  color: hsl(0,0%,20%) !important;
 }
 
 #quarto-margin-sidebar {
@@ -102,6 +102,25 @@ p, li, blockquote {
 .menu-text {
   padding: 0.5rem;
   line-height: 1.2em;
+}
+
+.sidebar nav[role=doc-toc] ul>li>a.active {
+  background-color: hsl(0, 0%, 100%);
+  color: hsl(0,0%,0%) !important;
+  font-weight: 400;
+}
+
+.sidebar nav[role=doc-toc]>h2 {
+  font-family: var(--ff);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: hsl(0,0%,50%);
+}
+
+div.sidebar-item-container .active {
+  background-color: hsl(0, 0%, 100%);
+  color: hsl(0,0%,0%) !important;
+  font-weight: 400;
 }
 
 div.tldr {
