@@ -123,6 +123,19 @@ div.sidebar-item-container .active {
   font-weight: 400;
 }
 
+.qwebr-console-area {
+  font-family: var(--ff);
+  font-size: 16px;
+}
+
+.table {
+  font-family: var(--ff);
+  font-size: 0.875rem;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 div.tldr {
     padding: 1em;
     margin: 2em 0;
