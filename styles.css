@@ -70,13 +70,38 @@ p, li, blockquote {
 #navbarCollapse .menu-text {
   font-family: var(--ff);
   font-size: 1rem;
-  color: hsl(0 0% 30%);
+  font-weight: 300;
+  color: hsl(0,0%,50%) !important;
 }
 
 .navbar-title {
   font-family: var(--ff);
   font-size: 1rem;
-  color: hsl(0 0% 30%);
+  font-weight: 600;
+  color: hsl(0,0%,50%) !important;
+}
+
+#quarto-margin-sidebar {
+  font-family: var(--ff);
+  font-size: 1rem;
+  font-weight: 300;
+  color: hsl(0,0%,50%) !important;
+}
+
+.nav-link {
+  border: none !important;
+}
+
+#quarto-sidebar {
+  font-family: var(--ff);
+  font-size: 1rem;
+  font-weight: 300;
+  color: hsl(0,0%,50%) !important;
+}
+
+.menu-text {
+  padding: 0.5rem;
+  line-height: 1.2em;
 }
 
 div.tldr {
