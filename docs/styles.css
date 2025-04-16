@@ -21,12 +21,12 @@ h2 {
   line-height: 1.4em;
   font-family: var(--ff);
   border-bottom: 0px solid;
-  padding-top: 1em;
+  padding-top: 0.5em;
 }
 
 p, li, blockquote {
   font-family: var(--ff);
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: regular;
   line-height: 1.7em;
 }
@@ -125,7 +125,7 @@ div.sidebar-item-container .active {
 
 .qwebr-console-area {
   font-family: var(--ff);
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .table {

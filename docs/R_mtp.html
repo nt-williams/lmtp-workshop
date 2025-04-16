@@ -325,7 +325,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"message":"true","comment":"","out-height":"","warning":"true","context":"setup","editor-font-scale":1,"read-only":"false","autorun":"true","dpi":72,"label":"unnamed-chunk-1","output":"true","fig-height":5,"results":"markup","fig-cap":"","editor-max-height":"","classes":"","out-width":"700px","editor-quick-suggestions":"false","fig-width":7},"id":1,"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/crime_toy.csv\", \"crime.csv\")\ncrime <- read.csv(\"crime.csv\")"},{"options":{"message":"true","comment":"","out-height":"","warning":"true","context":"interactive","editor-font-scale":1,"read-only":"false","autorun":"false","dpi":72,"label":"unnamed-chunk-2","output":"true","fig-height":5,"results":"markup","fig-cap":"","editor-max-height":"","classes":"","out-width":"700px","editor-quick-suggestions":"false","fig-width":7},"id":2,"code":"A <- \"neighborhood_violence\"\nW <- names(crime)[1:12]\nY <- \"preterm_birth\"\nid <- \"community_code\"\n\nlearners <- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.rpart\", \n              \"SL.gam\")\n\nd <- # Write your shift function here!\n\nfit_d <- # Write your estimation code here!"},{"options":{"message":"true","comment":"","out-height":"","warning":"true","context":"interactive","editor-font-scale":1,"read-only":"false","autorun":"false","dpi":72,"label":"unnamed-chunk-3","output":"true","fig-height":5,"results":"markup","fig-cap":"","editor-max-height":"","classes":"","out-width":"700px","editor-quick-suggestions":"false","fig-width":7},"id":3,"code":"# Write your code here!"}];
+globalThis.qwebrCellDetails = [{"options":{"classes":"","read-only":"false","out-width":"700px","fig-width":7,"warning":"true","editor-max-height":"","comment":"","message":"true","autorun":"true","dpi":72,"out-height":"","fig-cap":"","context":"setup","editor-quick-suggestions":"false","output":"true","label":"unnamed-chunk-1","fig-height":5,"results":"markup","editor-font-scale":1},"id":1,"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/crime_toy.csv\", \"crime.csv\")\ncrime <- read.csv(\"crime.csv\")"},{"options":{"classes":"","read-only":"false","out-width":"700px","fig-width":7,"warning":"true","editor-max-height":"","comment":"","message":"true","autorun":"false","dpi":72,"out-height":"","fig-cap":"","context":"interactive","editor-quick-suggestions":"false","output":"true","label":"unnamed-chunk-2","fig-height":5,"results":"markup","editor-font-scale":1},"id":2,"code":"A <- \"neighborhood_violence\"\nW <- names(crime)[1:12]\nY <- \"preterm_birth\"\nid <- \"community_code\"\n\nlearners <- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.rpart\", \n              \"SL.gam\")\n\nd <- # Write your shift function here!\n\nfit_d <- # Write your estimation code here!"},{"options":{"classes":"","read-only":"false","out-width":"700px","fig-width":7,"warning":"true","editor-max-height":"","comment":"","message":"true","autorun":"false","dpi":72,"out-height":"","fig-cap":"","context":"interactive","editor-quick-suggestions":"false","output":"true","label":"unnamed-chunk-3","fig-height":5,"results":"markup","editor-font-scale":1},"id":3,"code":"# Write your code here!"}];
 
 </script>
 <script type="module">
@@ -1227,9 +1227,9 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_mtp.html">Modified Treatment Policies</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title">Modified treatment policies</h1>
+        </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -1588,9 +1588,9 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 }
 </script>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lmtp.html">4. Estimating Effects with lmtp</a></li><li class="breadcrumb-item"><a href="./R_mtp.html">Modified Treatment Policies</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Modified treatment policies</h1>
+<h1 class="title d-none d-lg-block">Modified treatment policies</h1>
 </div>
 
 
@@ -1641,23 +1641,23 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <p>In some current work, we are interested in estimating the effect of decreasing the level of community violence (violent crime rate) on risk of preterm birth. Research suggests community violence may impact infant health through physiological responses to stress, worsening maternal mental health, and unhealthy coping behaviors. Community violence is a highly endogenous exposure, which, motivates the use of such a shift intervention.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="ytveegyqub" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ytveegyqub table {
+<div id="zpobdqmwkv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zpobdqmwkv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ytveegyqub thead, #ytveegyqub tbody, #ytveegyqub tfoot, #ytveegyqub tr, #ytveegyqub td, #ytveegyqub th {
+#zpobdqmwkv thead, #zpobdqmwkv tbody, #zpobdqmwkv tfoot, #zpobdqmwkv tr, #zpobdqmwkv td, #zpobdqmwkv th {
   border-style: none;
 }
 
-#ytveegyqub p {
+#zpobdqmwkv p {
   margin: 0;
   padding: 0;
 }
 
-#ytveegyqub .gt_table {
+#zpobdqmwkv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1683,12 +1683,12 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-left-color: #D3D3D3;
 }
 
-#ytveegyqub .gt_caption {
+#zpobdqmwkv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ytveegyqub .gt_title {
+#zpobdqmwkv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1700,7 +1700,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-width: 0;
 }
 
-#ytveegyqub .gt_subtitle {
+#zpobdqmwkv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1712,7 +1712,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-width: 0;
 }
 
-#ytveegyqub .gt_heading {
+#zpobdqmwkv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1724,13 +1724,13 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#ytveegyqub .gt_bottom_border {
+#zpobdqmwkv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ytveegyqub .gt_col_headings {
+#zpobdqmwkv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1745,7 +1745,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#ytveegyqub .gt_col_heading {
+#zpobdqmwkv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1765,7 +1765,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#ytveegyqub .gt_column_spanner_outer {
+#zpobdqmwkv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1777,15 +1777,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 4px;
 }
 
-#ytveegyqub .gt_column_spanner_outer:first-child {
+#zpobdqmwkv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ytveegyqub .gt_column_spanner_outer:last-child {
+#zpobdqmwkv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ytveegyqub .gt_column_spanner {
+#zpobdqmwkv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1797,11 +1797,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   width: 100%;
 }
 
-#ytveegyqub .gt_spanner_row {
+#zpobdqmwkv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ytveegyqub .gt_group_heading {
+#zpobdqmwkv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1827,7 +1827,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   text-align: left;
 }
 
-#ytveegyqub .gt_empty_group_heading {
+#zpobdqmwkv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1842,15 +1842,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: middle;
 }
 
-#ytveegyqub .gt_from_md > :first-child {
+#zpobdqmwkv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ytveegyqub .gt_from_md > :last-child {
+#zpobdqmwkv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ytveegyqub .gt_row {
+#zpobdqmwkv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1869,7 +1869,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#ytveegyqub .gt_stub {
+#zpobdqmwkv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1882,7 +1882,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#ytveegyqub .gt_stub_row_group {
+#zpobdqmwkv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1896,15 +1896,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: top;
 }
 
-#ytveegyqub .gt_row_group_first td {
+#zpobdqmwkv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ytveegyqub .gt_row_group_first th {
+#zpobdqmwkv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ytveegyqub .gt_summary_row {
+#zpobdqmwkv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1914,16 +1914,16 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#ytveegyqub .gt_first_summary_row {
+#zpobdqmwkv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ytveegyqub .gt_first_summary_row.thick {
+#zpobdqmwkv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ytveegyqub .gt_last_summary_row {
+#zpobdqmwkv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1933,7 +1933,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#ytveegyqub .gt_grand_summary_row {
+#zpobdqmwkv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1943,7 +1943,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#ytveegyqub .gt_first_grand_summary_row {
+#zpobdqmwkv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1953,7 +1953,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-color: #D3D3D3;
 }
 
-#ytveegyqub .gt_last_grand_summary_row_top {
+#zpobdqmwkv .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1963,11 +1963,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#ytveegyqub .gt_striped {
+#zpobdqmwkv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ytveegyqub .gt_table_body {
+#zpobdqmwkv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1976,7 +1976,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#ytveegyqub .gt_footnotes {
+#zpobdqmwkv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1990,7 +1990,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#ytveegyqub .gt_footnote {
+#zpobdqmwkv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1999,7 +1999,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#ytveegyqub .gt_sourcenotes {
+#zpobdqmwkv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2013,7 +2013,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#ytveegyqub .gt_sourcenote {
+#zpobdqmwkv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2021,72 +2021,72 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#ytveegyqub .gt_left {
+#zpobdqmwkv .gt_left {
   text-align: left;
 }
 
-#ytveegyqub .gt_center {
+#zpobdqmwkv .gt_center {
   text-align: center;
 }
 
-#ytveegyqub .gt_right {
+#zpobdqmwkv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ytveegyqub .gt_font_normal {
+#zpobdqmwkv .gt_font_normal {
   font-weight: normal;
 }
 
-#ytveegyqub .gt_font_bold {
+#zpobdqmwkv .gt_font_bold {
   font-weight: bold;
 }
 
-#ytveegyqub .gt_font_italic {
+#zpobdqmwkv .gt_font_italic {
   font-style: italic;
 }
 
-#ytveegyqub .gt_super {
+#zpobdqmwkv .gt_super {
   font-size: 65%;
 }
 
-#ytveegyqub .gt_footnote_marks {
+#zpobdqmwkv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ytveegyqub .gt_asterisk {
+#zpobdqmwkv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ytveegyqub .gt_indent_1 {
+#zpobdqmwkv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ytveegyqub .gt_indent_2 {
+#zpobdqmwkv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ytveegyqub .gt_indent_3 {
+#zpobdqmwkv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ytveegyqub .gt_indent_4 {
+#zpobdqmwkv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ytveegyqub .gt_indent_5 {
+#zpobdqmwkv .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ytveegyqub .katex-display {
+#zpobdqmwkv .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ytveegyqub div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#zpobdqmwkv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
