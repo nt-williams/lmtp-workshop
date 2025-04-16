@@ -9,8 +9,6 @@ website:
   title: "Beyond the \n Average Treatment Effect"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
       - href: instructors.qmd
         text: Instructors
   sidebar:

@@ -271,7 +271,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"id":1,"options":{"fig-width":7,"output":"true","warning":"true","context":"interactive","message":"true","read-only":"false","autorun":"false","editor-max-height":"","dpi":72,"comment":"","label":"unnamed-chunk-1","fig-cap":"","classes":"","fig-height":5,"out-height":"","results":"markup","editor-font-scale":1,"editor-quick-suggestions":"false","out-width":"700px"},"code":"print(\"Welcome to SER 2024!\")"}];
+globalThis.qwebrCellDetails = [{"options":{"editor-quick-suggestions":"false","dpi":72,"out-height":"","editor-font-scale":1,"output":"true","fig-width":7,"results":"markup","autorun":"false","warning":"true","fig-height":5,"out-width":"700px","fig-cap":"","message":"true","comment":"","context":"interactive","label":"unnamed-chunk-1","classes":"","read-only":"false","editor-max-height":""},"code":"print(\"Welcome to SER 2024!\")","id":1}];
 
 </script>
 <script type="module">
@@ -1130,10 +1130,6 @@ globalThis.qwebrExecuteCode = async function (
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
-<span class="menu-text">Home</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./instructors.html"> 
 <span class="menu-text">Instructors</span></a>
   </li>  
@@ -1534,12 +1530,10 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </header>
 
 
-<blockquote class="blockquote">
-<p>SER 2024 - Austin, Texas</p>
-</blockquote>
-<div class="tldr">
+<p>📍 SER 2024 — Austin, TX<br>
+📍 ACIC 2025 — Detroit, MI<br>
+📍 SER 2025 — Boston, MA</p>
 <p>In this workshop, we present methods to define and estimate the causal effects of categorical, continuous, and multivariate exposures. The methods are based on a generalization of the static and dynamic interventions that may be familiar to some of you. This generalization has been recently called modified treatment policies (MTPs). MTPs are hypothetical interventions where the post-intervention exposure is defined as a modification of the natural value of the exposure that can also depend on the unit’s history. This short course will introduce the <strong>lmtp</strong> R package for estimating the causal effects of these general estimand in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice and software usage.</p>
-</div>
 <section id="learning-objectives" class="level3">
 <h3 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h3>
 <p>By the end of the workshop, participants will be able to:</p>

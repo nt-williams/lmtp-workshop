@@ -64,7 +64,19 @@ p, li, blockquote {
 }
 
 .navbar {
-  background-color: #364958;
+  background-color: hsl(0 0% 100%);
+}
+
+#navbarCollapse .menu-text {
+  font-family: var(--ff);
+  font-size: 1rem;
+  color: hsl(0 0% 30%);
+}
+
+.navbar-title {
+  font-family: var(--ff);
+  font-size: 1rem;
+  color: hsl(0 0% 30%);
 }
 
 div.tldr {
