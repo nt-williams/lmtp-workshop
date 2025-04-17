@@ -333,9 +333,6 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="sequential-regression-estimator">Sequential Regression Estimator</h3>
 <p>One possible estimator is simply a <em>plug-in</em> estimator of the identification result. This estimator is often referred to as G-computation, and it proceeds by simply estimating the regressions described in the identification result. Another way to describe this algorithm is as follows:</p>
 <div class="algorithm">
-<div class="algorithm-header">
-<p>Algorithm: Sequential regressions</p>
-</div>
 <div class="algorithm-body">
 <ol type="1">
 <li><p>Set <span class="math inline">\(\m_{i,\tau +1} = Y_i\)</span>.</p>
@@ -350,6 +347,11 @@ window.Quarto = {
 </ol>
 </div>
 </div>
+<p>A substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome and it is simple to estimate. That said, its cons are major:</p>
+<ul>
+<li>In studies with multiple time points, the adjustment set can become large very quickly. For instance, consider a study with 3 covariates measured at every time point, and 10 time points. Even though we have only 3 covariates at each time point, the number of coviariates in the regression of <span class="math inline">\(Y\)</span> is 33.</li>
+<li>Imagine trying to correctly specify (e.g., include the approproate interactions) a parametric model (e.g., logistic, Cox) with 33 variables.</li>
+</ul>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -357,28 +359,21 @@ window.Quarto = {
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Pros ✅</th>
-<th style="text-align: center;">Cons ❌</th>
+<th style="text-align: left;">Pros ✅</th>
+<th style="text-align: left;">Cons ❌</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><ul>
-<li><p>Simple to implement</p></li>
-<li><p>Substitution estimator</p></li>
-</ul></td>
-<td style="text-align: center;"><ul>
-<li><p>Requires correct estimation of all regressions</p></li>
-<li><p>Requires pre-specified parametric models</p></li>
-</ul></td>
+<td style="text-align: left;">Simple to implement</td>
+<td style="text-align: left;">Requires correct estimation of all regressions</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Substitution estimator</td>
+<td style="text-align: left;">Requires pre-specified parametric models</td>
 </tr>
 </tbody>
 </table>
-<p>A substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome and it is simple to estimate. That said, its cons are major:</p>
-<ul>
-<li>In studies with multiple time points, the adjustment set can become large very quickly. For instance, consider a study with 3 covariates measured at every time point, and 10 time points. Even though we have only 3 covariates at each time point, the number of coviariates in the regression of <span class="math inline">\(Y\)</span> is 33.</li>
-<li>Imagine trying to correctly specify (e.g., include the approproate interactions) a parametric model (e.g., logistic, Cox) with 33 variables.</li>
-</ul>
 </section>
 <section id="sec-density-ratio-estimation" class="level3">
 <h3 class="anchored" data-anchor-id="sec-density-ratio-estimation">Density-ratio estimation</h3>
@@ -427,9 +422,6 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 \theta = \E \bigg[ \bigg\{\prod_{t=1}^\tau r_t(a_t, h_t) \bigg\} Y \bigg]
 \]</span></p>
 <div class="algorithm">
-<div class="algorithm-header">
-<p>Algorithm: IPW Estimator</p>
-</div>
 <div class="algorithm-body">
 <ol type="1">
 <li><p>Construct estimates of <span class="math inline">\(r_{i,t}(a_t, h_t)\)</span> using the density ratio classification trick and a pre-specified parametric model.</p></li>
@@ -446,19 +438,18 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Pros ✅</th>
-<th style="text-align: center;">Cons ❌</th>
+<th style="text-align: left;">Pros ✅</th>
+<th style="text-align: left;">Cons ❌</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><ul>
-<li>Simple to implement</li>
-</ul></td>
-<td style="text-align: center;"><ul>
-<li><p>Requires correct estimation of density ratios</p></li>
-<li><p>Requires pre-specified parametric models</p></li>
-</ul></td>
+<td style="text-align: left;">Simple to implement</td>
+<td style="text-align: left;">Requires correct estimation of all regressions</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Requires pre-specified parametric models</td>
 </tr>
 </tbody>
 </table>
@@ -561,32 +552,32 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 <section id="efficient-influence-function" class="level4">
 <h4 class="anchored" data-anchor-id="efficient-influence-function">Efficient Influence Function</h4>
 <p>Key to constructing the TMLE and SDR is the <em>efficient influence function</em> (EIF).</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
 <ul>
 <li><p>The EIF characterizes the asymptotic behavior of all regular and efficient estimators.</p></li>
 <li><p>The EIF characterizes the first-order bias of pathwise differentiable estimands.</p></li>
 </ul>
+</div>
+</div>
+</div>
 <p>Before we introduce the EIF, it’s necessary to make some additional assumptions on <span class="math inline">\(A\)</span> and <span class="math inline">\(\dd\)</span>.</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Assumptions
-</div>
-</div>
-<div class="callout-body-container callout-body">
 <ol type="1">
 <li><p>The treatment <span class="math inline">\(A\)</span> is discrete, or</p></li>
 <li><p>If <span class="math inline">\(A\)</span> is continuous, the function <span class="math inline">\(\dd\)</span> is piecewise smooth invertible</p></li>
 <li><p>The function <span class="math inline">\(\dd\)</span> does not depend on the observed distribution <span class="math inline">\(\P\)</span> (this means that we cannot apply these methods to odds ratio IPSI, although we can apply them to risk ratio IPSI)</p></li>
 </ol>
+<p>These assumptions ensure that the efficient influence function of <span class="math inline">\(\theta\)</span> for interventions <span class="math inline">\(\dd\)</span> have a structure similar to the influence function for the effect of dynamic regimes. This allows for multiply robust estimation, which is not generally possible for interventions <span class="math inline">\(\dd\)</span> that depend on <span class="math inline">\(\P\)</span>.</p>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
 </div>
-</div>
-<ul>
-<li><p>These assumptions ensure that the efficient influence function of <span class="math inline">\(\theta\)</span> for interventions <span class="math inline">\(\dd\)</span> have a structure similar to the influence function for the effect of dynamic regimes.</p></li>
-<li><p>This allows for multiply robust estimation, which is not generally possible for interventions <span class="math inline">\(\dd\)</span> that depend on <span class="math inline">\(\P\)</span>.</p></li>
-</ul>
+<div class="callout-body-container">
 <p>Define the function</p>
 <p><span class="math display">\[
 \phi_t: O \mapsto \sum_{s=t}^\tau \bigg( \prod_{k=t}^s r_k(a_k, h_k)\bigg) \big\{\m_{s+1}(a_{s+1}^\dd, h_{s+1}) - \m_s(a_s, h_s) \big\} + \m_t(a_t^\dd, h_t).
@@ -596,13 +587,39 @@ Assumptions
 <p><span class="math display">\[
 r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 \]</span></p>
+</div>
+</div>
+</div>
 </section>
 <section id="targeted-minimum-loss-based-estimation" class="level4">
 <h4 class="anchored" data-anchor-id="targeted-minimum-loss-based-estimation">Targeted Minimum-Loss Based Estimation</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Pros ✅</th>
+<th style="text-align: left;">Cons ❌</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Substitution estimator</td>
+<td style="text-align: left;">not sequentially doubly-robust</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">doubly-robust</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">can use machine learning</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
 <div class="algorithm">
-<div class="algorithm-header">
-<p>Algorithm: TMLE</p>
-</div>
 <div class="algorithm-body">
 <ol type="1">
 <li><p>Construct estimates of <span class="math inline">\(r_{i,t}(a_t, h_t)\)</span> using the density ratio classification trick and your favorite regression method.</p></li>
@@ -631,6 +648,9 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </ol>
 </div>
 </div>
+</section>
+<section id="sequentially-doubly-robust-estimator" class="level4">
+<h4 class="anchored" data-anchor-id="sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -638,30 +658,26 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">Pros ✅</th>
-<th style="text-align: center;">Cons ❌</th>
+<th style="text-align: left;">Pros ✅</th>
+<th style="text-align: left;">Cons ❌</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><ul>
-<li><p>Substitution estimator</p></li>
-<li><p>doubly-robust</p></li>
-<li><p>can use machine learning</p></li>
-</ul></td>
-<td style="text-align: center;"><ul>
-<li>not sequentially doubly-robust</li>
-</ul></td>
+<td style="text-align: left;">doubly-robust</td>
+<td style="text-align: left;">not a substitution estimator</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sequentially doubly-robust</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">can use machine learning</td>
+<td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="sequentially-doubly-robust-estimator" class="level4">
-<h4 class="anchored" data-anchor-id="sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</h4>
 <div class="algorithm">
-<div class="algorithm-header">
-<p>Algorithm: SDR Estimator</p>
-</div>
 <div class="algorithm-body">
 <ol type="1">
 <li><p>Construct estimates of <span class="math inline">\(r_{i,t}(a_t, h_t)\)</span> using the density ratio classification trick and your favorite regression method.</p></li>
@@ -676,36 +692,12 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </ol>
 </div>
 </div>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">Pros ✅</th>
-<th style="text-align: center;">Cons ❌</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;"><ul>
-<li><p>doubly-robust</p></li>
-<li><p>sequentially doubly-robust</p></li>
-<li><p>can use machine learning</p></li>
-</ul></td>
-<td style="text-align: center;"><ul>
-<li>not a substitution estimator</li>
-</ul></td>
-</tr>
-</tbody>
-</table>
 </section>
 </section>
 <section id="choosing-an-estimator" class="level3">
 <h3 class="anchored" data-anchor-id="choosing-an-estimator">Choosing an Estimator</h3>
 <ul>
-<li><p>In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference (ya right 😂).</p></li>
+<li><p>In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference 🙃.</p></li>
 <li><p>The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining <span class="math inline">\(\sqrt{n}\)</span>-consistent under reasonable assumptions.</p></li>
 </ul>
 <table class="caption-top table">
@@ -771,17 +763,13 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </tr>
 </tbody>
 </table>
-<div class="callout callout-style-default callout-warning no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout callout-style-simple callout-tip no-icon">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-Question
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Why can’t we use machine learning with the G-computation and IPW estimators?</p>
+<div class="callout-body-container">
+<p><strong>Question</strong>: Why can’t we use machine learning with the G-computation and IPW estimators?</p>
 <details>
 <summary style="color: black; font-weight: bold;">
 <p>Answer</p>
@@ -790,21 +778,19 @@ Question
 </details>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-Which estimator should I use?
-</div>
-</div>
-<div class="callout-body-container callout-body">
 <p>While the SDR estimator may be more robust to model misspecification, the TMLE does have the advantage of being a substitution estimator. Because of this, estimates from the TMLE are guaranteed to stay within the valid range of the outcome. Taken together, this leads to the following recommendations for choosing between the TMLE and SDR:</p>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
 <ul>
 <li><p>If treatment is not time-varying, use the TMLE.</p></li>
 <li><p>If treatment is time-varying and the parameter <span class="math inline">\(\theta\)</span> has clear bounds, such as probabilities, beware of the SDR estimator. Use TMLE preferably.</p></li>
 </ul>
+</div>
 </div>
 </div>
 </section>

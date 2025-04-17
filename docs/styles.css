@@ -191,6 +191,7 @@ div.algorithm {
   border-right: solid 1px silver;
   border-top: solid 1px silver;
   border-bottom: solid 1px silver;
+  line-height: 1.5em !important;
 }
 
 .algorithm-header {
@@ -207,11 +208,9 @@ div.algorithm {
 }
 
 .algorithm-body {
-  font-size: 0.9rem;
-  font-weight: 400;
-  padding-left: 0.5em;
-  padding-right: 0.5em;  
-    padding-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 300;
+  padding: 0.5em;
   margin-bottom: 0;
 }
 
