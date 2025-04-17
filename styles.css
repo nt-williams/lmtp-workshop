@@ -24,6 +24,24 @@ h2 {
   padding-top: 0.5em;
 }
 
+h3 {
+  font-weight: bold;
+  font-size: 1rem;
+  line-height: 1.4em;
+  font-family: var(--ff);
+  border-bottom: 0px solid;
+  padding-top: 0.5em;
+}
+
+h4 {
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.4em;
+  font-family: var(--ff);
+  border-bottom: 0px solid;
+  padding-top: 0.5em;
+}
+
 p, li, blockquote {
   font-family: var(--ff);
   font-size: 1rem;

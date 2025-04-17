@@ -309,7 +309,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">April 16, 2025</p>
+      <p class="date-modified">April 17, 2025</p>
     </div>
   </div>
     
@@ -364,8 +364,8 @@ Y &amp;= f_Y(A, L, U_Y)
 <p>Take for example the following sample of data:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-7d6578ae7629e54fb99d" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-7d6578ae7629e54fb99d">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Female","Male","Female","Male","Male","Female","Male","Female","Female","Male"],[30.9,35.5,16.2,26.9,32.6,22.3,19.4,21.9,29,31.5],[95.9260780287474,78.9404517453799,33.4592744695414,83.9151266255989,69.0130047912389,46.7707049965777,71.33196440793979,94.9514031485284,67.4852840520192,53.3579739904175],["Former Smoker","Former Smoker","No","Former Smoker","No","Former Smoker","No","No","No","No"],[1,0,1,1,1,1,1,1,0,0],[0,0,0,0,0,0,0,0,1,0]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-473745ff66b3c5fdd09d" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-473745ff66b3c5fdd09d">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Male","Male","Male","Female","Male","Male","Male","Male","Male","Female"],[35.6,23.4,28.6,25,27.4,33.9,27.8,31.9,30.2,23],[52.6461327857632,43.419575633128,75.5592060232717,48.9363449691992,54.2231348391513,50.9869952087611,55.3347022587269,48.3860369609856,65.31690622861051,91.64681724846],["No","No","No","No","No","No","No","No","Former Smoker","No"],[0,0,1,0,1,1,1,0,0,1],[0,1,0,0,0,0,0,0,0,0]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
 </div>
 </div>
 <p><br>
@@ -378,7 +378,17 @@ Let, <span class="math inline">\(L\)</span> = <code>sex</code>, <code>bmi</code>
 </section>
 <section id="counterfactuals" class="level2">
 <h2 class="anchored" data-anchor-id="counterfactuals">Counterfactuals</h2>
-<p>Central to how we will define causal effects is the concept of <em>counterfactual random variables.</em> <strong>Counterfactuals are random variables that would have been observed, possibly contrary to fact, in an alternative world</strong>.</p>
+<p>Central to how we will define causal effects is the concept of <em>counterfactual random variables.</em></p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Counterfactuals are random variables that would have been observed, possibly contrary to fact, in an alternative world.</p>
+</div>
+</div>
+</div>
 <p>For example, consider a scenario where we are interested in the value of <span class="math inline">\(Y\)</span> in a hypothetical situation where, instead of the variable <span class="math inline">\(A\)</span> being equal to its observed value, <span class="math inline">\(A\)</span> is set to some other value.</p>
 <ul>
 <li><p>The value of <span class="math inline">\(Y\)</span> in this hypothetical situation is a counterfactual random variable.</p></li>
@@ -396,8 +406,8 @@ Y^{\dd} &amp;= f_Y(1, L, U_Y)
 <p>Here we introduce some new notation <span class="math inline">\(A^{\dd}\)</span> to refer to the post-intervention exposure. If we had the ability to collect data from this alternative NPSEM, the data may instead look like this:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-214c120d1996e54d702c" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-214c120d1996e54d702c">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Male","Male","Female","Male","Male","Female","Female","Female","Male","Male"],[32.6,30.7,21.5,26.9,32,30.9,28.8,23.7,21,25.1],[69.1663244353183,58.7542778918549,60.8952772073922,49.1581108829569,41.0896646132786,95.9260780287474,81.35249828884329,54.9705681040383,82.6666666666667,61.8124572210815],["No","Former Smoker","No","No","No","Former Smoker","No","No","Former Smoker","No"],[1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-ade46291abee3f6865b7" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ade46291abee3f6865b7">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Male","Male","Female","Male","Male","Female","Female","Female","Male","Male"],[32.6,30.7,21.5,26.9,32,30.9,28.8,23.7,21,25.1],[69.1663244353183,58.7542778918549,60.8952772073922,49.1581108829569,41.0896646132786,95.9260780287474,81.35249828884329,54.9705681040383,82.6666666666667,61.8124572210815],["No","Former Smoker","No","No","No","Former Smoker","No","No","Former Smoker","No"],[1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
 </div>
 </div>
 <p><br>

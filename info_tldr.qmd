@@ -64,7 +64,11 @@ Note that in some cases, we may know one or more of the functions $f$. For examp
 
 ## Counterfactuals
 
-Central to how we will define causal effects is the concept of *counterfactual random variables.* **Counterfactuals are random variables that would have been observed, possibly contrary to fact, in an alternative world**.
+Central to how we will define causal effects is the concept of *counterfactual random variables.*
+
+::: {.callout-note appearance="simple"}
+Counterfactuals are random variables that would have been observed, possibly contrary to fact, in an alternative world.
+:::
 
 For example, consider a scenario where we are interested in the value of $Y$ in a hypothetical situation where, instead of the variable $A$ being equal to its observed value, $A$ is set to some other value.
 
