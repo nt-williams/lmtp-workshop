@@ -271,7 +271,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"id":1,"options":{"read-only":"false","editor-font-scale":1,"out-width":"700px","dpi":72,"out-height":"","label":"unnamed-chunk-1","autorun":"false","results":"markup","context":"interactive","warning":"true","output":"true","editor-max-height":"","message":"true","comment":"","fig-width":7,"fig-cap":"","editor-quick-suggestions":"false","fig-height":5,"classes":""},"code":"print(\"Welcome to SER 2024!\")"}];
+globalThis.qwebrCellDetails = [{"code":"print(\"Welcome to SER 2024!\")","options":{"context":"interactive","read-only":"false","results":"markup","out-width":"700px","output":"true","fig-height":5,"comment":"","fig-cap":"","autorun":"false","label":"unnamed-chunk-1","editor-max-height":"","dpi":72,"editor-font-scale":1,"fig-width":7,"editor-quick-suggestions":"false","warning":"true","out-height":"","classes":"","message":"true"},"id":1}];
 
 </script>
 <script type="module">
@@ -1530,10 +1530,38 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </header>
 
 
-<p>📍 SER 2024 — Austin, TX<br>
-📍 ACIC 2025 — Detroit, MI<br>
-📍 SER 2025 — Boston, MA</p>
 <p>In this workshop, we present methods to define and estimate the causal effects of categorical, continuous, and multivariate exposures. The methods are based on a generalization of the static and dynamic interventions that may be familiar to some of you. This generalization has been recently called modified treatment policies (MTPs). MTPs are hypothetical interventions where the post-intervention exposure is defined as a modification of the natural value of the exposure that can also depend on the unit’s history. This short course will introduce the <strong>lmtp</strong> R package for estimating the causal effects of these general estimand in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice and software usage.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Conference</th>
+<th>Year</th>
+<th>📍Location</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SER</td>
+<td>2024</td>
+<td>Austin, TX</td>
+</tr>
+<tr class="even">
+<td>ACIC</td>
+<td>2025</td>
+<td>Detroit, MI</td>
+</tr>
+<tr class="odd">
+<td>SER</td>
+<td>2025</td>
+<td>Boston, MA</td>
+</tr>
+<tr class="even">
+<td>LiDS</td>
+<td>2025</td>
+<td>Brooklyn, NY</td>
+</tr>
+</tbody>
+</table>
 <section id="learning-objectives" class="level3">
 <h3 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h3>
 <p>By the end of the workshop, participants will be able to:</p>
