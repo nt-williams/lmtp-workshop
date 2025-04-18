@@ -30,7 +30,17 @@ For our first example, we'll use a synthetic dataset of $n = 1000$ patients from
 
 ```{r echo=FALSE}
 read.csv("data/williams_synthetic.csv") |> 
-  DT::datatable() |> 
+  DT::datatable(class = "compact", 
+                options = list(
+                  searching = FALSE, 
+                  lengthChange = FALSE, 
+                  ordering = FALSE, 
+                  info = FALSE, 
+                  columnDefs = list(
+                    list(targets = 0, visible = FALSE),
+                    list(className = 'dt-left', targets = "_all")  # apply to all columns
+                  )
+                )) |> 
   DT::formatRound(columns = "age", digits = 0)
 ```
 
@@ -81,7 +91,7 @@ Remember, we refer to these interventions as static because they return the same
 
 So, how do we translate the functions $\dd_1$ and $\dd_0$ into R code to be used with `lmtp`?
 
-::: {.callout-tip appearance="simple"}
+::: {.callout-note appearance="simple"}
 Policies can be specified using one of two arguments in `lmtp` estimators: `shift` or `shifted`.
 :::
 
@@ -118,10 +128,8 @@ d1(covid, "A") |> length()
 
 ### Problem 1
 
-::: {.callout-warning icon="false"}
-## Question
-
-Which estimator should we use to estimate these parameters?
+::: {.callout-tip  appearance="minimal"}
+**Question**: Which estimator should we use to estimate these parameters?
 
 ```{=html}
 <details>
@@ -185,10 +193,8 @@ print(treat)
 
 ### Problem 2
 
-::: {.callout-warning icon="false"}
-## Question
-
-How can we interpret this result?
+::: {.callout-tip  appearance="minimal"}
+**Question**: How can we interpret this result?
 
 ```{=html}
 <details>
@@ -231,8 +237,7 @@ hist(treat$density_ratios[, 1],
 
 Write a function to estimate the population mean outcome if no patients received treatment. Assign the result to an object named `dont_treat`.
 
-::: {.callout-warning icon="false"}
-## Practice
+::: {.callout-tip  appearance="minimal"}
 
 ```{webr-r}
 d0 <- # Write your shift function here!
@@ -270,7 +275,7 @@ print(dont_treat)
 </details>
 :::
 
-::: {.callout-tip appearance="simple"}
+::: {.callout-note appearance="simple"}
 `lmtp` already implements `d1` and `d0` as `static_binary_on()` and `static_binary_off()`!
 :::
 
