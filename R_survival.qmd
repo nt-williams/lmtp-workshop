@@ -25,13 +25,13 @@ download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/
 covid <- read.csv("williams_synthetic.csv")
 ```
 
-### Data considerations
+## Data considerations
 
 -   Similar to when the outcome is binary, survival outcomes should be coded using 0's and 1's where 1 indicates the occurrence of an event and 0 otherwise.
 
 -   Similar to how we encode censoring variables, we consider the outcome to be degenerate. Meaning that once an observation experiences an outcome, all future outcome variables should also be coded with a 1 ("last-observation-carried-forward").
 
-### Point-treatment survival problems
+## Point-treatment survival problems
 
 Up to this point, we've been ignoring that the `covid` dataset should be treated as a point-treatment survival problem. Let's re-estimate the effect of the randomized treatment with a survival framework.
 
@@ -63,7 +63,7 @@ covid <-
 head(covid)
 ```
 
-::: {.callout-tip appearance="simple"}
+::: {.callout-note appearance="simple"}
 Use the function `event_locf()` to make sure the outcome variables are correctly recorded.
 :::
 
@@ -90,7 +90,7 @@ fit <- lmtp_survival(
 
 We can now visualize our results using a survival plot.
 
-::: {.callout-tip appearance="simple"}
+::: {.callout-note appearance="simple"}
 The main result of an `lmtp` object can be extracted using the `tidy()` function from the `broom` package.
 :::
 
@@ -110,7 +110,7 @@ ggplot(results, aes(x = t, y = estimate)) +
                      expand = c(0.01, 0))
 ```
 
-### Time-varying treatment
+## Time-varying treatment
 
 @hoffman2023introducing demonstrated the use of modified treatment policies for survival outcomes to assess the effect of delaying invasive mechanical ventilation (IMV) on mortality among patients hospitalized with COVID-19 in New York City during the first COVID-19 wave. A synthetic version of the data used for that analysis has been loaded into R as `intubation`.
 
@@ -126,7 +126,17 @@ ggplot(results, aes(x = t, y = estimate)) +
 
 ```{r echo=FALSE}
 intubation <- read.csv("data/hoffman_toy.csv")
-DT::datatable(intubation) |> 
+DT::datatable(intubation, class = "compact", 
+                options = list(
+                  searching = FALSE, 
+                  lengthChange = FALSE, 
+                  ordering = FALSE, 
+                  info = FALSE, 
+                  columnDefs = list(
+                    list(targets = 0, visible = FALSE),
+                    list(className = 'dt-left', targets = "_all")  # apply to all columns
+                  )
+                )) |> 
   DT::formatRound(columns = "age", digits = 0)
 ```
 
@@ -193,22 +203,16 @@ lmtp_sdr(
 )
 ```
 
-### Problem 1
-
-::: {.callout-warning icon="false"}
-## Question
-
-Why might defining an intervention in terms of an MTP instead of a static intervention be more useful to answer a question about the effect of IMV on death among patients hospitalized with COVID-19?
+**Question**: Why might defining an intervention in terms of an MTP instead of a static intervention be more useful to answer a question about the effect of IMV on death among patients hospitalized with COVID-19?
 
 <details>
 
-<summary style="color: black; font-weight: bold;">
+<summary style="color: grey; font-weight: 400;">
 
-Answer
+✅ Answer 
 
 </summary>
 
 <p>Intubation may increase the likelihood of mortality through factors separate from COVID (by increasing the likelihood of AKI, for example); however, not intubating a patient who is in respiratory distress may also increase the likelihood of mortality. Thus, some patients do need to be intubated and an intervention that eliminated intubation all together would be non-nonsensical.</p>
 
 </details>
-:::
