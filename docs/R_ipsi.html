@@ -325,7 +325,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"id":1,"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/williams_synthetic.csv\", \"williams_synthetic.csv\")\ncovid <- read.csv(\"williams_synthetic.csv\")","options":{"editor-font-scale":1,"out-width":"700px","results":"markup","context":"setup","fig-cap":"","autorun":"true","label":"unnamed-chunk-1","classes":"","fig-height":5,"warning":"true","dpi":72,"message":"true","comment":"","output":"true","editor-max-height":"","out-height":"","editor-quick-suggestions":"false","read-only":"false","fig-width":7}},{"id":2,"code":"delta <- 0.5\nd_ipsi_up <- function(data, trt) {\n  eps <- runif(nrow(data), 0, 1)\n  ifelse(eps < delta, data[[trt]], 1)\n}","options":{"editor-font-scale":1,"out-width":"700px","results":"markup","context":"interactive","fig-cap":"","autorun":"false","label":"unnamed-chunk-2","classes":"","fig-height":5,"warning":"true","dpi":72,"message":"true","comment":"","output":"true","editor-max-height":"","out-height":"","editor-quick-suggestions":"false","read-only":"false","fig-width":7}},{"id":3,"code":"delta <- 0.5\nd_ipsi_down <- # Write your shift function here!","options":{"editor-font-scale":1,"out-width":"700px","results":"markup","context":"interactive","fig-cap":"","autorun":"false","label":"unnamed-chunk-3","classes":"","fig-height":5,"warning":"true","dpi":72,"message":"true","comment":"","output":"true","editor-max-height":"","out-height":"","editor-quick-suggestions":"false","read-only":"false","fig-width":7}},{"id":4,"code":"W <- c(\"age\", \"sex\", \"bmi\", \"smoke\", \"o2\", \n       \"num_comorbid\", \"num_symptoms\", \n        \"bilat\", \"dyspnea\", \"hyper\")\n\nlmtp_tmle(\n  data = covid, \n  trt = \"A\", \n  outcome = \"event\", \n  baseline = W, \n  outcome_type = \"binomial\", \n  shift = ipsi(2), \n  folds = 1, \n  learners_trt = \"SL.glm\", \n  learners_outcome = \"SL.glm\"\n)","options":{"editor-font-scale":1,"out-width":"700px","results":"markup","context":"interactive","fig-cap":"","autorun":"false","label":"unnamed-chunk-4","classes":"","fig-height":5,"warning":"true","dpi":72,"message":"true","comment":"","output":"true","editor-max-height":"","out-height":"","editor-quick-suggestions":"false","read-only":"false","fig-width":7}}];
+globalThis.qwebrCellDetails = [{"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/williams_synthetic.csv\", \"williams_synthetic.csv\")\ncovid <- read.csv(\"williams_synthetic.csv\")","options":{"results":"markup","out-width":"700px","context":"setup","editor-font-scale":1,"output":"true","fig-cap":"","label":"unnamed-chunk-1","fig-height":5,"autorun":"true","out-height":"","message":"true","dpi":72,"editor-quick-suggestions":"false","comment":"","read-only":"false","warning":"true","fig-width":7,"editor-max-height":"","classes":""},"id":1},{"code":"delta <- 0.5\nd_ipsi_up <- function(data, trt) {\n  eps <- runif(nrow(data), 0, 1)\n  ifelse(eps < delta, data[[trt]], 1)\n}","options":{"results":"markup","out-width":"700px","context":"interactive","editor-font-scale":1,"output":"true","fig-cap":"","label":"unnamed-chunk-2","fig-height":5,"autorun":"false","out-height":"","message":"true","dpi":72,"editor-quick-suggestions":"false","comment":"","read-only":"false","warning":"true","fig-width":7,"editor-max-height":"","classes":""},"id":2},{"code":"delta <- 0.5\nd_ipsi_down <- # Write your shift function here!","options":{"results":"markup","out-width":"700px","context":"interactive","editor-font-scale":1,"output":"true","fig-cap":"","label":"unnamed-chunk-3","fig-height":5,"autorun":"false","out-height":"","message":"true","dpi":72,"editor-quick-suggestions":"false","comment":"","read-only":"false","warning":"true","fig-width":7,"editor-max-height":"","classes":""},"id":3},{"code":"W <- c(\"age\", \"sex\", \"bmi\", \"smoke\", \"o2\", \n       \"num_comorbid\", \"num_symptoms\", \n        \"bilat\", \"dyspnea\", \"hyper\")\n\nlmtp_tmle(\n  data = covid, \n  trt = \"A\", \n  outcome = \"event\", \n  baseline = W, \n  outcome_type = \"binomial\", \n  shift = ipsi(2), \n  folds = 1, \n  learners_trt = \"SL.glm\", \n  learners_outcome = \"SL.glm\"\n)","options":{"results":"markup","out-width":"700px","context":"interactive","editor-font-scale":1,"output":"true","fig-cap":"","label":"unnamed-chunk-4","fig-height":5,"autorun":"false","out-height":"","message":"true","dpi":72,"editor-quick-suggestions":"false","comment":"","read-only":"false","warning":"true","fig-width":7,"editor-max-height":"","classes":""},"id":4}];
 
 </script>
 <script type="module">
@@ -1600,7 +1600,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">April 16, 2025</p>
+      <p class="date-modified">April 18, 2025</p>
     </div>
   </div>
     
@@ -1637,8 +1637,8 @@ a_t &amp;\text{ if } \epsilon_t &lt; \delta \\
 \]</span>Assume we want to increase the likelihood of initiating treatment by 2-fold. We can implement this in R with</p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<section id="problem-1" class="level3">
-<h3 class="anchored" data-anchor-id="problem-1">Problem 1</h3>
+<section id="problem-1" class="level2">
+<h2 class="anchored" data-anchor-id="problem-1">Problem 1</h2>
 <p>What if we wanted to <em>decrease</em> the likelihood of initiating treatment by 2-fold? Implement this shift function in R. As a reminder</p>
 <p><span class="math display">\[
 \dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
@@ -1646,21 +1646,11 @@ a_t &amp;\text{ if } \epsilon_t &lt; \delta \\
 0 &amp;\text{ otherwise.}
 \end{cases}
 \]</span></p>
-<div class="callout callout-style-default callout-warning no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Practice
-</div>
-</div>
-<div class="callout-body-container callout-body">
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <details>
-<summary style="color: black; font-weight: bold;">
-<p>Solution</p>
+<summary style="color: grey; font-weight: 400;">
+<p>✅ Solution</p>
 </summary>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
@@ -1670,9 +1660,7 @@ Practice
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </details>
-</div>
-</div>
-<div class="callout callout-style-simple callout-tip">
+<div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>

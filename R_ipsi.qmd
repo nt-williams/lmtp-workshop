@@ -40,7 +40,7 @@ d_ipsi_up <- function(data, trt) {
 }
 ```
 
-### Problem 1
+## Problem 1
 
 What if we wanted to *decrease* the likelihood of initiating treatment by 2-fold? Implement this shift function in R. As a reminder
 
@@ -51,8 +51,6 @@ a_t &\text{ if } \epsilon_t < \delta \\
 \end{cases}
 $$
 
-::: {.callout-warning icon="false"}
-## Practice
 
 ```{webr-r}
 delta <- 0.5
@@ -61,9 +59,9 @@ d_ipsi_down <- # Write your shift function here!
 
 <details>
 
-<summary style="color: black; font-weight: bold;">
+<summary style="color: grey; font-weight: 400;">
 
-Solution
+✅ Solution 
 
 </summary>
 
@@ -76,9 +74,8 @@ d_ipsi_down <- function(data, trt) {
 ```
 
 </details>
-:::
 
-::: {.callout-tip appearance="simple"}
+::: {.callout-note appearance="simple"}
 `lmtp` already implements `d_ipsi_up` and `d_ipsi_down` as a single shift function factory, `ipsi()`!
 
 -   Risk ratio IPSIs that increase the likelihood of treatment should be specified with a value greater than 1 (i.e. a risk ratio IPSI that increases the likelihood of treatment 2-fold is equivalent to `ipsi(2)`).
