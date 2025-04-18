@@ -325,7 +325,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"id":1,"options":{"results":"markup","fig-height":5,"fig-width":7,"context":"setup","warning":"true","message":"true","editor-max-height":"","comment":"","output":"true","out-width":"700px","classes":"","fig-cap":"","out-height":"","read-only":"false","autorun":"true","label":"unnamed-chunk-1","editor-quick-suggestions":"false","editor-font-scale":1,"dpi":72},"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/crime_toy.csv\", \"crime.csv\")\ncrime <- read.csv(\"crime.csv\")"},{"id":2,"options":{"results":"markup","fig-height":5,"fig-width":7,"context":"interactive","warning":"true","message":"true","editor-max-height":"","comment":"","output":"true","out-width":"700px","classes":"","fig-cap":"","out-height":"","read-only":"false","autorun":"false","label":"unnamed-chunk-2","editor-quick-suggestions":"false","editor-font-scale":1,"dpi":72},"code":"A <- \"neighborhood_violence\"\nW <- names(crime)[1:12]\nY <- \"preterm_birth\"\nid <- \"community_code\"\n\nlearners <- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.rpart\", \n              \"SL.gam\")\n\nd <- # Write your shift function here!\n\nfit_d <- # Write your estimation code here!"},{"id":3,"options":{"results":"markup","fig-height":5,"fig-width":7,"context":"interactive","warning":"true","message":"true","editor-max-height":"","comment":"","output":"true","out-width":"700px","classes":"","fig-cap":"","out-height":"","read-only":"false","autorun":"false","label":"unnamed-chunk-3","editor-quick-suggestions":"false","editor-font-scale":1,"dpi":72},"code":"# Write your code here!"}];
+globalThis.qwebrCellDetails = [{"id":1,"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/crime_toy.csv\", \"crime.csv\")\ncrime <- read.csv(\"crime.csv\")","options":{"comment":"","warning":"true","fig-cap":"","fig-width":7,"read-only":"false","out-height":"","dpi":72,"output":"true","out-width":"700px","message":"true","label":"unnamed-chunk-1","fig-height":5,"classes":"","results":"markup","context":"setup","editor-font-scale":1,"autorun":"true","editor-max-height":"","editor-quick-suggestions":"false"}},{"id":2,"code":"A <- \"neighborhood_violence\"\nW <- names(crime)[1:12]\nY <- \"preterm_birth\"\nid <- \"community_code\"\n\nlearners <- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.rpart\", \n              \"SL.gam\")\n\nd <- # Write your shift function here!\n\nfit_d <- # Write your estimation code here!","options":{"comment":"","warning":"true","fig-cap":"","fig-width":7,"read-only":"false","out-height":"","dpi":72,"output":"true","out-width":"700px","message":"true","label":"unnamed-chunk-2","fig-height":5,"classes":"","results":"markup","context":"interactive","editor-font-scale":1,"autorun":"false","editor-max-height":"","editor-quick-suggestions":"false"}},{"id":3,"code":"# Write your code here!","options":{"comment":"","warning":"true","fig-cap":"","fig-width":7,"read-only":"false","out-height":"","dpi":72,"output":"true","out-width":"700px","message":"true","label":"unnamed-chunk-3","fig-height":5,"classes":"","results":"markup","context":"interactive","editor-font-scale":1,"autorun":"false","editor-max-height":"","editor-quick-suggestions":"false"}}];
 
 </script>
 <script type="module">
@@ -1641,23 +1641,23 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <p>In some current work, we are interested in estimating the effect of decreasing the level of community violence (violent crime rate) on risk of preterm birth. Research suggests community violence may impact infant health through physiological responses to stress, worsening maternal mental health, and unhealthy coping behaviors. Community violence is a highly endogenous exposure, which, motivates the use of such a shift intervention.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="ljydwnmkec" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ljydwnmkec table {
+<div id="dbrwbpmnbx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dbrwbpmnbx table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ljydwnmkec thead, #ljydwnmkec tbody, #ljydwnmkec tfoot, #ljydwnmkec tr, #ljydwnmkec td, #ljydwnmkec th {
+#dbrwbpmnbx thead, #dbrwbpmnbx tbody, #dbrwbpmnbx tfoot, #dbrwbpmnbx tr, #dbrwbpmnbx td, #dbrwbpmnbx th {
   border-style: none;
 }
 
-#ljydwnmkec p {
+#dbrwbpmnbx p {
   margin: 0;
   padding: 0;
 }
 
-#ljydwnmkec .gt_table {
+#dbrwbpmnbx .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1683,12 +1683,12 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-left-color: #D3D3D3;
 }
 
-#ljydwnmkec .gt_caption {
+#dbrwbpmnbx .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ljydwnmkec .gt_title {
+#dbrwbpmnbx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1700,7 +1700,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-width: 0;
 }
 
-#ljydwnmkec .gt_subtitle {
+#dbrwbpmnbx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1712,7 +1712,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-width: 0;
 }
 
-#ljydwnmkec .gt_heading {
+#dbrwbpmnbx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1724,13 +1724,13 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#ljydwnmkec .gt_bottom_border {
+#dbrwbpmnbx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ljydwnmkec .gt_col_headings {
+#dbrwbpmnbx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1745,7 +1745,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#ljydwnmkec .gt_col_heading {
+#dbrwbpmnbx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1765,7 +1765,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#ljydwnmkec .gt_column_spanner_outer {
+#dbrwbpmnbx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1777,15 +1777,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 4px;
 }
 
-#ljydwnmkec .gt_column_spanner_outer:first-child {
+#dbrwbpmnbx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ljydwnmkec .gt_column_spanner_outer:last-child {
+#dbrwbpmnbx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ljydwnmkec .gt_column_spanner {
+#dbrwbpmnbx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1797,11 +1797,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   width: 100%;
 }
 
-#ljydwnmkec .gt_spanner_row {
+#dbrwbpmnbx .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ljydwnmkec .gt_group_heading {
+#dbrwbpmnbx .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1827,7 +1827,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   text-align: left;
 }
 
-#ljydwnmkec .gt_empty_group_heading {
+#dbrwbpmnbx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1842,15 +1842,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: middle;
 }
 
-#ljydwnmkec .gt_from_md > :first-child {
+#dbrwbpmnbx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ljydwnmkec .gt_from_md > :last-child {
+#dbrwbpmnbx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ljydwnmkec .gt_row {
+#dbrwbpmnbx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1869,7 +1869,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#ljydwnmkec .gt_stub {
+#dbrwbpmnbx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1882,7 +1882,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#ljydwnmkec .gt_stub_row_group {
+#dbrwbpmnbx .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1896,15 +1896,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: top;
 }
 
-#ljydwnmkec .gt_row_group_first td {
+#dbrwbpmnbx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ljydwnmkec .gt_row_group_first th {
+#dbrwbpmnbx .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ljydwnmkec .gt_summary_row {
+#dbrwbpmnbx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1914,16 +1914,16 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#ljydwnmkec .gt_first_summary_row {
+#dbrwbpmnbx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ljydwnmkec .gt_first_summary_row.thick {
+#dbrwbpmnbx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ljydwnmkec .gt_last_summary_row {
+#dbrwbpmnbx .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1933,7 +1933,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#ljydwnmkec .gt_grand_summary_row {
+#dbrwbpmnbx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1943,7 +1943,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#ljydwnmkec .gt_first_grand_summary_row {
+#dbrwbpmnbx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1953,7 +1953,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-color: #D3D3D3;
 }
 
-#ljydwnmkec .gt_last_grand_summary_row_top {
+#dbrwbpmnbx .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1963,11 +1963,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#ljydwnmkec .gt_striped {
+#dbrwbpmnbx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ljydwnmkec .gt_table_body {
+#dbrwbpmnbx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1976,7 +1976,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#ljydwnmkec .gt_footnotes {
+#dbrwbpmnbx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1990,7 +1990,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#ljydwnmkec .gt_footnote {
+#dbrwbpmnbx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1999,7 +1999,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#ljydwnmkec .gt_sourcenotes {
+#dbrwbpmnbx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2013,7 +2013,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#ljydwnmkec .gt_sourcenote {
+#dbrwbpmnbx .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2021,72 +2021,72 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#ljydwnmkec .gt_left {
+#dbrwbpmnbx .gt_left {
   text-align: left;
 }
 
-#ljydwnmkec .gt_center {
+#dbrwbpmnbx .gt_center {
   text-align: center;
 }
 
-#ljydwnmkec .gt_right {
+#dbrwbpmnbx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ljydwnmkec .gt_font_normal {
+#dbrwbpmnbx .gt_font_normal {
   font-weight: normal;
 }
 
-#ljydwnmkec .gt_font_bold {
+#dbrwbpmnbx .gt_font_bold {
   font-weight: bold;
 }
 
-#ljydwnmkec .gt_font_italic {
+#dbrwbpmnbx .gt_font_italic {
   font-style: italic;
 }
 
-#ljydwnmkec .gt_super {
+#dbrwbpmnbx .gt_super {
   font-size: 65%;
 }
 
-#ljydwnmkec .gt_footnote_marks {
+#dbrwbpmnbx .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ljydwnmkec .gt_asterisk {
+#dbrwbpmnbx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ljydwnmkec .gt_indent_1 {
+#dbrwbpmnbx .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ljydwnmkec .gt_indent_2 {
+#dbrwbpmnbx .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ljydwnmkec .gt_indent_3 {
+#dbrwbpmnbx .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ljydwnmkec .gt_indent_4 {
+#dbrwbpmnbx .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ljydwnmkec .gt_indent_5 {
+#dbrwbpmnbx .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ljydwnmkec .katex-display {
+#dbrwbpmnbx .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ljydwnmkec div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#dbrwbpmnbx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>

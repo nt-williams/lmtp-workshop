@@ -70,9 +70,7 @@ Before we move on to using `lmtp`, here's general information that will be appli
 
 -   The `time_vary` argument accepts a list of character vectors.
 
-::: callout-tip
-## What are vectors and lists?
-
+::: {.callout-note  appearance="simple"}
 Vectors and lists are basic data structures in R. A vector can be thought of as a 1-dimensional collection of homogeneous elements. For example a character vector is a collection of values with the class `character`.\
 
 ```{r eval=FALSE}

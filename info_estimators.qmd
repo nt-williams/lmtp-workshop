@@ -303,7 +303,7 @@ The G-computation and IPW estimators require models that converge to the truth a
 
 While the SDR estimator may be more robust to model misspecification, the TMLE does have the advantage of being a substitution estimator. Because of this, estimates from the TMLE are guaranteed to stay within the valid range of the outcome. Taken together, this leads to the following recommendations for choosing between the TMLE and SDR:
 
-::: {.callout-note  appearance="minimal"}
+::: {.callout-note  appearance="simple"}
 -   If treatment is not time-varying, use the TMLE.
 
 -   If treatment is time-varying and the parameter $\theta$ has clear bounds, such as probabilities, beware of the SDR estimator. Use TMLE preferably.

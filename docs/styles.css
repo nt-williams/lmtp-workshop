@@ -141,11 +141,6 @@ div.sidebar-item-container .active {
   font-weight: 400;
 }
 
-.qwebr-console-area {
-  font-family: var(--ff);
-  font-size: 1rem;
-}
-
 .table {
   font-family: var(--ff);
   font-size: 0.875rem;
