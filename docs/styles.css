@@ -209,6 +209,19 @@ div.algorithm {
   margin-bottom: 0;
 }
 
+div.problem {
+  margin: 1em 0;
+  border: 1px solid silver; 
+  border-radius: .25rem;
+  line-height: 1.5em !important;
+}
+
+.problem-body {
+  font-size: 1rem;
+  padding: 0.5em;
+  margin-bottom: 0;
+}
+
 /* Callout Types */
 
 div.callout-warning {

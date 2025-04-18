@@ -33,7 +33,17 @@ A dataset named `bmi` has been loaded into R in the background.
 
 ```{r echo=FALSE}
 data(bmiData, package = "DynTxRegime")
-DT::datatable(bmiData) |> 
+DT::datatable(bmiData, class = "compact", 
+                options = list(
+                  searching = FALSE, 
+                  lengthChange = FALSE, 
+                  ordering = FALSE, 
+                  info = FALSE, 
+                  columnDefs = list(
+                    list(targets = 0, visible = FALSE),
+                    list(className = 'dt-left', targets = "_all")  # apply to all columns
+                  )
+                )) |> 
   DT::formatRound(columns = paste0(c("parent", "baseline", "month4", "month12"), "BMI"), digits = 1)
 ```
 
@@ -55,7 +65,7 @@ gtsummary::tbl_strata(bmiData, strata = A1,
                       .header = "**Stage 1, {strata}**")
 ```
 
-### Problem 1
+## Problem 1
 
 Write a shift function that assigns meal replacement to all observations at time 1, but only meal replacement at time 2 to those observations whose 4-month BMI is greater than 30.
 
@@ -67,8 +77,6 @@ $$
 \end{cases}
 $$
 
-::: {.callout-warning icon="false"}
-## Practice
 
 ```{webr-r}
 d_dtr <- # Write your shift function here!
@@ -76,9 +84,9 @@ d_dtr <- # Write your shift function here!
 
 <details>
 
-<summary style="color: black; font-weight: bold;">
+<summary style="color: grey; font-weight: 400;">
 
-Solution
+✅ Solution 
 
 </summary>
 
@@ -91,7 +99,6 @@ d_dtr <- function(data, trt) {
 ```
 
 </details>
-:::
 
 Let's estimate the effect of the dynamic treatment regime on the 12-month BMI using `lmtp` with the SDR estimator.
 
@@ -110,12 +117,9 @@ fit_dtr <- lmtp_sdr(
 )
 ```
 
-### Problem 2
+## Problem 2
 
 Suppose we are interested in comparing the dynamic treatment regime to a static treatment regime where all patients receive meal replacement at both time points. Using the SDR estimator, estimate the effect of this static intervention.
-
-::: {.callout-warning icon="false"}
-## Practice
 
 ```{webr-r}
 fit_MR <- # Write your estimation code here!
@@ -123,9 +127,9 @@ fit_MR <- # Write your estimation code here!
 
 <details>
 
-<summary style="color: black; font-weight: bold;">
+<summary style="color: grey; font-weight: 400;">
 
-Solution
+✅ Solution 
 
 </summary>
 
@@ -145,7 +149,6 @@ fit_MR <- lmtp_sdr(
 ```
 
 </details>
-:::
 
 Let's also estimate the effect of an intervention where all patients receive a calorie deficit diet at both time points.
 
