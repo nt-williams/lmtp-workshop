@@ -24,7 +24,7 @@ download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/
 covid <- read.csv("williams_synthetic.csv")
 ```
 
-### Synthetic COVID RCT Data
+## Synthetic COVID RCT Data
 
 For our first example, we'll use a synthetic dataset of $n = 1000$ patients from a hypothetical clinical trial for a treatment to decrease intubation and death among patients hospitalized with COVID-19.
 
@@ -62,7 +62,7 @@ dplyr::select(covid, -days, -id) |>
   gtsummary::tbl_summary(by = A)
 ```
 
-### Population mean outcomes
+## Population mean outcomes
 
 Our goal is to estimate the average treatment effect (ATE) of the hypothetical treatment on intubation or death:
 
@@ -87,7 +87,7 @@ $$
 
 Remember, we refer to these interventions as static because they return the same value regardless of their input.
 
-#### Writing shift functions
+## Writing shift functions
 
 So, how do we translate the functions $\dd_1$ and $\dd_0$ into R code to be used with `lmtp`?
 
@@ -126,20 +126,17 @@ d1(covid, "A") |> head()
 d1(covid, "A") |> length()
 ```
 
-### Problem 1
-
 ::: {.callout-tip  appearance="minimal"}
 **Question**: Which estimator should we use to estimate these parameters?
 
 ```{=html}
 <details>
-<summary style="color: black; font-weight: bold;">Answer</summary>
+<summary style="color: grey; font-weight: 400;">✅ Answer</summary>
 <p>Because this is a non-time-varying study, we should use TMLE.</p>
 </details>
 ```
 :::
-
-------------------------------------------------------------------------
+\
 
 Let's now estimate $\E(Y^{\dd_1})$ using `lmtp`.
 
@@ -191,8 +188,6 @@ treat <- lmtp_tmle(
 print(treat)
 ```
 
-### Problem 2
-
 ::: {.callout-tip  appearance="minimal"}
 **Question**: How can we interpret this result?
 
@@ -204,7 +199,7 @@ print(treat)
 ```
 :::
 
-### `lmtp` objects
+## `lmtp` objects
 
 A call to an `lmtp` estimator returns a list of class `lmtp`.
 
@@ -233,11 +228,9 @@ hist(treat$density_ratios[, 1],
      xlab = "Density ratio")
 ```
 
-### Problem 3
+## Problem 1
 
 Write a function to estimate the population mean outcome if no patients received treatment. Assign the result to an object named `dont_treat`.
-
-::: {.callout-tip  appearance="minimal"}
 
 ```{webr-r}
 d0 <- # Write your shift function here!
@@ -246,9 +239,9 @@ dont_treat <- # Type your code here!
 
 <details>
 
-<summary style="color: black; font-weight: bold;">
+<summary style="color: grey; font-weight: 400;">
 
-Solution
+✅ Solution 
 
 </summary>
 
@@ -273,13 +266,12 @@ print(dont_treat)
 ```
 
 </details>
-:::
 
 ::: {.callout-note appearance="simple"}
 `lmtp` already implements `d1` and `d0` as `static_binary_on()` and `static_binary_off()`!
 :::
 
-### Average treatment effect
+## Average treatment effect
 
 With estimates of $\E(Y^{\dd_1})$ and $\E(Y^{\dd_0})$ we can now calculate the ATE. To do so, we'll use the function `lmtp_contrast()`.
 

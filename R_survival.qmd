@@ -139,8 +139,7 @@ DT::datatable(intubation, class = "compact",
                 )) |> 
   DT::formatRound(columns = "age", digits = 0)
 ```
-
-------------------------------------------------------------------------
+\
 
 Let's consider the following intervention
 
@@ -176,6 +175,22 @@ d <- function(data, trt) {
 }
 ```
 
+::: {.callout-tip  appearance="minimal"}
+**Question**: Why might defining an intervention in terms of an MTP instead of a static intervention be more useful to answer a question about the effect of IMV on death among patients hospitalized with COVID-19?
+
+<details>
+
+<summary style="color: grey; font-weight: 400;">
+
+✅ Answer 
+
+</summary>
+
+<p>Intubation may increase the likelihood of mortality through factors separate from COVID (by increasing the likelihood of AKI, for example); however, not intubating a patient who is in respiratory distress may also increase the likelihood of mortality. Thus, some patients do need to be intubated and an intervention that eliminated intubation all together would be non-nonsensical.</p>
+
+</details>
+:::
+
 We can now estimate the effect of delaying intubation by 1-day on 14-day mortality.
 
 ```{webr-r}
@@ -202,17 +217,3 @@ lmtp_sdr(
   k = 2
 )
 ```
-
-**Question**: Why might defining an intervention in terms of an MTP instead of a static intervention be more useful to answer a question about the effect of IMV on death among patients hospitalized with COVID-19?
-
-<details>
-
-<summary style="color: grey; font-weight: 400;">
-
-✅ Answer 
-
-</summary>
-
-<p>Intubation may increase the likelihood of mortality through factors separate from COVID (by increasing the likelihood of AKI, for example); however, not intubating a patient who is in respiratory distress may also increase the likelihood of mortality. Thus, some patients do need to be intubated and an intervention that eliminated intubation all together would be non-nonsensical.</p>
-
-</details>

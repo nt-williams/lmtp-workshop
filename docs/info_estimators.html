@@ -280,7 +280,12 @@ window.Quarto = {
   <li><a href="#sequential-regression-estimator" id="toc-sequential-regression-estimator" class="nav-link active" data-scroll-target="#sequential-regression-estimator">Sequential Regression Estimator</a></li>
   <li><a href="#sec-density-ratio-estimation" id="toc-sec-density-ratio-estimation" class="nav-link" data-scroll-target="#sec-density-ratio-estimation">Density-ratio estimation</a></li>
   <li><a href="#inverse-probability-weighting" id="toc-inverse-probability-weighting" class="nav-link" data-scroll-target="#inverse-probability-weighting">Inverse Probability Weighting</a></li>
-  <li><a href="#doubly-robust-estimators" id="toc-doubly-robust-estimators" class="nav-link" data-scroll-target="#doubly-robust-estimators">Doubly Robust Estimators</a></li>
+  <li><a href="#doubly-robust-estimators" id="toc-doubly-robust-estimators" class="nav-link" data-scroll-target="#doubly-robust-estimators">Doubly Robust Estimators</a>
+  <ul class="collapse">
+  <li><a href="#efficient-influence-function" id="toc-efficient-influence-function" class="nav-link" data-scroll-target="#efficient-influence-function">Efficient Influence Function</a></li>
+  </ul></li>
+  <li><a href="#targeted-minimum-loss-based-estimation" id="toc-targeted-minimum-loss-based-estimation" class="nav-link" data-scroll-target="#targeted-minimum-loss-based-estimation">Targeted Minimum-Loss Based Estimation</a></li>
+  <li><a href="#sequentially-doubly-robust-estimator" id="toc-sequentially-doubly-robust-estimator" class="nav-link" data-scroll-target="#sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</a></li>
   <li><a href="#choosing-an-estimator" id="toc-choosing-an-estimator" class="nav-link" data-scroll-target="#choosing-an-estimator">Choosing an Estimator</a></li>
   <li><a href="#cross-fitting" id="toc-cross-fitting" class="nav-link" data-scroll-target="#cross-fitting">Cross-fitting</a></li>
   </ul>
@@ -329,8 +334,8 @@ window.Quarto = {
 <li><p>defined the necessary assumptions to identify the expected value of <span class="math inline">\(Y\)</span> under an intervention that replaces <span class="math inline">\(A\)</span> with the output of <span class="math inline">\(\dd_t(a, h_t, \epsilon)\)</span>.</p></li>
 </ol>
 <p>The parameter <span class="math inline">\(\theta\)</span> is a function that could be computed if we knew the distribution of the variables (e.g., outcome regressions). Because we do not know this distribution, we need to estimate it from a sample of observed data. We now discuss how to estimate the parameter <span class="math inline">\(\theta\)</span> from a sample.</p>
-<section id="sequential-regression-estimator" class="level3">
-<h3 class="anchored" data-anchor-id="sequential-regression-estimator">Sequential Regression Estimator</h3>
+<section id="sequential-regression-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="sequential-regression-estimator">Sequential Regression Estimator</h2>
 <p>One possible estimator is simply a <em>plug-in</em> estimator of the identification result. This estimator is often referred to as G-computation, and it proceeds by simply estimating the regressions described in the identification result. Another way to describe this algorithm is as follows:</p>
 <div class="algorithm">
 <div class="algorithm-body">
@@ -375,8 +380,8 @@ window.Quarto = {
 </tbody>
 </table>
 </section>
-<section id="sec-density-ratio-estimation" class="level3">
-<h3 class="anchored" data-anchor-id="sec-density-ratio-estimation">Density-ratio estimation</h3>
+<section id="sec-density-ratio-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="sec-density-ratio-estimation">Density-ratio estimation</h2>
 <div class="callout callout-style-simple callout-caution">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -415,8 +420,8 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
     H_t=h_t)}{p^\lambda(\Lambda = 0\mid A_t=a_t, H_t=h_t)}
 \]</span></p>
 </section>
-<section id="inverse-probability-weighting" class="level3">
-<h3 class="anchored" data-anchor-id="inverse-probability-weighting">Inverse Probability Weighting</h3>
+<section id="inverse-probability-weighting" class="level2">
+<h2 class="anchored" data-anchor-id="inverse-probability-weighting">Inverse Probability Weighting</h2>
 <p>We call this estimator IPW due to its similarity with the inverse-probability weighted estimator for binary treatments, but it would be more accurately referred to as simply reweighted estimator. It is based on the following alternative identification formula:</p>
 <p><span class="math display">\[
 \theta = \E \bigg[ \bigg\{\prod_{t=1}^\tau r_t(a_t, h_t) \bigg\} Y \bigg]
@@ -454,8 +459,8 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 </tbody>
 </table>
 </section>
-<section id="doubly-robust-estimators" class="level3">
-<h3 class="anchored" data-anchor-id="doubly-robust-estimators">Doubly Robust Estimators</h3>
+<section id="doubly-robust-estimators" class="level2">
+<h2 class="anchored" data-anchor-id="doubly-robust-estimators">Doubly Robust Estimators</h2>
 <p>G-computation and IPW estimators require the estimation of nuisance parameters with correctly specified parametric models. We will now turn our attention to two non-parametric estimators:</p>
 <ol type="1">
 <li><p>targeted minimum-loss based estimator (TMLE), and</p></li>
@@ -549,8 +554,8 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 </tr>
 </tbody>
 </table>
-<section id="efficient-influence-function" class="level4">
-<h4 class="anchored" data-anchor-id="efficient-influence-function">Efficient Influence Function</h4>
+<section id="efficient-influence-function" class="level3">
+<h3 class="anchored" data-anchor-id="efficient-influence-function">Efficient Influence Function</h3>
 <p>Key to constructing the TMLE and SDR is the <em>efficient influence function</em> (EIF).</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -572,12 +577,6 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 <li><p>The function <span class="math inline">\(\dd\)</span> does not depend on the observed distribution <span class="math inline">\(\P\)</span> (this means that we cannot apply these methods to odds ratio IPSI, although we can apply them to risk ratio IPSI)</p></li>
 </ol>
 <p>These assumptions ensure that the efficient influence function of <span class="math inline">\(\theta\)</span> for interventions <span class="math inline">\(\dd\)</span> have a structure similar to the influence function for the effect of dynamic regimes. This allows for multiply robust estimation, which is not generally possible for interventions <span class="math inline">\(\dd\)</span> that depend on <span class="math inline">\(\P\)</span>.</p>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
 <p>Define the function</p>
 <p><span class="math display">\[
 \phi_t: O \mapsto \sum_{s=t}^\tau \bigg( \prod_{k=t}^s r_k(a_k, h_k)\bigg) \big\{\m_{s+1}(a_{s+1}^\dd, h_{s+1}) - \m_s(a_s, h_s) \big\} + \m_t(a_t^\dd, h_t).
@@ -587,12 +586,10 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 <p><span class="math display">\[
 r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 \]</span></p>
-</div>
-</div>
-</div>
 </section>
-<section id="targeted-minimum-loss-based-estimation" class="level4">
-<h4 class="anchored" data-anchor-id="targeted-minimum-loss-based-estimation">Targeted Minimum-Loss Based Estimation</h4>
+</section>
+<section id="targeted-minimum-loss-based-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="targeted-minimum-loss-based-estimation">Targeted Minimum-Loss Based Estimation</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -649,8 +646,8 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </div>
 </div>
 </section>
-<section id="sequentially-doubly-robust-estimator" class="level4">
-<h4 class="anchored" data-anchor-id="sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</h4>
+<section id="sequentially-doubly-robust-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -693,9 +690,8 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </div>
 </div>
 </section>
-</section>
-<section id="choosing-an-estimator" class="level3">
-<h3 class="anchored" data-anchor-id="choosing-an-estimator">Choosing an Estimator</h3>
+<section id="choosing-an-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-an-estimator">Choosing an Estimator</h2>
 <ul>
 <li><p>In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference 🙃.</p></li>
 <li><p>The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining <span class="math inline">\(\sqrt{n}\)</span>-consistent under reasonable assumptions.</p></li>
@@ -771,8 +767,8 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 <div class="callout-body-container">
 <p><strong>Question</strong>: Why can’t we use machine learning with the G-computation and IPW estimators?</p>
 <details>
-<summary style="color: black; font-weight: bold;">
-<p>Answer</p>
+<summary style="color: grey; font-weight: 400;">
+<p>✅ Answer</p>
 </summary>
 <p>The G-computation and IPW estimators require models that converge to the truth at a <span class="math inline">\(\sqrt{n}\)</span>-rate. Machine learning algorithms are not guaranteed to do this.</p>
 </details>
@@ -794,8 +790,8 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </div>
 </div>
 </section>
-<section id="cross-fitting" class="level3">
-<h3 class="anchored" data-anchor-id="cross-fitting">Cross-fitting</h3>
+<section id="cross-fitting" class="level2">
+<h2 class="anchored" data-anchor-id="cross-fitting">Cross-fitting</h2>
 <p>When estimating nuisance parameters with data adaptive algorithms, you should perform a process similar to cross-validation called cross-fitting. Cross-fitting helps ensure:</p>
 <ul>
 <li><p>that standard errors will be correct, and</p></li>

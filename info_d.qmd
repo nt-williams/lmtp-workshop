@@ -196,7 +196,6 @@ Recall that the fundamental problem of causal inference is that we can't observe
 
 Assuming the above, $\theta$ is identified from the observed data with:
 
-::: {.callout-note  appearance="minimal"}
 Set $\m_{\tau+1} = Y$ For $t = \tau, ..., 1$, recursively define
 
 $$
@@ -204,11 +203,10 @@ $$
 $$
 
 and define $\theta = E[\m_1(A^{\dd}_1, L_1)]$.
-:::
 
-------------------------------------------------------------------------
+### Example
 
-As an example, consider the following data where $\tau = 2$.
+Consider the following data where $\tau = 2$.
 
 ```{webr-r}
 #| context: setup
