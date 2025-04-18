@@ -42,12 +42,9 @@ dplyr::select(crime, -community_code) |>
   gtsummary::tbl_summary()
 ```
 
-### Problem 1
+## Problem 1
 
 Write a shift function (named `d_mtp`) for a modified treatment policy where the natural value of neighborhood violence is decreased by 50%. Using the `lmtp` package, estimate the population mean effect of this intervention on preterm birth. Make sure to use the `id` argument to account for community level clustering in the estimation of standard errors. To save computation time, don't use cross-fitting.
-
-::: {.callout-warning icon="false"}
-## Practice
 
 ```{webr-r}
 A <- "neighborhood_violence"
@@ -67,9 +64,9 @@ fit_d <- # Write your estimation code here!
 
 <details>
 
-<summary style="color: black; font-weight: bold;">
+<summary style="color: grey; font-weight: 400;">
 
-Solution
+✅ Solution 
 
 </summary>
 
@@ -93,7 +90,6 @@ fit_mtp <- lmtp_tmle(
 ```
 
 </details>
-:::
 
 Did you get this error?
 
@@ -104,16 +100,13 @@ Loading required package: nnls
 Error: object 'fit' not found
 ```
 
-::: {.callout-tip appearance="simple"}
+::: {.callout-caution appearance="simple"}
 Make sure to set `mtp = TRUE` if you're intervention is a modified treatment policy!
 :::
 
-### Problem 2
+## Problem 2
 
 Let's compare the effect of the intervention on reducing neighborhood violence on preterm birth to the observed preterm birth rate. Use the `lmtp_contrast()` function.
-
-::: {.callout-warning icon="false"}
-## Practice
 
 ```{webr-r}
 # Write your code here!
@@ -121,9 +114,9 @@ Let's compare the effect of the intervention on reducing neighborhood violence o
 
 <details>
 
-<summary style="color: black; font-weight: bold;">
+<summary style="color: grey; font-weight: 400;">
 
-Solution
+✅ Solution 
 
 </summary>
 
@@ -132,6 +125,5 @@ lmtp_contrast(fit_mtp, ref = mean(crime$preterm_birth))
 ```
 
 </details>
-:::
 
 With `lmtp` we found that under a hypothetical intervention that reduces neighborhood violence by 50%, preterm birth would decrease by approximately 4.4 percentange points.
