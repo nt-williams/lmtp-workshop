@@ -26,7 +26,7 @@ mixtures <- read.csv("mixtures.csv")
 
 -   Practically, this is useful for assessing the effects of mixtures on environmental outcomes
 
-### NIEHS Simulation Data
+## NIEHS Simulation Data
 
 For our example of estimating the effects of simultaneous interventions on multiple variables, we will use simulated data from the 2015 NIEHS Mixtures Workshop. The data has already been loaded into R in the background as `mixtures`. You can view and download the raw data [here](https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/mixtures.csv).
 
@@ -36,15 +36,26 @@ For our example of estimating the effects of simultaneous interventions on multi
 
 -   There is no missing covariate data, no measurement error, and no censoring.
 
+\
+
 ```{r echo=FALSE}
 mixtures <- read.csv("data/mixtures.csv") |> 
   dplyr::select(-obs)
 
-DT::datatable(mixtures) |> 
+DT::datatable(mixtures, class = "compact", 
+                options = list(
+                  searching = FALSE, 
+                  lengthChange = FALSE, 
+                  ordering = FALSE, 
+                  info = FALSE, 
+                  columnDefs = list(
+                    list(targets = 0, visible = FALSE),
+                    list(className = 'dt-left', targets = "_all")  # apply to all columns
+                  )
+                )) |> 
   DT::formatRound(columns = setdiff(names(mixtures), "Z"), digits = 2)
-
-gtsummary::tbl_summary(mixtures)
 ```
+\
 
 -   Only exposure variables `X1`, `X2`, `X4`, `X5`, and `X7` have an effect on the outcome `Y`. However, the direction of the effects varies.
 
@@ -52,9 +63,9 @@ gtsummary::tbl_summary(mixtures)
 
 -   `X4` and `X5` are negatively associated with the outcome.
 
-### Multivariate shift functions
+## Multivariate shift functions
 
-::: {.callout-tip appearance="simple"}
+::: {.callout-note appearance="simple"}
 Only two things need to change when using `lmtp` estimators with multivariate treatments:
 
 1.  Instead of a vector, you should now pass a list to the `trt` argument
@@ -116,12 +127,10 @@ d <- function(data, a) {
 }
 ```
 
-### Problem 1
+## Problem 1
 
 Using TMLE, estimate the population mean outcome under the simultaneous intervention we just defined. Fit both the treatment mechanism and the outcome regression using this set of learners: `c("SL.mean", "SL.glm", "SL.gam", "SL.rpart", "SL.rpartPrune", "SL.step.interaction")`. Assign the result to `ans`. To save time, don't use crossfitting; `lmtp` has already been loaded into the R session.
 
-::: {.callout-warning icon="false"}
-## Practice
 
 ```{webr-r}
 set.seed(4363754)
@@ -132,9 +141,9 @@ ans <-
 
 <details/>
 
-<summary style="color: black; font-weight: bold;">
+<summary style="color: grey; font-weight: 400;">
 
-Solution
+✅ Solution 
 
 </summary>
 
@@ -163,14 +172,10 @@ print(ans)
 ```
 
 </details>
-:::
 
-### Problem 2
+## Problem 2
 
 Compared to what was observed under the natural course of exposure, how did intervening upon the set of exposures effect the outcome? Estimate this effect using `lmtp_contrast()`.
-
-::: {.callout-warning icon="false"}
-## Practice
 
 ```{webr-r}
 # Type your code here!
@@ -178,9 +183,9 @@ Compared to what was observed under the natural course of exposure, how did inte
 
 <details/>
 
-<summary style="color: black; font-weight: bold;">
+<summary style="color: grey; font-weight: 400;">
 
-Solution
+✅ Answer 
 
 </summary>
 
@@ -190,4 +195,3 @@ lmtp_contrast(ans, ref = obs_y)
 ```
 
 </details>
-:::

@@ -147,7 +147,7 @@
     "href": "R_multivariate.html",
     "title": "Multivariate exposures",
     "section": "",
-    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]\n\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\nlmtp can estimate effects of simultaneous interventions on multiple variables\nPractically, this is useful for assessing the effects of mixtures on environmental outcomes\n\n\nNIEHS Simulation Data\nFor our example of estimating the effects of simultaneous interventions on multiple variables, we will use simulated data from the 2015 NIEHS Mixtures Workshop. The data has already been loaded into R in the background as mixtures. You can view and download the raw data here.\n\nThe simulated data has \\(n = 500\\) observations and is intended to replicate a prospective cohort study.\nThe data is composed of 7 log-normally distributed and correlated exposures variables (\"X1\", \"X2\", \"X3\", \"X4\", \"X5\", \"X6\", \"X7\"), a single continuous outcome (\"Y\"), and one binary confounder (\"Z\").\nThere is no missing covariate data, no measurement error, and no censoring.\n\n\n\n\n\n\n\n\n\n\n\n\n\nCharacteristic\nN = 5001\n\n\n\n\nY\n21 (14, 32)\n\n\nX1\n0.86 (0.41, 1.50)\n\n\nX2\n0.93 (0.66, 1.29)\n\n\nX3\n0.85 (0.44, 1.56)\n\n\nX4\n0.97 (0.62, 1.54)\n\n\nX5\n0.92 (0.49, 1.68)\n\n\nX6\n0.92 (0.53, 1.59)\n\n\nX7\n0.84 (0.41, 1.51)\n\n\nZ\n214 (43%)\n\n\n\n1 Median (Q1, Q3); n (%)\n\n\n\n\n\n\n\n\n\nOnly exposure variables X1, X2, X4, X5, and X7 have an effect on the outcome Y. However, the direction of the effects varies.\nX1, X2, and X7 are positively associated with the outcome.\nX4 and X5 are negatively associated with the outcome.\n\n\n\nMultivariate shift functions\n\n\n\n\n\n\nOnly two things need to change when using lmtp estimators with multivariate treatments:\n\nInstead of a vector, you should now pass a list to the trt argument\nThe shift function should return a named list of vectors instead of a single vector.\n\n\n\n\nLet’s use lmtp to estimate the effect of a modified treatment policy which intervenes on all 7 exposure simultaneously on the outcome:\n\\[\n\\dd(\\mathbf{a}, h) =\n\\begin{cases} \\dd(a_1, h) =\n\\begin{cases}\na_1 - 0.2 &\\text{ if } a_1 - 0.2 &gt; 0 \\\\\na_1 &\\text{ otherwise }\n\\end{cases} \\\\\n\\dd(a_2, h) =\n\\begin{cases}\na_2 - 0.4 &\\text{ if } a_2 - 0.4 &gt; 0 \\\\\na_2 &\\text{ otherwise }\n\\end{cases} \\\\\n\\dd(a_3, h) = a_3 + 0.4 \\\\\n\\dd(a_4, h) = a_4 + 0.1 \\\\\n\\dd(a_5, h) = a_5 + 0.5 \\\\\n\\dd(a_6, h) =\n\\begin{cases}\na_6 - 0.2 &\\text{ if } a_6 - 0.2 &gt; 0 \\\\\na_6 &\\text{ otherwise }\n\\end{cases} \\\\\n\\dd(a_7, h) =\n\\begin{cases}\na_7 - 0.3 &\\text{ if } a_7 - 0.3 &gt; 0 \\\\\na_7 &\\text{ otherwise }\n\\end{cases}\n\\end{cases}\n\\]\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nProblem 1\nUsing TMLE, estimate the population mean outcome under the simultaneous intervention we just defined. Fit both the treatment mechanism and the outcome regression using this set of learners: c(\"SL.mean\", \"SL.glm\", \"SL.gam\", \"SL.rpart\", \"SL.rpartPrune\", \"SL.step.interaction\"). Assign the result to ans. To save time, don’t use crossfitting; lmtp has already been loaded into the R session.\n\n\n\n\n\n\nPractice\n\n\n\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nSolution\n\n\nset.seed(4363754)\n\nlearners &lt;- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.gam\", \n              \"SL.rpart\", \n              \"SL.rpartPrune\", \n              \"SL.step.interaction\")\n\nans &lt;- lmtp_tmle(data = mixtures, \n                 trt = A, \n                 outcome = \"Y\", \n                 baseline = \"Z\", \n                 shift = d, \n                 mtp = TRUE,\n                 outcome_type = \"continuous\",\n                 learners_trt = learners, \n                 learners_outcome = learners, \n                 folds = 1)\n\nprint(ans)\n\n\n\n\n\n\nProblem 2\nCompared to what was observed under the natural course of exposure, how did intervening upon the set of exposures effect the outcome? Estimate this effect using lmtp_contrast().\n\n\n\n\n\n\nPractice\n\n\n\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nSolution\n\n\nobs_y &lt;- mean(mixtures$Y)\nlmtp_contrast(ans, ref = obs_y)\n\n\n\n\n\n\n\n\n\nReferences\n\nDı́az, Iván, Nicholas Williams, Katherine L Hoffman, and Edward J Schenck. 2023. “Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies.” Journal of the American Statistical Association 118 (542): 846–57.\n\n\nTaylor, Kyla W, Bonnie R Joubert, Joe M Braun, Caroline Dilworth, Chris Gennings, Russ Hauser, Jerry J Heindel, Cynthia V Rider, Thomas F Webster, and Danielle J Carlin. 2016. “Statistical Approaches for Assessing Health Effects of Environmental Chemical Mixtures in Epidemiology: Lessons from an Innovative Workshop.” Environmental Health Perspectives 124 (12): A227–29.",
+    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]",
     "crumbs": [
       "Instructors",
       "4. Estimating Effects with lmtp",
@@ -346,6 +346,54 @@
       "Instructors",
       "4. Estimating Effects with lmtp",
       "Survival Analysis"
+    ]
+  },
+  {
+    "objectID": "R_multivariate.html#niehs-simulation-data",
+    "href": "R_multivariate.html#niehs-simulation-data",
+    "title": "Multivariate exposures",
+    "section": "NIEHS Simulation Data",
+    "text": "NIEHS Simulation Data\nFor our example of estimating the effects of simultaneous interventions on multiple variables, we will use simulated data from the 2015 NIEHS Mixtures Workshop. The data has already been loaded into R in the background as mixtures. You can view and download the raw data here.\n\nThe simulated data has \\(n = 500\\) observations and is intended to replicate a prospective cohort study.\nThe data is composed of 7 log-normally distributed and correlated exposures variables (\"X1\", \"X2\", \"X3\", \"X4\", \"X5\", \"X6\", \"X7\"), a single continuous outcome (\"Y\"), and one binary confounder (\"Z\").\nThere is no missing covariate data, no measurement error, and no censoring.\n\n\n\n\n\n\n\n\n\n\n\n\nOnly exposure variables X1, X2, X4, X5, and X7 have an effect on the outcome Y. However, the direction of the effects varies.\nX1, X2, and X7 are positively associated with the outcome.\nX4 and X5 are negatively associated with the outcome.",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "Multivariate Exposures"
+    ]
+  },
+  {
+    "objectID": "R_multivariate.html#multivariate-shift-functions",
+    "href": "R_multivariate.html#multivariate-shift-functions",
+    "title": "Multivariate exposures",
+    "section": "Multivariate shift functions",
+    "text": "Multivariate shift functions\n\n\n\n\n\n\nOnly two things need to change when using lmtp estimators with multivariate treatments:\n\nInstead of a vector, you should now pass a list to the trt argument\nThe shift function should return a named list of vectors instead of a single vector.\n\n\n\n\nLet’s use lmtp to estimate the effect of a modified treatment policy which intervenes on all 7 exposure simultaneously on the outcome:\n\\[\n\\dd(\\mathbf{a}, h) =\n\\begin{cases} \\dd(a_1, h) =\n\\begin{cases}\na_1 - 0.2 &\\text{ if } a_1 - 0.2 &gt; 0 \\\\\na_1 &\\text{ otherwise }\n\\end{cases} \\\\\n\\dd(a_2, h) =\n\\begin{cases}\na_2 - 0.4 &\\text{ if } a_2 - 0.4 &gt; 0 \\\\\na_2 &\\text{ otherwise }\n\\end{cases} \\\\\n\\dd(a_3, h) = a_3 + 0.4 \\\\\n\\dd(a_4, h) = a_4 + 0.1 \\\\\n\\dd(a_5, h) = a_5 + 0.5 \\\\\n\\dd(a_6, h) =\n\\begin{cases}\na_6 - 0.2 &\\text{ if } a_6 - 0.2 &gt; 0 \\\\\na_6 &\\text{ otherwise }\n\\end{cases} \\\\\n\\dd(a_7, h) =\n\\begin{cases}\na_7 - 0.3 &\\text{ if } a_7 - 0.3 &gt; 0 \\\\\na_7 &\\text{ otherwise }\n\\end{cases}\n\\end{cases}\n\\]\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "Multivariate Exposures"
+    ]
+  },
+  {
+    "objectID": "R_multivariate.html#problem-1",
+    "href": "R_multivariate.html#problem-1",
+    "title": "Multivariate exposures",
+    "section": "Problem 1",
+    "text": "Problem 1\nUsing TMLE, estimate the population mean outcome under the simultaneous intervention we just defined. Fit both the treatment mechanism and the outcome regression using this set of learners: c(\"SL.mean\", \"SL.glm\", \"SL.gam\", \"SL.rpart\", \"SL.rpartPrune\", \"SL.step.interaction\"). Assign the result to ans. To save time, don’t use crossfitting; lmtp has already been loaded into the R session.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\n✅ Solution\n\n\nset.seed(4363754)\n\nlearners &lt;- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.gam\", \n              \"SL.rpart\", \n              \"SL.rpartPrune\", \n              \"SL.step.interaction\")\n\nans &lt;- lmtp_tmle(data = mixtures, \n                 trt = A, \n                 outcome = \"Y\", \n                 baseline = \"Z\", \n                 shift = d, \n                 mtp = TRUE,\n                 outcome_type = \"continuous\",\n                 learners_trt = learners, \n                 learners_outcome = learners, \n                 folds = 1)\n\nprint(ans)",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "Multivariate Exposures"
+    ]
+  },
+  {
+    "objectID": "R_multivariate.html#problem-2",
+    "href": "R_multivariate.html#problem-2",
+    "title": "Multivariate exposures",
+    "section": "Problem 2",
+    "text": "Problem 2\nCompared to what was observed under the natural course of exposure, how did intervening upon the set of exposures effect the outcome? Estimate this effect using lmtp_contrast().\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\n✅ Answer\n\n\nobs_y &lt;- mean(mixtures$Y)\nlmtp_contrast(ans, ref = obs_y)",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "Multivariate Exposures"
     ]
   }
 ]
