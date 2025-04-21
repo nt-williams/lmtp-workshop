@@ -79,6 +79,8 @@ $$
     -   For all the non-duplicated observations, $\lambda = 0$, $A_{\lambda=0, i, t}$ equals the observed exposure values $A_{i, t}$
 
     -   For all the duplicated observations, $\lambda=1$, $A_{\lambda=1, i, t}$ equals the exposure values under the intervention $\dd$, $A^{\dd}_{i,t}$
+    
+![Example of augmenting data for density ratio estimation.](images/density_ratio_data.png){fig-align="center"}
 
 -   We then estimate the conditional probability that $\Lambda=1$ in this dataset, and divide it by the corresponding estimate of the conditional probability that $\Lambda=0$. Specifically, denoting $p^\lambda$ to be the distribution of the data in the augmented dataset, we have:
 
@@ -88,6 +90,58 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
     0)}=\frac{p^\lambda(\Lambda = 1\mid A_t=a_t,
     H_t=h_t)}{p^\lambda(\Lambda = 0\mid A_t=a_t, H_t=h_t)}
 $$
+
+### Example
+
+Consider the following example where we simulate 500 observations from this data-generating mechanism:
+
+\begin{align}
+W &\sim \text{Normal}(0, 1) \\  
+A &\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5W))\\  
+Y &\sim \text{Normal}(-1 - 1.2W + 2.4A).
+\end{align}
+The data has been loaded into R in the background as `foo`. We will use the density ratio classification trick to estimate the density ratio $r_t(a_t, h_t)$ under the static intervention $d(a_t, h_t) = 1$. First, we create the augmented data.
+
+```{webr-r}
+#| context: setup
+set.seed(786543)
+n <- 500
+l0 <- rnorm(n)
+a1 <- rbinom(n, 1, plogis(-1 + l0*1.5))
+y <- rnorm(n, -1 - 1.2*l0 + 2.4*a1)
+foo <- data.frame(
+  W = l0, 
+  A1 = a1, 
+  Y = y
+)
+```
+
+```{webr-r}
+# Duplicate the data
+shifted <- foo
+# In the duplicated data, modify treatment according to d
+shifted$A1 <- 1
+
+# Set the values of delta in the original and modified data
+foo$lambda <- 0
+shifted$lambda <- 1
+
+# Stack the original data and the modified data
+density_ratio_data <- rbind(foo, shifted)
+```
+
+We then regress the $\Lambda$ on $A$ and $W$ and estimate the density ratio as the predicted odds.
+
+```{webr-r}
+# Regress lambda on A,W
+density_ratio_model <- glm(lambda ~ A1 + W, data = density_ratio_data, family = binomial)
+
+# Calculate the estimated odds
+prob_lambda_1 <- predict(density_ratio_model, foo, type = "response")
+density_ratios <- prob_lambda_1 / (1 - prob_lambda_1)
+
+summary(density_ratios)
+```
 
 ## Inverse Probability Weighting
 
