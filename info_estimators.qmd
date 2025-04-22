@@ -102,7 +102,7 @@ L_2 &\sim \text{Normal}(0, 1) \\
 A_2 &\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5L_2 + 2A_1))\\
 Y &\sim \text{Normal}(-1 - 1.2L_1 + 2.4A_1 - 2L_2 + 1.2A_2)
 \end{align}
-The data has been loaded into R in the background as `foo`. We will use the density ratio classification trick to estimate the density ratio $r_t(a_t, h_t)$ under the static intervention $d(a_t, h_t) = 1$. First, we create the augmented data. We then regress the $\Lambda$ on $A$ and $W$ and estimate the density ratio as the predicted odds.
+The data has been loaded into R in the background as `foo`. We will use the density ratio classification trick to estimate the density ratio $r_t(a_t, h_t)$ under the static intervention $d(a_t, h_t) = 1$. First, we create the augmented data. We then regress the $\Lambda$ on $A_t$ and $H_t$ and estimate the density ratio as the predicted odds.
 
 ```{webr-r}
 #| context: setup
@@ -149,6 +149,8 @@ for (t in 1:2) {
   prob_lambda_1 <- predict(density_ratio_model, foo, type = "response")
   density_ratios[, t] <- prob_lambda_1 / (1 - prob_lambda_1)
 }
+
+summary(density_ratios)
 ```
 
 ## Inverse Probability Weighting
@@ -326,6 +328,56 @@ $$
 4.  The final estimate is defined as $\hat\theta = \frac{1}{n}\sum_{i=1}^n\tilde{m}_{i, 1}(A^\dd_{i, 1}, L_{i, 1})$.
 :::
 :::
+
+### Example
+
+Let's apply the TMLE estimator using the estimated density ratios we calculated in the previous example. We first compute the weights as the cumulative product of the density ratios.
+
+```{webr-r}
+weights <- t(apply(density_ratios, 1, cumprod))
+head(round(weights, 4))
+```
+
+```{webr-r}
+predictions_natural <- matrix(NA, nrow = n, ncol = 2)
+predictions_shifted <- matrix(NA, nrow = n, ncol = 2)
+
+outcome <- foo$Y
+for (t in 2:1) {
+  a <- c("A1", "A2")[t]
+  # Duplicate the data
+  shifted <- foo
+  # In the duplicated data, modify treatment according to d
+  shifted[[a]] <- 1
+  
+  # Set the values of delta in the original and modified data
+  foo$lambda <- 0
+  shifted$lambda <- 1
+  
+  # Perform the initial regression and generate predictions
+  parents <- unlist(lapply(1:t, \(x) paste0(c("L", "A"), x)))
+  formula <- as.formula(paste("outcome ~", paste(parents, collapse = "+")))
+  initial_fit <- glm(formula, data = foo)
+  initial_predictions <- predict(initial_fit, foo)
+
+  # Perform the targeting step
+  targeting_fit <- glm(outcome ~ offset(initial_predictions), weights = weights[, t])
+
+  # Update predictions
+  predictions_natural[, t] <- initial_predictions + coef(targeting_fit)
+  initial_predictions_shifted <- predict(initial_fit, shifted)
+  predictions_shifted[, t] <- initial_predictions_shifted + coef(targeting_fit)
+  
+  # Update the outcome for the next iteration
+  outcome <- predictions_shifted[, t]
+}
+```
+
+The estimate is then the sample average of the predicted values from the last iteration under the shifted treatment.
+
+```{webr-r}
+mean(outcome)
+```
 
 ## Sequentially Doubly Robust Estimator
 
