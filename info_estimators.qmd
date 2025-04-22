@@ -96,11 +96,13 @@ $$
 Consider the following example where we simulate 500 observations from this data-generating mechanism:
 
 \begin{align}
-W &\sim \text{Normal}(0, 1) \\  
-A &\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5W))\\  
-Y &\sim \text{Normal}(-1 - 1.2W + 2.4A).
+L_1 &\sim \text{Normal}(0, 1) \\  
+A_1 &\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5L_1))\\  
+L_2 &\sim \text{Normal}(0, 1) \\
+A_2 &\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5L_2 + 2A_1))\\
+Y &\sim \text{Normal}(-1 - 1.2L_1 + 2.4A_1 - 2L_2 + 1.2A_2)
 \end{align}
-The data has been loaded into R in the background as `foo`. We will use the density ratio classification trick to estimate the density ratio $r_t(a_t, h_t)$ under the static intervention $d(a_t, h_t) = 1$. First, we create the augmented data.
+The data has been loaded into R in the background as `foo`. We will use the density ratio classification trick to estimate the density ratio $r_t(a_t, h_t)$ under the static intervention $d(a_t, h_t) = 1$. First, we create the augmented data. We then regress the $\Lambda$ on $A$ and $W$ and estimate the density ratio as the predicted odds.
 
 ```{webr-r}
 #| context: setup
@@ -108,39 +110,45 @@ set.seed(786543)
 n <- 500
 l0 <- rnorm(n)
 a1 <- rbinom(n, 1, plogis(-1 + l0*1.5))
-y <- rnorm(n, -1 - 1.2*l0 + 2.4*a1)
+l1 <- rnorm(n)
+a2 <- rbinom(n, 1, plogis(-1 + l1*1.5 + a1*2))
+y <- rnorm(n, -1 - 1.2*l0 + 2.4*a1 - 2*l1 + 1.2*a2)
 foo <- data.frame(
-  W = l0, 
+  L1 = l0, 
   A1 = a1, 
+  L2 = l1, 
+  A2 = a2, 
   Y = y
 )
 ```
 
 ```{webr-r}
-# Duplicate the data
-shifted <- foo
-# In the duplicated data, modify treatment according to d
-shifted$A1 <- 1
+# Create an empty matrix to store the density ratios
+density_ratios <- matrix(NA, nrow = n, ncol = 2)
 
-# Set the values of delta in the original and modified data
-foo$lambda <- 0
-shifted$lambda <- 1
-
-# Stack the original data and the modified data
-density_ratio_data <- rbind(foo, shifted)
-```
-
-We then regress the $\Lambda$ on $A$ and $W$ and estimate the density ratio as the predicted odds.
-
-```{webr-r}
-# Regress lambda on A,W
-density_ratio_model <- glm(lambda ~ A1 + W, data = density_ratio_data, family = binomial)
-
-# Calculate the estimated odds
-prob_lambda_1 <- predict(density_ratio_model, foo, type = "response")
-density_ratios <- prob_lambda_1 / (1 - prob_lambda_1)
-
-summary(density_ratios)
+for (t in 1:2) {
+  a <- c("A1", "A2")[t]
+  # Duplicate the data
+  shifted <- foo
+  # In the duplicated data, modify treatment according to d
+  shifted[[a]] <- 1
+  
+  # Set the values of delta in the original and modified data
+  foo$lambda <- 0
+  shifted$lambda <- 1
+  
+  # Stack the original data and the modified data
+  density_ratio_data <- rbind(foo, shifted)
+  
+  # Regress lambda_t on A_t,H_t
+  parents <- unlist(lapply(1:t, \(x) paste0(c("L", "A"), x)))
+  formula <- as.formula(paste("lambda ~", paste(parents, collapse = "+")))
+  density_ratio_model <- glm(formula, data = density_ratio_data, family = binomial)
+  
+  # Calculate the estimated odds
+  prob_lambda_1 <- predict(density_ratio_model, foo, type = "response")
+  density_ratios[, t] <- prob_lambda_1 / (1 - prob_lambda_1)
+}
 ```
 
 ## Inverse Probability Weighting
@@ -150,6 +158,12 @@ We call this estimator IPW due to its similarity with the inverse-probability we
 $$
 \theta = \E \bigg[ \bigg\{\prod_{t=1}^\tau r_t(a_t, h_t) \bigg\} Y \bigg]
 $$
+
+
+
+
+\
+The algorithm is as follows:
 
 ::: algorithm
 ::: algorithm-body
@@ -162,6 +176,23 @@ $$
 4.  Compute standard errors using a bootstrap of steps 1-3.
 :::
 :::
+
+### Example
+
+Let's apply the IPW estimator using the estimated density ratios we calculated in the previous example. We first compute the weights as the product of the density ratios.
+
+```{webr-r}
+weights <- apply(density_ratios, 1, prod)
+```
+
+Our estimate is then the sample average of the estimated weights times the observed outcomes.
+
+```{webr-r}
+mean(weights*foo$Y)
+```
+
+Similarly to the sequential regression estimator, the IPW is simple to implement. However, it suffers from the same drawbacks.
+\
 
 | Pros ✅                    | Cons ❌                                            |
 |:---------------------------|:--------------------------------------------------|
@@ -209,6 +240,10 @@ Wait, what does it mean for an estimator to be doubly robust?
 | Time      | 1       | 2       | 3       | 4       | 5       |
 | Treatment | Correct | Wrong   | Correct | Wrong   | Correct |
 | Outcome   | Wrong   | Correct | Wrong   | Correct | Wrong   |
+
+::: {.callout-caution appearance="simple"}
+Be careful not to confuse doubly robust consistency with _rate double robustness_. Doubly robust consistency refers to the properties we just described. Rate double robustness refers to the property where the error of an estimator is the product of nuisance functions. 
+:::
 
 ### Efficient Influence Function
 

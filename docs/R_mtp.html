@@ -325,7 +325,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/crime_toy.csv\", \"crime.csv\")\ncrime <- read.csv(\"crime.csv\")","id":1,"options":{"context":"setup","message":"true","dpi":72,"label":"unnamed-chunk-1","warning":"true","results":"markup","editor-font-scale":1,"fig-height":5,"fig-width":7,"out-width":"700px","editor-max-height":"","editor-quick-suggestions":"false","fig-cap":"","autorun":"true","classes":"","read-only":"false","comment":"","output":"true","out-height":""}},{"code":"A <- \"neighborhood_violence\"\nW <- names(crime)[1:12]\nY <- \"preterm_birth\"\nid <- \"community_code\"\n\nlearners <- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.rpart\", \n              \"SL.gam\")\n\nd <- # Write your shift function here!\n\nfit_d <- # Write your estimation code here!","id":2,"options":{"context":"interactive","message":"true","dpi":72,"label":"unnamed-chunk-2","warning":"true","results":"markup","editor-font-scale":1,"fig-height":5,"fig-width":7,"out-width":"700px","editor-max-height":"","editor-quick-suggestions":"false","fig-cap":"","autorun":"false","classes":"","read-only":"false","comment":"","output":"true","out-height":""}},{"code":"# Write your code here!","id":3,"options":{"context":"interactive","message":"true","dpi":72,"label":"unnamed-chunk-3","warning":"true","results":"markup","editor-font-scale":1,"fig-height":5,"fig-width":7,"out-width":"700px","editor-max-height":"","editor-quick-suggestions":"false","fig-cap":"","autorun":"false","classes":"","read-only":"false","comment":"","output":"true","out-height":""}}];
+globalThis.qwebrCellDetails = [{"code":"download.file(\"https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/data/crime_toy.csv\", \"crime.csv\")\ncrime <- read.csv(\"crime.csv\")","options":{"output":"true","results":"markup","comment":"","fig-height":5,"fig-cap":"","context":"setup","out-height":"","editor-font-scale":1,"editor-max-height":"","editor-quick-suggestions":"false","classes":"","read-only":"false","message":"true","warning":"true","fig-width":7,"autorun":"true","label":"unnamed-chunk-1","out-width":"700px","dpi":72},"id":1},{"code":"A <- \"neighborhood_violence\"\nW <- names(crime)[1:12]\nY <- \"preterm_birth\"\nid <- \"community_code\"\n\nlearners <- c(\"SL.mean\", \n              \"SL.glm\", \n              \"SL.rpart\", \n              \"SL.gam\")\n\nd <- # Write your shift function here!\n\nfit_d <- # Write your estimation code here!","options":{"output":"true","results":"markup","comment":"","fig-height":5,"fig-cap":"","context":"interactive","out-height":"","editor-font-scale":1,"editor-max-height":"","editor-quick-suggestions":"false","classes":"","read-only":"false","message":"true","warning":"true","fig-width":7,"autorun":"false","label":"unnamed-chunk-2","out-width":"700px","dpi":72},"id":2},{"code":"# Write your code here!","options":{"output":"true","results":"markup","comment":"","fig-height":5,"fig-cap":"","context":"interactive","out-height":"","editor-font-scale":1,"editor-max-height":"","editor-quick-suggestions":"false","classes":"","read-only":"false","message":"true","warning":"true","fig-width":7,"autorun":"false","label":"unnamed-chunk-3","out-width":"700px","dpi":72},"id":3}];
 
 </script>
 <script type="module">
@@ -1641,23 +1641,23 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <p>In some current work, we are interested in estimating the effect of decreasing the level of community violence (violent crime rate) on risk of preterm birth. Research suggests community violence may impact infant health through physiological responses to stress, worsening maternal mental health, and unhealthy coping behaviors. Community violence is a highly endogenous exposure, which, motivates the use of such a shift intervention.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="stbxydikxu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#stbxydikxu table {
+<div id="dwzgmnkwsl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dwzgmnkwsl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#stbxydikxu thead, #stbxydikxu tbody, #stbxydikxu tfoot, #stbxydikxu tr, #stbxydikxu td, #stbxydikxu th {
+#dwzgmnkwsl thead, #dwzgmnkwsl tbody, #dwzgmnkwsl tfoot, #dwzgmnkwsl tr, #dwzgmnkwsl td, #dwzgmnkwsl th {
   border-style: none;
 }
 
-#stbxydikxu p {
+#dwzgmnkwsl p {
   margin: 0;
   padding: 0;
 }
 
-#stbxydikxu .gt_table {
+#dwzgmnkwsl .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1683,12 +1683,12 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-left-color: #D3D3D3;
 }
 
-#stbxydikxu .gt_caption {
+#dwzgmnkwsl .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#stbxydikxu .gt_title {
+#dwzgmnkwsl .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1700,7 +1700,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-width: 0;
 }
 
-#stbxydikxu .gt_subtitle {
+#dwzgmnkwsl .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1712,7 +1712,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-width: 0;
 }
 
-#stbxydikxu .gt_heading {
+#dwzgmnkwsl .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1724,13 +1724,13 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#stbxydikxu .gt_bottom_border {
+#dwzgmnkwsl .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#stbxydikxu .gt_col_headings {
+#dwzgmnkwsl .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1745,7 +1745,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#stbxydikxu .gt_col_heading {
+#dwzgmnkwsl .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1765,7 +1765,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#stbxydikxu .gt_column_spanner_outer {
+#dwzgmnkwsl .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1777,15 +1777,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 4px;
 }
 
-#stbxydikxu .gt_column_spanner_outer:first-child {
+#dwzgmnkwsl .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#stbxydikxu .gt_column_spanner_outer:last-child {
+#dwzgmnkwsl .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#stbxydikxu .gt_column_spanner {
+#dwzgmnkwsl .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1797,11 +1797,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   width: 100%;
 }
 
-#stbxydikxu .gt_spanner_row {
+#dwzgmnkwsl .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#stbxydikxu .gt_group_heading {
+#dwzgmnkwsl .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1827,7 +1827,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   text-align: left;
 }
 
-#stbxydikxu .gt_empty_group_heading {
+#dwzgmnkwsl .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1842,15 +1842,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: middle;
 }
 
-#stbxydikxu .gt_from_md > :first-child {
+#dwzgmnkwsl .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#stbxydikxu .gt_from_md > :last-child {
+#dwzgmnkwsl .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#stbxydikxu .gt_row {
+#dwzgmnkwsl .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1869,7 +1869,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   overflow-x: hidden;
 }
 
-#stbxydikxu .gt_stub {
+#dwzgmnkwsl .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1882,7 +1882,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#stbxydikxu .gt_stub_row_group {
+#dwzgmnkwsl .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1896,15 +1896,15 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   vertical-align: top;
 }
 
-#stbxydikxu .gt_row_group_first td {
+#dwzgmnkwsl .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#stbxydikxu .gt_row_group_first th {
+#dwzgmnkwsl .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#stbxydikxu .gt_summary_row {
+#dwzgmnkwsl .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1914,16 +1914,16 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#stbxydikxu .gt_first_summary_row {
+#dwzgmnkwsl .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#stbxydikxu .gt_first_summary_row.thick {
+#dwzgmnkwsl .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#stbxydikxu .gt_last_summary_row {
+#dwzgmnkwsl .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1933,7 +1933,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#stbxydikxu .gt_grand_summary_row {
+#dwzgmnkwsl .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1943,7 +1943,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#stbxydikxu .gt_first_grand_summary_row {
+#dwzgmnkwsl .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1953,7 +1953,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-top-color: #D3D3D3;
 }
 
-#stbxydikxu .gt_last_grand_summary_row_top {
+#dwzgmnkwsl .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1963,11 +1963,11 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#stbxydikxu .gt_striped {
+#dwzgmnkwsl .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#stbxydikxu .gt_table_body {
+#dwzgmnkwsl .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1976,7 +1976,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-bottom-color: #D3D3D3;
 }
 
-#stbxydikxu .gt_footnotes {
+#dwzgmnkwsl .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1990,7 +1990,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#stbxydikxu .gt_footnote {
+#dwzgmnkwsl .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1999,7 +1999,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#stbxydikxu .gt_sourcenotes {
+#dwzgmnkwsl .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2013,7 +2013,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   border-right-color: #D3D3D3;
 }
 
-#stbxydikxu .gt_sourcenote {
+#dwzgmnkwsl .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2021,72 +2021,72 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   padding-right: 5px;
 }
 
-#stbxydikxu .gt_left {
+#dwzgmnkwsl .gt_left {
   text-align: left;
 }
 
-#stbxydikxu .gt_center {
+#dwzgmnkwsl .gt_center {
   text-align: center;
 }
 
-#stbxydikxu .gt_right {
+#dwzgmnkwsl .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#stbxydikxu .gt_font_normal {
+#dwzgmnkwsl .gt_font_normal {
   font-weight: normal;
 }
 
-#stbxydikxu .gt_font_bold {
+#dwzgmnkwsl .gt_font_bold {
   font-weight: bold;
 }
 
-#stbxydikxu .gt_font_italic {
+#dwzgmnkwsl .gt_font_italic {
   font-style: italic;
 }
 
-#stbxydikxu .gt_super {
+#dwzgmnkwsl .gt_super {
   font-size: 65%;
 }
 
-#stbxydikxu .gt_footnote_marks {
+#dwzgmnkwsl .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#stbxydikxu .gt_asterisk {
+#dwzgmnkwsl .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#stbxydikxu .gt_indent_1 {
+#dwzgmnkwsl .gt_indent_1 {
   text-indent: 5px;
 }
 
-#stbxydikxu .gt_indent_2 {
+#dwzgmnkwsl .gt_indent_2 {
   text-indent: 10px;
 }
 
-#stbxydikxu .gt_indent_3 {
+#dwzgmnkwsl .gt_indent_3 {
   text-indent: 15px;
 }
 
-#stbxydikxu .gt_indent_4 {
+#dwzgmnkwsl .gt_indent_4 {
   text-indent: 20px;
 }
 
-#stbxydikxu .gt_indent_5 {
+#dwzgmnkwsl .gt_indent_5 {
   text-indent: 25px;
 }
 
-#stbxydikxu .katex-display {
+#dwzgmnkwsl .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#stbxydikxu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#dwzgmnkwsl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>

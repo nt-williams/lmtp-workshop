@@ -217,3 +217,7 @@ lmtp_sdr(
   k = 2
 )
 ```
+
+## Competing-risks
+
+Blah blah blah

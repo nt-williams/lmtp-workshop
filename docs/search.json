@@ -89,194 +89,6 @@
     ]
   },
   {
-    "objectID": "R_mtp.html#footnotes",
-    "href": "R_mtp.html#footnotes",
-    "title": "Modified treatment policies",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nThank you to Chris Dharma, who simulated this data!↩︎",
-    "crumbs": [
-      "Instructors",
-      "4. Estimating Effects with lmtp",
-      "Modified Treatment Policies"
-    ]
-  },
-  {
-    "objectID": "R_survival.html",
-    "href": "R_survival.html",
-    "title": "Survival Analysis",
-    "section": "",
-    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]",
-    "crumbs": [
-      "Instructors",
-      "4. Estimating Effects with lmtp",
-      "Survival Analysis"
-    ]
-  },
-  {
-    "objectID": "info_estimators.html",
-    "href": "info_estimators.html",
-    "title": "Estimators",
-    "section": "",
-    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]\nTo recap, we have\nThe parameter \\(\\theta\\) is a function that could be computed if we knew the distribution of the variables (e.g., outcome regressions). Because we do not know this distribution, we need to estimate it from a sample of observed data. We now discuss how to estimate the parameter \\(\\theta\\) from a sample.",
-    "crumbs": [
-      "Instructors",
-      "3. Estimators"
-    ]
-  },
-  {
-    "objectID": "lmtp.html",
-    "href": "lmtp.html",
-    "title": "The lmtp package",
-    "section": "",
-    "text": "So far, we’ve\n\nDefined a causal estimand for general, hypothetical interventions\nIdentified that estimand from observational data\nDiscussed 4 different estimators.\n\nIt’s now time to move on to applying this new knowledge to real data examples.\n\nExisting software and lmtp\nGeneral software for estimation of causal effects in longitudinal studies is limited:\n\nThe ipw and gfoRmula packages provide routines for estimating causal effects using inverse probability weighting (IPW) and the parametric g-formula respectively. As we already discussed, however, the validity of these methods requires making unrealistic parametric assumptions.\nThe ltmle and survtmle packages implement a doubly-robust method for estimating causal effects from longitudinal data, but these packages do not support continuous valued exposures, multiple exposures, interventions that depend on the natural value of the exposure, or stochastic interventions.\n\nIn contrast, the lmtp package (software companion to the paper by Dı́az et al. (2023)) can be used to doubly robustly and flexibly estimate point-in-time and longitudinal effects of the general set of interventions that we’ve talked about today.\n\nlmtp could be your default package for conducting causal analyses in R!\n\n\n\nInstallation\nFor this workshop, lmtp has already been installed with webr. However, you can install the package locally on your machine from CRAN with\n\n\ninstall.packages(\"lmtp\")\n\nAlternatively, you can download the developmental version from GitHub with\n\n# install.packages(devtools)\ndevtools::install_github(\"nt-williams/lmtp@devel\")\n\n\n\nPreliminaries\nBefore we move on to using lmtp, here’s general information that will be applicable across all examples:\n\nData is passed to estimators through the data argument.\nData should be in wide format with one column per variable per time point under study (i.e., there should be one column for every variable in \\(O\\)). Data may be either a data.frame or tibble but not a data.table.\nColumns do not have to be in any specific order and the data may contain variables that are not used in estimation.\nThe names of treatment variables are specified with the trt argument.\nThe names of censoring variables are specified with the cens argument.\nThe names of baseline covariates are specified with the baseline argument.\nThe names of time-varying covariates are specified with the time_vary argument.\nThe trt argument accepts either a character vector or a list of character vectors.\nThe cens and baseline arguments accept character vectors.\nThe time_vary argument accepts a list of character vectors.\n\n\n\n\n\n\n\nVectors and lists are basic data structures in R. A vector can be thought of as a 1-dimensional collection of homogeneous elements. For example a character vector is a collection of values with the class character.\n\n\na_character_vector &lt;- c(\"this\", \"is\", \"a\", \"character\", \"vector\")\n\nA list is similar, except that it can hold elements of different types.\n\n\na_list &lt;- list(\n  a_character_vector = c(\"this\", \"is\", \"a\", \"character\", \"vector\"), \n  a_numeric_vector = 1:10, \n  a_list_whithin_a_list = list(1, 2, 3, 4)\n)\n\n\n\n\n\nThe trt, cens, and time_vary arguments must be sorted according to the time-ordering of the model with each index containing the name (or names) of variables for the given time.\nThe outcome variable is specified with the outcome argument.\nThe outcome_type argument specifies the type of outcome. It should be set to \"continuous\" for continuous outcomes, \"binomial\" for dichotomous outcomes, and \"survival\" for time-to–event outcomes.\nCensoring indicators should be coded using 0 and 1 where 1 indicates an observation is observed at the next time and 0 indicates loss-to-follow-up. Once an observation’s censoring status is switched to 0 it cannot change back to 1. Missing data before an observation is censored is not allowed.\nThe argument should be set to for continuous outcomes, for dichotomous outcomes, and for time-to-event outcomes.\n\n\n\nData structure examples\n\nPoint treatment\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\n\nPoint-treatment with censoring\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\n\nTime-varying treatment with censoring\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\n\nPoint-treatment with survival outcome\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\n\nTime-varying treatment with survival outcome\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\n\n\nMachine learning ensembles\nAs was already discussed, an attractive property of multiply-robust estimators is that they can incorporate flexible machine-learning algorithms for the estimation of nuisance parameters while remaining \\(\\sqrt{n}\\)-consistent.\n\nlmtp uses the super learner algorithm for estimating these nuisance parameters.\nThe super learner algorithm is an ensemble learner than incorporates a set of candidate models through a weighted convex-combination based on cross-validation. Asymptotically, this weighted combination of models, called the meta-learner, will outperform any single one of its components.\nlmtp uses the implementation of the super learner provided by the SuperLearner package.\nThe algorithms to be used in the super learner are specified with the learners_trt and learners_outcome arguments.\nThe outcome variable type should guide users on selecting the appropriate candidate learners for use with the learners_outcome argument.\nRegardless of whether an exposure is continuous, dichotomous, or categorical, the exposure mechanism is estimated using classification. Therefore only include candidate learners capable of binary classification with the learners_trt argument.\nCandidate learners that rely on cross-validation for the tuning of hyper-parameters should support grouped data if used with learners_trt. Because estimation of the treatment mechanism relies on the augmented \\(2n\\) duplicated data set, duplicated observations must be put into the same fold during sample-splitting. This is done automatically by the package.\n\n\n\n\n\n\nReferences\n\nDı́az, Iván, Nicholas Williams, Katherine L Hoffman, and Edward J Schenck. 2023. “Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies.” Journal of the American Statistical Association 118 (542): 846–57.\n\n\nVan der Laan, Mark J, Eric C Polley, and Alan E Hubbard. 2007. “Super Learner.” Statistical Applications in Genetics and Molecular Biology 6 (1).\n\n\nWilliams, Nicholas, and Iván Dı́az. 2023. “Lmtp: An R Package for Estimating the Causal Effects of Modified Treatment Policies.” Observational Studies 9 (2): 103–22.",
-    "crumbs": [
-      "Instructors",
-      "4. Estimating Effects with lmtp",
-      "The lmtp package"
-    ]
-  },
-  {
-    "objectID": "instructors.html",
-    "href": "instructors.html",
-    "title": "Instructors",
-    "section": "",
-    "text": "Nick Williams\nNick is a Senior Data Analyst in Columbia University’s Mailman School of Publich Health, Department of Epidemiology. His interests are in the development of statistical computing tools for novel causal inference methods. He’s the author and maintainer of multiple R packages.\n\n\n\nKara Rudolph\nKara is an Assistant Professor of Epidemiology at Columbia University, Mailman School of Public Health. Her research interests are in developing and applying causal inference methods to understand social and contextual influences on mental health, substance use, and violence. Her current work focuses on developing and applying methods for transportability and mediations to understand mechanisms relevant for drug use disorder prevention and treatment in various target populations.\n\n\n\nIván Díaz\nIván is an Associate Professor of Biostatistics at New York University Grossman School of Medicine. His research focuses on the development of non-parametric statistical methods for causal inference from observational and randomized studies with complex datasets, using machine learning. This includes but is not limited to mediation analysis, methods for continuous exposures, longitudinal data including survival analysis, and efficiency guarantees with covariate adjustment in randomized trials. He also works applying these methods to healthcare research, including in neurology, critical care, opioid use research, and other areas."
-  },
-  {
-    "objectID": "R_multivariate.html",
-    "href": "R_multivariate.html",
-    "title": "Multivariate exposures",
-    "section": "",
-    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]",
-    "crumbs": [
-      "Instructors",
-      "4. Estimating Effects with lmtp",
-      "Multivariate Exposures"
-    ]
-  },
-  {
-    "objectID": "macros.html",
-    "href": "macros.html",
-    "title": "Beyond the \n Average Treatment Effect",
-    "section": "",
-    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]"
-  },
-  {
-    "objectID": "R_static.html",
-    "href": "R_static.html",
-    "title": "Static Interventions",
-    "section": "",
-    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]",
-    "crumbs": [
-      "Instructors",
-      "4. Estimating Effects with lmtp",
-      "Static effects and the ATE"
-    ]
-  },
-  {
-    "objectID": "R_dtr.html",
-    "href": "R_dtr.html",
-    "title": "Dynamic treatment regimes",
-    "section": "",
-    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]\nRecall that interventions where the output of the function depends only on covariates are referred to as dynamic interventions or dynamic treatment regimes. Let’s learn how to estimate the effects of dynamic treatment regimes using lmtp.",
-    "crumbs": [
-      "Instructors",
-      "4. Estimating Effects with lmtp",
-      "Dynamic Treatment Regimes"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Estimating the causal effects of binary, categorical, continuous, and multivariate exposures in R",
-    "section": "",
-    "text": "In this workshop, we present methods to define and estimate the causal effects of categorical, continuous, and multivariate exposures. The methods are based on a generalization of the static and dynamic interventions that may be familiar to some of you. This generalization has been recently called modified treatment policies (MTPs). MTPs are hypothetical interventions where the post-intervention exposure is defined as a modification of the natural value of the exposure that can also depend on the unit’s history. This short course will introduce the lmtp R package for estimating the causal effects of these general estimand in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice and software usage.\n\n\n\nConference\nYear\n📍Location\n\n\n\n\nSER\n2024\nAustin, TX\n\n\nACIC\n2025\nDetroit, MI\n\n\nSER\n2025\nBoston, MA\n\n\nLiDS\n2025\nBrooklyn, NY\n\n\n\n\nLearning objectives\nBy the end of the workshop, participants will be able to:\n\nGeneralize static and dynamic interventions intuitively and using notation.\nEstimate the effect of a static or dynamic intervention with lmtp for point-treatment and longitudinal studies.\nEstimate the effect of an MTP on a continuous-valued exposure with lmtp for point-treatment and longitudinal studies.\nEstimate the effect of multivariate exposures with lmtp for point-treatment and longitudinal studies.\n\n\n\n\n\n\n\nThis workshop assumes the participant has a basic understanding of fundamental concepts in causal inference such as the concept of counterfactuals, and some experience with the R programming language.\n\n\n\n\n\nTentative Schedule\n\n\n\nTopic\nDuration\n\n\n\n\nIntroductions\n15 minutes\n\n\nFrom observed data to causal estimands\n15 minutes\n\n\nDefining causal effects using MTPs\n1 hour\n\n\nThe estimator landscape\n20 minutes\n\n\nBreak\n10 minutes\n\n\nSetting up the correct data structure\n15 minutes\n\n\nEstimating effects using the lmtp package\n1 hour 30 min\n\n\nQ + A\n15 minutes\n\n\n\n\n\nwebR\nThis workshop was prepared using Quarto and webR. The source code is available on GitHub. webR is a version of the R programming language compiled to be run directly in the browser. Using webR for this workshop avoids having to spend time setting up a computing environment and making sure workshop participants are using the same version of R and R packages.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
-    "crumbs": [
-      "Instructors",
-      "Welcome!"
-    ]
-  },
-  {
-    "objectID": "info_conclusion.html",
-    "href": "info_conclusion.html",
-    "title": "Concluding Thoughts",
-    "section": "",
-    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]",
-    "crumbs": [
-      "Instructors",
-      "5. Final Remarks"
-    ]
-  },
-  {
-    "objectID": "R_ipsi.html",
-    "href": "R_ipsi.html",
-    "title": "Incremental Propensity Score Interventions",
-    "section": "",
-    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]\nRecall that an incremental propensity score intervention (IPSI) is a hypothetical intervention where the conditional probability of treatment is shifted. We defined an IPSI, based on the risk ratio, that increased the likelihood of treatment as\n\\[\n\\dd_t(a_t, h_t, \\epsilon_t) = \\begin{cases}\na_t &\\text{ if } \\epsilon_t &lt; \\delta \\\\\n1 &\\text{ otherwise.}\n\\end{cases}\n\\]Assume we want to increase the likelihood of initiating treatment by 2-fold. We can implement this in R with",
-    "crumbs": [
-      "Instructors",
-      "4. Estimating Effects with lmtp",
-      "IPSI"
-    ]
-  },
-  {
-    "objectID": "info_tldr.html",
-    "href": "info_tldr.html",
-    "title": "The Causal Model and Notation",
-    "section": "",
-    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]",
-    "crumbs": [
-      "Instructors",
-      "1. Introduction"
-    ]
-  },
-  {
-    "objectID": "info_tldr.html#notation",
-    "href": "info_tldr.html#notation",
-    "title": "The Causal Model and Notation",
-    "section": "Notation",
-    "text": "Notation\nConsider a typical setting where we have measured some treatment \\(A\\), some set of pre-treatment variables \\(L\\), and an outcome \\(Y\\). We will assume that the data are generated by the following causal model (but alternative definitions can be achieved using other causal models):\n\\[\n\\begin{align}\nL &= f_L(U_L)\\\\\nA &= f_A(L, U_A)\\\\\nY &= f_Y(A, L, U_Y)\n\\end{align}\n\\]\n\nThe functions \\(f\\) are assumed fixed, but likely unknown.\n\\(U = (U_L, U_A, U_Y)\\) is a vector of exogenous, unmeasured random variables.\nThis system is referred to as a Non-parametric Structural Equation Model (NPSEM).\nWe will assume that this system of equations exists in nature and is responsible for generating our observed data.\n\n\n\n\n\n\n\nWe will often refer to \\(L\\) as confounders, \\(A\\) as the treatment or exposure, and \\(Y\\) as the outcome.\n\n\n\nTake for example the following sample of data:\n\n\n\n\n\n\n\nLet, \\(L\\) = sex, bmi, age, and smoke; \\(A\\) = trt; and \\(Y\\) = event. When we say that we assume the previous NPSEM, we are positing that:\n\nthe variable trt was generated from an unknown function of the random variables sex, bmi, age, and smoke, as well as a set of unmeasured random variables not present in our data.\nthat the variable event was generated from an unknown function of the variables that generated trt in addition to trt itself.\n\nNote that in some cases, we may know one or more of the functions \\(f\\). For example, if our data came from a randomized clinical trial for \\(A\\), then we know the function \\(f_A\\).",
-    "crumbs": [
-      "Instructors",
-      "1. Introduction"
-    ]
-  },
-  {
-    "objectID": "info_tldr.html#counterfactuals",
-    "href": "info_tldr.html#counterfactuals",
-    "title": "The Causal Model and Notation",
-    "section": "Counterfactuals",
-    "text": "Counterfactuals\nCentral to how we will define causal effects is the concept of counterfactual random variables.\n\n\n\n\n\n\nCounterfactuals are random variables that would have been observed, possibly contrary to fact, in an alternative world.\n\n\n\nFor example, consider a scenario where we are interested in the value of \\(Y\\) in a hypothetical situation where, instead of the variable \\(A\\) being equal to its observed value, \\(A\\) is set to some other value.\n\nThe value of \\(Y\\) in this hypothetical situation is a counterfactual random variable.\nlet \\(\\dd(A, L)\\) be a function that takes a treatment value \\(A\\) and a covariate profile \\(L\\) and returns a new value of treatment. We will refer to the function \\(\\dd\\) as a shift function or a general hypothetical intervention.\nDenote the value of \\(Y\\) in the hypothetical world where treatment is set to the value \\(\\dd(A,L)\\) as \\(Y^{\\dd}\\).\n\nReturning to the data example, imagine we are interested in the value of event if trt was replaced with the output of a function \\(\\dd\\) that always returns 1:\n\\[\n\\begin{align}\nL &= f_L(U_L)\\\\\nA^{\\dd} &= \\dd(A, L) = 1 \\\\\nY^{\\dd} &= f_Y(1, L, U_Y)\n\\end{align}\n\\]\nHere we introduce some new notation \\(A^{\\dd}\\) to refer to the post-intervention exposure. If we had the ability to collect data from this alternative NPSEM, the data may instead look like this:\n\n\n\n\n\n\n\nUnfortunately, we are never able to collect data from this alternative world. This is called the fundamental problem of causal inference.\nThe previous NPSEM is the simplest causal model we will assume in this workshop. However, real data is often much more complex and may be characterized by:\n\ntime-varying variables\nloss-to-follow-up\n\nAs such, we need to modify and introudce some additional notation:\n\n\n\n\n\n\n\nSymbol\nDefinition\n\n\n\n\n\\(i\\)\nThe index (i.e. a row in a dataset) of an observation from a data set with \\(n\\) total units (i.e., the total number of rows)\n\n\n\\(t\\)\nThe index of time for a total number of time points \\(\\tau\\)\n\n\n\\(L_t\\)\nConfounders at time \\(t\\)\n\n\n\\(A_t\\)\nA vector of intervention variables (i..e, treatment or exposure) at time \\(t\\)\n\n\n\\(Y\\)\nAn outcome variable observed at the end of the study, that is at time \\(\\tau + 1\\). Earlier measures of the outcome can be included in \\(L_t\\).\n\n\n\\(C_t\\)\nA indicator variable that a unit is observed (not censored) at time \\(t+1\\)\n\n\n\\(O_1, ..., O_n\\)\nA sample of \\(n\\) i.i.d observations with \\(O = (L_1, A_1, C_1, L_2, A_2, C_2, ..., L_\\tau, A_\\tau, C_\\tau, Y)\\)\n\n\n\\(\\bar{X}_t = (X_1, ..., X_t)\\)\nThe history of a variable up until time \\(t\\)\n\n\n\\(\\underline{X}_t = (X_t, ..., X_\\tau)\\)\nThe future of a variable, including time \\(t\\)\n\n\n\\(H_t = (\\bar{A}_{t-1}, \\bar{L}_t)\\)\nThe history of all variables up until just before \\(A_t\\)\n\n\n\\(\\epsilon_t\\)\nA randomizer\n\n\n\\(\\dd(a_t, h_t, \\epsilon_t)\\)\nA function that maps \\(A_t\\), \\(H_t\\), and \\(\\epsilon_t\\) to a new value of treatment \\(A^{\\dd}_t\\)",
-    "crumbs": [
-      "Instructors",
-      "1. Introduction"
-    ]
-  },
-  {
-    "objectID": "R_dtr.html#problem-1",
-    "href": "R_dtr.html#problem-1",
-    "title": "Dynamic treatment regimes",
-    "section": "Problem 1",
-    "text": "Problem 1\nWrite a shift function that assigns meal replacement to all observations at time 1, but only meal replacement at time 2 to those observations whose 4-month BMI is greater than 30.\n\\[\n\\dd_t(a_t, h_t, \\epsilon_t) = \\begin{cases}\n\\text{Meal replacement} &\\text{ if } t = 1 \\\\\n\\text{Meal replacement} &\\text{ if } t = 2 \\text{ and } \\text{4-month BMI} &gt; 30 \\\\\n\\text{Calorie deficit} &\\text{ otherwise.}\n\\end{cases}\n\\]\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\n✅ Solution\n\n\nd_dtr &lt;- function(data, trt) {\n  if (trt == \"A1\") return(rep(\"MR\", nrow(data)))\n  \n  ifelse(data$month4BMI &gt; 30, \"MR\", \"CD\")\n}\n\n\nLet’s estimate the effect of the dynamic treatment regime on the 12-month BMI using lmtp with the SDR estimator.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
-    "crumbs": [
-      "Instructors",
-      "4. Estimating Effects with lmtp",
-      "Dynamic Treatment Regimes"
-    ]
-  },
-  {
-    "objectID": "R_dtr.html#problem-2",
-    "href": "R_dtr.html#problem-2",
-    "title": "Dynamic treatment regimes",
-    "section": "Problem 2",
-    "text": "Problem 2\nSuppose we are interested in comparing the dynamic treatment regime to a static treatment regime where all patients receive meal replacement at both time points. Using the SDR estimator, estimate the effect of this static intervention.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\n✅ Solution\n\n\nfit_MR &lt;- lmtp_sdr(\n  data = bmi, \n  trt = c(\"A1\", \"A2\"), \n  outcome = \"month12BMI\", \n  baseline = c(\"gender\", \"race\", \"parentBMI\"), \n  time_vary = list(\"baselineBMI\", \"month4BMI\"),\n  shift = \\(data, trt) rep(\"MR\", nrow(data)), \n  outcome_type = \"continuous\",\n  folds = 1,\n  learners_trt = \"SL.glm\", \n  learners_outcome = c(\"SL.mean\", \"SL.glm\", \"SL.gam\")\n)\n\n\nLet’s also estimate the effect of an intervention where all patients receive a calorie deficit diet at both time points.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\nFinally, let’s compare the dynamic treatment regime and the always receive meal replacement intervention to the always receive a calorie deficit intervention.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
-    "crumbs": [
-      "Instructors",
-      "4. Estimating Effects with lmtp",
-      "Dynamic Treatment Regimes"
-    ]
-  },
-  {
     "objectID": "R_mtp.html#problem-1",
     "href": "R_mtp.html#problem-1",
     "title": "Modified treatment policies",
@@ -301,15 +113,27 @@
     ]
   },
   {
-    "objectID": "R_ipsi.html#problem-1",
-    "href": "R_ipsi.html#problem-1",
-    "title": "Incremental Propensity Score Interventions",
-    "section": "Problem 1",
-    "text": "Problem 1\nWhat if we wanted to decrease the likelihood of initiating treatment by 2-fold? Implement this shift function in R. As a reminder\n\\[\n\\dd_t(a_t, h_t, \\epsilon_t) = \\begin{cases}\na_t &\\text{ if } \\epsilon_t &lt; \\delta \\\\\n0 &\\text{ otherwise.}\n\\end{cases}\n\\]\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\n✅ Solution\n\n\ndelta &lt;- 0.5\nd_ipsi_down &lt;- function(data, trt) {\n  eps &lt;- runif(nrow(data), 0, 1)\n  ifelse(eps &lt; delta, data[[trt]], 0)\n}\n\n\n\n\n\n\n\n\nlmtp already implements d_ipsi_up and d_ipsi_down as a single shift function factory, ipsi()!\n\nRisk ratio IPSIs that increase the likelihood of treatment should be specified with a value greater than 1 (i.e. a risk ratio IPSI that increases the likelihood of treatment 2-fold is equivalent to ipsi(2)).\nIPSIs that decrease the likelihood of treatment should be specified with a value less than 1 (i.e. a risk ratio IPSI that decreases the likelihood of treatment 2-fold is equivalent to ipsi(0.5))\n\n\n\n\nLet’s apply the shift function that increases the likelihood of initiating treatment by 2-fold to covid dataset.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\nEstimating the effect of incremental propensity scores based on the risk ratio are easy to do with lmtp. Just use the ipsi() function as the input for the shift argument!",
+    "objectID": "R_mtp.html#footnotes",
+    "href": "R_mtp.html#footnotes",
+    "title": "Modified treatment policies",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nThank you to Chris Dharma, who simulated this data!↩︎",
     "crumbs": [
       "Instructors",
       "4. Estimating Effects with lmtp",
-      "IPSI"
+      "Modified Treatment Policies"
+    ]
+  },
+  {
+    "objectID": "R_survival.html",
+    "href": "R_survival.html",
+    "title": "Survival Analysis",
+    "section": "",
+    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "Survival Analysis"
     ]
   },
   {
@@ -346,6 +170,148 @@
       "Instructors",
       "4. Estimating Effects with lmtp",
       "Survival Analysis"
+    ]
+  },
+  {
+    "objectID": "R_survival.html#competing-risks",
+    "href": "R_survival.html#competing-risks",
+    "title": "Survival Analysis",
+    "section": "Competing-risks",
+    "text": "Competing-risks\nBlah blah blah",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "Survival Analysis"
+    ]
+  },
+  {
+    "objectID": "info_estimators.html",
+    "href": "info_estimators.html",
+    "title": "Estimators",
+    "section": "",
+    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]\nTo recap, we have\nThe parameter \\(\\theta\\) is a function that could be computed if we knew the distribution of the variables (e.g., outcome regressions). Because we do not know this distribution, we need to estimate it from a sample of observed data. We now discuss how to estimate the parameter \\(\\theta\\) from a sample.",
+    "crumbs": [
+      "Instructors",
+      "3. Estimators"
+    ]
+  },
+  {
+    "objectID": "info_estimators.html#sequential-regression-estimator",
+    "href": "info_estimators.html#sequential-regression-estimator",
+    "title": "Estimators",
+    "section": "Sequential Regression Estimator",
+    "text": "Sequential Regression Estimator\nOne possible estimator is simply a plug-in estimator of the identification result. This estimator is often referred to as G-computation, and it proceeds by simply estimating the regressions described in the identification result. Another way to describe this algorithm is as follows:\n\n\n\nSet \\(\\m_{i,\\tau +1} = Y_i\\).\nFor \\(t = \\tau, ..., 1\\):\n\nUsing a pre-specified parametric model, regress \\(\\m_{i,t+1}\\) on \\(\\{A_{i, t}, H_{i,t}\\}\\).\nGenerate predictions from this model with \\(A_{i,t}\\) changed to \\(A^{\\dd}_{i,t}\\). Set \\(\\m_{i, t}\\) to be these predicted values.\nRepeat (iterate) the above two steps until setting \\(\\m_{i, 1}\\) to the predicted values.\n\nTake the final estimate as \\(\\hat{\\theta} = \\frac{1}{n}\\sum_{i=1}^n \\hat\\m_{i, 1}\\).\nCompute standard errors using a bootstrap of steps 1 and 2.\n\n\n\nA substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome and it is simple to estimate. That said, its cons are major:\n\nIn studies with multiple time points, the adjustment set can become large very quickly. For instance, consider a study with 3 covariates measured at every time point, and 10 time points. Even though we have only 3 covariates at each time point, the number of coviariates in the regression of \\(Y\\) is 33.\nImagine trying to correctly specify (e.g., include the approproate interactions) a parametric model (e.g., logistic, Cox) with 33 variables.\n\n\n\n\n\n\n\n\nPros ✅\nCons ❌\n\n\n\n\nSimple to implement\nRequires correct estimation of all regressions\n\n\nSubstitution estimator\nRequires pre-specified parametric models",
+    "crumbs": [
+      "Instructors",
+      "3. Estimators"
+    ]
+  },
+  {
+    "objectID": "info_estimators.html#sec-density-ratio-estimation",
+    "href": "info_estimators.html#sec-density-ratio-estimation",
+    "title": "Estimators",
+    "section": "Density-ratio estimation",
+    "text": "Density-ratio estimation\n\n\n\n\n\n\nThe next three estimators all rely on estimating the density ratio\n\\[\nr_t(a_t, h_t) = \\frac{\\g_t^\\dd(a_t \\mid h_t)}{\\g_t(a_t \\mid h_t)}.\n\\]\nRecall that \\(\\g_t^\\dd(a_t \\mid h_t)\\) denotes the density of treatment post-intervention and that \\(\\g_t(a_t \\mid h_t)\\) denotes the density of the observed treatment under no intervention.\nWe will often refer to this ratio as the intervention mechanism throughout the workshop. Estimation of \\(r_t(a_t, h_t)\\) is fully automated in lmtp and hidden from the user. A comprehensive understanding of this process isn’t necessary to use lmtp!\n\n\n\n\nWe can directly estimate this density ratio with a classification trick.\nCan compute the density ratio (which we can see is also the odds) in a classification problem. We use an augmented dataset with \\(2n\\) observations. In this new dataset, the outcome is a new variable that we make, \\(\\Lambda\\), (defined below) and the predictors are the variables \\(A_t\\) and \\(H_t\\). In this new dataset, the data structure at time \\(t\\) is redefined as\n\n\\[\n(H_{\\lambda, i, t}, A_{\\lambda, i, t}, \\Lambda_{\\lambda, i} : \\lambda = 0, 1; i = 1, ..., n)\n\\]\n\n\\(\\Lambda_{\\lambda, i} = \\lambda_i\\) indexes duplicate values. So if \\(\\Lambda_i =1\\) if observation \\(i\\) is a duplicated value and \\(\\Lambda_i =0\\) otherwise.\n\nFor all duplicated observations \\(\\lambda\\in\\{0,1\\}\\) with the same \\(i\\), \\(H_{\\lambda, i, t}\\) is the same\nFor all the non-duplicated observations, \\(\\lambda = 0\\), \\(A_{\\lambda=0, i, t}\\) equals the observed exposure values \\(A_{i, t}\\)\nFor all the duplicated observations, \\(\\lambda=1\\), \\(A_{\\lambda=1, i, t}\\) equals the exposure values under the intervention \\(\\dd\\), \\(A^{\\dd}_{i,t}\\)\n\n\n\n\n\nExample of augmenting data for density ratio estimation.\n\n\n\nWe then estimate the conditional probability that \\(\\Lambda=1\\) in this dataset, and divide it by the corresponding estimate of the conditional probability that \\(\\Lambda=0\\). Specifically, denoting \\(p^\\lambda\\) to be the distribution of the data in the augmented dataset, we have:\n\n\\[\nr_t(a_t, h_t) = \\frac{p^\\lambda(a_t, h_t \\mid \\Lambda =\n    1)}{p^\\lambda(a_t, h_t \\mid \\Lambda =\n    0)}=\\frac{p^\\lambda(\\Lambda = 1\\mid A_t=a_t,\n    H_t=h_t)}{p^\\lambda(\\Lambda = 0\\mid A_t=a_t, H_t=h_t)}\n\\]\n\nExample\nConsider the following example where we simulate 500 observations from this data-generating mechanism:\n\\[\\begin{align}\nL_1 &\\sim \\text{Normal}(0, 1) \\\\  \nA_1 &\\sim \\text{Bernoulli}(\\text{logit}^{-1}(-1 + 1.5L_1))\\\\  \nL_2 &\\sim \\text{Normal}(0, 1) \\\\\nA_2 &\\sim \\text{Bernoulli}(\\text{logit}^{-1}(-1 + 1.5L_2 + 2A_1))\\\\\nY &\\sim \\text{Normal}(-1 - 1.2L_1 + 2.4A_1 - 2L_2 + 1.2A_2)\n\\end{align}\\] The data has been loaded into R in the background as foo. We will use the density ratio classification trick to estimate the density ratio \\(r_t(a_t, h_t)\\) under the static intervention \\(d(a_t, h_t) = 1\\). First, we create the augmented data. We then regress the \\(\\Lambda\\) on \\(A\\) and \\(W\\) and estimate the density ratio as the predicted odds.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
+    "crumbs": [
+      "Instructors",
+      "3. Estimators"
+    ]
+  },
+  {
+    "objectID": "info_estimators.html#inverse-probability-weighting",
+    "href": "info_estimators.html#inverse-probability-weighting",
+    "title": "Estimators",
+    "section": "Inverse Probability Weighting",
+    "text": "Inverse Probability Weighting\nWe call this estimator IPW due to its similarity with the inverse-probability weighted estimator for binary treatments, but it would be more accurately referred to as simply reweighted estimator. It is based on the following alternative identification formula:\n\\[\n\\theta = \\E \\bigg[ \\bigg\\{\\prod_{t=1}^\\tau r_t(a_t, h_t) \\bigg\\} Y \\bigg]\n\\]\n\nThe algorithm is as follows:\n\n\n\nConstruct estimates of \\(r_{i,t}(a_t, h_t)\\) using the density ratio classification trick and a pre-specified parametric model.\nDefine the weights \\(w_{i} = \\prod_{t=1}^\\tau r_{i,t}(a_t, h_t)\\).\nTake the final estimate as \\(\\hat{\\theta} = \\frac{1}{n}\\sum_{i=1}^n \\hat{w}_{i}\\times y_i\\).\nCompute standard errors using a bootstrap of steps 1-3.\n\n\n\n\nExample\nLet’s apply the IPW estimator using the estimated density ratios we calculated in the previous example. We first compute the weights as the product of the density ratios.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\nOur estimate is then the sample average of the estimated weights times the observed outcomes.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\nSimilarly to the sequential regression estimator, the IPW is simple to implement. However, it suffers from the same drawbacks.\n\n\n\n\n\n\n\n\nPros ✅\nCons ❌\n\n\n\n\nSimple to implement\nRequires correct estimation of all regressions\n\n\n\nRequires pre-specified parametric models",
+    "crumbs": [
+      "Instructors",
+      "3. Estimators"
+    ]
+  },
+  {
+    "objectID": "info_estimators.html#doubly-robust-estimators",
+    "href": "info_estimators.html#doubly-robust-estimators",
+    "title": "Estimators",
+    "section": "Doubly Robust Estimators",
+    "text": "Doubly Robust Estimators\nG-computation and IPW estimators require the estimation of nuisance parameters with correctly specified parametric models. We will now turn our attention to two non-parametric estimators:\n\ntargeted minimum-loss based estimator (TMLE), and\na sequentially doubly-robust estimator (SDR).\n\nWait, what does it mean for an estimator to be doubly robust?\n\nFor the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as either the outcome model is consistently estimated or the treatment (and censoring) model(s) are consistently estimated. For example:\n\n\n\n\n\nTime\n1\n\n\nTreatment\nCorrect\n\n\nOutcome\nWrong\n\n\n\n\n\n\n\nFor time-varying setting, an estimator is doubly robust if, for some time \\(s\\), all outcome regressions for \\(t &gt;s\\) are consistently estimated and all intervention mechanisms (treatment + censoring) for \\(t \\leq s\\) are consistently estimated. Consider for example \\(5\\) time points:\n\n\n\n\nTime\n1\n2\n3\n4\n5\n\n\nTreatment\nCorrect\nCorrect\nWrong\nWrong\nWrong\n\n\nOutcome\nWrong\nWrong\nCorrect\nCorrect\nCorrect\n\n\n\n\n\n\nSequential double robustness (often also referred to as \\(2^\\tau\\)-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated. For example:\n\n\n\n\nTime\n1\n2\n3\n4\n5\n\n\nTreatment\nCorrect\nWrong\nCorrect\nWrong\nCorrect\n\n\nOutcome\nWrong\nCorrect\nWrong\nCorrect\nWrong\n\n\n\n\n\n\n\n\n\nBe careful not to confuse doubly robust consistency with rate double robustness. Doubly robust consistency refers to the properties we just described. Rate double robustness refers to the property where the error of an estimator is the product of nuisance functions.\n\n\n\n\nEfficient Influence Function\nKey to constructing the TMLE and SDR is the efficient influence function (EIF).\n\n\n\n\n\n\n\nThe EIF characterizes the asymptotic behavior of all regular and efficient estimators.\nThe EIF characterizes the first-order bias of pathwise differentiable estimands.\n\n\n\n\nBefore we introduce the EIF, it’s necessary to make some additional assumptions on \\(A\\) and \\(\\dd\\).\n\nThe treatment \\(A\\) is discrete, or\nIf \\(A\\) is continuous, the function \\(\\dd\\) is piecewise smooth invertible\nThe function \\(\\dd\\) does not depend on the observed distribution \\(\\P\\) (this means that we cannot apply these methods to odds ratio IPSI, although we can apply them to risk ratio IPSI)\n\nThese assumptions ensure that the efficient influence function of \\(\\theta\\) for interventions \\(\\dd\\) have a structure similar to the influence function for the effect of dynamic regimes. This allows for multiply robust estimation, which is not generally possible for interventions \\(\\dd\\) that depend on \\(\\P\\).\nDefine the function\n\\[\n\\phi_t: O \\mapsto \\sum_{s=t}^\\tau \\bigg( \\prod_{k=t}^s r_k(a_k, h_k)\\bigg) \\big\\{\\m_{s+1}(a_{s+1}^\\dd, h_{s+1}) - \\m_s(a_s, h_s) \\big\\} + \\m_t(a_t^\\dd, h_t).\n\\]\nThe efficient influence function for estimating \\(\\theta = \\E[\\m_1(A^\\dd, L_1)]\\) in the non-parametric model is given by \\(\\phi_1(O) - \\theta\\).\nIn the case of single time-point, the influence function simplifies to\n\\[\nr(a, w)\\{Y - \\m(a,w)\\} + \\m(a^{\\dd},w) - \\theta.\n\\]",
+    "crumbs": [
+      "Instructors",
+      "3. Estimators"
+    ]
+  },
+  {
+    "objectID": "info_estimators.html#targeted-minimum-loss-based-estimation",
+    "href": "info_estimators.html#targeted-minimum-loss-based-estimation",
+    "title": "Estimators",
+    "section": "Targeted Minimum-Loss Based Estimation",
+    "text": "Targeted Minimum-Loss Based Estimation\n\n\n\n\n\n\n\nPros ✅\nCons ❌\n\n\n\n\nSubstitution estimator\nnot sequentially doubly-robust\n\n\ndoubly-robust\n\n\n\ncan use machine learning\n\n\n\n\n\n\n\nConstruct estimates of \\(r_{i,t}(a_t, h_t)\\) using the density ratio classification trick and your favorite regression method.\nFor \\(t = 1, ..., \\tau\\), compute the weights: \\(w_{i,t} = \\prod_{k=1}^t r_{i,k}(a_{i,k}, h_{i,k})\\)\nSet \\(\\tilde{\\m}_{i,\\tau +1}(A^\\dd_{i,t+1}, H_{i,t+1}) = Y_i\\).\nFor \\(t = \\tau, ..., 1\\):\n\nRegress \\(\\tilde{\\m}_{i,t+1}(A^\\dd_{i,t+1}, H_{i,t+1})\\) on \\(\\{A_{i, t}, H_{i,t}\\}\\).\n\nUsing this regression, generate predictions from \\(\\{A_{i, t}, H_{i,t}\\}\\) and \\(\\{A^\\dd_{i, t}, H_{i,t}\\}\\).\nDenote the predictions as \\(\\tilde{\\m}_t(A_{i,t}, H_{i,t})\\) and \\(\\tilde{\\m}_t(A^\\dd_{i,t}, H_{i,t})\\) respectively.\n\nFit the generalized linear tilting model:\n\\(\\text{link }\\tilde{\\m}^\\epsilon_t(A_{i,t}, H_{i,t}) = \\epsilon + \\text{link }\\tilde{\\m}_{i,t}(A_{i,t}, H_{i,t})\\)\nwith weights \\(w_{i,t}\\).\n\n\\(\\text{link }\\tilde{\\m}_{i,t}(A_{i,t}, H_{i,t})\\) is an offset variable (i.e., a variable with known parameter value equal to one).\nThe parameter \\(\\epsilon\\) may be estimated by running a generalized linear model of \\(\\tilde{\\m}_{i,t+1}(A^\\dd_{i,t+1}, H_{i,t+1})\\) with only an intercept term, an offset term equal to \\(\\text{link }\\tilde{\\m}_{i,t}(A_{i,t}, H_{i,t})\\), and weights \\(w_{i,t}\\).\n\nLet \\(\\hat\\epsilon\\) be the maximum likelihood estimate, and update the estimates as:\n\\(\\text{link }\\tilde{\\m}^\\hat\\epsilon_t(A^\\dd_{i,t}, H_{i,t}) = \\hat\\epsilon + \\text{link }\\tilde{\\m}_t(A^\\dd_{i,t}, H_{i,t})\\)\n\\(\\text{link }\\tilde{\\m}^\\hat\\epsilon_t(A_{i,t}, H_{i,t}) = \\hat\\epsilon + \\text{link }\\tilde{\\m}_t(A_{i,t}, H_{i,t})\\)\nUpdate \\(\\tilde{\\m}_{i,t} = \\tilde{\\m}^\\hat\\epsilon_{i,t}\\), \\(t = t-1\\), and iterate.\n\nThe final estimate is defined as \\(\\hat\\theta = \\frac{1}{n}\\sum_{i=1}^n\\tilde{m}_{i, 1}(A^\\dd_{i, 1}, L_{i, 1})\\).",
+    "crumbs": [
+      "Instructors",
+      "3. Estimators"
+    ]
+  },
+  {
+    "objectID": "info_estimators.html#sequentially-doubly-robust-estimator",
+    "href": "info_estimators.html#sequentially-doubly-robust-estimator",
+    "title": "Estimators",
+    "section": "Sequentially Doubly Robust Estimator",
+    "text": "Sequentially Doubly Robust Estimator\n\n\n\n\n\n\n\nPros ✅\nCons ❌\n\n\n\n\ndoubly-robust\nnot a substitution estimator\n\n\nsequentially doubly-robust\n\n\n\ncan use machine learning\n\n\n\n\n\n\n\nConstruct estimates of \\(r_{i,t}(a_t, h_t)\\) using the density ratio classification trick and your favorite regression method.\nInitialize \\(\\phi_{\\tau +1}(O_i) = Y_i\\).\nFor \\(t = \\tau, ..., 1\\):\n\nCompute the pseudo-outcome \\(\\check{Y}_{i,t+1} = \\phi_{t+1}(O_i)\\).\nRegress \\(\\check{Y}_{i,t+1}\\) on \\(\\{A_{i, t}, H_{i,t}\\}\\).\nLet \\(\\check\\m_{i,t}\\) denote the predicted values. Update \\(\\m_{i,t} = \\check\\m_{i,t}\\) and iterate.\n\nThe final estimate is defined as \\(\\hat\\theta = \\frac{1}{n}\\sum_{i=1}^n\\phi_1(O_i).\\)",
+    "crumbs": [
+      "Instructors",
+      "3. Estimators"
+    ]
+  },
+  {
+    "objectID": "info_estimators.html#choosing-an-estimator",
+    "href": "info_estimators.html#choosing-an-estimator",
+    "title": "Estimators",
+    "section": "Choosing an Estimator",
+    "text": "Choosing an Estimator\n\nIn general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference 🙃.\nThe TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining \\(\\sqrt{n}\\)-consistent under reasonable assumptions.\n\n\nTable 1. Summary of estimator properties.\n\n\n\n\n\n\n\n\n\n\nIPW\nG-comp.\nTMLE\nSDR\n\n\n\n\nUses outcome regression\n\n⭐\n⭐\n⭐\n\n\nUses the propensity score\n⭐\n\n⭐\n⭐\n\n\nValid inference with machine-learning\n\n\n⭐\n⭐\n\n\nSubstitution estimator\n\n⭐\n⭐\n\n\n\nDoubly robust\n\n\n⭐\n⭐\n\n\nSequentially doubly robust\n\n\n\n⭐\n\n\n\n\n\n\n\n\n\nQuestion: Why can’t we use machine learning with the G-computation and IPW estimators?\n\n\n✅ Answer\n\nThe G-computation and IPW estimators require models that converge to the truth at a \\(\\sqrt{n}\\)-rate. Machine learning algorithms are not guaranteed to do this.\n\n\n\n\nWhile the SDR estimator may be more robust to model misspecification, the TMLE does have the advantage of being a substitution estimator. Because of this, estimates from the TMLE are guaranteed to stay within the valid range of the outcome. Taken together, this leads to the following recommendations for choosing between the TMLE and SDR:\n\n\n\n\n\n\n\nIf treatment is not time-varying, use the TMLE.\nIf treatment is time-varying and the parameter \\(\\theta\\) has clear bounds, such as probabilities, beware of the SDR estimator. Use TMLE preferably.",
+    "crumbs": [
+      "Instructors",
+      "3. Estimators"
+    ]
+  },
+  {
+    "objectID": "info_estimators.html#cross-fitting",
+    "href": "info_estimators.html#cross-fitting",
+    "title": "Estimators",
+    "section": "Cross-fitting",
+    "text": "Cross-fitting\nWhen estimating nuisance parameters with data adaptive algorithms, you should perform a process similar to cross-validation called cross-fitting. Cross-fitting helps ensure:\n\nthat standard errors will be correct, and\ncan help reduce estimator bias and improve coverage of the confidence intervals.\n\nCross-fitting is fully automated in lmtp, but for more information we recommend reviewing Chernozhukov et al. (2018), Dı́az (2020), and Zivich and Breskin (2021).",
+    "crumbs": [
+      "Instructors",
+      "3. Estimators"
+    ]
+  },
+  {
+    "objectID": "lmtp.html",
+    "href": "lmtp.html",
+    "title": "The lmtp package",
+    "section": "",
+    "text": "So far, we’ve\n\nDefined a causal estimand for general, hypothetical interventions\nIdentified that estimand from observational data\nDiscussed 4 different estimators.\n\nIt’s now time to move on to applying this new knowledge to real data examples.\n\nExisting software and lmtp\nGeneral software for estimation of causal effects in longitudinal studies is limited:\n\nThe ipw and gfoRmula packages provide routines for estimating causal effects using inverse probability weighting (IPW) and the parametric g-formula respectively. As we already discussed, however, the validity of these methods requires making unrealistic parametric assumptions.\nThe ltmle and survtmle packages implement a doubly-robust method for estimating causal effects from longitudinal data, but these packages do not support continuous valued exposures, multiple exposures, interventions that depend on the natural value of the exposure, or stochastic interventions.\n\nIn contrast, the lmtp package (software companion to the paper by Dı́az et al. (2023)) can be used to doubly robustly and flexibly estimate point-in-time and longitudinal effects of the general set of interventions that we’ve talked about today.\n\nlmtp could be your default package for conducting causal analyses in R!\n\n\n\nInstallation\nFor this workshop, lmtp has already been installed with webr. However, you can install the package locally on your machine from CRAN with\n\n\ninstall.packages(\"lmtp\")\n\nAlternatively, you can download the developmental version from GitHub with\n\n# install.packages(devtools)\ndevtools::install_github(\"nt-williams/lmtp@devel\")\n\n\n\nPreliminaries\nBefore we move on to using lmtp, here’s general information that will be applicable across all examples:\n\nData is passed to estimators through the data argument.\nData should be in wide format with one column per variable per time point under study (i.e., there should be one column for every variable in \\(O\\)). Data may be either a data.frame or tibble but not a data.table.\nColumns do not have to be in any specific order and the data may contain variables that are not used in estimation.\nThe names of treatment variables are specified with the trt argument.\nThe names of censoring variables are specified with the cens argument.\nThe names of baseline covariates are specified with the baseline argument.\nThe names of time-varying covariates are specified with the time_vary argument.\nThe trt argument accepts either a character vector or a list of character vectors.\nThe cens and baseline arguments accept character vectors.\nThe time_vary argument accepts a list of character vectors.\n\n\n\n\n\n\n\nVectors and lists are basic data structures in R. A vector can be thought of as a 1-dimensional collection of homogeneous elements. For example a character vector is a collection of values with the class character.\n\n\na_character_vector &lt;- c(\"this\", \"is\", \"a\", \"character\", \"vector\")\n\nA list is similar, except that it can hold elements of different types.\n\n\na_list &lt;- list(\n  a_character_vector = c(\"this\", \"is\", \"a\", \"character\", \"vector\"), \n  a_numeric_vector = 1:10, \n  a_list_whithin_a_list = list(1, 2, 3, 4)\n)\n\n\n\n\n\nThe trt, cens, and time_vary arguments must be sorted according to the time-ordering of the model with each index containing the name (or names) of variables for the given time.\nThe outcome variable is specified with the outcome argument.\nThe outcome_type argument specifies the type of outcome. It should be set to \"continuous\" for continuous outcomes, \"binomial\" for dichotomous outcomes, and \"survival\" for time-to–event outcomes.\nCensoring indicators should be coded using 0 and 1 where 1 indicates an observation is observed at the next time and 0 indicates loss-to-follow-up. Once an observation’s censoring status is switched to 0 it cannot change back to 1. Missing data before an observation is censored is not allowed.\nThe argument should be set to for continuous outcomes, for dichotomous outcomes, and for time-to-event outcomes.\n\n\n\nData structure examples\n\nPoint treatment\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\n\nPoint-treatment with censoring\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\n\nTime-varying treatment with censoring\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\n\nPoint-treatment with survival outcome\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\n\nTime-varying treatment with survival outcome\n\n\n\nAdapted from Hoffman et al., 2022.\n\n\n\n\n\nMachine learning ensembles\nAs was already discussed, an attractive property of multiply-robust estimators is that they can incorporate flexible machine-learning algorithms for the estimation of nuisance parameters while remaining \\(\\sqrt{n}\\)-consistent.\n\nlmtp uses the super learner algorithm for estimating these nuisance parameters.\nThe super learner algorithm is an ensemble learner than incorporates a set of candidate models through a weighted convex-combination based on cross-validation. Asymptotically, this weighted combination of models, called the meta-learner, will outperform any single one of its components.\nlmtp uses the implementation of the super learner provided by the SuperLearner package.\nThe algorithms to be used in the super learner are specified with the learners_trt and learners_outcome arguments.\nThe outcome variable type should guide users on selecting the appropriate candidate learners for use with the learners_outcome argument.\nRegardless of whether an exposure is continuous, dichotomous, or categorical, the exposure mechanism is estimated using classification. Therefore only include candidate learners capable of binary classification with the learners_trt argument.\nCandidate learners that rely on cross-validation for the tuning of hyper-parameters should support grouped data if used with learners_trt. Because estimation of the treatment mechanism relies on the augmented \\(2n\\) duplicated data set, duplicated observations must be put into the same fold during sample-splitting. This is done automatically by the package.\n\n\n\n\n\n\nReferences\n\nDı́az, Iván, Nicholas Williams, Katherine L Hoffman, and Edward J Schenck. 2023. “Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies.” Journal of the American Statistical Association 118 (542): 846–57.\n\n\nVan der Laan, Mark J, Eric C Polley, and Alan E Hubbard. 2007. “Super Learner.” Statistical Applications in Genetics and Molecular Biology 6 (1).\n\n\nWilliams, Nicholas, and Iván Dı́az. 2023. “Lmtp: An R Package for Estimating the Causal Effects of Modified Treatment Policies.” Observational Studies 9 (2): 103–22.",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "The lmtp package"
+    ]
+  },
+  {
+    "objectID": "instructors.html",
+    "href": "instructors.html",
+    "title": "Instructors",
+    "section": "",
+    "text": "Nick Williams\nNick is a Senior Data Analyst in Columbia University’s Mailman School of Publich Health, Department of Epidemiology. His interests are in the development of statistical computing tools for novel causal inference methods. He’s the author and maintainer of multiple R packages.\n\n\n\nKara Rudolph\nKara is an Assistant Professor of Epidemiology at Columbia University, Mailman School of Public Health. Her research interests are in developing and applying causal inference methods to understand social and contextual influences on mental health, substance use, and violence. Her current work focuses on developing and applying methods for transportability and mediations to understand mechanisms relevant for drug use disorder prevention and treatment in various target populations.\n\n\n\nIván Díaz\nIván is an Associate Professor of Biostatistics at New York University Grossman School of Medicine. His research focuses on the development of non-parametric statistical methods for causal inference from observational and randomized studies with complex datasets, using machine learning. This includes but is not limited to mediation analysis, methods for continuous exposures, longitudinal data including survival analysis, and efficiency guarantees with covariate adjustment in randomized trials. He also works applying these methods to healthcare research, including in neurology, critical care, opioid use research, and other areas."
+  },
+  {
+    "objectID": "R_multivariate.html",
+    "href": "R_multivariate.html",
+    "title": "Multivariate exposures",
+    "section": "",
+    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "Multivariate Exposures"
     ]
   },
   {
@@ -397,113 +363,22 @@
     ]
   },
   {
-    "objectID": "info_conclusion.html#thank-you",
-    "href": "info_conclusion.html#thank-you",
-    "title": "Concluding Thoughts",
-    "section": "Thank you!",
-    "text": "Thank you!\nThank you for attending this workshop! We encourage you to reach out to us with any questions or feedback.",
-    "crumbs": [
-      "Instructors",
-      "5. Final Remarks"
-    ]
+    "objectID": "macros.html",
+    "href": "macros.html",
+    "title": "Beyond the \n Average Treatment Effect",
+    "section": "",
+    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]"
   },
   {
-    "objectID": "info_conclusion.html#including-in-a-manuscript",
-    "href": "info_conclusion.html#including-in-a-manuscript",
-    "title": "Concluding Thoughts",
-    "section": "Including in a manuscript",
-    "text": "Including in a manuscript\nIf you decide to use lmtp in your research, here’s a summary that can be included for explaining the methodology. It is based on the explanation in Rudolph et al. (2024):\n\nWe estimated the effect of [exposure] on [outcome], adjusting for covariates. This effect can be written: \\(\\E(Y^{\\dd, C=1} - Y^{C=1}),\\) [change the preceding to correspond to your effect] where \\(\\E(Y^{C=1})\\) [change as applicable] denotes the expected value of the counterfactual outcome had the exposure not been intervened on (i.e., remained as observed) and had no one been censored, and where \\(\\E(Y^{\\dd, C=1})\\) [change as applicable] denotes the expected value of the counterfactual outcome had the exposure been intervened on as dictated by the function \\(\\dd(A)\\) and had no one been censored. We defined \\(\\dd(A)\\) as a hypothetical intervention that increased the value of the exposure by 20% (i.e., multiplied each person’s value by 1.2). [change the preceding to correspond to your intervention, \\(\\dd\\)]\nThe above statistical estimand is a type of ``modified treatment policy’’ (Haneuse and Rotnitzky (2013), Muñoz and Van Der Laan (2012), Young, Hernán, and Robins (2014), Dı́az et al. (2023)). The statistical estimand can be interpreted causally under the identifying assumptions of: 1) conditional exchangeability, meaning that there is no unobserved/unmeasured confounding of the relationship between the set of treatments and outcome conditional on covariates and that there is no unobserved/unmeasured confounding between censoring and the outcome conditional on the covariates and treatment; 2) positivity, and 3) consistency.\nWe estimated this statistical estimand using a doubly robust, nonparametric targeted minimum loss-based estimator (Dı́az et al. (2023), Williams and Dı́az (2023)). A cross-fitted version of this estimator was used with [fill in number]-folds. This estimator fits regressions for the outcome mechanism, treatment mechanism, and censoring mechanism. These regressions were fit using an ensemble of machine learning algorithms (van der Laan, Polley, and Hubbard (2007)) consisting of [fill in the algorithms included in your superlearner library].\n\nYou can cite the package using the following BibTeX entries:\n@article{diaz2023nonparametric,\n  title={Nonparametric causal effects based on longitudinal modified treatment policies},\n  author={D{\\'\\i}az, Iv{\\'a}n and Williams, Nicholas and Hoffman, Katherine L and Schenck, Edward J},\n  journal={Journal of the American Statistical Association},\n  volume={118},\n  number={542},\n  pages={846--857},\n  year={2023},\n  publisher={Taylor \\& Francis}\n}\n@article{williams2023lmtp,\n  title={lmtp: An {R} package for estimating the causal effects of modified treatment policies},\n  author={Williams, Nicholas and D{\\'\\i}az, Iv{\\'a}n},\n  journal={Observational Studies},\n  volume={9},\n  number={2},\n  pages={103--122},\n  year={2023},\n  publisher={University of Pennsylvania Press}\n}\nYou can reference this workshop with:\n@inproceedings{lmtpSER,\n  author = {Williams, Nicholas and D{\\'\\i}az, Iv{\\'a}n and Rudolph, Kara E},\n  title = {Beyond the Average Treatment Effect},\n  booktitle = {&lt;Insert conference&gt;},\n  year = {&lt;Insert year of confernece&gt;},\n  address = {&lt;Insert conference location&gt;},\n  month = {&lt;Insert conference month&gt;},\n  organization = {&lt;Insert conference organizer&gt;},\n  url = {https://www.beyondtheate.com}\n}",
+    "objectID": "R_static.html",
+    "href": "R_static.html",
+    "title": "Static Interventions",
+    "section": "",
+    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]",
     "crumbs": [
       "Instructors",
-      "5. Final Remarks"
-    ]
-  },
-  {
-    "objectID": "info_estimators.html#sequential-regression-estimator",
-    "href": "info_estimators.html#sequential-regression-estimator",
-    "title": "Estimators",
-    "section": "Sequential Regression Estimator",
-    "text": "Sequential Regression Estimator\nOne possible estimator is simply a plug-in estimator of the identification result. This estimator is often referred to as G-computation, and it proceeds by simply estimating the regressions described in the identification result. Another way to describe this algorithm is as follows:\n\n\n\nSet \\(\\m_{i,\\tau +1} = Y_i\\).\nFor \\(t = \\tau, ..., 1\\):\n\nUsing a pre-specified parametric model, regress \\(\\m_{i,t+1}\\) on \\(\\{A_{i, t}, H_{i,t}\\}\\).\nGenerate predictions from this model with \\(A_{i,t}\\) changed to \\(A^{\\dd}_{i,t}\\). Set \\(\\m_{i, t}\\) to be these predicted values.\nRepeat (iterate) the above two steps until setting \\(\\m_{i, 1}\\) to the predicted values.\n\nTake the final estimate as \\(\\hat{\\theta} = \\frac{1}{n}\\sum_{i=1}^n \\hat\\m_{i, 1}\\).\nCompute standard errors using a bootstrap of steps 1 and 2.\n\n\n\nA substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome and it is simple to estimate. That said, its cons are major:\n\nIn studies with multiple time points, the adjustment set can become large very quickly. For instance, consider a study with 3 covariates measured at every time point, and 10 time points. Even though we have only 3 covariates at each time point, the number of coviariates in the regression of \\(Y\\) is 33.\nImagine trying to correctly specify (e.g., include the approproate interactions) a parametric model (e.g., logistic, Cox) with 33 variables.\n\n\n\n\n\n\n\n\nPros ✅\nCons ❌\n\n\n\n\nSimple to implement\nRequires correct estimation of all regressions\n\n\nSubstitution estimator\nRequires pre-specified parametric models",
-    "crumbs": [
-      "Instructors",
-      "3. Estimators"
-    ]
-  },
-  {
-    "objectID": "info_estimators.html#sec-density-ratio-estimation",
-    "href": "info_estimators.html#sec-density-ratio-estimation",
-    "title": "Estimators",
-    "section": "Density-ratio estimation",
-    "text": "Density-ratio estimation\n\n\n\n\n\n\nThe next three estimators all rely on estimating the density ratio\n\\[\nr_t(a_t, h_t) = \\frac{\\g_t^\\dd(a_t \\mid h_t)}{\\g_t(a_t \\mid h_t)}.\n\\]\nRecall that \\(\\g_t^\\dd(a_t \\mid h_t)\\) denotes the density of treatment post-intervention and that \\(\\g_t(a_t \\mid h_t)\\) denotes the density of the observed treatment under no intervention.\nWe will often refer to this ratio as the intervention mechanism throughout the workshop. Estimation of \\(r_t(a_t, h_t)\\) is fully automated in lmtp and hidden from the user. A comprehensive understanding of this process isn’t necessary to use lmtp!\n\n\n\n\nWe can directly estimate this density ratio with a classification trick.\nCan compute the density ratio (which we can see is also the odds) in a classification problem. We use an augmented dataset with \\(2n\\) observations. In this new dataset, the outcome is a new variable that we make, \\(\\Lambda\\), (defined below) and the predictors are the variables \\(A_t\\) and \\(H_t\\). In this new dataset, the data structure at time \\(t\\) is redefined as\n\n\\[\n(H_{\\lambda, i, t}, A_{\\lambda, i, t}, \\Lambda_{\\lambda, i} : \\lambda = 0, 1; i = 1, ..., n)\n\\]\n\n\\(\\Lambda_{\\lambda, i} = \\lambda_i\\) indexes duplicate values. So if \\(\\Lambda_i =1\\) if observation \\(i\\) is a duplicated value and \\(\\Lambda_i =0\\) otherwise.\n\nFor all duplicated observations \\(\\lambda\\in\\{0,1\\}\\) with the same \\(i\\), \\(H_{\\lambda, i, t}\\) is the same\nFor all the non-duplicated observations, \\(\\lambda = 0\\), \\(A_{\\lambda=0, i, t}\\) equals the observed exposure values \\(A_{i, t}\\)\nFor all the duplicated observations, \\(\\lambda=1\\), \\(A_{\\lambda=1, i, t}\\) equals the exposure values under the intervention \\(\\dd\\), \\(A^{\\dd}_{i,t}\\)\n\n\n\n\n\nExample of augmenting data for density ratio estimation.\n\n\n\nWe then estimate the conditional probability that \\(\\Lambda=1\\) in this dataset, and divide it by the corresponding estimate of the conditional probability that \\(\\Lambda=0\\). Specifically, denoting \\(p^\\lambda\\) to be the distribution of the data in the augmented dataset, we have:\n\n\\[\nr_t(a_t, h_t) = \\frac{p^\\lambda(a_t, h_t \\mid \\Lambda =\n    1)}{p^\\lambda(a_t, h_t \\mid \\Lambda =\n    0)}=\\frac{p^\\lambda(\\Lambda = 1\\mid A_t=a_t,\n    H_t=h_t)}{p^\\lambda(\\Lambda = 0\\mid A_t=a_t, H_t=h_t)}\n\\]\n\nExample\nConsider the following example where we simulate 500 observations from this data-generating mechanism:\n\\[\\begin{align}\nW &\\sim \\text{Normal}(0, 1) \\\\  \nA &\\sim \\text{Bernoulli}(\\text{logit}^{-1}(-1 + 1.5W))\\\\  \nY &\\sim \\text{Normal}(-1 - 1.2W + 2.4A).\n\\end{align}\\] The data has been loaded into R in the background as foo. We will use the density ratio classification trick to estimate the density ratio \\(r_t(a_t, h_t)\\) under the static intervention \\(d(a_t, h_t) = 1\\). First, we create the augmented data.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\nWe then regress the \\(\\Lambda\\) on \\(A\\) and \\(W\\) and estimate the density ratio as the predicted odds.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
-    "crumbs": [
-      "Instructors",
-      "3. Estimators"
-    ]
-  },
-  {
-    "objectID": "info_estimators.html#inverse-probability-weighting",
-    "href": "info_estimators.html#inverse-probability-weighting",
-    "title": "Estimators",
-    "section": "Inverse Probability Weighting",
-    "text": "Inverse Probability Weighting\nWe call this estimator IPW due to its similarity with the inverse-probability weighted estimator for binary treatments, but it would be more accurately referred to as simply reweighted estimator. It is based on the following alternative identification formula:\n\\[\n\\theta = \\E \\bigg[ \\bigg\\{\\prod_{t=1}^\\tau r_t(a_t, h_t) \\bigg\\} Y \\bigg]\n\\]\n\n\n\nConstruct estimates of \\(r_{i,t}(a_t, h_t)\\) using the density ratio classification trick and a pre-specified parametric model.\nDefine the weights \\(w_{i} = \\prod_{t=1}^\\tau r_{i,t}(a_t, h_t)\\).\nTake the final estimate as \\(\\hat{\\theta} = \\frac{1}{n}\\sum_{i=1}^n \\hat{w}_{i}\\times y_i\\).\nCompute standard errors using a bootstrap of steps 1-3.\n\n\n\n\n\n\n\n\n\n\nPros ✅\nCons ❌\n\n\n\n\nSimple to implement\nRequires correct estimation of all regressions\n\n\n\nRequires pre-specified parametric models",
-    "crumbs": [
-      "Instructors",
-      "3. Estimators"
-    ]
-  },
-  {
-    "objectID": "info_estimators.html#doubly-robust-estimators",
-    "href": "info_estimators.html#doubly-robust-estimators",
-    "title": "Estimators",
-    "section": "Doubly Robust Estimators",
-    "text": "Doubly Robust Estimators\nG-computation and IPW estimators require the estimation of nuisance parameters with correctly specified parametric models. We will now turn our attention to two non-parametric estimators:\n\ntargeted minimum-loss based estimator (TMLE), and\na sequentially doubly-robust estimator (SDR).\n\nWait, what does it mean for an estimator to be doubly robust?\n\nFor the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as either the outcome model is consistently estimated or the treatment (and censoring) model(s) are consistently estimated. For example:\n\n\n\n\n\nTime\n1\n\n\nTreatment\nCorrect\n\n\nOutcome\nWrong\n\n\n\n\n\n\n\nFor time-varying setting, an estimator is doubly robust if, for some time \\(s\\), all outcome regressions for \\(t &gt;s\\) are consistently estimated and all intervention mechanisms (treatment + censoring) for \\(t \\leq s\\) are consistently estimated. Consider for example \\(5\\) time points:\n\n\n\n\nTime\n1\n2\n3\n4\n5\n\n\nTreatment\nCorrect\nCorrect\nWrong\nWrong\nWrong\n\n\nOutcome\nWrong\nWrong\nCorrect\nCorrect\nCorrect\n\n\n\n\n\n\nSequential double robustness (often also referred to as \\(2^\\tau\\)-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated. For example:\n\n\n\n\nTime\n1\n2\n3\n4\n5\n\n\nTreatment\nCorrect\nWrong\nCorrect\nWrong\nCorrect\n\n\nOutcome\nWrong\nCorrect\nWrong\nCorrect\nWrong\n\n\n\n\nEfficient Influence Function\nKey to constructing the TMLE and SDR is the efficient influence function (EIF).\n\n\n\n\n\n\n\nThe EIF characterizes the asymptotic behavior of all regular and efficient estimators.\nThe EIF characterizes the first-order bias of pathwise differentiable estimands.\n\n\n\n\nBefore we introduce the EIF, it’s necessary to make some additional assumptions on \\(A\\) and \\(\\dd\\).\n\nThe treatment \\(A\\) is discrete, or\nIf \\(A\\) is continuous, the function \\(\\dd\\) is piecewise smooth invertible\nThe function \\(\\dd\\) does not depend on the observed distribution \\(\\P\\) (this means that we cannot apply these methods to odds ratio IPSI, although we can apply them to risk ratio IPSI)\n\nThese assumptions ensure that the efficient influence function of \\(\\theta\\) for interventions \\(\\dd\\) have a structure similar to the influence function for the effect of dynamic regimes. This allows for multiply robust estimation, which is not generally possible for interventions \\(\\dd\\) that depend on \\(\\P\\).\nDefine the function\n\\[\n\\phi_t: O \\mapsto \\sum_{s=t}^\\tau \\bigg( \\prod_{k=t}^s r_k(a_k, h_k)\\bigg) \\big\\{\\m_{s+1}(a_{s+1}^\\dd, h_{s+1}) - \\m_s(a_s, h_s) \\big\\} + \\m_t(a_t^\\dd, h_t).\n\\]\nThe efficient influence function for estimating \\(\\theta = \\E[\\m_1(A^\\dd, L_1)]\\) in the non-parametric model is given by \\(\\phi_1(O) - \\theta\\).\nIn the case of single time-point, the influence function simplifies to\n\\[\nr(a, w)\\{Y - \\m(a,w)\\} + \\m(a^{\\dd},w) - \\theta.\n\\]",
-    "crumbs": [
-      "Instructors",
-      "3. Estimators"
-    ]
-  },
-  {
-    "objectID": "info_estimators.html#targeted-minimum-loss-based-estimation",
-    "href": "info_estimators.html#targeted-minimum-loss-based-estimation",
-    "title": "Estimators",
-    "section": "Targeted Minimum-Loss Based Estimation",
-    "text": "Targeted Minimum-Loss Based Estimation\n\n\n\n\n\n\n\nPros ✅\nCons ❌\n\n\n\n\nSubstitution estimator\nnot sequentially doubly-robust\n\n\ndoubly-robust\n\n\n\ncan use machine learning\n\n\n\n\n\n\n\nConstruct estimates of \\(r_{i,t}(a_t, h_t)\\) using the density ratio classification trick and your favorite regression method.\nFor \\(t = 1, ..., \\tau\\), compute the weights: \\(w_{i,t} = \\prod_{k=1}^t r_{i,k}(a_{i,k}, h_{i,k})\\)\nSet \\(\\tilde{\\m}_{i,\\tau +1}(A^\\dd_{i,t+1}, H_{i,t+1}) = Y_i\\).\nFor \\(t = \\tau, ..., 1\\):\n\nRegress \\(\\tilde{\\m}_{i,t+1}(A^\\dd_{i,t+1}, H_{i,t+1})\\) on \\(\\{A_{i, t}, H_{i,t}\\}\\).\n\nUsing this regression, generate predictions from \\(\\{A_{i, t}, H_{i,t}\\}\\) and \\(\\{A^\\dd_{i, t}, H_{i,t}\\}\\).\nDenote the predictions as \\(\\tilde{\\m}_t(A_{i,t}, H_{i,t})\\) and \\(\\tilde{\\m}_t(A^\\dd_{i,t}, H_{i,t})\\) respectively.\n\nFit the generalized linear tilting model:\n\\(\\text{link }\\tilde{\\m}^\\epsilon_t(A_{i,t}, H_{i,t}) = \\epsilon + \\text{link }\\tilde{\\m}_{i,t}(A_{i,t}, H_{i,t})\\)\nwith weights \\(w_{i,t}\\).\n\n\\(\\text{link }\\tilde{\\m}_{i,t}(A_{i,t}, H_{i,t})\\) is an offset variable (i.e., a variable with known parameter value equal to one).\nThe parameter \\(\\epsilon\\) may be estimated by running a generalized linear model of \\(\\tilde{\\m}_{i,t+1}(A^\\dd_{i,t+1}, H_{i,t+1})\\) with only an intercept term, an offset term equal to \\(\\text{link }\\tilde{\\m}_{i,t}(A_{i,t}, H_{i,t})\\), and weights \\(w_{i,t}\\).\n\nLet \\(\\hat\\epsilon\\) be the maximum likelihood estimate, and update the estimates as:\n\\(\\text{link }\\tilde{\\m}^\\hat\\epsilon_t(A^\\dd_{i,t}, H_{i,t}) = \\hat\\epsilon + \\text{link }\\tilde{\\m}_t(A^\\dd_{i,t}, H_{i,t})\\)\n\\(\\text{link }\\tilde{\\m}^\\hat\\epsilon_t(A_{i,t}, H_{i,t}) = \\hat\\epsilon + \\text{link }\\tilde{\\m}_t(A_{i,t}, H_{i,t})\\)\nUpdate \\(\\tilde{\\m}_{i,t} = \\tilde{\\m}^\\hat\\epsilon_{i,t}\\), \\(t = t-1\\), and iterate.\n\nThe final estimate is defined as \\(\\hat\\theta = \\frac{1}{n}\\sum_{i=1}^n\\tilde{m}_{i, 1}(A^\\dd_{i, 1}, L_{i, 1})\\).",
-    "crumbs": [
-      "Instructors",
-      "3. Estimators"
-    ]
-  },
-  {
-    "objectID": "info_estimators.html#sequentially-doubly-robust-estimator",
-    "href": "info_estimators.html#sequentially-doubly-robust-estimator",
-    "title": "Estimators",
-    "section": "Sequentially Doubly Robust Estimator",
-    "text": "Sequentially Doubly Robust Estimator\n\n\n\n\n\n\n\nPros ✅\nCons ❌\n\n\n\n\ndoubly-robust\nnot a substitution estimator\n\n\nsequentially doubly-robust\n\n\n\ncan use machine learning\n\n\n\n\n\n\n\nConstruct estimates of \\(r_{i,t}(a_t, h_t)\\) using the density ratio classification trick and your favorite regression method.\nInitialize \\(\\phi_{\\tau +1}(O_i) = Y_i\\).\nFor \\(t = \\tau, ..., 1\\):\n\nCompute the pseudo-outcome \\(\\check{Y}_{i,t+1} = \\phi_{t+1}(O_i)\\).\nRegress \\(\\check{Y}_{i,t+1}\\) on \\(\\{A_{i, t}, H_{i,t}\\}\\).\nLet \\(\\check\\m_{i,t}\\) denote the predicted values. Update \\(\\m_{i,t} = \\check\\m_{i,t}\\) and iterate.\n\nThe final estimate is defined as \\(\\hat\\theta = \\frac{1}{n}\\sum_{i=1}^n\\phi_1(O_i).\\)",
-    "crumbs": [
-      "Instructors",
-      "3. Estimators"
-    ]
-  },
-  {
-    "objectID": "info_estimators.html#choosing-an-estimator",
-    "href": "info_estimators.html#choosing-an-estimator",
-    "title": "Estimators",
-    "section": "Choosing an Estimator",
-    "text": "Choosing an Estimator\n\nIn general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference 🙃.\nThe TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining \\(\\sqrt{n}\\)-consistent under reasonable assumptions.\n\n\nTable 1. Summary of estimator properties.\n\n\n\n\n\n\n\n\n\n\nIPW\nG-comp.\nTMLE\nSDR\n\n\n\n\nUses outcome regression\n\n⭐\n⭐\n⭐\n\n\nUses the propensity score\n⭐\n\n⭐\n⭐\n\n\nValid inference with machine-learning\n\n\n⭐\n⭐\n\n\nSubstitution estimator\n\n⭐\n⭐\n\n\n\nDoubly robust\n\n\n⭐\n⭐\n\n\nSequentially doubly robust\n\n\n\n⭐\n\n\n\n\n\n\n\n\n\nQuestion: Why can’t we use machine learning with the G-computation and IPW estimators?\n\n\n✅ Answer\n\nThe G-computation and IPW estimators require models that converge to the truth at a \\(\\sqrt{n}\\)-rate. Machine learning algorithms are not guaranteed to do this.\n\n\n\n\nWhile the SDR estimator may be more robust to model misspecification, the TMLE does have the advantage of being a substitution estimator. Because of this, estimates from the TMLE are guaranteed to stay within the valid range of the outcome. Taken together, this leads to the following recommendations for choosing between the TMLE and SDR:\n\n\n\n\n\n\n\nIf treatment is not time-varying, use the TMLE.\nIf treatment is time-varying and the parameter \\(\\theta\\) has clear bounds, such as probabilities, beware of the SDR estimator. Use TMLE preferably.",
-    "crumbs": [
-      "Instructors",
-      "3. Estimators"
-    ]
-  },
-  {
-    "objectID": "info_estimators.html#cross-fitting",
-    "href": "info_estimators.html#cross-fitting",
-    "title": "Estimators",
-    "section": "Cross-fitting",
-    "text": "Cross-fitting\nWhen estimating nuisance parameters with data adaptive algorithms, you should perform a process similar to cross-validation called cross-fitting. Cross-fitting helps ensure:\n\nthat standard errors will be correct, and\ncan help reduce estimator bias and improve coverage of the confidence intervals.\n\nCross-fitting is fully automated in lmtp, but for more information we recommend reviewing Chernozhukov et al. (2018), Dı́az (2020), and Zivich and Breskin (2021).",
-    "crumbs": [
-      "Instructors",
-      "3. Estimators"
+      "4. Estimating Effects with lmtp",
+      "Static effects and the ATE"
     ]
   },
   {
@@ -576,6 +451,143 @@
       "Instructors",
       "4. Estimating Effects with lmtp",
       "Static effects and the ATE"
+    ]
+  },
+  {
+    "objectID": "R_dtr.html",
+    "href": "R_dtr.html",
+    "title": "Dynamic treatment regimes",
+    "section": "",
+    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]\nRecall that interventions where the output of the function depends only on covariates are referred to as dynamic interventions or dynamic treatment regimes. Let’s learn how to estimate the effects of dynamic treatment regimes using lmtp.",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "Dynamic Treatment Regimes"
+    ]
+  },
+  {
+    "objectID": "R_dtr.html#problem-1",
+    "href": "R_dtr.html#problem-1",
+    "title": "Dynamic treatment regimes",
+    "section": "Problem 1",
+    "text": "Problem 1\nWrite a shift function that assigns meal replacement to all observations at time 1, but only meal replacement at time 2 to those observations whose 4-month BMI is greater than 30.\n\\[\n\\dd_t(a_t, h_t, \\epsilon_t) = \\begin{cases}\n\\text{Meal replacement} &\\text{ if } t = 1 \\\\\n\\text{Meal replacement} &\\text{ if } t = 2 \\text{ and } \\text{4-month BMI} &gt; 30 \\\\\n\\text{Calorie deficit} &\\text{ otherwise.}\n\\end{cases}\n\\]\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\n✅ Solution\n\n\nd_dtr &lt;- function(data, trt) {\n  if (trt == \"A1\") return(rep(\"MR\", nrow(data)))\n  \n  ifelse(data$month4BMI &gt; 30, \"MR\", \"CD\")\n}\n\n\nLet’s estimate the effect of the dynamic treatment regime on the 12-month BMI using lmtp with the SDR estimator.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "Dynamic Treatment Regimes"
+    ]
+  },
+  {
+    "objectID": "R_dtr.html#problem-2",
+    "href": "R_dtr.html#problem-2",
+    "title": "Dynamic treatment regimes",
+    "section": "Problem 2",
+    "text": "Problem 2\nSuppose we are interested in comparing the dynamic treatment regime to a static treatment regime where all patients receive meal replacement at both time points. Using the SDR estimator, estimate the effect of this static intervention.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\n✅ Solution\n\n\nfit_MR &lt;- lmtp_sdr(\n  data = bmi, \n  trt = c(\"A1\", \"A2\"), \n  outcome = \"month12BMI\", \n  baseline = c(\"gender\", \"race\", \"parentBMI\"), \n  time_vary = list(\"baselineBMI\", \"month4BMI\"),\n  shift = \\(data, trt) rep(\"MR\", nrow(data)), \n  outcome_type = \"continuous\",\n  folds = 1,\n  learners_trt = \"SL.glm\", \n  learners_outcome = c(\"SL.mean\", \"SL.glm\", \"SL.gam\")\n)\n\n\nLet’s also estimate the effect of an intervention where all patients receive a calorie deficit diet at both time points.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\nFinally, let’s compare the dynamic treatment regime and the always receive meal replacement intervention to the always receive a calorie deficit intervention.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "Dynamic Treatment Regimes"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Estimating the causal effects of binary, categorical, continuous, and multivariate exposures in R",
+    "section": "",
+    "text": "In this workshop, we present methods to define and estimate the causal effects of categorical, continuous, and multivariate exposures. The methods are based on a generalization of the static and dynamic interventions that may be familiar to some of you. This generalization has been recently called modified treatment policies (MTPs). MTPs are hypothetical interventions where the post-intervention exposure is defined as a modification of the natural value of the exposure that can also depend on the unit’s history. This short course will introduce the lmtp R package for estimating the causal effects of these general estimand in both point-treatment and longitudinal studies. We will discuss identification of MTPs, estimation with a targeted minimum-loss based estimator and a sequentially doubly-robust estimator, and provide guidance on estimator choice and software usage.\n\n\n\nConference\nYear\n📍Location\n\n\n\n\nSER\n2024\nAustin, TX\n\n\nACIC\n2025\nDetroit, MI\n\n\nSER\n2025\nBoston, MA\n\n\nLiDS\n2025\nBrooklyn, NY\n\n\n\n\nLearning objectives\nBy the end of the workshop, participants will be able to:\n\nGeneralize static and dynamic interventions intuitively and using notation.\nEstimate the effect of a static or dynamic intervention with lmtp for point-treatment and longitudinal studies.\nEstimate the effect of an MTP on a continuous-valued exposure with lmtp for point-treatment and longitudinal studies.\nEstimate the effect of multivariate exposures with lmtp for point-treatment and longitudinal studies.\n\n\n\n\n\n\n\nThis workshop assumes the participant has a basic understanding of fundamental concepts in causal inference such as the concept of counterfactuals, and some experience with the R programming language.\n\n\n\n\n\nTentative Schedule\n\n\n\nTopic\nDuration\n\n\n\n\nIntroductions\n15 minutes\n\n\nFrom observed data to causal estimands\n15 minutes\n\n\nDefining causal effects using MTPs\n1 hour\n\n\nThe estimator landscape\n20 minutes\n\n\nBreak\n10 minutes\n\n\nSetting up the correct data structure\n15 minutes\n\n\nEstimating effects using the lmtp package\n1 hour 30 min\n\n\nQ + A\n15 minutes\n\n\n\n\n\nwebR\nThis workshop was prepared using Quarto and webR. The source code is available on GitHub. webR is a version of the R programming language compiled to be run directly in the browser. Using webR for this workshop avoids having to spend time setting up a computing environment and making sure workshop participants are using the same version of R and R packages.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
+    "crumbs": [
+      "Instructors",
+      "Welcome!"
+    ]
+  },
+  {
+    "objectID": "info_conclusion.html",
+    "href": "info_conclusion.html",
+    "title": "Concluding Thoughts",
+    "section": "",
+    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]",
+    "crumbs": [
+      "Instructors",
+      "5. Final Remarks"
+    ]
+  },
+  {
+    "objectID": "info_conclusion.html#thank-you",
+    "href": "info_conclusion.html#thank-you",
+    "title": "Concluding Thoughts",
+    "section": "Thank you!",
+    "text": "Thank you!\nThank you for attending this workshop! We encourage you to reach out to us with any questions or feedback.",
+    "crumbs": [
+      "Instructors",
+      "5. Final Remarks"
+    ]
+  },
+  {
+    "objectID": "info_conclusion.html#including-in-a-manuscript",
+    "href": "info_conclusion.html#including-in-a-manuscript",
+    "title": "Concluding Thoughts",
+    "section": "Including in a manuscript",
+    "text": "Including in a manuscript\nIf you decide to use lmtp in your research, here’s a summary that can be included for explaining the methodology. It is based on the explanation in Rudolph et al. (2024):\n\nWe estimated the effect of [exposure] on [outcome], adjusting for covariates. This effect can be written: \\(\\E(Y^{\\dd, C=1} - Y^{C=1}),\\) [change the preceding to correspond to your effect] where \\(\\E(Y^{C=1})\\) [change as applicable] denotes the expected value of the counterfactual outcome had the exposure not been intervened on (i.e., remained as observed) and had no one been censored, and where \\(\\E(Y^{\\dd, C=1})\\) [change as applicable] denotes the expected value of the counterfactual outcome had the exposure been intervened on as dictated by the function \\(\\dd(A)\\) and had no one been censored. We defined \\(\\dd(A)\\) as a hypothetical intervention that increased the value of the exposure by 20% (i.e., multiplied each person’s value by 1.2). [change the preceding to correspond to your intervention, \\(\\dd\\)]\nThe above statistical estimand is a type of ``modified treatment policy’’ (Haneuse and Rotnitzky (2013), Muñoz and Van Der Laan (2012), Young, Hernán, and Robins (2014), Dı́az et al. (2023)). The statistical estimand can be interpreted causally under the identifying assumptions of: 1) conditional exchangeability, meaning that there is no unobserved/unmeasured confounding of the relationship between the set of treatments and outcome conditional on covariates and that there is no unobserved/unmeasured confounding between censoring and the outcome conditional on the covariates and treatment; 2) positivity, and 3) consistency.\nWe estimated this statistical estimand using a doubly robust, nonparametric targeted minimum loss-based estimator (Dı́az et al. (2023), Williams and Dı́az (2023)). A cross-fitted version of this estimator was used with [fill in number]-folds. This estimator fits regressions for the outcome mechanism, treatment mechanism, and censoring mechanism. These regressions were fit using an ensemble of machine learning algorithms (van der Laan, Polley, and Hubbard (2007)) consisting of [fill in the algorithms included in your superlearner library].\n\nYou can cite the package using the following BibTeX entries:\n@article{diaz2023nonparametric,\n  title={Nonparametric causal effects based on longitudinal modified treatment policies},\n  author={D{\\'\\i}az, Iv{\\'a}n and Williams, Nicholas and Hoffman, Katherine L and Schenck, Edward J},\n  journal={Journal of the American Statistical Association},\n  volume={118},\n  number={542},\n  pages={846--857},\n  year={2023},\n  publisher={Taylor \\& Francis}\n}\n@article{williams2023lmtp,\n  title={lmtp: An {R} package for estimating the causal effects of modified treatment policies},\n  author={Williams, Nicholas and D{\\'\\i}az, Iv{\\'a}n},\n  journal={Observational Studies},\n  volume={9},\n  number={2},\n  pages={103--122},\n  year={2023},\n  publisher={University of Pennsylvania Press}\n}\nYou can reference this workshop with:\n@inproceedings{lmtpSER,\n  author = {Williams, Nicholas and D{\\'\\i}az, Iv{\\'a}n and Rudolph, Kara E},\n  title = {Beyond the Average Treatment Effect},\n  booktitle = {&lt;Insert conference&gt;},\n  year = {&lt;Insert year of confernece&gt;},\n  address = {&lt;Insert conference location&gt;},\n  month = {&lt;Insert conference month&gt;},\n  organization = {&lt;Insert conference organizer&gt;},\n  url = {https://www.beyondtheate.com}\n}",
+    "crumbs": [
+      "Instructors",
+      "5. Final Remarks"
+    ]
+  },
+  {
+    "objectID": "R_ipsi.html",
+    "href": "R_ipsi.html",
+    "title": "Incremental Propensity Score Interventions",
+    "section": "",
+    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]\nRecall that an incremental propensity score intervention (IPSI) is a hypothetical intervention where the conditional probability of treatment is shifted. We defined an IPSI, based on the risk ratio, that increased the likelihood of treatment as\n\\[\n\\dd_t(a_t, h_t, \\epsilon_t) = \\begin{cases}\na_t &\\text{ if } \\epsilon_t &lt; \\delta \\\\\n1 &\\text{ otherwise.}\n\\end{cases}\n\\]Assume we want to increase the likelihood of initiating treatment by 2-fold. We can implement this in R with",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "IPSI"
+    ]
+  },
+  {
+    "objectID": "R_ipsi.html#problem-1",
+    "href": "R_ipsi.html#problem-1",
+    "title": "Incremental Propensity Score Interventions",
+    "section": "Problem 1",
+    "text": "Problem 1\nWhat if we wanted to decrease the likelihood of initiating treatment by 2-fold? Implement this shift function in R. As a reminder\n\\[\n\\dd_t(a_t, h_t, \\epsilon_t) = \\begin{cases}\na_t &\\text{ if } \\epsilon_t &lt; \\delta \\\\\n0 &\\text{ otherwise.}\n\\end{cases}\n\\]\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\n✅ Solution\n\n\ndelta &lt;- 0.5\nd_ipsi_down &lt;- function(data, trt) {\n  eps &lt;- runif(nrow(data), 0, 1)\n  ifelse(eps &lt; delta, data[[trt]], 0)\n}\n\n\n\n\n\n\n\n\nlmtp already implements d_ipsi_up and d_ipsi_down as a single shift function factory, ipsi()!\n\nRisk ratio IPSIs that increase the likelihood of treatment should be specified with a value greater than 1 (i.e. a risk ratio IPSI that increases the likelihood of treatment 2-fold is equivalent to ipsi(2)).\nIPSIs that decrease the likelihood of treatment should be specified with a value less than 1 (i.e. a risk ratio IPSI that decreases the likelihood of treatment 2-fold is equivalent to ipsi(0.5))\n\n\n\n\nLet’s apply the shift function that increases the likelihood of initiating treatment by 2-fold to covid dataset.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\nEstimating the effect of incremental propensity scores based on the risk ratio are easy to do with lmtp. Just use the ipsi() function as the input for the shift argument!",
+    "crumbs": [
+      "Instructors",
+      "4. Estimating Effects with lmtp",
+      "IPSI"
+    ]
+  },
+  {
+    "objectID": "info_tldr.html",
+    "href": "info_tldr.html",
+    "title": "The Causal Model and Notation",
+    "section": "",
+    "text": "\\[\n\\renewcommand{\\P}{\\mathsf{P}}\n\\newcommand{\\m}{\\mathsf{m}}\n\\newcommand{\\p}{\\mathsf{p}}\n\\newcommand{\\q}{\\mathsf{q}}\n\\newcommand{\\bb}{\\mathsf{b}}\n\\newcommand{\\g}{\\mathsf{g}}\n\\newcommand{\\rr}{\\mathsf{r}}\n\\newcommand{\\IF}{\\mathbb{IF}}\n\\newcommand{\\dd}{\\mathsf{d}}\n\\newcommand{\\Pn}{$\\mathsf{P}_n$}\n\\newcommand{\\E}{\\mathsf{E}}\n\\]",
+    "crumbs": [
+      "Instructors",
+      "1. Introduction"
+    ]
+  },
+  {
+    "objectID": "info_tldr.html#notation",
+    "href": "info_tldr.html#notation",
+    "title": "The Causal Model and Notation",
+    "section": "Notation",
+    "text": "Notation\nConsider a typical setting where we have measured some treatment \\(A\\), some set of pre-treatment variables \\(L\\), and an outcome \\(Y\\). We will assume that the data are generated by the following causal model (but alternative definitions can be achieved using other causal models):\n\\[\n\\begin{align}\nL &= f_L(U_L)\\\\\nA &= f_A(L, U_A)\\\\\nY &= f_Y(A, L, U_Y)\n\\end{align}\n\\]\n\nThe functions \\(f\\) are assumed fixed, but likely unknown.\n\\(U = (U_L, U_A, U_Y)\\) is a vector of exogenous, unmeasured random variables.\nThis system is referred to as a Non-parametric Structural Equation Model (NPSEM).\nWe will assume that this system of equations exists in nature and is responsible for generating our observed data.\n\n\n\n\n\n\n\nWe will often refer to \\(L\\) as confounders, \\(A\\) as the treatment or exposure, and \\(Y\\) as the outcome.\n\n\n\nTake for example the following sample of data:\n\n\n\n\n\n\n\nLet, \\(L\\) = sex, bmi, age, and smoke; \\(A\\) = trt; and \\(Y\\) = event. When we say that we assume the previous NPSEM, we are positing that:\n\nthe variable trt was generated from an unknown function of the random variables sex, bmi, age, and smoke, as well as a set of unmeasured random variables not present in our data.\nthat the variable event was generated from an unknown function of the variables that generated trt in addition to trt itself.\n\nNote that in some cases, we may know one or more of the functions \\(f\\). For example, if our data came from a randomized clinical trial for \\(A\\), then we know the function \\(f_A\\).",
+    "crumbs": [
+      "Instructors",
+      "1. Introduction"
+    ]
+  },
+  {
+    "objectID": "info_tldr.html#counterfactuals",
+    "href": "info_tldr.html#counterfactuals",
+    "title": "The Causal Model and Notation",
+    "section": "Counterfactuals",
+    "text": "Counterfactuals\nCentral to how we will define causal effects is the concept of counterfactual random variables.\n\n\n\n\n\n\nCounterfactuals are random variables that would have been observed, possibly contrary to fact, in an alternative world.\n\n\n\nFor example, consider a scenario where we are interested in the value of \\(Y\\) in a hypothetical situation where, instead of the variable \\(A\\) being equal to its observed value, \\(A\\) is set to some other value.\n\nThe value of \\(Y\\) in this hypothetical situation is a counterfactual random variable.\nlet \\(\\dd(A, L)\\) be a function that takes a treatment value \\(A\\) and a covariate profile \\(L\\) and returns a new value of treatment. We will refer to the function \\(\\dd\\) as a shift function or a general hypothetical intervention.\nDenote the value of \\(Y\\) in the hypothetical world where treatment is set to the value \\(\\dd(A,L)\\) as \\(Y^{\\dd}\\).\n\nReturning to the data example, imagine we are interested in the value of event if trt was replaced with the output of a function \\(\\dd\\) that always returns 1:\n\\[\n\\begin{align}\nL &= f_L(U_L)\\\\\nA^{\\dd} &= \\dd(A, L) = 1 \\\\\nY^{\\dd} &= f_Y(1, L, U_Y)\n\\end{align}\n\\]\nHere we introduce some new notation \\(A^{\\dd}\\) to refer to the post-intervention exposure. If we had the ability to collect data from this alternative NPSEM, the data may instead look like this:\n\n\n\n\n\n\n\nUnfortunately, we are never able to collect data from this alternative world. This is called the fundamental problem of causal inference.\nThe previous NPSEM is the simplest causal model we will assume in this workshop. However, real data is often much more complex and may be characterized by:\n\ntime-varying variables\nloss-to-follow-up\n\nAs such, we need to modify and introudce some additional notation:\n\n\n\n\n\n\n\nSymbol\nDefinition\n\n\n\n\n\\(i\\)\nThe index (i.e. a row in a dataset) of an observation from a data set with \\(n\\) total units (i.e., the total number of rows)\n\n\n\\(t\\)\nThe index of time for a total number of time points \\(\\tau\\)\n\n\n\\(L_t\\)\nConfounders at time \\(t\\)\n\n\n\\(A_t\\)\nA vector of intervention variables (i..e, treatment or exposure) at time \\(t\\)\n\n\n\\(Y\\)\nAn outcome variable observed at the end of the study, that is at time \\(\\tau + 1\\). Earlier measures of the outcome can be included in \\(L_t\\).\n\n\n\\(C_t\\)\nA indicator variable that a unit is observed (not censored) at time \\(t+1\\)\n\n\n\\(O_1, ..., O_n\\)\nA sample of \\(n\\) i.i.d observations with \\(O = (L_1, A_1, C_1, L_2, A_2, C_2, ..., L_\\tau, A_\\tau, C_\\tau, Y)\\)\n\n\n\\(\\bar{X}_t = (X_1, ..., X_t)\\)\nThe history of a variable up until time \\(t\\)\n\n\n\\(\\underline{X}_t = (X_t, ..., X_\\tau)\\)\nThe future of a variable, including time \\(t\\)\n\n\n\\(H_t = (\\bar{A}_{t-1}, \\bar{L}_t)\\)\nThe history of all variables up until just before \\(A_t\\)\n\n\n\\(\\epsilon_t\\)\nA randomizer\n\n\n\\(\\dd(a_t, h_t, \\epsilon_t)\\)\nA function that maps \\(A_t\\), \\(H_t\\), and \\(\\epsilon_t\\) to a new value of treatment \\(A^{\\dd}_t\\)",
+    "crumbs": [
+      "Instructors",
+      "1. Introduction"
     ]
   }
 ]

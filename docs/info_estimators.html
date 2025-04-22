@@ -291,7 +291,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"set.seed(786543)\nn <- 500\nl0 <- rnorm(n)\na1 <- rbinom(n, 1, plogis(-1 + l0*1.5))\ny <- rnorm(n, -1 - 1.2*l0 + 2.4*a1)\nfoo <- data.frame(\n  W = l0, \n  A1 = a1, \n  Y = y\n)","id":1,"options":{"warning":"true","editor-font-scale":1,"read-only":"false","dpi":72,"message":"true","output":"true","fig-height":5,"comment":"","fig-cap":"","out-height":"","editor-quick-suggestions":"false","fig-width":7,"context":"setup","autorun":"true","editor-max-height":"","out-width":"700px","classes":"","results":"markup","label":"unnamed-chunk-1"}},{"code":"# Duplicate the data\nshifted <- foo\n# In the duplicated data, modify treatment according to d\nshifted$A1 <- 1\n\n# Set the values of delta in the original and modified data\nfoo$lambda <- 0\nshifted$lambda <- 1\n\n# Stack the original data and the modified data\ndensity_ratio_data <- rbind(foo, shifted)","id":2,"options":{"warning":"true","editor-font-scale":1,"read-only":"false","dpi":72,"message":"true","output":"true","fig-height":5,"comment":"","fig-cap":"","out-height":"","editor-quick-suggestions":"false","fig-width":7,"context":"interactive","autorun":"false","editor-max-height":"","out-width":"700px","classes":"","results":"markup","label":"unnamed-chunk-2"}},{"code":"# Regress lambda on A,W\ndensity_ratio_model <- glm(lambda ~ A1 + W, data = density_ratio_data, family = binomial)\n\n# Calculate the estimated odds\nprob_lambda_1 <- predict(density_ratio_model, foo, type = \"response\")\ndensity_ratios <- prob_lambda_1 / (1 - prob_lambda_1)\n\nsummary(density_ratios)","id":3,"options":{"warning":"true","editor-font-scale":1,"read-only":"false","dpi":72,"message":"true","output":"true","fig-height":5,"comment":"","fig-cap":"","out-height":"","editor-quick-suggestions":"false","fig-width":7,"context":"interactive","autorun":"false","editor-max-height":"","out-width":"700px","classes":"","results":"markup","label":"unnamed-chunk-3"}}];
+globalThis.qwebrCellDetails = [{"id":1,"options":{"label":"unnamed-chunk-1","fig-cap":"","context":"setup","editor-quick-suggestions":"false","warning":"true","editor-max-height":"","out-height":"","autorun":"true","comment":"","fig-width":7,"output":"true","message":"true","read-only":"false","results":"markup","classes":"","editor-font-scale":1,"fig-height":5,"dpi":72,"out-width":"700px"},"code":"set.seed(786543)\nn <- 500\nl0 <- rnorm(n)\na1 <- rbinom(n, 1, plogis(-1 + l0*1.5))\nl1 <- rnorm(n)\na2 <- rbinom(n, 1, plogis(-1 + l1*1.5 + a1*2))\ny <- rnorm(n, -1 - 1.2*l0 + 2.4*a1 - 2*l1 + 1.2*a2)\nfoo <- data.frame(\n  L1 = l0, \n  A1 = a1, \n  L2 = l1, \n  A2 = a2, \n  Y = y\n)"},{"id":2,"options":{"label":"unnamed-chunk-2","fig-cap":"","context":"interactive","editor-quick-suggestions":"false","warning":"true","editor-max-height":"","out-height":"","autorun":"false","comment":"","fig-width":7,"output":"true","message":"true","read-only":"false","results":"markup","classes":"","editor-font-scale":1,"fig-height":5,"dpi":72,"out-width":"700px"},"code":"# Create an empty matrix to store the density ratios\ndensity_ratios <- matrix(NA, nrow = n, ncol = 2)\n\nfor (t in 1:2) {\n  a <- c(\"A1\", \"A2\")[t]\n  # Duplicate the data\n  shifted <- foo\n  # In the duplicated data, modify treatment according to d\n  shifted[[a]] <- 1\n  \n  # Set the values of delta in the original and modified data\n  foo$lambda <- 0\n  shifted$lambda <- 1\n  \n  # Stack the original data and the modified data\n  density_ratio_data <- rbind(foo, shifted)\n  \n  # Regress lambda_t on A_t,H_t\n  parents <- unlist(lapply(1:t, \\(x) paste0(c(\"L\", \"A\"), x)))\n  formula <- as.formula(paste(\"lambda ~\", paste(parents, collapse = \"+\")))\n  density_ratio_model <- glm(formula, data = density_ratio_data, family = binomial)\n  \n  # Calculate the estimated odds\n  prob_lambda_1 <- predict(density_ratio_model, foo, type = \"response\")\n  density_ratios[, t] <- prob_lambda_1 / (1 - prob_lambda_1)\n}"},{"id":3,"options":{"label":"unnamed-chunk-3","fig-cap":"","context":"interactive","editor-quick-suggestions":"false","warning":"true","editor-max-height":"","out-height":"","autorun":"false","comment":"","fig-width":7,"output":"true","message":"true","read-only":"false","results":"markup","classes":"","editor-font-scale":1,"fig-height":5,"dpi":72,"out-width":"700px"},"code":"weights <- apply(density_ratios, 1, prod)"},{"id":4,"options":{"label":"unnamed-chunk-4","fig-cap":"","context":"interactive","editor-quick-suggestions":"false","warning":"true","editor-max-height":"","out-height":"","autorun":"false","comment":"","fig-width":7,"output":"true","message":"true","read-only":"false","results":"markup","classes":"","editor-font-scale":1,"fig-height":5,"dpi":72,"out-width":"700px"},"code":"mean(weights*foo$Y)"}];
 
 </script>
 <script type="module">
@@ -1323,7 +1323,10 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
   </ul></li>
-  <li><a href="#inverse-probability-weighting" id="toc-inverse-probability-weighting" class="nav-link" data-scroll-target="#inverse-probability-weighting">Inverse Probability Weighting</a></li>
+  <li><a href="#inverse-probability-weighting" id="toc-inverse-probability-weighting" class="nav-link" data-scroll-target="#inverse-probability-weighting">Inverse Probability Weighting</a>
+  <ul class="collapse">
+  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1">Example</a></li>
+  </ul></li>
   <li><a href="#doubly-robust-estimators" id="toc-doubly-robust-estimators" class="nav-link" data-scroll-target="#doubly-robust-estimators">Doubly Robust Estimators</a>
   <ul class="collapse">
   <li><a href="#efficient-influence-function" id="toc-efficient-influence-function" class="nav-link" data-scroll-target="#efficient-influence-function">Efficient Influence Function</a></li>
@@ -1702,16 +1705,15 @@ r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
 <h3 class="anchored" data-anchor-id="example">Example</h3>
 <p>Consider the following example where we simulate 500 observations from this data-generating mechanism:</p>
 <p><span class="math display">\[\begin{align}
-W &amp;\sim \text{Normal}(0, 1) \\  
-A &amp;\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5W))\\  
-Y &amp;\sim \text{Normal}(-1 - 1.2W + 2.4A).
-\end{align}\]</span> The data has been loaded into R in the background as <code>foo</code>. We will use the density ratio classification trick to estimate the density ratio <span class="math inline">\(r_t(a_t, h_t)\)</span> under the static intervention <span class="math inline">\(d(a_t, h_t) = 1\)</span>. First, we create the augmented data.</p>
+L_1 &amp;\sim \text{Normal}(0, 1) \\  
+A_1 &amp;\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5L_1))\\  
+L_2 &amp;\sim \text{Normal}(0, 1) \\
+A_2 &amp;\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5L_2 + 2A_1))\\
+Y &amp;\sim \text{Normal}(-1 - 1.2L_1 + 2.4A_1 - 2L_2 + 1.2A_2)
+\end{align}\]</span> The data has been loaded into R in the background as <code>foo</code>. We will use the density ratio classification trick to estimate the density ratio <span class="math inline">\(r_t(a_t, h_t)\)</span> under the static intervention <span class="math inline">\(d(a_t, h_t) = 1\)</span>. First, we create the augmented data. We then regress the <span class="math inline">\(\Lambda\)</span> on <span class="math inline">\(A\)</span> and <span class="math inline">\(W\)</span> and estimate the density ratio as the predicted odds.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <div id="qwebr-insertion-location-2"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<p>We then regress the <span class="math inline">\(\Lambda\)</span> on <span class="math inline">\(A\)</span> and <span class="math inline">\(W\)</span> and estimate the density ratio as the predicted odds.</p>
-<div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 </section>
@@ -1721,6 +1723,8 @@ Y &amp;\sim \text{Normal}(-1 - 1.2W + 2.4A).
 <p><span class="math display">\[
 \theta = \E \bigg[ \bigg\{\prod_{t=1}^\tau r_t(a_t, h_t) \bigg\} Y \bigg]
 \]</span></p>
+<p><br>
+The algorithm is as follows:</p>
 <div class="algorithm">
 <div class="algorithm-body">
 <ol type="1">
@@ -1731,6 +1735,16 @@ Y &amp;\sim \text{Normal}(-1 - 1.2W + 2.4A).
 </ol>
 </div>
 </div>
+<section id="example-1" class="level3">
+<h3 class="anchored" data-anchor-id="example-1">Example</h3>
+<p>Let’s apply the IPW estimator using the estimated density ratios we calculated in the previous example. We first compute the weights as the product of the density ratios.</p>
+<div id="qwebr-insertion-location-3"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>Our estimate is then the sample average of the estimated weights times the observed outcomes.</p>
+<div id="qwebr-insertion-location-4"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>Similarly to the sequential regression estimator, the IPW is simple to implement. However, it suffers from the same drawbacks.<br>
+</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -1753,6 +1767,7 @@ Y &amp;\sim \text{Normal}(-1 - 1.2W + 2.4A).
 </tr>
 </tbody>
 </table>
+</section>
 </section>
 <section id="doubly-robust-estimators" class="level2">
 <h2 class="anchored" data-anchor-id="doubly-robust-estimators">Doubly Robust Estimators</h2>
@@ -1849,6 +1864,16 @@ Y &amp;\sim \text{Normal}(-1 - 1.2W + 2.4A).
 </tr>
 </tbody>
 </table>
+<div class="callout callout-style-simple callout-caution">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Be careful not to confuse doubly robust consistency with <em>rate double robustness</em>. Doubly robust consistency refers to the properties we just described. Rate double robustness refers to the property where the error of an estimator is the product of nuisance functions.</p>
+</div>
+</div>
+</div>
 <section id="efficient-influence-function" class="level3">
 <h3 class="anchored" data-anchor-id="efficient-influence-function">Efficient Influence Function</h3>
 <p>Key to constructing the TMLE and SDR is the <em>efficient influence function</em> (EIF).</p>
