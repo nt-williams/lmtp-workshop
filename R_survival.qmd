@@ -5,7 +5,7 @@ date-modified: last-modified
 filters:
   - webr
 webr:
-  packages: ['lmtp', 'superlearner', 'ife', 'dplyr', 'tidyr', 'purrr', 'ggplot2', 'DT']
+  packages: ['lmtp', 'superlearner', 'ife', 'dplyr', 'tidyr', 'purrr', 'ggplot2', 'DT', 'broom']
   autoload-packages: true
   repos: 
     - https://nt-williams.r-universe.dev
@@ -99,7 +99,7 @@ library(ggplot2)
 
 results <- tidy(fit)
 
-ggplot(results, aes(x = t, y = estimate)) + 
+ggplot(results, aes(x = time, y = estimate)) + 
   geom_step() + 
   labs(x = "Days", y = "Survival probability") + 
   scale_y_continuous(limits = c(0.65, 1), 
@@ -196,20 +196,20 @@ We can now estimate the effect of delaying intubation by 1-day on 14-day mortali
 ```{webr-r}
 #| results: 'asis'
 day <- 14
-A <- paste0("I_", sprintf("%02d", 0:(day - 1)))
-W <- names(intubation)[1:10]
-Y <- paste0("Y_", sprintf("%02d", 1:day))
-Obs <- paste0("C_", sprintf("%02d", 0:(day - 1)))
-L <- grep("^L_", names(intubation), value = TRUE)
-L <- lapply(0:(day - 1), \(x) L[grepl(sprintf("%02d", x), L)])
+intubated <- paste0("I_", sprintf("%02d", 0:(day - 1)))
+confounders <- names(intubation)[1:10]
+death <- paste0("Y_", sprintf("%02d", 1:day))
+discharge <- paste0("C_", sprintf("%02d", 0:(day - 1)))
+timevary <- grep("^L_", names(intubation), value = TRUE)
+timevary <- lapply(0:(day - 1), \(x) timevary[grepl(sprintf("%02d", x), timevary)])
 
 lmtp_sdr(
   intubation,
-  trt = A,
-  outcome = Y,
-  baseline = W,
-  time_vary = L,
-  cens = Obs,
+  trt = intubated,
+  outcome = death,
+  baseline = confounders,
+  time_vary = timevary_confounders,
+  cens = discharge,
   shift = d, 
   mtp = TRUE,
   outcome_type = "survival",
@@ -220,4 +220,62 @@ lmtp_sdr(
 
 ## Competing-risks
 
-Blah blah blah
+In the context of survival analysis, competing risks refer to events that preclude the occurrence of the primary event of interest. In the previous examples using the `intubation` dataset, we treated hospital discharge or transfer as censoring events. These events, however, are actually competing risks because we know that if a patients was discharged or transferred out of the ICU on day $t$ they didn't die on that day. 
+
+::: {.callout-caution appearance="simple"}
+Treating competing risks as censoring events involves estimating the effect of an intervention that eliminates the competing event. The identification assumptions for this intervention are stronger than intervention that doesn't consider eliminating the competing event.
+:::
+
+In the presence of competing risks, `lmtp` can estimate the cumulative incidence effects which may be interpreted as the _total effect_ of treatment operating through pathways that include the competing events, but not eliminating the competing events. Let's re-evaluate the effect of a delaying intubation 1-day on 14-day mortality treating discharge or transfer as competing risk. We first need to modify the data:
+
+- Flip the columns corresponding to discharge or transfer so that a 1 indicates a discharge or transfer occurred
+- Impute missing values for discharge and death using last-observation carried forward because they are both deterministic variables once they have occurred (i.e., if a patient died, their probability of discharge or transfer is 0 and vice-versa)
+
+```{webr-r}
+# Function to impute missing values with the last observed observation
+locf <- function(data, columns) {
+  for (col in columns) {
+    # Get the column index
+    index <- which(names(data) == col)
+    
+    # Skip the first column
+    if (index == 1) {
+      next
+    }
+    
+    # Find rows with values
+    na_rows <- is.na(data[[index]])
+    # Replace NA values with the value from the column to the left
+    data[[index]][na_rows] <- data[[index - 1]][na_rows]
+  }
+  
+  return(data)
+}
+
+intubation <- 
+  mutate(intubation, across(starts_with("C_"), function(x) {
+    case_when(x == 1 ~ 0, x == 0 ~ 1, TRUE ~ x)
+  })) |> 
+  locf(discharge) |> 
+  locf(death) |>
+  mutate(across(all_of(death), \(x) ifelse(is.na(x), 0, x)))
+```
+
+We can now re-estimate the effect of delaying intubation by 1-day. Instead of passing the `discharge` vector to the `cens` argument, we pass it to the `compete` argument.
+
+```{webr-r}
+#| results: 'asis'
+lmtp_sdr(
+  intubation,
+  trt = intubated,
+  outcome = death,
+  baseline = confounders,
+  time_vary = timevary,
+  compete = discharge,
+  shift = d, 
+  mtp = TRUE,
+  outcome_type = "survival",
+  folds = 1,
+  k = 2
+)
+```
