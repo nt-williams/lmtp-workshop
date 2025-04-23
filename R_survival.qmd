@@ -219,7 +219,7 @@ lmtp_sdr(
 )
 ```
 
-## Competing-risks
+## Competing risks
 
 In the context of survival analysis, competing risks refer to events that preclude the occurrence of the primary event of interest. In the previous example, we treated hospital discharge or transfer as censoring events. These events, however, are actually competing risks because we know that if a patients was discharged or transferred out of the ICU on day $t$ they didn't die on that day. 
 
