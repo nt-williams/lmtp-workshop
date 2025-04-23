@@ -10,7 +10,8 @@ webr:
   repos: 
     - https://nt-williams.r-universe.dev
 bibliography: references.bib
-no-cite:
+nocite: |
+  @diaz2023nonparametric, @diaz2024causal, @young2020causal
 ---
 
 {{< include macros.qmd >}}
@@ -226,7 +227,7 @@ In the context of survival analysis, competing risks refer to events that preclu
 Treating competing risks as censoring events involves estimating the effect of an intervention that eliminates the competing event. The identification assumptions for this intervention are stronger than intervention that doesn't consider eliminating the competing event.
 :::
 
-In the presence of competing risks, `lmtp` can estimate the cumulative incidence effects which may be interpreted as the _total effect_ of treatment operating through pathways that include the competing events, but not eliminating the competing events. Let's re-evaluate the effect of a delaying intubation 1-day on 14-day mortality treating discharge or transfer as competing risk. We first need to modify the data:
+In the presence of competing risks, `lmtp` can estimate cumulative incidence effects which may be interpreted as the _total effect_ of treatment operating through pathways that include the competing events, but not eliminating the competing events. Let's re-evaluate the effect of a delaying intubation 1-day on 14-day mortality treating discharge or transfer as competing risk. We first need to modify the data:
 
 - Flip the columns corresponding to discharge or transfer so that a 1 indicates a discharge or transfer occurred
 - Impute missing values for discharge and death using last-observation carried forward because they are both deterministic variables once they have occurred (i.e., if a patient died, their probability of discharge or transfer is 0 and vice-versa)
