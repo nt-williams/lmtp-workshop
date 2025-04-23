@@ -127,7 +127,7 @@ ggplot(results, aes(x = time, y = estimate)) +
 
 ```{r echo=FALSE}
 intubation <- read.csv("data/hoffman_toy.csv")
-DT::datatable(intubation, class = "compact", 
+DT::datatable(intubation, class = "compact custom-dt", 
                 options = list(
                   searching = FALSE, 
                   lengthChange = FALSE, 

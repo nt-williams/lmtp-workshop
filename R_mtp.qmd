@@ -38,8 +38,19 @@ In some current work, we are interested in estimating the effect of decreasing t
 
 ```{r echo=FALSE}
 crime <- read.csv("data/crime_toy.csv")
-dplyr::select(crime, -community_code) |> 
-  gtsummary::tbl_summary()
+
+DT::datatable(crime, class = "compact custom-dt", 
+                options = list(
+                  searching = FALSE, 
+                  lengthChange = FALSE, 
+                  ordering = FALSE, 
+                  info = FALSE, 
+                  columnDefs = list(
+                    list(targets = 0, visible = FALSE),
+                    list(className = 'dt-left', targets = "_all")  # apply to all columns
+                  )
+                )) |> 
+   DT::formatRound(columns = names(crime), digits = 1)
 ```
 
 ## Problem 1

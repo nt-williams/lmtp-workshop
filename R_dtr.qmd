@@ -31,9 +31,17 @@ Recall that interventions where the output of the function depends only on covar
 
 A dataset named `bmi` has been loaded into R in the background.
 
+-   The data, from the `DynTxRegime` package, are simulated to reflect a two-stage RCT ($A$ = {`A1`, `A2`}) that studied the effect of meal replacement (`MR`) shakes versus a calorie deficit (`CD`) diet on adolescent obesity.
+
+-   Baseline variables include gender, race, and parent BMI.
+
+-   Time-varying covariates include BMI collected at stage 1 (`baselineBMI`) and stage 2 (`month4BMI`). The primary outcome is BMI at 12 months (`month12BMI`).
+
+-   There is no censoring.
+
 ```{r echo=FALSE}
 data(bmiData, package = "DynTxRegime")
-DT::datatable(bmiData, class = "compact", 
+DT::datatable(bmiData, class = "compact custom-dt", 
                 options = list(
                   searching = FALSE, 
                   lengthChange = FALSE, 
@@ -45,24 +53,6 @@ DT::datatable(bmiData, class = "compact",
                   )
                 )) |> 
   DT::formatRound(columns = paste0(c("parent", "baseline", "month4", "month12"), "BMI"), digits = 1)
-```
-
-\
-
--   The data, from the `DynTxRegime` package, are simulated to reflect a two-stage RCT ($A$ = {`A1`, `A2`}) that studied the effect of meal replacement (`MR`) shakes versus a calorie deficit (`CD`) diet on adolescent obesity.
-
--   Baseline variables include gender, race, and parent BMI.
-
--   Time-varying covariates include BMI collected at stage 1 (`baselineBMI`) and stage 2 (`month4BMI`). The primary outcome is BMI at 12 months (`month12BMI`).
-
--   There is no censoring.
-
-```{r echo=FALSE}
-gtsummary::tbl_strata(bmiData, strata = A1, 
-                      .tbl_fun = \(x) gtsummary::tbl_summary(x, by = A2) |> 
-                        gtsummary::modify_header(
-                          gtsummary::all_stat_cols() ~ "**Stage 2, {level}**"), 
-                      .header = "**Stage 1, {strata}**")
 ```
 
 ## Problem 1

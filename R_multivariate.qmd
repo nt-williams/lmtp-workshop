@@ -42,7 +42,7 @@ For our example of estimating the effects of simultaneous interventions on multi
 mixtures <- read.csv("data/mixtures.csv") |> 
   dplyr::select(-obs)
 
-DT::datatable(mixtures, class = "compact", 
+DT::datatable(mixtures, class = "compact custom-dt", 
                 options = list(
                   searching = FALSE, 
                   lengthChange = FALSE, 
