@@ -297,6 +297,8 @@ $$
 
 : {tbl-colwidths="\[25,25\]"}
 
+The algorithm is as follows:
+
 ::: algorithm
 ::: algorithm-body
 1.  Construct estimates of $r_{i,t}(a_t, h_t)$ using the density ratio classification trick and your favorite regression method.
@@ -337,7 +339,7 @@ $$
 
 ### Example
 
-Let's apply the TMLE estimator using the estimated density ratios we calculated in the previous example.
+Let's apply TMLE using the estimated density ratios we calculated in the previous example.
 
 ```{webr-r}
 # First compute the weights as the cumulative product of the density ratios
@@ -394,6 +396,8 @@ mean(predictions_shifted[, 1])
 |can use machine learning |
 
 : {tbl-colwidths="\[25,25\]"}
+
+The algorithm is as follows:
 
 ::: algorithm
 ::: algorithm-body
