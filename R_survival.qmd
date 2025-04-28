@@ -146,51 +146,36 @@ Let's consider the following intervention
 
 $$
 \dd_t(a_t, h_t) = \begin{cases}
-1 \text{ if } a_t = 2 \text{ and } a_s \leq 1 \forall s < t \\
+1 \text{ if } a_t = 2\\
 a_t \text{ otherwise},
 \end{cases}
 $$
 
 where $A_t$ is a 3-level categorical variable: 0, no supplemental oxygen; 1, non-IMV supplemental oxygen support; 2, IMV.
 
-In words, this function corresponds to an intervention where patients who were naturally observed as receiving IMV on day $t$ instead had IMV delayed by a day to day $t+1$. Let's translate this policy to an R function that we can use with `lmtp`.
+In words, this function corresponds to an intervention where patients who were naturally observed as receiving IMV on day $t$ instead receive non-IMV supplemental oxygen. Let's translate this policy to an R function that we can use with `lmtp`.
 
 ```{webr-r}
 d <- function(data, trt) {
-  # If it's the first time point and intubated, set to 1
-  if (trt == "I_00") {
-    a_d <- ifelse(data$I_00 == "2", 
-                  factor("1", levels = 0:2), 
-                  data$I_00)
-    return(a_d)
-  }
-  # extract time point
-  tau <- as.numeric(gsub("[^\\d]+", "", trt, perl = TRUE))
-  # get the name of previous trt column
-  trt_prev <- paste0("I_", sprintf("%02d", tau - 1))       
-  
-  # If intubated at time T but not T-1, set to 1
-  ifelse(data[[trt]] == "2" & data[[trt_prev]] != "2", 
-         factor("1", levels = 0:2), 
-         data[[trt]])
+  ifelse(data[[trt]] == "2", factor("1", levels = 0:2), data[[trt]])
 }
 ```
 
-::: {.callout-tip  appearance="minimal"}
-**Question**: Why might defining an intervention in terms of an MTP instead of a static intervention be more useful to answer a question about the effect of IMV on death among patients hospitalized with COVID-19?
+<!-- ::: {.callout-tip  appearance="minimal"} -->
+<!-- **Question**: Why might defining an intervention in terms of an MTP instead of a static intervention be more useful to answer a question about the effect of IMV on death among patients hospitalized with COVID-19? -->
 
-<details>
+<!-- <details> -->
 
-<summary style="color: grey; font-weight: 400;">
+<!-- <summary style="color: grey; font-weight: 400;"> -->
 
-✅ Answer 
+<!-- ✅ Answer  -->
 
-</summary>
+<!-- </summary> -->
 
-<p>Intubation may increase the likelihood of mortality through factors separate from COVID (by increasing the likelihood of AKI, for example); however, not intubating a patient who is in respiratory distress may also increase the likelihood of mortality. Thus, some patients do need to be intubated and an intervention that eliminated intubation all together would be non-nonsensical.</p>
+<!-- <p>Intubation may increase the likelihood of mortality through factors separate from COVID (by increasing the likelihood of AKI, for example); however, not intubating a patient who is in respiratory distress may also increase the likelihood of mortality. Thus, some patients do need to be intubated and an intervention that eliminated intubation all together would be non-nonsensical.</p> -->
 
-</details>
-:::
+<!-- </details> -->
+<!-- ::: -->
 
 We can now estimate the effect of delaying IMV by 1-day on 14-day mortality.
 
@@ -227,7 +212,7 @@ In the context of survival analysis, competing risks refer to events that preclu
 Treating competing risks as censoring events involves estimating the effect of an intervention that eliminates the competing event. The identification assumptions for this intervention are stronger than intervention that doesn't consider eliminating the competing event.
 :::
 
-In the presence of competing risks, `lmtp` can estimate cumulative incidence effects. Cumulative incidence effect can be interpreted as the _total effect_ of treatment operating through pathways that include the competing events. Let's re-evaluate the effect of a delaying IMV 1-day on 14-day mortality but instead treat discharge or transfer as a competing risk. We first need to modify the data:
+In the presence of competing risks, `lmtp` can estimate cumulative incidence effects. Cumulative incidence effect can be interpreted as the _total effect_ of treatment operating through pathways that include the competing events. Let's re-evaluate the effect of the previous intervention on 14-day mortality but instead treat discharge or transfer as a competing risk. We first need to modify the data:
 
 - Flip the columns corresponding to discharge or transfer so that a 1 indicates a discharge or transfer occurred
 - Impute missing values for discharge and death using last-observation carried forward because they are both deterministic variables once they have occurred (i.e., if a patient died, their probability of discharge or transfer is 0 and vice-versa)
@@ -262,7 +247,7 @@ intubation <-
   mutate(across(all_of(death), \(x) ifelse(is.na(x), 0, x)))
 ```
 
-We can now re-estimate the effect of delaying IMV by 1-day. Instead of passing the `discharge` vector to the `cens` argument, we pass it to the `compete` argument.
+We can now re-estimate the effect of the intervention. Instead of passing the `discharge` vector to the `cens` argument, we pass it to the `compete` argument.
 
 ```{webr-r}
 #| results: 'asis'
