@@ -1,5 +1,11 @@
 ---
 title: "Estimators"
+date-modified: last-modified
+filters:
+  - webr
+webr:
+  packages: ['dplyr']
+  autoload-packages: true
 bibliography: references.bib
 nocite: |
   @diaz2023nonparametric, @hoffman2023introducing, @kennedy2019nonparametric @haneuse2013estimation, @bickel1993efficient
@@ -102,7 +108,7 @@ L_2 &\sim \text{Normal}(0, 1) \\
 A_2 &\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5L_2 + 2A_1))\\
 Y &\sim \text{Normal}(-1 - 1.2L_1 + 2.4A_1 - 2L_2 + 1.2A_2)
 \end{align}
-The data has been loaded into R in the background as `foo`. We will use the density ratio classification trick to estimate the density ratio $r_t(a_t, h_t)$ under the static intervention $d(a_t, h_t) = 1$. First, we create the augmented data. We then regress the $\Lambda$ on $A_t$ and $H_t$ and estimate the density ratio as the predicted odds.
+The data has been loaded into R in the background as `foo`. We will use the density ratio classification trick to estimate the density ratio $r_t(a_t, h_t)$ under the static intervention $d(a_t, h_t) = 1$. The true value under this intervention is $\approx 2.6$. First, we create the augmented data. We then regress the $\Lambda$ on $A_t$ and $H_t$ and estimate the density ratio as the predicted odds.
 
 ```{webr-r}
 #| context: setup
@@ -350,10 +356,6 @@ for (t in 2:1) {
   # In the duplicated data, modify treatment according to d
   shifted[[a]] <- 1
   
-  # Set the values of delta in the original and modified data
-  foo$lambda <- 0
-  shifted$lambda <- 1
-  
   # Perform the initial regression and generate predictions
   parents <- unlist(lapply(1:t, \(x) paste0(c("L", "A"), x)))
   formula <- as.formula(paste("outcome ~", paste(parents, collapse = "+")))
@@ -406,6 +408,42 @@ mean(outcome)
 3.  The final estimate is defined as $\hat\theta = \frac{1}{n}\sum_{i=1}^n\phi_1(O_i).$
 :::
 :::
+
+```{webr-r}
+predictions_natural <- matrix(NA, nrow = n, ncol = 2)
+predictions_shifted <- matrix(NA, nrow = n, ncol = 3)
+
+# Set t = 2
+# Because t + 1 = tau + 1, set the first pseudo outcome to the observed outcome
+phi_3 <- foo$Y
+predictions_shifted[, 3] <- phi_3
+
+# Regress the pseudo outcome on the observed data
+fit_2 <- glm(phi_3 ~ A2 + L2 + A1 + L1, data = foo)
+
+# Generate the predictions for t = 2
+predictions_natural[, 2] <- predict(fit_2)
+predictions_shifted[, 2] <- predict(fit_2, dplyr::mutate(foo, A2 = 1))
+
+# Iterate, setting t - 1 = 1
+# Compute the pseudo outcome using the efficient influence function
+phi_2 <- density_ratios[, 2]*(phi_3 - predictions_natural[, 2]) + predictions_shifted[, 2]
+
+# Regress the pseudo outcome on the observed data
+fit_1 <- glm(phi_2 ~ A1 + L1, data = foo)
+
+# Generate the predictions for t = 1
+predictions_natural[, 1] <- predict(fit_1)
+predictions_shifted[, 1] <- predict(fit_1, dplyr::mutate(foo, A1 = 1))
+```
+
+```{webr-r}
+# Compute the estimate as the sample mean of the uncentered efficient influence function
+uc_eif <- rowSums(weights * (predictions_shifted[, 2:3] - predictions_natural[, 1:2])) + 
+  predictions_shifted[, 1]
+
+mean(uc_eif)
+```
 
 ## Choosing an Estimator
 
