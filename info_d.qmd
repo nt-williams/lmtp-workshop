@@ -20,13 +20,24 @@ Have you ever begun reading a paper in the methodological causal inference liter
 
 ------------------------------------------------------------------------
 
-In the previous section, we defined $\dd(a_t, h_t, \epsilon_t)$ as a function that maps $A_t$, $H_t$, and potentially a randomizer $\epsilon_t$ to a new value of $A_t$. Our focus henceforth is estimating the causal effect of an intervention, characterized by $\dd$ on the outcome $Y$, through the causal parameter
+In the previous section, we defined $\dd(a_t, h_t, \epsilon_t)$ as a function that maps values $a_t$, $h_t$, and potentially a randomizer $\epsilon_t$ to a new value of treatment. Let us see how this function is used to define a treatment effect. Our focus henceforth is estimating the causal effect of an intervention, characterized by $\dd$ on the outcome $Y$, through the causal parameter
 
 $$
 \theta = \E[Y^{\bar A^{\dd}}]\text{,}
 $$
 
-where $Y^{\bar A^{\dd}}$ is the counterfactual outcome in a world, where possibly contrary to fact, each entry of $\bar{A} = (A_1, \ldots, A_\tau)$ was modified according to the function $\dd$.
+where $Y^{\bar A^{\dd}}$ is the counterfactual outcome in a world, where possibly contrary to fact, each entry of $\bar{A} = (A_1, \ldots, A_\tau)$ was modified according to the function $\dd$ as follows.
+
+
+* At time point $t=1$, the post-intervention treatment is assigned as $A_1^\dd = \dd(A_1, H_1)$. This generates a *counterfactual* treatment at time $t=2$, denoted by $A_2^{A_1^\dd}$. This is the treatment an individual would have gotten had the intervention been performed at time $t=1 but not at time $t=2.
+
+* At time point $t=1$, the post-intervention treatment is assigned as $A_2^\dd = \dd(A_2^{A_1^\dd}, L_2^{A_1^\dd}, A_1^\dd, L1)$. This generates a counterfactual treatment at time $t=3.
+
+* This process is iteratively repeated until the end of the study. At that time, the counterfactual outcome $Y^{\bar A^{\dd}}$ is generated.
+
+
+This definition is agnostic to the type of outcome:
+
 
 -   When $Y$ is continuous, $\theta$ is the mean population value of $Y$ under intervention $\dd$.
 
@@ -38,7 +49,7 @@ But what is this function $\dd$, how can it be defined, and how does using this 
 
 ## Static Interventions
 
-Let $A$ denote a binary vector, such as receiving a medication, and define $\dd(a_t, h_t, \epsilon) = 1$. This intervention characterizes a hypothetical world where all members of the population receive treatment.
+Let $A$ denote a binary vector, such as receiving a medication, and define $\dd(a_t, h_t, \epsilon) = 1$. This intervention characterizes a hypothetical world where all members of the population receive treatment at all times.
 
 ::: {.callout-note appearance="simple"}
 An intervention is static if the function $\dd_t$ always returns the same value regardless of the input.
@@ -196,7 +207,7 @@ Recall that the fundamental problem of causal inference is that we can't observe
 
 Assuming the above, $\theta$ is identified from the observed data with:
 
-Set $\m_{\tau+1} = Y$ For $t = \tau, ..., 1$, recursively define
+Set $\m_{\tau+1} = Y$. In a slight abuse of notation, let $A_t^\dd = \dd(A_t, H_t)$. For $t = \tau, ..., 1$, recursively define
 
 $$
 \m_t: (a_t, h_t) \rightarrow \E[\m_{t + 1}(A^{\dd}_{t+1}, H_{t + 1}) \mid A_t = a_t, H_t = h_t],

@@ -60,7 +60,7 @@ Let, $L$ = `sex`, `bmi`, `age`, and `smoke`; $A$ = `trt`; and $Y$ = `event`. Whe
 
 -   that the variable `event` was generated from an unknown function of the variables that generated `trt` in addition to `trt` itself.
 
-Note that in some cases, we may know one or more of the functions $f$. For example, if our data came from a randomized clinical trial for $A$, then we know the function $f_A$.
+Note that in some cases, we may know one or more of the functions $f$. For example, if our data came from a randomized trial for $A$, then we know the function $f_A$.
 
 ## Counterfactuals
 
@@ -70,11 +70,17 @@ Central to how we will define causal effects is the concept of *counterfactual r
 Counterfactuals are random variables that would have been observed, possibly contrary to fact, in an alternative world.
 :::
 
-For example, consider a scenario where we are interested in the value of $Y$ in a hypothetical situation where, instead of the variable $A$ being equal to its observed value, $A$ is set to some other value.
+For example, consider a scenario where we are interested in the value of $Y$ in a hypothetical situation where, instead of the variable $A$ being equal to its observed value, it is set to some other value $A^\dd$.
 
 -   The value of $Y$ in this hypothetical situation is a counterfactual random variable.
 
--   let $\dd(A, L)$ be a function that takes a treatment value $A$ and a covariate profile $L$ and returns a new value of treatment. **We will refer to the function** $\dd$ **as a *shift* function or a *general hypothetical intervention*.**
+Tipycally, one is interested in counterfactuals where treatment is set to some deterministic value. For instance, one could be interested in setting treatment $A^\dd=1$. One could also be interested in setting $A$ according to some covarites, e.g., ``treat if age > 50''.
+
+- This intervention would be denoted as $A^\dd=\dd(L)$ for some function  $\dd$, and is known as a dynamic treatment regime.
+
+In this workshop we are interested in a generalization of this concept, where the function $\dd$ can also depend on the *natural value of treatment* $A$:
+
+-   Let $\dd(A, L)$ be a function that takes a natural treatment value $A$ and a covariate profile $L$ and returns a new value of treatment. **We will refer to the function** $\dd$ **as a *shift* function or a *general hypothetical intervention*.**
 
 -   Denote the value of $Y$ in the hypothetical world where treatment is set to the value $\dd(A,L)$ as $Y^{\dd}$.
 
@@ -124,7 +130,7 @@ As such, we need to modify and introudce some additional notation:
 | $i$                                    | The index (i.e. a row in a dataset) of an observation from a data set with $n$ total units (i.e., the total number of rows)                 |
 | $t$                                    | The index of time for a total number of time points $\tau$                                                                                  |
 | $L_t$                                  | Confounders at time $t$                                                                                                                     |
-| $A_t$                                  | A vector of intervention variables (i..e, treatment or exposure) at time $t$                                                                |
+| $A_t$                                  | A *vector* of intervention variables (i..e, treatment or exposure) at time $t$                                                              |
 | $Y$                                    | An outcome variable observed at the end of the study, that is at time $\tau + 1$. Earlier measures of the outcome can be included in $L_t$. |
 | $C_t$                                  | A indicator variable that a unit is *observed* (not censored) at time $t+1$                                                                 |
 | $O_1, ..., O_n$                        | A sample of $n$ i.i.d observations with $O = (L_1, A_1, C_1, L_2, A_2, C_2, ..., L_\tau, A_\tau, C_\tau, Y)$                                |
