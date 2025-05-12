@@ -309,7 +309,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">April 17, 2025</p>
+      <p class="date-modified">May 12, 2025</p>
     </div>
   </div>
     
@@ -364,8 +364,8 @@ Y &amp;= f_Y(A, L, U_Y)
 <p>Take for example the following sample of data:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-7d09769ea12bfd625c55" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-7d09769ea12bfd625c55">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Male","Male","Male","Male","Male","Female","Male","Male","Female","Male"],[23.8,33.4,27.5,21.9,17.2,28.1,25.9,21.4,30.9,24.5],[56.0766598220397,79.73990417522241,46.4722792607803,53.0622861054073,87.70157426420261,78.507871321013,49.7796030116359,65.9438740588638,95.9260780287474,88.35318275154],["No","Former Smoker","No","No","Active Smoker","Former Smoker","Active Smoker","No","Former Smoker","Former Smoker"],[1,0,0,1,0,1,1,0,0,1],[1,1,1,0,0,0,0,0,0,1]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e543f1ef34d3349c37db" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e543f1ef34d3349c37db">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Male","Female","Male","Female","Male","Male","Female","Male","Male","Male"],[54.44,24.6,23.8,29,24.9,21.5,27,23.5,27,30.4],[54.5051334702259,71.6769336071184,56.0766598220397,67.4852840520192,62.8774811772758,72.8021902806297,86.8665297741273,65.88090349075971,66.6201232032854,76.807665982204],["No","No","No","No","No","No","No","No","No","Former Smoker"],[0,0,1,1,0,0,0,0,0,0],[0,0,1,1,0,1,1,0,0,1]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
 </div>
 </div>
 <p><br>
@@ -374,7 +374,7 @@ Let, <span class="math inline">\(L\)</span> = <code>sex</code>, <code>bmi</code>
 <li><p>the variable <code>trt</code> was generated from an unknown function of the random variables <code>sex</code>, <code>bmi</code>, <code>age</code>, and <code>smoke</code>, as well as a set of unmeasured random variables not present in our data.</p></li>
 <li><p>that the variable <code>event</code> was generated from an unknown function of the variables that generated <code>trt</code> in addition to <code>trt</code> itself.</p></li>
 </ul>
-<p>Note that in some cases, we may know one or more of the functions <span class="math inline">\(f\)</span>. For example, if our data came from a randomized clinical trial for <span class="math inline">\(A\)</span>, then we know the function <span class="math inline">\(f_A\)</span>.</p>
+<p>Note that in some cases, we may know one or more of the functions <span class="math inline">\(f\)</span>. For example, if our data came from a randomized trial for <span class="math inline">\(A\)</span>, then we know the function <span class="math inline">\(f_A\)</span>.</p>
 </section>
 <section id="counterfactuals" class="level2">
 <h2 class="anchored" data-anchor-id="counterfactuals">Counterfactuals</h2>
@@ -389,10 +389,17 @@ Let, <span class="math inline">\(L\)</span> = <code>sex</code>, <code>bmi</code>
 </div>
 </div>
 </div>
-<p>For example, consider a scenario where we are interested in the value of <span class="math inline">\(Y\)</span> in a hypothetical situation where, instead of the variable <span class="math inline">\(A\)</span> being equal to its observed value, <span class="math inline">\(A\)</span> is set to some other value.</p>
+<p>For example, consider a scenario where we are interested in the value of <span class="math inline">\(Y\)</span> in a hypothetical situation where, instead of the variable <span class="math inline">\(A\)</span> being equal to its observed value, it is set to some other value <span class="math inline">\(A^\dd\)</span>.</p>
 <ul>
-<li><p>The value of <span class="math inline">\(Y\)</span> in this hypothetical situation is a counterfactual random variable.</p></li>
-<li><p>let <span class="math inline">\(\dd(A, L)\)</span> be a function that takes a treatment value <span class="math inline">\(A\)</span> and a covariate profile <span class="math inline">\(L\)</span> and returns a new value of treatment. <strong>We will refer to the function</strong> <span class="math inline">\(\dd\)</span> <strong>as a <em>shift</em> function or a <em>general hypothetical intervention</em>.</strong></p></li>
+<li>The value of <span class="math inline">\(Y\)</span> in this hypothetical situation is a counterfactual random variable.</li>
+</ul>
+<p>Typically, one is interested in counterfactuals where treatment is set to some deterministic value. For instance, one could be interested in setting treatment <span class="math inline">\(A^\dd=1\)</span>. One could also be interested in setting <span class="math inline">\(A\)</span> according to some covariates, e.g., “treat if age &gt; 50”.</p>
+<ul>
+<li>This intervention would be denoted as <span class="math inline">\(A^\dd=\dd(L)\)</span> for some function <span class="math inline">\(\dd\)</span>, and is known as a dynamic treatment regime.</li>
+</ul>
+<p>In this workshop we are interested in a generalization of this concept, where the function <span class="math inline">\(\dd\)</span> can also depend on the <em>natural value of treatment</em> <span class="math inline">\(A\)</span>:</p>
+<ul>
+<li><p>Let <span class="math inline">\(\dd(A, L)\)</span> be a function that takes a natural treatment value <span class="math inline">\(A\)</span> and a covariate profile <span class="math inline">\(L\)</span> and returns a new value of treatment. <strong>We will refer to the function</strong> <span class="math inline">\(\dd\)</span> <strong>as a <em>shift</em> function or a <em>general hypothetical intervention</em>.</strong></p></li>
 <li><p>Denote the value of <span class="math inline">\(Y\)</span> in the hypothetical world where treatment is set to the value <span class="math inline">\(\dd(A,L)\)</span> as <span class="math inline">\(Y^{\dd}\)</span>.</p></li>
 </ul>
 <p>Returning to the data example, imagine we are interested in the value of <code>event</code> if <code>trt</code> was replaced with the output of a function <span class="math inline">\(\dd\)</span> that always returns 1:</p>
@@ -406,8 +413,8 @@ Y^{\dd} &amp;= f_Y(1, L, U_Y)
 <p>Here we introduce some new notation <span class="math inline">\(A^{\dd}\)</span> to refer to the post-intervention exposure. If we had the ability to collect data from this alternative NPSEM, the data may instead look like this:</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-7efe31375cf523b229e4" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-7efe31375cf523b229e4">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Male","Male","Female","Male","Male","Female","Female","Female","Male","Male"],[32.6,30.7,21.5,26.9,32,30.9,28.8,23.7,21,25.1],[69.1663244353183,58.7542778918549,60.8952772073922,49.1581108829569,41.0896646132786,95.9260780287474,81.35249828884329,54.9705681040383,82.6666666666667,61.8124572210815],["No","Former Smoker","No","No","No","Former Smoker","No","No","Former Smoker","No"],[1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-d3d49a3fb3d7a8d53b16" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-d3d49a3fb3d7a8d53b16">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Male","Male","Female","Male","Male","Female","Female","Female","Male","Male"],[32.6,30.7,21.5,26.9,32,30.9,28.8,23.7,21,25.1],[69.1663244353183,58.7542778918549,60.8952772073922,49.1581108829569,41.0896646132786,95.9260780287474,81.35249828884329,54.9705681040383,82.6666666666667,61.8124572210815],["No","Former Smoker","No","No","No","Former Smoker","No","No","Former Smoker","No"],[1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
 </div>
 </div>
 <p><br>
@@ -444,7 +451,7 @@ Y^{\dd} &amp;= f_Y(1, L, U_Y)
 </tr>
 <tr class="even">
 <td><span class="math inline">\(A_t\)</span></td>
-<td>A vector of intervention variables (i..e, treatment or exposure) at time <span class="math inline">\(t\)</span></td>
+<td>A <em>vector</em> of intervention variables (i..e, treatment or exposure) at time <span class="math inline">\(t\)</span></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(Y\)</span></td>
