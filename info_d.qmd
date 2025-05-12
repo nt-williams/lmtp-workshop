@@ -29,15 +29,13 @@ $$
 where $Y^{\bar A^{\dd}}$ is the counterfactual outcome in a world, where possibly contrary to fact, each entry of $\bar{A} = (A_1, \ldots, A_\tau)$ was modified according to the function $\dd$ as follows.
 
 
-* At time point $t=1$, the post-intervention treatment is assigned as $A_1^\dd = \dd(A_1, H_1)$. This generates a *counterfactual* treatment at time $t=2$, denoted by $A_2^{A_1^\dd}$. This is the treatment an individual would have gotten had the intervention been performed at time $t=1 but not at time $t=2.
+* At time point $t=1$, the post-intervention treatment is assigned as $A_1^\dd = \dd(A_1, H_1)$. This generates a *counterfactual* treatment at time $t=2$, denoted by $A_2^{A_1^\dd}$. This is the treatment an individual would have gotten had the intervention been performed at time $t=1$ but not at time $t=2$.
 
-* At time point $t=1$, the post-intervention treatment is assigned as $A_2^\dd = \dd(A_2^{A_1^\dd}, L_2^{A_1^\dd}, A_1^\dd, L1)$. This generates a counterfactual treatment at time $t=3.
+* At time point $t=2$, the post-intervention treatment is assigned as $A_2^\dd = \dd(A_2^{A_1^\dd}, L_2^{A_1^\dd}, A_1^\dd, L1)$. This generates a counterfactual treatment at time $t=3$.
 
 * This process is iteratively repeated until the end of the study. At that time, the counterfactual outcome $Y^{\bar A^{\dd}}$ is generated.
 
-
 This definition is agnostic to the type of outcome:
-
 
 -   When $Y$ is continuous, $\theta$ is the mean population value of $Y$ under intervention $\dd$.
 
