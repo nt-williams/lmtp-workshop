@@ -74,7 +74,7 @@ For example, consider a scenario where we are interested in the value of $Y$ in 
 
 -   The value of $Y$ in this hypothetical situation is a counterfactual random variable.
 
-Tipycally, one is interested in counterfactuals where treatment is set to some deterministic value. For instance, one could be interested in setting treatment $A^\dd=1$. One could also be interested in setting $A$ according to some covarites, e.g., ``treat if age > 50''.
+Typically, one is interested in counterfactuals where treatment is set to some deterministic value. For instance, one could be interested in setting treatment $A^\dd=1$. One could also be interested in setting $A$ according to some covariates, e.g., "treat if age > 50".
 
 - This intervention would be denoted as $A^\dd=\dd(L)$ for some function  $\dd$, and is known as a dynamic treatment regime.
 
