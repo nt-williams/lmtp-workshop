@@ -113,7 +113,7 @@ ggplot(results, aes(x = time, y = estimate)) +
 
 ## Time-varying treatment
 
-@hoffman2023introducing demonstrated the use of modified treatment policies for survival outcomes to assess the effect of delaying invasive mechanical ventilation (IMV) on mortality among patients hospitalized with COVID-19 in New York City during the first COVID-19 wave. A synthetic version of the data used for that analysis has been loaded into R as `intubation`.
+@hoffman2023introducing demonstrated the use of modified treatment policies for survival outcomes to assess the effect of preventing invasive mechanical ventilation (IMV) on mortality among patients hospitalized with COVID-19 in New York City during the first COVID-19 wave. A synthetic version of the data used for that analysis has been loaded into R as `intubation`.
 
 ![Structure of data with survival outcome and time-varying treatment. Adapted from Hoffman et al., 2022.](images/data_complex.png){fig-align="center"}
 
@@ -177,7 +177,7 @@ d <- function(data, trt) {
 <!-- </details> -->
 <!-- ::: -->
 
-We can now estimate the effect of delaying IMV by 1-day on 14-day mortality.
+We can now estimate the effect of preventing IMV 1-day on 14-day mortality.
 
 ```{webr-r}
 #| results: 'asis'

@@ -424,7 +424,7 @@ The estimation algorithm is as follows:
 
     3. Iterate.
 
-3.  The final estimate is defined as $\hat\theta = \frac{1}{n}\sum_{i=1}^n\phi_1(O_i), where $\phi_1$ is computed using $\hat r_t$ and $\check\m_{t}$.
+3.  The final estimate is defined as $\hat\theta = \frac{1}{n}\sum_{i=1}^n\phi_1(O_i)$, where $\phi_1$ is computed using $\hat r_t$ and $\check\m_{t}$.
 :::
 :::
 
