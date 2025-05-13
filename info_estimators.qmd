@@ -405,7 +405,7 @@ $$
 E[\phi_t(O)\mid A_t=a_t, H_t=h_t] \approx \m_t(a_t, h_t)
 $$
 
-where the approximation error is ``doubly robust''. This provides a way to obtain doubly robust estimators of the regression functions $\m_t(a_t, h_t)$
+where the approximation error is "doubly robust". This provides a way to obtain doubly robust estimators of the regression functions $\m_t(a_t, h_t)$
 
 
 The estimation algorithm is as follows:
