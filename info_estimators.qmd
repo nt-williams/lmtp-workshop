@@ -70,9 +70,7 @@ Recall that $\g_t^\dd(a_t \mid h_t)$ denotes the density of treatment *post-inte
 We will often refer to this ratio as the *intervention mechanism* throughout the workshop. Estimation of $r_t(a_t, h_t)$ is fully automated in `lmtp` and hidden from the user. **A comprehensive understanding of this process isn't necessary to use `lmtp`!**
 :::
 
--   We can directly estimate this density ratio with a classification trick.
-
--   Can compute the density ratio (which we can see is also the odds) in a classification problem. We use an augmented dataset with $2n$ observations. In this new dataset, the outcome is a new variable that we make, $\Lambda$, (defined below) and the predictors are the variables $A_t$ and $H_t$. In this new dataset, the data structure at time $t$ is redefined as
+We can directly estimate this density ratio with a classification trick. To do this, we create an augmented dataset with $2n$ observations. In this new dataset, the outcome is a new variable that we make, $\Lambda$, (defined below) and the predictors are the variables $A_t$ and $H_t$. The data structure at time $t$ is then redefined as
 
 $$
 (H_{\lambda, i, t}, A_{\lambda, i, t}, \Lambda_{\lambda, i} : \lambda = 0, 1; i = 1, ..., n)
@@ -80,21 +78,24 @@ $$
 
 -   $\Lambda_{\lambda, i} = \lambda_i$ indexes duplicate values. So if $\Lambda_i =1$ if observation $i$ is a duplicated value and $\Lambda_i =0$ otherwise.
 
-    -   For all duplicated observations $\lambda\in\{0,1\}$ with the same $i$, $H_{\lambda, i, t}$ is the same
+-   For all duplicated observations $\lambda\in\{0,1\}$ with the same $i$, $H_{\lambda, i, t}$ is the same
 
-    -   For all the original observations, $\lambda = 0$, $A_{\lambda=0, i, t}$ equals the observed exposure values $A_{i, t}$
+-   For all the original observations, $\lambda = 0$, $A_{\lambda=0, i, t}$ equals the observed exposure values $A_{i, t}$
 
-    -   For all the duplicated observations, $\lambda=1$, $A_{\lambda=1, i, t}$ equals the exposure values under the intervention $\dd$, $A^{\dd}_{i,t}$
+-   For all the duplicated observations, $\lambda=1$, $A_{\lambda=1, i, t}$ equals the exposure values under the intervention $\dd$, $A^{\dd}_{i,t}$
     
 ![Example of augmenting data for density ratio estimation.](images/density_ratio_data.png){fig-align="center"}
 
--   We then estimate the conditional probability that $\Lambda=1$ conditional on $(A, H)$ in this dataset, and divide it by the corresponding estimate of the conditional probability that $\Lambda=0$. Specifically, denoting $p^\lambda$ to be the distribution of the data in the augmented dataset, we have (the math behind this involves simple applications of Bayes rule):
+We then estimate the conditional probability that $\Lambda=1$ conditional on $(A, H)$ in this dataset, and divide it by the corresponding estimate of the conditional probability that $\Lambda=0$. Specifically, denoting $P^\lambda$ to be the distribution of the data in the augmented dataset, we have:
 
 $$
-r_t(a_t, h_t) = \frac{p^\lambda(a_t, h_t \mid \Lambda =
-    1)}{p^\lambda(a_t, h_t \mid \Lambda =
-    0)}=\frac{p^\lambda(\Lambda = 1\mid A_t=a_t,
-    H_t=h_t)}{p^\lambda(\Lambda = 0\mid A_t=a_t, H_t=h_t)}
+\begin{align*}
+r_t(a_t, h_t) &= \frac{P^\lambda(a_t, h_t \mid \Lambda =
+    1)}{P^\lambda(a_t, h_t \mid \Lambda =
+    0)}\\
+    &= \frac{P^\lambda(\Lambda = 1\mid a_t,h_t)P^\lambda(a_t,h_t)}{P^\lambda(\Lambda = 1)}\times \frac{P^\lambda(\Lambda = 0)}{P^\lambda(\Lambda = 0\mid a_t,h_t)P^\lambda(a_t,h_t)} \\
+    &=\frac{P^\lambda(\Lambda = 1\mid a_t,h_t)}{P^\lambda(\Lambda = 0\mid a_t, h_t)}
+\end{align*}
 $$
 
 ### Example
