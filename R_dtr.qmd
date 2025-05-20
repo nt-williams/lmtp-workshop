@@ -5,10 +5,11 @@ date-modified: last-modified
 filters:
   - webr
 webr:
-  packages: ['lmtp', 'superlearner', 'DynTxRegime', 'gam']
+  packages: ['lmtp', 'DynTxRegime', 'gam']
   autoload-packages: true
   repos: 
-    - https://nt-williams.r-universe.dev
+    - https://nt-williams.r-universe.dev/
+    - https://repo.r-wasm.org
     - https://imbs-hl.r-universe.dev
 bibliography: references.bib
 nocite: |

@@ -5,7 +5,7 @@ date-modified: last-modified
 filters:
   - webr
 webr:
-  packages: ['lmtp', 'superlearner']
+  packages: ['lmtp', 'SuperLearner']
   autoload-packages: true
   repos: 
     - https://nt-williams.r-universe.dev
@@ -185,8 +185,8 @@ print(treat)
 
 ```{=html}
 <details>
-<summary style="color: black; font-weight: bold;">Answer</summary>
-<p>In a hypothetical world where all patients received treatment, the expected proportion of patients who receive invasive mechanical ventilation by day 15 of hospitalization is 0.2722 (95% CI: 0.24 to 0.30).</p>
+<summary style="color: grey; font-weight: 400;">✅ Answer</summary>
+<p>In a hypothetical world where all patients received treatment, the expected proportion of patients who receive invasive mechanical ventilation by day 15 of hospitalization is 0.28 (95% CI: 0.24 to 0.32).</p>
 </details>
 ```
 :::
@@ -198,11 +198,7 @@ A call to an `lmtp` estimator returns a list of class `lmtp`.
 | Value          | Description                                                                                                                  |
 |----------------|------------------------------------------------------------------------------------------------------------------------------|
 | estimator      | The estimator used.                                                                                                          |
-| theta          | The estimated population LMTP estimand.                                                                                      |
-| standard_error | The estimated standard error of the LMTP estimand.                                                                           |
-| low            | Lower bound of the 95% confidence interval of the LMTP estimand.                                                             |
-| high           | Upper bound of the 95% confidence interval of the LMTP estimand.                                                             |
-| eif            | The estimated, un-centered, influence function of the estimate.                                                              |
+| estimate          | The estimated population LMTP effect as an `ife` object.                                                                                     |
 | shift          | The shift function specifying the treatment policy of interest.                                                              |
 | outcome_reg    | An $n \times \tau + 1$ matrix of outcome regression predictions. The mean of the first column is used for calculating theta. |
 | density_ratios | An $n \times \tau$ matrix of the estimated, non-cumulative, density ratios.                                                  |

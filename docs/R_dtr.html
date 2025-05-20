@@ -252,6 +252,91 @@ body.quarto-dark .qwebr-button:hover {
   color: #696969;
 }
 
+/* Style the code highlight lines */
+body.quarto-light .qwebr-editor-highlight-line {
+  background-color: lightblue;
+}
+
+body.quarto-dark .qwebr-editor-highlight-line {
+  background-color: darkblue;
+}
+
+/* Style the modal pop-up */
+
+/* The Modal (background) */
+.qwebr-modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
+
+/* Modal Content */
+.qwebr-modal-content {
+  background-color: #fefefe;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.qwebr-modal-content-code {
+  max-height: 50vh;
+  min-height: 5vh;
+  overflow: scroll;
+  border: 1px solid #888;
+}
+
+/* The Close Button */
+.qwebr-modal-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.qwebr-modal-close:hover,
+.qwebr-modal-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.qwebr-download-btn {
+  margin-top: 10px;
+  text-decoration: none !important;
+}
+
+/* Styling to download image that is created */
+
+.qwebr-canvas-image {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+}
+
+.qwebr-canvas-image-download-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: none;
+}
+
+figure:hover .qwebr-canvas-image-download-btn {
+  display: block;
+}
 
 /* Custom styling for RevealJS Presentations*/
 
@@ -263,7 +348,7 @@ body.quarto-dark .qwebr-button:hover {
   max-height: 100%;
   margin: 0;
   padding: 0;
-} 
+}
 
 /* Provide space to entries */
 .reveal div.qwebr-output-code-area pre div {
@@ -308,15 +393,25 @@ body.reveal.quarto-dark div.qwebr-console-area {
   overflow: scroll;
 }
 
+iframe.qwebr-output-code-browse {
+  width: 100%;
+
+  /*
+    TODO: How to make the height automatic according to the widget size,
+    or respect the quarto code block options?
+  */
+  min-height: 500px;
+}
+
 </style>
 <script type="module">
 // Document level settings ----
 
 // Determine if we need to install R packages
-globalThis.qwebrInstallRPackagesList = ['lmtp', 'superlearner', 'DynTxRegime', 'gam'];
+globalThis.qwebrInstallRPackagesList = ['lmtp', 'DynTxRegime', 'gam'];
 
 // Specify possible locations to search for the repository
-globalThis.qwebrPackageRepoURLS = ['https://nt-williams.r-universe.dev', 'https://imbs-hl.r-universe.dev', 'https://repo.r-wasm.org/'];
+globalThis.qwebrPackageRepoURLS = ['https://nt-williams.r-universe.dev/', 'https://repo.r-wasm.org', 'https://imbs-hl.r-universe.dev', 'https://repo.r-wasm.org/'];
 
 // Check to see if we have an empty array, if we do set to skip the installation.
 globalThis.qwebrSetupRPackages = !(qwebrInstallRPackagesList.indexOf("") !== -1);
@@ -328,14 +423,14 @@ globalThis.qwebrShowHeaderMessage = false;
 
 // Describe the webR settings that should be used
 globalThis.qwebrCustomizedWebROptions = {
-  "baseURL": "https://webr.r-wasm.org/v0.3.3/",
+  "baseURL": "https://webr.r-wasm.org/v0.4.0/",
   "serviceWorkerUrl": "",
   "homedir": "/home/web_user", 
   "channelType": "ChannelType.Automatic"
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"data(bmiData)\nbmi <- bmiData\n# bmi$A1 <- ifelse(bmi$A1 == \"MR\", 1, 0)\n# bmi$A2 <- ifelse(bmi$A2 == \"MR\", 1, 0)","options":{"context":"setup","output":"true","autorun":"true","out-width":"700px","label":"unnamed-chunk-1","fig-width":7,"out-height":"","classes":"","warning":"true","results":"markup","editor-max-height":"","message":"true","dpi":72,"fig-cap":"","editor-quick-suggestions":"false","editor-font-scale":1,"comment":"","read-only":"false","fig-height":5},"id":1},{"code":"d_dtr <- # Write your shift function here!","options":{"context":"interactive","output":"true","autorun":"false","out-width":"700px","label":"unnamed-chunk-2","fig-width":7,"out-height":"","classes":"","warning":"true","results":"markup","editor-max-height":"","message":"true","dpi":72,"fig-cap":"","editor-quick-suggestions":"false","editor-font-scale":1,"comment":"","read-only":"false","fig-height":5},"id":2},{"code":"fit_dtr <- lmtp_sdr(\n  data = bmi, \n  trt = c(\"A1\", \"A2\"), \n  outcome = \"month12BMI\", \n  baseline = c(\"gender\", \"race\", \"parentBMI\"), \n  time_vary = list(\"baselineBMI\", \"month4BMI\"),\n  shift = d_dtr, \n  outcome_type = \"continuous\",\n  folds = 1,\n  learners_trt = \"SL.glm\", \n  learners_outcome = c(\"SL.mean\", \"SL.glm\", \"SL.gam\")\n)","options":{"context":"interactive","output":"true","autorun":"false","out-width":"700px","label":"unnamed-chunk-3","fig-width":7,"out-height":"","classes":"","warning":"true","results":"markup","editor-max-height":"","message":"true","dpi":72,"fig-cap":"","editor-quick-suggestions":"false","editor-font-scale":1,"comment":"","read-only":"false","fig-height":5},"id":3},{"code":"fit_MR <- # Write your estimation code here!","options":{"context":"interactive","output":"true","autorun":"false","out-width":"700px","label":"unnamed-chunk-4","fig-width":7,"out-height":"","classes":"","warning":"true","results":"markup","editor-max-height":"","message":"true","dpi":72,"fig-cap":"","editor-quick-suggestions":"false","editor-font-scale":1,"comment":"","read-only":"false","fig-height":5},"id":4},{"code":"fit_CD <- lmtp_sdr(\n  data = bmi, \n  trt = c(\"A1\", \"A2\"), \n  outcome = \"month12BMI\", \n  baseline = c(\"gender\", \"race\", \"parentBMI\"), \n  time_vary = list(\"baselineBMI\", \"month4BMI\"),\n  shift = \\(data, trt) rep(\"CD\", nrow(data)), \n  outcome_type = \"continuous\",\n  folds = 1,\n  learners_trt = \"SL.glm\", \n  learners_outcome = c(\"SL.mean\", \"SL.glm\", \"SL.gam\")\n)","options":{"context":"interactive","output":"true","autorun":"false","out-width":"700px","label":"unnamed-chunk-5","fig-width":7,"out-height":"","classes":"","warning":"true","results":"markup","editor-max-height":"","message":"true","dpi":72,"fig-cap":"","editor-quick-suggestions":"false","editor-font-scale":1,"comment":"","read-only":"false","fig-height":5},"id":5},{"code":"lmtp_contrast(fit_dtr, fit_MR, ref = fit_CD)","options":{"context":"interactive","output":"true","autorun":"false","out-width":"700px","label":"unnamed-chunk-6","fig-width":7,"out-height":"","classes":"","warning":"true","results":"markup","editor-max-height":"","message":"true","dpi":72,"fig-cap":"","editor-quick-suggestions":"false","editor-font-scale":1,"comment":"","read-only":"false","fig-height":5},"id":6}];
+globalThis.qwebrCellDetails = [{"options":{"comment":"","editor-max-height":"","output":"true","autorun":"true","read-only":"false","results":"markup","dpi":72,"editor-word-wrap":"true","context":"setup","fig-cap":"","label":"unnamed-chunk-1","message":"true","editor-font-scale":"1","fig-width":7,"warning":"true","classes":"","editor-quick-suggestions":"false","fig-height":5,"out-height":"","out-width":"700px"},"code":"data(bmiData)\nbmi <- bmiData\n# bmi$A1 <- ifelse(bmi$A1 == \"MR\", 1, 0)\n# bmi$A2 <- ifelse(bmi$A2 == \"MR\", 1, 0)","id":1},{"options":{"comment":"","editor-max-height":"","output":"true","autorun":"false","read-only":"false","results":"markup","dpi":72,"editor-word-wrap":"true","context":"interactive","fig-cap":"","label":"unnamed-chunk-2","message":"true","editor-font-scale":"1","fig-width":7,"warning":"true","classes":"","editor-quick-suggestions":"false","fig-height":5,"out-height":"","out-width":"700px"},"code":"d_dtr <- # Write your shift function here!","id":2},{"options":{"comment":"","editor-max-height":"","output":"true","autorun":"false","read-only":"false","results":"markup","dpi":72,"editor-word-wrap":"true","context":"interactive","fig-cap":"","label":"unnamed-chunk-3","message":"true","editor-font-scale":"1","fig-width":7,"warning":"true","classes":"","editor-quick-suggestions":"false","fig-height":5,"out-height":"","out-width":"700px"},"code":"fit_dtr <- lmtp_sdr(\n  data = bmi, \n  trt = c(\"A1\", \"A2\"), \n  outcome = \"month12BMI\", \n  baseline = c(\"gender\", \"race\", \"parentBMI\"), \n  time_vary = list(\"baselineBMI\", \"month4BMI\"),\n  shift = d_dtr, \n  outcome_type = \"continuous\",\n  folds = 1,\n  learners_trt = \"SL.glm\", \n  learners_outcome = c(\"SL.mean\", \"SL.glm\", \"SL.gam\")\n)","id":3},{"options":{"comment":"","editor-max-height":"","output":"true","autorun":"false","read-only":"false","results":"markup","dpi":72,"editor-word-wrap":"true","context":"interactive","fig-cap":"","label":"unnamed-chunk-4","message":"true","editor-font-scale":"1","fig-width":7,"warning":"true","classes":"","editor-quick-suggestions":"false","fig-height":5,"out-height":"","out-width":"700px"},"code":"fit_MR <- # Write your estimation code here!","id":4},{"options":{"comment":"","editor-max-height":"","output":"true","autorun":"false","read-only":"false","results":"markup","dpi":72,"editor-word-wrap":"true","context":"interactive","fig-cap":"","label":"unnamed-chunk-5","message":"true","editor-font-scale":"1","fig-width":7,"warning":"true","classes":"","editor-quick-suggestions":"false","fig-height":5,"out-height":"","out-width":"700px"},"code":"fit_CD <- lmtp_sdr(\n  data = bmi, \n  trt = c(\"A1\", \"A2\"), \n  outcome = \"month12BMI\", \n  baseline = c(\"gender\", \"race\", \"parentBMI\"), \n  time_vary = list(\"baselineBMI\", \"month4BMI\"),\n  shift = \\(data, trt) rep(\"CD\", nrow(data)), \n  outcome_type = \"continuous\",\n  folds = 1,\n  learners_trt = \"SL.glm\", \n  learners_outcome = c(\"SL.mean\", \"SL.glm\", \"SL.gam\")\n)","id":5},{"options":{"comment":"","editor-max-height":"","output":"true","autorun":"false","read-only":"false","results":"markup","dpi":72,"editor-word-wrap":"true","context":"interactive","fig-cap":"","label":"unnamed-chunk-6","message":"true","editor-font-scale":"1","fig-width":7,"warning":"true","classes":"","editor-quick-suggestions":"false","fig-height":5,"out-height":"","out-width":"700px"},"code":"lmtp_contrast(fit_dtr, fit_MR, ref = fit_CD)","id":6}];
 
 </script>
 <script type="module">
@@ -369,6 +464,41 @@ globalThis.qwebrUpdateStatusHeader = function(message) {
     <span>${message}</span>`;
 }
 
+// Function to return true if element is found, false if not
+globalThis.qwebrCheckHTMLElementExists = function(selector) {
+  const element = document.querySelector(selector);
+  return !!element;
+}
+
+// Function that detects whether reveal.js slides are present
+globalThis.qwebrIsRevealJS = function() {
+  // If the '.reveal .slides' selector exists, RevealJS is likely present
+  return qwebrCheckHTMLElementExists('.reveal .slides');
+}
+
+// Initialize the Quarto sidebar element
+function qwebrSetupQuartoSidebar() {
+  var newSideBarDiv = document.createElement('div');
+  newSideBarDiv.id = 'quarto-margin-sidebar';
+  newSideBarDiv.className = 'sidebar margin-sidebar';
+  newSideBarDiv.style.top = '0px';
+  newSideBarDiv.style.maxHeight = 'calc(0px + 100vh)';
+
+  return newSideBarDiv;
+}
+
+// Position the sidebar in the document
+function qwebrPlaceQuartoSidebar() {
+  // Get the reference to the element with id 'quarto-document-content'
+  var referenceNode = document.getElementById('quarto-document-content');
+
+  // Create the new div element
+  var newSideBarDiv = qwebrSetupQuartoSidebar();
+
+  // Insert the new div before the 'quarto-document-content' element
+  referenceNode.parentNode.insertBefore(newSideBarDiv, referenceNode);
+}
+
 function qwebrPlaceMessageContents(content, html_location = "title-block-header", revealjs_location = "title-slide") {
 
   // Get references to header elements
@@ -388,6 +518,7 @@ function qwebrPlaceMessageContents(content, html_location = "title-block-header"
     monacoScript.after(header);
   }
 }
+
 
 
 function qwebrOffScreenCanvasSupportWarningMessage() {
@@ -495,8 +626,294 @@ function displayStartupMessage(showStartupMessage, showHeaderMessage) {
   qwebrPlaceMessageContents(quartoTitleMeta); 
 }
 
+function qwebrAddCommandHistoryModal() {
+  // Create the modal div
+  var modalDiv = document.createElement('div');
+  modalDiv.id = 'qwebr-history-modal';
+  modalDiv.className = 'qwebr-modal';
+
+  // Create the modal content div
+  var modalContentDiv = document.createElement('div');
+  modalContentDiv.className = 'qwebr-modal-content';
+
+  // Create the span for closing the modal
+  var closeSpan = document.createElement('span');
+  closeSpan.id = 'qwebr-command-history-close-btn';
+  closeSpan.className = 'qwebr-modal-close';
+  closeSpan.innerHTML = '&times;';
+
+  // Create the h1 element for the modal
+  var modalH1 = document.createElement('h1');
+  modalH1.textContent = 'R History Command Contents';
+
+  // Create an anchor element for downloading the Rhistory file 
+  var downloadLink = document.createElement('a');
+  downloadLink.href = '#';
+  downloadLink.id = 'qwebr-download-history-btn';
+  downloadLink.className = 'qwebr-download-btn';
+
+  // Create an 'i' element for the icon
+  var icon = document.createElement('i');
+  icon.className = 'bi bi-file-code';
+
+  // Append the icon to the anchor element
+  downloadLink.appendChild(icon);
+
+  // Add the text 'Download R History' to the anchor element
+  downloadLink.appendChild(document.createTextNode(' Download R History File'));
+
+  // Create the pre for command history contents
+  var commandContentsPre = document.createElement('pre');
+  commandContentsPre.id = 'qwebr-command-history-contents';
+  commandContentsPre.className = 'qwebr-modal-content-code';
+
+  // Append the close span, h1, and history contents pre to the modal content div
+  modalContentDiv.appendChild(closeSpan);
+  modalContentDiv.appendChild(modalH1);
+  modalContentDiv.appendChild(downloadLink);
+  modalContentDiv.appendChild(commandContentsPre);
+
+  // Append the modal content div to the modal div
+  modalDiv.appendChild(modalContentDiv);
+
+  // Append the modal div to the body
+  document.body.appendChild(modalDiv);
+}
+
+function qwebrRegisterRevealJSCommandHistoryModal() {
+  // Select the <ul> element inside the <div> with data-panel="Custom0"
+  let ulElement = document.querySelector('div[data-panel="Custom0"] > ul.slide-menu-items');
+
+  // Find the last <li> element with class slide-tool-item
+  let lastItem = ulElement.querySelector('li.slide-tool-item:last-child');
+
+  // Calculate the next data-item value
+  let nextItemValue = 0;
+  if (lastItem) {
+      nextItemValue = parseInt(lastItem.dataset.item) + 1;
+  }
+
+  // Create a new <li> element
+  let newListItem = document.createElement('li');
+  newListItem.className = 'slide-tool-item';
+  newListItem.dataset.item = nextItemValue.toString(); // Set the next available data-item value
+
+  // Create the <a> element inside the <li>
+  let newLink = document.createElement('a');
+  newLink.href = '#';
+  newLink.id = 'qwebrRHistoryButton'; // Set the ID for the new link
+  
+  // Create the <kbd> element inside the <a>
+  let newKbd = document.createElement('kbd');
+  newKbd.textContent = ' '; // Set to empty as we are not registering a keyboard shortcut
+
+  // Create text node for the link text
+  let newText = document.createTextNode(' View R History');
+
+  // Append <kbd> and text node to <a>
+  newLink.appendChild(newKbd);
+  newLink.appendChild(newText);
+
+  // Append <a> to <li>
+  newListItem.appendChild(newLink);
+
+  // Append <li> to <ul>
+  ulElement.appendChild(newListItem);
+}
+
+// Handle setting up the R history modal
+function qwebrCodeLinks() {
+
+  if (qwebrIsRevealJS()) {
+    qwebrRegisterRevealJSCommandHistoryModal();
+    return;
+  }
+
+  // Create the container div
+  var containerDiv = document.createElement('div');
+  containerDiv.className = 'quarto-code-links';
+
+  // Create the h2 element
+  var h2 = document.createElement('h2');
+  h2.textContent = 'webR Code Links';
+
+  // Create the ul element
+  var ul = document.createElement('ul');
+
+  // Create the li element
+  var li = document.createElement('li');
+
+  // Create the a_history_btn element
+  var a_history_btn = document.createElement('a');
+  a_history_btn.href = 'javascript:void(0)';
+  a_history_btn.setAttribute('id', 'qwebrRHistoryButton');
+
+  // Create the i_history_btn element
+  var i_history_btn = document.createElement('i');
+  i_history_btn.className = 'bi bi-file-code';
+
+  // Create the text node for the link text
+  var text_history_btn = document.createTextNode('View R History');
+
+  // Append the icon element and link text to the a element
+  a_history_btn.appendChild(i_history_btn);
+  a_history_btn.appendChild(text_history_btn);
+
+  // Append the a element to the li element
+  li.appendChild(a_history_btn);
+
+  // Append the li element to the ul element
+  ul.appendChild(li);
+
+  // Append the h2 and ul elements to the container div
+  containerDiv.appendChild(h2);
+  containerDiv.appendChild(ul);
+
+  // Append the container div to the element with the ID 'quarto-margin-sidebar'
+  var sidebar = document.getElementById('quarto-margin-sidebar');
+    
+  // If the sidebar element is not found, create it
+  if(!sidebar) {
+    qwebrPlaceQuartoSidebar();
+  }
+  
+  // Re-select the sidebar element (if it was just created)
+  sidebar = document.getElementById('quarto-margin-sidebar');   
+
+
+  // If the sidebar element exists, append the container div to it
+  if(sidebar) {
+    // Append the container div to the sidebar
+    sidebar.appendChild(containerDiv);
+    // Force the sidebar to be clickable by removing the 'zindex-bottom' class
+    // added in pre-release: https://github.com/quarto-dev/quarto-cli/commit/f0c53a1ffcaa1de4eccbf07803b096898248adcc
+    sidebar.className = 'sidebar margin-sidebar';
+  } else {
+    // Get a debugger ...
+    console.warn('Element with ID "quarto-margin-sidebar" not found.');
+  }
+}
+
+// Call the function to append the code links for qwebR into the right sidebar
+qwebrCodeLinks();
+
+// Add the command history modal
+qwebrAddCommandHistoryModal();
+
 displayStartupMessage(qwebrShowStartupMessage, qwebrShowHeaderMessage);
 qwebrOffScreenCanvasSupportWarningMessage();
+</script>
+<script type="module">
+// Define a global storage and retrieval solution ----
+
+// Store commands executed in R
+globalThis.qwebrRCommandHistory = [];
+
+// Function to retrieve the command history
+globalThis.qwebrFormatRHistory = function() {
+   return qwebrRCommandHistory.join("\n\n");
+}
+
+// Retrieve HTML Elements ----
+
+// Get the command modal
+const command_history_modal = document.getElementById("qwebr-history-modal");
+
+// Get the button that opens the command modal
+const command_history_btn = document.getElementById("qwebrRHistoryButton");
+
+// Get the <span> element that closes the command modal
+const command_history_close_span = document.getElementById("qwebr-command-history-close-btn");
+
+// Get the download button for r history information
+const command_history_download_btn = document.getElementById("qwebr-download-history-btn");
+
+// Plug in command history into modal/download button ----
+
+// Function to populate the modal with command history
+function populateCommandHistoryModal() {
+    document.getElementById("qwebr-command-history-contents").innerHTML = qwebrFormatRHistory() || "No commands have been executed yet.";
+}
+
+// Function to format the current date and time to
+// a string with the format YYYY-MM-DD-HH-MM-SS
+function formatDateTime() {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day}-${hours}-${minutes}-${seconds}`;
+}
+
+
+// Function to convert document title with datetime to a safe filename
+function safeFileName() {
+    // Get the current page title
+    let pageTitle = document.title;
+
+    // Combine the current page title with the current date and time
+    let pageNameWithDateTime = `Rhistory-${pageTitle}-${formatDateTime()}`;
+
+    // Replace unsafe characters with safe alternatives
+    let safeFilename = pageNameWithDateTime.replace(/[\\/:\*\?! "<>\|]/g, '-');
+
+    return safeFilename;
+}
+
+
+// Function to download list contents as text file
+function downloadRHistory() {
+    // Get the current page title + datetime and use it as the filename
+    const filename = `${safeFileName()}.R`;
+
+    // Get the text contents of the R History list
+    const text = qwebrFormatRHistory();
+
+    // Create a new Blob object with the text contents
+    const blob = new Blob([text], { type: 'text/plain' });
+  
+    // Create a new anchor element for the download
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+
+    // Append the anchor to the body, click it, and remove it
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+// Register event handlers ----
+
+// When the user clicks the View R History button, open the command modal
+command_history_btn.onclick = function() {
+    populateCommandHistoryModal();
+    command_history_modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the command modal
+command_history_close_span.onclick = function() {
+    command_history_modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the command modal, close it
+window.onclick = function(event) {
+    if (event.target == command_history_modal) {
+        command_history_modal.style.display = "none";
+    }
+}
+
+// Add an onclick event listener to the download button so that
+// the user can download the R history as a text file
+command_history_download_btn.onclick = function() {
+    downloadRHistory();
+};
 </script>
 <script type="module">
 // Supported Evaluation Types for Context
@@ -835,11 +1252,15 @@ globalThis.qwebrInstance = import(qwebrCustomizedWebROptions.baseURL + "webr.mjs
     // Setup a shelter
     globalThis.mainWebRCodeShelter = await new mainWebR.Shelter();
 
-    // Setup a pager to allow processing help documentation 
-    await mainWebR.evalRVoid('webr::pager_install()'); 
+    // Setup a pager to allow processing help documentation
+    await mainWebR.evalRVoid('webr::pager_install()');
+
+    // Setup a viewer to allow processing htmlwidgets.
+    // This might not be available in old webr version
+    await mainWebR.evalRVoid('try({ webr::viewer_install() })');
 
     // Override the existing install.packages() to use webr::install()
-    await mainWebR.evalRVoid('webr::shim_install()'); 
+    await mainWebR.evalRVoid('webr::shim_install()');
 
     // Specify the repositories to pull from
     // Note: webR does not use the `repos` option, but instead uses `webr_pkg_repos`
@@ -877,7 +1298,7 @@ globalThis.qwebrIsObjectEmpty = function (arr) {
     return Object.keys(arr).length === 0;
 }
 
-// Global version of the Escape HTML function that converts HTML 
+// Global version of the Escape HTML function that converts HTML
 // characters to their HTML entities.
 globalThis.qwebrEscapeHTMLCharacters = function(unsafe) {
     return unsafe
@@ -886,7 +1307,7 @@ globalThis.qwebrEscapeHTMLCharacters = function(unsafe) {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
-  };
+};
 
 // Passthrough results
 globalThis.qwebrIdentity = function(x) {
@@ -898,11 +1319,39 @@ globalThis.qwebrPrefixComment = function(x, comment) {
     return `${comment}${x}`;
 };
 
+// Function to store the code in the history
+globalThis.qwebrLogCodeToHistory = function(codeToRun, options) {
+    qwebrRCommandHistory.push(
+        `# Ran code in ${options.label} at ${new Date().toLocaleString()} ----\n${codeToRun}`
+    );
+};
+
+// Function to attach a download button onto the canvas
+// allowing the user to download the image.
+function qwebrImageCanvasDownloadButton(canvas, canvasContainer) {
+
+    // Create the download button
+    const downloadButton = document.createElement('button');
+    downloadButton.className = 'qwebr-canvas-image-download-btn';
+    downloadButton.textContent = 'Download Image';
+    canvasContainer.appendChild(downloadButton);
+
+    // Trigger a download of the image when the button is clicked
+    downloadButton.addEventListener('click', function() {
+        const image = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = 'qwebr-canvas-image.png';
+        link.click();
+    });
+}
+
+
 // Function to parse the pager results
-globalThis.qwebrParseTypePager = async function (msg) { 
+globalThis.qwebrParseTypePager = async function (msg) {
 
     // Split out the event data
-    const { path, title, deleteFile } = msg.data; 
+    const { path, title, deleteFile } = msg.data;
 
     // Process the pager data by reading the information from disk
     const paged_data = await mainWebR.FS.readFile(path).then((data) => {
@@ -911,7 +1360,7 @@ globalThis.qwebrParseTypePager = async function (msg) {
 
         // Remove excessive backspace characters until none remain
         while(content.match(/.[\b]/)){
-        content = content.replace(/.[\b]/g, '');
+            content = content.replace(/.[\b]/g, '');
         }
 
         // Returned cleaned data
@@ -919,22 +1368,41 @@ globalThis.qwebrParseTypePager = async function (msg) {
     });
 
     // Unlink file if needed
-    if (deleteFile) { 
-        await mainWebR.FS.unlink(path); 
-    } 
+    if (deleteFile) {
+        await mainWebR.FS.unlink(path);
+    }
 
     // Return extracted data with spaces
     return paged_data;
-} 
+};
+
+
+// Function to parse the browse results
+globalThis.qwebrParseTypeBrowse = async function (msg) {
+
+    // msg.type === "browse"
+    const path = msg.data.url;
+
+    // Process the browse data by reading the information from disk
+    const browse_data = await mainWebR.FS.readFile(path).then((data) => {
+        // Obtain the file content
+        let content = new TextDecoder().decode(data);
+
+        return content;
+    });
+
+    // Return extracted data as-is
+    return browse_data;
+};
 
 // Function to run the code using webR and parse the output
 globalThis.qwebrComputeEngine = async function(
-    codeToRun, 
-    elements, 
+    codeToRun,
+    elements,
     options) {
 
     // Call into the R compute engine that persists within the document scope.
-    // To be prepared for all scenarios, the following happens: 
+    // To be prepared for all scenarios, the following happens:
     // 1. We setup a canvas device to write to by making a namespace call into the {webr} package
     // 2. We use values inside of the options array to set the figure size.
     // 3. We capture the output stream information (STDOUT and STERR)
@@ -954,11 +1422,11 @@ globalThis.qwebrComputeEngine = async function(
         processOutput = qwebrIdentity;
     }
 
-    // ---- 
+    // ----
     // Convert from Inches to Pixels by using DPI (dots per inch)
     // for bitmap devices (dpi * inches = pixels)
-    let fig_width = options["fig-width"] * options["dpi"]
-    let fig_height = options["fig-height"] * options["dpi"]
+    let fig_width = options["fig-width"] * options["dpi"];
+    let fig_height = options["fig-height"] * options["dpi"];
 
     // Initialize webR
     await mainWebR.init();
@@ -970,7 +1438,7 @@ globalThis.qwebrComputeEngine = async function(
         captureConditions: false,
         // env: webR.objs.emptyEnv, // maintain a global environment for webR v0.2.0
     };
-    
+
     // Determine if the browser supports OffScreen
     if (qwebrOffScreenCanvasSupport()) {
         // Mirror default options of webr::canvas()
@@ -987,6 +1455,9 @@ globalThis.qwebrComputeEngine = async function(
         captureOutputOptions.captureGraphics = false;
     }
 
+    // Store the code to run in history
+    qwebrLogCodeToHistory(codeToRun, options);
+
     // Setup a webR canvas by making a namespace call into the {webr} package
     // Evaluate the R code
     // Remove the active canvas silently
@@ -999,18 +1470,18 @@ globalThis.qwebrComputeEngine = async function(
 
     // Start attempting to parse the result data
     processResultOutput:try {
-        
+
         // Avoid running through output processing
-        if (options.results === "hide" || options.output === "false") { 
-            break processResultOutput; 
+        if (options.results === "hide" || options.output === "false") {
+            break processResultOutput;
         }
 
         // Merge output streams of STDOUT and STDErr (messages and errors are combined.)
-        // Require both `warning` and `message` to be true to display `STDErr`. 
+        // Require both `warning` and `message` to be true to display `STDErr`.
         const out = result.output
         .filter(
-            evt => evt.type === "stdout" || 
-            ( evt.type === "stderr" && (options.warning === "true" && options.message === "true")) 
+            evt => evt.type === "stdout" ||
+            ( evt.type === "stderr" && (options.warning === "true" && options.message === "true"))
         )
         .map((evt, index) => {
             const className = `qwebr-output-code-${evt.type}`;
@@ -1022,15 +1493,31 @@ globalThis.qwebrComputeEngine = async function(
 
         // Clean the state
         // We're now able to process pager events.
-        // As a result, we cannot maintain a true 1-to-1 output order 
+        // As a result, we cannot maintain a true 1-to-1 output order
         // without individually feeding each line
         const msgs = await mainWebR.flush();
 
         // Use `map` to process the filtered "pager" events asynchronously
-        const pager = await Promise.all(
-            msgs.filter(msg => msg.type === 'pager').map(
+        const pager = [];
+        const browse = [];
+
+        await Promise.all(
+            msgs.map(
                 async (msg) => {
-                    return await qwebrParseTypePager(msg);
+
+                    const msgType = msg.type || "unknown";
+
+                    switch(msgType) {
+                        case 'pager':
+                            const pager_data = await qwebrParseTypePager(msg);
+                            pager.push(pager_data);
+                            break;
+                        case 'browse':
+                            const browse_data = await qwebrParseTypeBrowse(msg);
+                            browse.push(browse_data);
+                            break;
+                    }
+                    return;
                 }
             )
         );
@@ -1062,13 +1549,19 @@ globalThis.qwebrComputeEngine = async function(
 
         // Determine if we have graphs to display
         if (result.images.length > 0) {
+
             // Create figure element
-            const figureElement = document.createElement('figure');
+            const figureElement = document.createElement("figure");
+            figureElement.className = "qwebr-canvas-image";
 
             // Place each rendered graphic onto a canvas element
             result.images.forEach((img) => {
+
                 // Construct canvas for object
                 const canvas = document.createElement("canvas");
+
+                // Add an image download button
+                qwebrImageCanvasDownloadButton(canvas, figureElement);
 
                 // Set canvas size to image
                 canvas.width = img.width;
@@ -1087,9 +1580,10 @@ globalThis.qwebrComputeEngine = async function(
                 // Draw image onto Canvas
                 const ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, img.width, img.height);
-          
+
                 // Append canvas to figure output area
                 figureElement.appendChild(canvas);
+
             });
 
             if (options['fig-cap']) {
@@ -1097,28 +1591,46 @@ globalThis.qwebrComputeEngine = async function(
                 const figcaptionElement = document.createElement('figcaption');
                 figcaptionElement.innerText = options['fig-cap'];
                 // Append figcaption to figure
-                figureElement.appendChild(figcaptionElement);    
+                figureElement.appendChild(figcaptionElement);
             }
 
             elements.outputGraphDiv.appendChild(figureElement);
+
         }
 
         // Display the pager data
-        if (pager) {
-        // Use the `pre` element to preserve whitespace.
-        pager.forEach((paged_data, index) => {
-            let pre_pager = document.createElement("pre");
-            pre_pager.innerText = paged_data;
-            pre_pager.classList.add("qwebr-output-code-pager");
-            pre_pager.setAttribute("id", `qwebr-output-code-pager-editor-${elements.id}-result-${index + 1}`);
-            elements.outputCodeDiv.appendChild(pre_pager);
-        });
+        if (pager.length > 0) {
+            // Use the `pre` element to preserve whitespace.
+            pager.forEach((paged_data, index) => {
+                const pre_pager = document.createElement("pre");
+                pre_pager.innerText = paged_data;
+                pre_pager.classList.add("qwebr-output-code-pager");
+                pre_pager.setAttribute("id", `qwebr-output-code-pager-editor-${elements.id}-result-${index + 1}`);
+                elements.outputCodeDiv.appendChild(pre_pager);
+            });
+        }
+
+        // Display the browse data
+        if (browse.length > 0) {
+            // Use the `pre` element to preserve whitespace.
+            browse.forEach((browse_data, index) => {
+                const iframe_browse = document.createElement('iframe');
+                iframe_browse.classList.add("qwebr-output-code-browse");
+                iframe_browse.setAttribute("id", `qwebr-output-code-browse-editor-${elements.id}-result-${index + 1}`);
+                iframe_browse.style.width = "100%";
+                iframe_browse.style.minHeight = "500px";
+                elements.outputCodeDiv.appendChild(iframe_browse);
+
+                iframe_browse.contentWindow.document.open();
+                iframe_browse.contentWindow.document.write(browse_data);
+                iframe_browse.contentWindow.document.close();
+            });
         }
     } finally {
         // Clean up the remaining code
         mainWebRCodeShelter.purge();
     }
-}
+};
 
 // Function to execute the code (accepts code as an argument)
 globalThis.qwebrExecuteCode = async function (
@@ -1128,12 +1640,12 @@ globalThis.qwebrExecuteCode = async function (
 
     // If options are not passed, we fall back on the bare minimum to handle the computation
     if (qwebrIsObjectEmpty(options)) {
-        options = { 
-            "context": "interactive", 
-            "fig-width": 7, "fig-height": 5, 
-            "out-width": "700px", "out-height": "", 
+        options = {
+            "context": "interactive",
+            "fig-width": 7, "fig-height": 5,
+            "out-width": "700px", "out-height": "",
             "dpi": 72,
-            "results": "markup", 
+            "results": "markup",
             "warning": "true", "message": "true",
         };
     }
@@ -1428,6 +1940,12 @@ updateMonacoEditorsOnBodyClassChange();
 // Global array to store Monaco Editor instances
 globalThis.qwebrEditorInstances = [];
 
+function isValidCodeLineNumbers(stringCodeLineNumbers) {
+  // Regular expression to match valid input strings
+  const regex = /^(\d+(-\d+)?)(,\d+(-\d+)?)*$/;
+  return regex.test(stringCodeLineNumbers);
+}
+
 // Function that builds and registers a Monaco Editor instance    
 globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 
@@ -1457,7 +1975,8 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
       renderLineHighlight: "none",      // Disable current line highlighting
       hideCursorInOverviewRuler: true,  // Remove cursor indictor in right hand side scroll bar
       readOnly: qwebrOptions['read-only'] ?? false,
-      quickSuggestions: qwebrOptions['editor-quick-suggestions'] ?? false
+      quickSuggestions: qwebrOptions['editor-quick-suggestions'] ?? false,
+      wordWrap: (qwebrOptions['editor-word-wrap'] == 'true' ? "on" : "off")
     });
 
     // Store the official counter ID to be used in keyboard shortcuts
@@ -1480,7 +1999,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
     const model = editor.getModel();
     // Set EOL for the model
     model.setEOL(monaco.editor.EndOfLineSequence.LF);
-
+    
     // Dynamically modify the height of the editor window if new lines are added.
     let ignoreEvent = false;
     const updateHeight = () => {
@@ -1505,6 +2024,56 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
         ignoreEvent = false;
       }
     };
+
+    // Function to generate decorations to highlight lines
+    // in the editor based on input string.
+    function decoratorHighlightLines(codeLineNumbers) {
+      // Store the lines to be lighlight
+      let linesToHighlight = [];
+      
+      // Parse the codeLineNumbers string to get the line numbers to highlight
+      // First, split the string by commas
+      codeLineNumbers.split(',').forEach(part => {
+        // Check if we have a range of lines
+        if (part.includes('-')) {
+            // Handle range of lines (e.g., "6-8")
+            const [start, end] = part.split('-').map(Number);
+            for (let i = start; i <= end; i++) {
+                linesToHighlight.push(i);
+            }
+        } else {
+            // Handle single line (e.g., "7")
+            linesToHighlight.push(Number(part));
+        }
+      });
+  
+      // Create monaco decorations for the lines to highlight
+      const decorations = linesToHighlight.map(lineNumber => ({
+          range: new monaco.Range(lineNumber, 1, lineNumber, 1),
+          options: {
+              isWholeLine: true,
+              className: 'qwebr-editor-highlight-line'
+          }
+      }));
+  
+      // Return decorations to be applied to the editor
+      return decorations;
+    }
+
+    // Ensure that the editor-code-line-numbers option is set and valid
+    // then apply styling
+    if (qwebrOptions['editor-code-line-numbers']) {
+      // Remove all whitespace from the string
+      const codeLineNumbers = qwebrOptions['editor-code-line-numbers'].replace(/\s/g,'');
+      // Check if the string is valid for line numbers, e.g., "1,3-5,7"
+      if (isValidCodeLineNumbers(codeLineNumbers)) {
+        // Apply the decorations to the editor
+        editor.createDecorationsCollection(decoratorHighlightLines(codeLineNumbers));
+      } else {
+        // Warn the user that the input is invalid
+        console.warn(`Invalid "editor-code-line-numbers" value in code cell ${qwebrOptions['label']}: ${codeLineNumbers}`);
+      }
+    }
 
     // Helper function to check if selected text is empty
     function isEmptyCodeText(selectedCodeText) {
@@ -1612,7 +2181,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">April 23, 2025</p>
+      <p class="date-modified">May 20, 2025</p>
     </div>
   </div>
     
@@ -1652,8 +2221,8 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-f4c5c513e54cfead6664" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-f4c5c513e54cfead6664">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122","123","124","125","126","127","128","129","130","131","132","133","134","135","136","137","138","139","140","141","142","143","144","145","146","147","148","149","150","151","152","153","154","155","156","157","158","159","160","161","162","163","164","165","166","167","168","169","170","171","172","173","174","175","176","177","178","179","180","181","182","183","184","185","186","187","188","189","190","191","192","193","194","195","196","197","198","199","200","201","202","203","204","205","206","207","208","209","210"],[0,1,1,1,1,0,0,1,1,0,0,0,1,0,0,1,0,0,1,1,0,1,0,1,1,0,1,0,1,1,1,1,0,0,1,1,1,1,0,0,0,1,1,0,1,1,0,1,0,0,0,1,1,1,0,0,0,1,0,1,1,0,1,1,0,0,1,0,0,1,0,0,0,1,1,0,0,0,1,1,0,0,1,0,1,1,0,0,0,0,1,1,0,0,0,1,0,1,0,1,0,1,1,0,1,1,0,0,1,1,0,0,1,1,0,0,0,0,1,1,1,0,1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,1,1,1,1,0,0,1,1,0,1,0,1,1,0,0,1,0,1,1,0,1,1,0,0,1,0,1,1,1,1,0,1,1,0,1,0,0,1,0,1,1,1,0,0,1,0,1,1,1,0,1,1,1,0,1,1,0,0,1,0,0,1,1,0,1,1,1,0,0,1,1,1,0],[1,0,0,0,1,0,1,1,1,0,1,1,1,0,1,1,0,0,1,0,0,1,0,1,0,1,1,1,1,1,0,0,1,0,1,1,0,1,0,0,0,1,1,1,1,1,1,0,1,0,0,0,1,1,0,0,0,1,1,0,1,0,1,1,1,0,0,0,0,1,1,0,0,1,1,1,1,1,0,0,1,1,1,1,0,1,1,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,0,0,0,1,0,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0,0,1,0,1,1,1,0,1,1,1,1,0,0,1,1,0,1,0,0,1,1,0,1,1,0,1,0,0,1,1,1,1,1,1,0,1,1,0,0,0,1,0,1,0,0,1,1,1,1,0,0,1,0],[31.5968318483271,30.1756356785969,30.2791805720788,27.4925639536086,26.4235030578742,29.3097028602197,25.9004953839248,30.0710683521509,28.5212636233082,26.0243965306649,26.0772008193802,27.0385487527352,29.7094883087714,28.9224737238368,28.6124334522678,29.8454867797679,30.8235566613149,29.8897997360069,25.4103503739197,29.2735979126957,28.8625257690046,29.1552848851867,27.9438104485535,26.2340890143842,32.6055349572872,27.5568200625244,27.7050244363249,29.3486159074754,28.2271528648959,33.2495826635327,26.2089430304968,27.5926160232334,28.6280601397405,29.275532855513,32.5660822580474,30.6696527273157,27.9293929897221,28.5569747650387,32.9899357535859,25.8017815037268,29.2332750441281,27.3144160242306,28.6133024071739,27.2563028903991,29.2939730413347,31.2875823333514,28.4472865276752,24.5871158770569,24.8765099941707,30.4226366070002,28.7128350810937,31.1154382932201,29.0820645671288,29.4153870516944,31.1704456652138,28.0849585751793,26.7682728790888,30.2732850445308,31.751889473,27.5077447296646,29.4668826560683,32.4009075918896,28.3951711089974,30.729557882399,26.0788688597458,30.0826645818561,29.0767749564888,31.5479592435817,29.8845199722753,28.9048903961073,25.2137363117863,33.9449659264947,30.0175422421505,25.1917645432234,29.7998771302675,30.5413498327413,31.0618877453117,29.6532924385687,29.1915078743245,29.7711151806851,30.1807252497815,27.4056152938221,28.4086048361403,29.7403095664926,29.0489681895652,28.3557368190232,24.8548598808231,28.8106800763928,27.8862979273306,28.7213307384893,25.6481644227204,28.0602556220042,26.8388175051607,25.3459516361351,27.8043085029699,29.7872095848364,29.5177647121541,29.2125591842254,26.0580819244269,29.0259342817049,28.8518675178746,30.4606018904983,32.2642513833078,28.1035024975379,28.7304266795524,41.51321172294,41.3492306933484,38.6221422747027,38.7783320814866,38.8515961403114,32.5320635576317,42.7694642791476,41.2770759077081,36.9527134424169,40.7874142343349,45.5697696582316,39.4431984681516,39.3964081798467,34.5258553715863,41.6306745886718,50.8333555350427,35.584945250856,32.8714562690236,38.7137867379175,35.7171343910827,36.0091476999245,35.1312909117106,39.3250107424864,41.5632222807496,36.1280852789093,34.9813924263611,39.7150285714149,42.182534914779,40.2004486116071,34.9192694032632,42.5387529455107,36.0315157434716,50.766755046636,33.5525196631247,37.5717403422607,37.211108987751,39.4865966883862,32.8515086073487,37.6301352770643,41.9693595463341,35.7276601078795,36.1593499953863,42.9688710343465,40.262406207356,40.249350332998,38.2250638411105,43.5368167432468,38.2782746414832,39.6737418779832,46.693769740275,32.6154321998616,33.8489385493448,36.1647060066867,34.4033025511868,34.8335707862893,36.7298617321768,32.1858079083204,45.2435355385754,40.3533439244207,38.8934202059533,36.0305461939754,31.1099613237619,38.4186773544978,32.5430617543702,39.8211274965861,37.9442100724629,33.4204917870523,32.1541893308589,49.4455537745882,35.3744281926257,35.0414428016681,36.3618394379658,41.8657677215711,38.0167053836908,44.0498324514362,40.3571452658047,38.6522211207698,37.1826333812221,34.1586764212114,33.3373369270565,39.4564140934319,34.8361263292668,37.5881241165712,45.8167366252594,35.3382699281492,37.9671420253808,42.5604788482187,35.7384935445763,37.4337198370254,43.7483119229769,39.0583122460716,41.5928723226047,43.3867518477068,33.9222447503285,43.5315659667319,35.7365142090536,39.8646141597294,30.1709251485223,42.7119057456991,36.5415242496024,32.167506322318,36.1144994610154,35.1327479111612,35.3978518919441,36.5089341695638],[35.8400505844913,37.3039586910681,36.8388927397088,36.7067888904164,34.8420684530105,36.6864014984657,35.4263102497953,37.0590606128652,35.3685987689465,33.0647219027641,32.3399962522145,35.905040022087,33.5667345569686,35.4242788132674,31.311018045386,33.8824855265834,35.6965470728487,37.3867841753117,34.5396645991215,36.416601538563,36.6697176380486,36.0759564002357,40.2399647794254,33.3079403916821,32.721452885721,37.8579133577677,35.3993874451954,38.2176404800547,34.0154393143722,33.3169007877039,31.6962413671513,35.6861806748892,35.4116245198845,34.3681064263761,36.7452126663768,36.8062514400708,34.4759304009627,33.9217625289354,34.1897301838816,31.7038023432634,31.2494098064287,33.6813922291418,36.27341361175,37.9444117880157,38.9251399558777,39.3640897787705,32.9410378647426,32.5205605152126,34.774893146581,34.6804642879754,41.1372234694825,37.1465827049241,34.9536058940755,31.8556402898036,39.6102346141751,36.5597857879862,36.9507477769156,35.5963279658644,37.076855463549,37.3745973045164,36.5775366688182,35.1591236089033,36.4071200830396,34.5927869653427,38.8477286856288,39.1939904063974,33.7101105997601,37.7986607382182,33.7221316230908,37.4880626230247,34.9420465760116,40.1874615080188,35.8728975262065,39.4484910345293,39.0977574070384,36.9755664079899,36.4395081931457,36.2220927498324,35.2161069087819,34.7655300066151,33.4636163180805,35.669559388649,36.4651915000965,38.8681576367012,38.5629106660422,36.3306991074564,34.6042086512075,37.4618996653082,37.1144602832931,34.8448175718331,36.3626679216744,41.0038806255628,36.5587360311556,36.274379931599,34.7602537758574,35.2059828146951,36.7820720500468,31.1457955106628,40.439759798817,34.3689476739489,37.018238452232,35.8735485455039,34.6324792086546,37.8310314618707,36.2908925706439,43.2659336239479,40.8182158096921,44.4952202078272,42.4023408395103,45.2832668333708,40.1562163609003,41.5248484436131,36.2722618925427,45.271843069743,43.5650755579936,36.2415486396726,44.0224942844041,33.7539709933501,39.2045369330491,39.3748716030813,34.6925279989344,36.725477854328,43.8294553855262,38.3950852093819,42.7163887700083,44.6853922172683,41.9788559933223,34.3820957497796,37.6073639253812,41.8199495671565,36.2069858682801,33.5429058396724,38.9293372412494,40.2474720344567,37.277330668132,37.7766233525022,42.2237970124812,36.4872428302646,41.8446312991368,44.5757868082459,36.986225786018,49.828283726195,52.5168125484269,34.5868892401366,34.1374044823423,44.533211863297,42.4871070197343,35.307587300295,37.9968583243768,45.3158738696634,43.0803978539683,44.8982484489005,40.1724855488821,39.2043223715979,40.1159552259825,37.852551821515,42.7544547399696,41.4867332964223,40.4267443661591,46.1660763510995,45.2157334250825,42.8534685851277,42.6599794229896,33.5251474014311,33.3127075700751,39.7386709252033,41.4500973554668,42.0882705808234,45.6896626591482,38.696090796288,39.0182962678748,46.1804137369161,42.0740343014,40.1079230034456,38.563724101622,37.4077964109884,32.4499057641975,36.1589556690969,39.166109432022,38.3985041751842,41.8487532842449,37.7337985103447,37.0755655132475,45.3588797482337,38.0374729113047,43.5608412489057,39.818208084682,44.7755166189701,32.7519246498938,35.9283352626581,40.5945903893622,41.9407370370566,41.9606747737564,40.8176737479627,39.2511567561251,36.8153927549627,31.5332473225534,41.9081712016805,34.8176199069624,40.9983591173484,35.403338953403,44.3549807313049,35.6134278206579,41.5340942371826,39.276690281639,42.0617385528119,41.7018056226816,44.8564054332283,44.4557603985458,37.4961870327447],[34.2271672895923,36.3801392190163,34.421682452915,32.5201128080583,33.7292175260162,32.0662173146644,32.5406385623511,33.4341093771711,34.8790921354446,30.8689806898838,28.6769590165426,31.9329726309788,32.6801990486775,30.5578026838953,27.7391493181573,33.2884400911898,36.9320146604067,34.8710949532057,27.7516613818785,37.5394625355437,34.9909536660363,34.0357154162497,37.3023021365365,29.1601612762925,31.1826417060773,36.4995022085538,32.4875807648133,34.8982342223694,31.6747962084903,30.9174035045269,27.4545547258918,31.5547111964986,31.4178874683776,31.5967067015386,35.445161083532,35.8432970526047,29.3151142091988,29.8742244067968,36.6496921468178,28.8895741875894,31.1965200143016,34.7546408642237,31.0473631672634,31.7494186451982,33.6234439976395,33.9099646560853,29.2220099336174,28.9650168429944,32.0265454361585,32.2015690710072,34.5661215351464,36.4399766682587,32.8028487054033,27.4596195719644,37.4508558978961,30.1512871187562,31.7505378834281,37.2724429366209,31.5697901332137,32.2370004294823,31.5194141541082,32.5172784360539,30.1885898494531,29.1491202357583,36.1367169736311,37.3329568804682,30.4708531854125,38.6916382339441,30.4125996919923,31.4759370601202,32.0586510390259,36.5307517341681,30.9934541970144,29.5147893579959,38.5975713016859,34.9958916726865,35.3258533805118,35.6456755181214,33.8250328920841,33.4173716804165,30.6354920142259,31.8010480255982,30.6794863429393,35.9566897015319,30.7328680448161,34.7791153983364,31.9387859655615,32.0350769210617,30.8099664547763,36.3279781224586,29.7698435892032,38.5173545187535,29.0279152419076,34.9850674673434,32.8225708438659,34.0760812731361,34.9263938889012,29.0578429797128,40.6122461482252,30.9160199895162,32.2530338270546,33.7185027204589,32.0742450232724,34.5389599084617,32.7626039912326,38.2825077365322,40.9065946217219,44.9322212747473,40.1214971817719,38.701863565617,36.6189670896444,42.749387816194,38.9777152722871,38.1788074555863,39.014746601005,32.8540210697918,39.7894250324293,33.0250910131303,37.7786768715477,36.5338293545839,40.6578429955857,35.7829672308693,40.2613964641224,41.0608328596042,36.4532335061719,37.7404158606965,40.0911120905818,35.9247931782698,39.6378849934198,39.5778942650201,34.8875117518059,32.2669674751534,34.4906767614788,37.6917714995886,32.4330237973549,32.3537410183817,39.4550210667492,44.998688543967,38.3114820813173,44.1329050759904,36.3005412244657,47.8833495868488,43.5770671269525,36.8089782155356,36.69154926317,38.7689370362072,37.8858065415445,28.7480405681649,32.9951468791674,38.4577524140755,41.7091780460491,42.1932076689538,37.8464509420279,38.5997644795237,39.7605257189548,30.0045052766894,37.1758994414128,36.5624844473011,37.7130278919206,38.6624196789145,43.700407557374,38.0423135256079,44.6227631725426,34.3910456265532,34.0799280134408,35.8034924544175,41.0790203860584,36.2259962609912,41.2865428586226,39.5306335530241,38.1747601486159,45.2431005618093,33.7942368085583,37.7494596478659,39.46756711573,39.0563133098436,31.8017644494953,38.693481441882,38.7321613636159,38.7527039885944,42.1516209423499,35.4799720946541,37.6222029024969,34.4715858034143,35.3143719593842,37.2829664744245,35.0256088401142,37.6055159173779,37.7858876160764,36.6080244988768,36.9320999135021,39.5680072898543,42.5472611461598,36.4542507793765,39.2902188825874,37.0187026722286,37.2651133316022,46.9462971114782,37.9760711833422,41.2846064917195,31.3363651599349,38.4694875090339,32.3941303525202,42.0492259972291,37.6444460737666,35.4228036950972,41.5213311709604,40.3986665898838,38.30631093831,37.314466936152],[34.272626842815,36.3840056884038,34.4144739120155,32.5239747023745,33.7354640291532,32.1597690890421,32.5153059530111,33.407622677322,34.8827899398297,30.9467273014678,28.8602743615552,32.1752389875611,32.7064377253773,30.7061907331547,27.911805525546,33.2451934388592,37.0492858514249,34.8738587146023,27.5600497185936,37.5526450900232,35.0553802771869,34.0432516416396,37.294394479159,29.0066262818946,31.115701202761,36.5691453168725,32.5218445528137,34.8962466287282,31.6951127917565,31.0055030551978,27.3584985567367,31.391484748782,31.3811440154568,31.5646347803905,35.4367844913218,35.8162684834185,29.4534298196199,29.7947862305619,36.6462122742053,28.8305488864617,31.1650622237796,34.7795897572889,31.0471855515223,31.7340679509031,33.6013043469849,33.8498597144469,29.3945359955616,29.1511774581513,32.0957357532342,32.3204574016527,34.4934703635627,36.3906026842168,32.7147794107391,27.3009905482493,37.5123226990475,30.0261354003199,31.8493824192873,37.271406195535,31.6222308435826,32.1288847805663,31.6016082642139,32.4390177818888,30.3281304287446,29.0698186364602,36.1895409516037,37.3356954099,30.5313153263374,38.776113232365,30.5679920869617,31.6284518598802,32.2069821001114,36.7073510673912,30.8794460765164,29.3964062528478,38.4727130955429,35.0110222923254,35.333373097605,35.7384624871599,33.8766755048619,33.4162347992267,30.8339974763836,31.9134491928814,30.7201306943046,36.0081148059417,30.6258146329286,34.7535529852063,31.8212420585159,32.0952378271577,30.9617276758211,36.3623548237461,29.6745685171035,38.5815440849688,29.1975123978881,35.0316682529034,32.88932349258,34.119413895589,34.9838787312149,29.1792314184001,40.4904963740887,30.854608091978,32.1769913359634,33.6881423878574,32.1419446855558,34.6495661298662,32.9596890313641,38.1635857241504,40.9548762255409,45.2185870506583,40.0311071051019,38.8026033162205,36.6474362413116,42.9491411658289,38.9100676506626,38.2359067187442,38.8535537133199,32.8681162032652,39.6977693201819,33.0273961796091,37.8066768154627,36.5865797743422,40.691813112524,35.8475049990131,40.2191543518668,41.1808387452083,36.4968744553367,37.849695529827,39.9154036867,35.9037633950419,39.5904468344586,39.5412017127505,34.9369961116056,32.2178029933189,34.4394018937293,37.6325646130836,32.4885901206834,32.3244525379952,39.2916320199819,45.0741680005032,38.3508048669111,44.2690831755414,36.3583963043844,48.1799115929042,43.3668565028606,36.9854308426886,36.7977456414924,38.6812695830619,37.8531992068942,28.9434803875117,33.0159420714164,38.4621355843385,41.5426515231667,42.3571141930019,37.9027301346095,38.8077786846744,39.5811800314697,30.146262988867,37.2341096338019,36.6098949951539,37.6940737504451,38.6463274776727,43.54859044711,38.0498055434177,44.9440835205669,34.3930410766441,34.1058356845726,35.9135836944866,41.0453177141483,36.2877461429789,41.4479441811049,39.5826723643191,38.2784483977098,45.072784374019,33.8625345823876,37.7937133633571,39.3143941030132,38.9108365185447,31.8581231312851,38.7639787489143,38.832171612604,38.812291163232,42.279160041013,35.4762825760615,37.5681118455399,34.4689832018542,35.3335153790406,37.2621245635499,34.9805598529147,37.5482059318976,37.9214202853194,36.6860693274137,37.0209748952515,39.6375298149329,42.3673983903675,36.3885587695547,39.3057722209112,37.018773909427,37.3388910806371,46.8002407843078,37.994211417354,41.3811392189409,31.3954984206122,38.5877819521673,32.4099265532315,42.1915701780367,37.7250183646021,35.3684257401509,41.6436258426698,40.2813473318245,38.2562192019677,37.2564791765283],["CD","CD","MR","CD","CD","MR","CD","CD","CD","CD","CD","CD","CD","MR","MR","MR","CD","CD","MR","MR","CD","CD","CD","MR","MR","CD","MR","MR","MR","CD","MR","CD","MR","MR","CD","MR","MR","MR","MR","CD","MR","CD","MR","MR","MR","MR","MR","CD","CD","CD","CD","MR","CD","CD","MR","CD","CD","MR","CD","MR","CD","MR","MR","CD","MR","CD","MR","MR","CD","CD","CD","CD","CD","MR","CD","MR","CD","MR","MR","MR","MR","MR","MR","MR","MR","MR","CD","MR","MR","MR","MR","CD","MR","CD","MR","CD","CD","CD","CD","MR","CD","CD","CD","CD","MR","CD","MR","MR","CD","CD","MR","MR","MR","CD","MR","CD","MR","CD","CD","CD","MR","CD","CD","MR","CD","CD","MR","MR","MR","CD","CD","CD","CD","CD","CD","CD","CD","MR","CD","MR","MR","CD","MR","MR","CD","CD","CD","CD","CD","CD","CD","CD","CD","CD","CD","MR","MR","CD","MR","CD","CD","CD","MR","MR","MR","CD","CD","CD","CD","MR","MR","CD","MR","CD","MR","MR","CD","MR","MR","MR","MR","MR","MR","MR","CD","CD","CD","CD","MR","MR","CD","MR","MR","CD","MR","CD","MR","MR","MR","MR","CD","CD","CD","MR","MR","MR","CD","CD","CD","MR"],["MR","MR","CD","CD","CD","MR","MR","CD","MR","MR","MR","MR","MR","MR","MR","CD","CD","CD","CD","CD","CD","MR","CD","CD","CD","CD","CD","MR","MR","MR","CD","CD","CD","CD","MR","CD","MR","CD","MR","CD","CD","CD","MR","CD","CD","CD","MR","MR","MR","MR","CD","CD","CD","CD","MR","CD","MR","MR","MR","CD","MR","CD","MR","CD","CD","CD","MR","CD","MR","MR","MR","CD","CD","CD","MR","MR","MR","CD","MR","CD","MR","MR","MR","MR","CD","MR","CD","MR","MR","MR","CD","CD","MR","CD","MR","CD","CD","MR","MR","CD","CD","CD","MR","MR","MR","MR","CD","CD","MR","CD","MR","CD","MR","CD","MR","MR","MR","CD","MR","CD","CD","CD","MR","CD","CD","CD","MR","CD","MR","MR","MR","CD","CD","MR","MR","CD","MR","CD","CD","CD","CD","CD","MR","CD","CD","MR","MR","MR","MR","MR","MR","CD","CD","CD","MR","MR","CD","CD","MR","MR","MR","MR","CD","MR","MR","CD","MR","CD","CD","CD","CD","MR","MR","CD","MR","MR","MR","CD","CD","CD","CD","CD","MR","CD","CD","MR","CD","MR","CD","MR","CD","CD","MR","MR","CD","MR","CD","MR","MR","CD","MR","CD","MR","CD","MR","MR","CD","MR","MR","MR"]],"container":"<table class=\"compact custom-dt\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gender<\/th>\n      <th>race<\/th>\n      <th>parentBMI<\/th>\n      <th>baselineBMI<\/th>\n      <th>month4BMI<\/th>\n      <th>month12BMI<\/th>\n      <th>A1<\/th>\n      <th>A2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gender","targets":1},{"name":"race","targets":2},{"name":"parentBMI","targets":3},{"name":"baselineBMI","targets":4},{"name":"month4BMI","targets":5},{"name":"month12BMI","targets":6},{"name":"A1","targets":7},{"name":"A2","targets":8}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e4f7feba8dcc0a7da1e1" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e4f7feba8dcc0a7da1e1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122","123","124","125","126","127","128","129","130","131","132","133","134","135","136","137","138","139","140","141","142","143","144","145","146","147","148","149","150","151","152","153","154","155","156","157","158","159","160","161","162","163","164","165","166","167","168","169","170","171","172","173","174","175","176","177","178","179","180","181","182","183","184","185","186","187","188","189","190","191","192","193","194","195","196","197","198","199","200","201","202","203","204","205","206","207","208","209","210"],[0,1,1,1,1,0,0,1,1,0,0,0,1,0,0,1,0,0,1,1,0,1,0,1,1,0,1,0,1,1,1,1,0,0,1,1,1,1,0,0,0,1,1,0,1,1,0,1,0,0,0,1,1,1,0,0,0,1,0,1,1,0,1,1,0,0,1,0,0,1,0,0,0,1,1,0,0,0,1,1,0,0,1,0,1,1,0,0,0,0,1,1,0,0,0,1,0,1,0,1,0,1,1,0,1,1,0,0,1,1,0,0,1,1,0,0,0,0,1,1,1,0,1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,1,1,1,1,0,0,1,1,0,1,0,1,1,0,0,1,0,1,1,0,1,1,0,0,1,0,1,1,1,1,0,1,1,0,1,0,0,1,0,1,1,1,0,0,1,0,1,1,1,0,1,1,1,0,1,1,0,0,1,0,0,1,1,0,1,1,1,0,0,1,1,1,0],[1,0,0,0,1,0,1,1,1,0,1,1,1,0,1,1,0,0,1,0,0,1,0,1,0,1,1,1,1,1,0,0,1,0,1,1,0,1,0,0,0,1,1,1,1,1,1,0,1,0,0,0,1,1,0,0,0,1,1,0,1,0,1,1,1,0,0,0,0,1,1,0,0,1,1,1,1,1,0,0,1,1,1,1,0,1,1,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,0,0,0,1,0,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0,0,1,0,1,1,1,0,1,1,1,1,0,0,1,1,0,1,0,0,1,1,0,1,1,0,1,0,0,1,1,1,1,1,1,0,1,1,0,0,0,1,0,1,0,0,1,1,1,1,0,0,1,0],[31.5968318483271,30.1756356785969,30.2791805720788,27.4925639536086,26.4235030578742,29.3097028602197,25.9004953839248,30.0710683521509,28.5212636233082,26.0243965306649,26.0772008193802,27.0385487527352,29.7094883087714,28.9224737238368,28.6124334522678,29.8454867797679,30.8235566613149,29.8897997360069,25.4103503739197,29.2735979126957,28.8625257690046,29.1552848851867,27.9438104485535,26.2340890143842,32.6055349572872,27.5568200625244,27.7050244363249,29.3486159074754,28.2271528648959,33.2495826635327,26.2089430304968,27.5926160232334,28.6280601397405,29.275532855513,32.5660822580474,30.6696527273157,27.9293929897221,28.5569747650387,32.9899357535859,25.8017815037268,29.2332750441281,27.3144160242306,28.6133024071739,27.2563028903991,29.2939730413347,31.2875823333514,28.4472865276752,24.5871158770569,24.8765099941707,30.4226366070002,28.7128350810937,31.1154382932201,29.0820645671288,29.4153870516944,31.1704456652138,28.0849585751793,26.7682728790888,30.2732850445308,31.751889473,27.5077447296646,29.4668826560683,32.4009075918896,28.3951711089974,30.729557882399,26.0788688597458,30.0826645818561,29.0767749564888,31.5479592435817,29.8845199722753,28.9048903961073,25.2137363117863,33.9449659264947,30.0175422421505,25.1917645432234,29.7998771302675,30.5413498327413,31.0618877453117,29.6532924385687,29.1915078743245,29.7711151806851,30.1807252497815,27.4056152938221,28.4086048361403,29.7403095664926,29.0489681895652,28.3557368190232,24.8548598808231,28.8106800763928,27.8862979273306,28.7213307384893,25.6481644227204,28.0602556220042,26.8388175051607,25.3459516361351,27.8043085029699,29.7872095848364,29.5177647121541,29.2125591842254,26.0580819244269,29.0259342817049,28.8518675178746,30.4606018904983,32.2642513833078,28.1035024975379,28.7304266795524,41.51321172294,41.3492306933484,38.6221422747027,38.7783320814866,38.8515961403114,32.5320635576317,42.7694642791476,41.2770759077081,36.9527134424169,40.7874142343349,45.5697696582316,39.4431984681516,39.3964081798467,34.5258553715863,41.6306745886718,50.8333555350427,35.584945250856,32.8714562690236,38.7137867379175,35.7171343910827,36.0091476999245,35.1312909117106,39.3250107424864,41.5632222807496,36.1280852789093,34.9813924263611,39.7150285714149,42.182534914779,40.2004486116071,34.9192694032632,42.5387529455107,36.0315157434716,50.766755046636,33.5525196631247,37.5717403422607,37.211108987751,39.4865966883862,32.8515086073487,37.6301352770643,41.9693595463341,35.7276601078795,36.1593499953863,42.9688710343465,40.262406207356,40.249350332998,38.2250638411105,43.5368167432468,38.2782746414832,39.6737418779832,46.693769740275,32.6154321998616,33.8489385493448,36.1647060066867,34.4033025511868,34.8335707862893,36.7298617321768,32.1858079083204,45.2435355385754,40.3533439244207,38.8934202059533,36.0305461939754,31.1099613237619,38.4186773544978,32.5430617543702,39.8211274965861,37.9442100724629,33.4204917870523,32.1541893308589,49.4455537745882,35.3744281926257,35.0414428016681,36.3618394379658,41.8657677215711,38.0167053836908,44.0498324514362,40.3571452658047,38.6522211207698,37.1826333812221,34.1586764212114,33.3373369270565,39.4564140934319,34.8361263292668,37.5881241165712,45.8167366252594,35.3382699281492,37.9671420253808,42.5604788482187,35.7384935445763,37.4337198370254,43.7483119229769,39.0583122460716,41.5928723226047,43.3867518477068,33.9222447503285,43.5315659667319,35.7365142090536,39.8646141597294,30.1709251485223,42.7119057456991,36.5415242496024,32.167506322318,36.1144994610154,35.1327479111612,35.3978518919441,36.5089341695638],[35.8400505844913,37.3039586910681,36.8388927397088,36.7067888904164,34.8420684530105,36.6864014984657,35.4263102497953,37.0590606128652,35.3685987689465,33.0647219027641,32.3399962522145,35.905040022087,33.5667345569686,35.4242788132674,31.311018045386,33.8824855265834,35.6965470728487,37.3867841753117,34.5396645991215,36.416601538563,36.6697176380486,36.0759564002357,40.2399647794254,33.3079403916821,32.721452885721,37.8579133577677,35.3993874451954,38.2176404800547,34.0154393143722,33.3169007877039,31.6962413671513,35.6861806748892,35.4116245198845,34.3681064263761,36.7452126663768,36.8062514400708,34.4759304009627,33.9217625289354,34.1897301838816,31.7038023432634,31.2494098064287,33.6813922291418,36.27341361175,37.9444117880157,38.9251399558777,39.3640897787705,32.9410378647426,32.5205605152126,34.774893146581,34.6804642879754,41.1372234694825,37.1465827049241,34.9536058940755,31.8556402898036,39.6102346141751,36.5597857879862,36.9507477769156,35.5963279658644,37.076855463549,37.3745973045164,36.5775366688182,35.1591236089033,36.4071200830396,34.5927869653427,38.8477286856288,39.1939904063974,33.7101105997601,37.7986607382182,33.7221316230908,37.4880626230247,34.9420465760116,40.1874615080188,35.8728975262065,39.4484910345293,39.0977574070384,36.9755664079899,36.4395081931457,36.2220927498324,35.2161069087819,34.7655300066151,33.4636163180805,35.669559388649,36.4651915000965,38.8681576367012,38.5629106660422,36.3306991074564,34.6042086512075,37.4618996653082,37.1144602832931,34.8448175718331,36.3626679216744,41.0038806255628,36.5587360311556,36.274379931599,34.7602537758574,35.2059828146951,36.7820720500468,31.1457955106628,40.439759798817,34.3689476739489,37.018238452232,35.8735485455039,34.6324792086546,37.8310314618707,36.2908925706439,43.2659336239479,40.8182158096921,44.4952202078272,42.4023408395103,45.2832668333708,40.1562163609003,41.5248484436131,36.2722618925427,45.271843069743,43.5650755579936,36.2415486396726,44.0224942844041,33.7539709933501,39.2045369330491,39.3748716030813,34.6925279989344,36.725477854328,43.8294553855262,38.3950852093819,42.7163887700083,44.6853922172683,41.9788559933223,34.3820957497796,37.6073639253812,41.8199495671565,36.2069858682801,33.5429058396724,38.9293372412494,40.2474720344567,37.277330668132,37.7766233525022,42.2237970124812,36.4872428302646,41.8446312991368,44.5757868082459,36.986225786018,49.828283726195,52.5168125484269,34.5868892401366,34.1374044823423,44.533211863297,42.4871070197343,35.307587300295,37.9968583243768,45.3158738696634,43.0803978539683,44.8982484489005,40.1724855488821,39.2043223715979,40.1159552259825,37.852551821515,42.7544547399696,41.4867332964223,40.4267443661591,46.1660763510995,45.2157334250825,42.8534685851277,42.6599794229896,33.5251474014311,33.3127075700751,39.7386709252033,41.4500973554668,42.0882705808234,45.6896626591482,38.696090796288,39.0182962678748,46.1804137369161,42.0740343014,40.1079230034456,38.563724101622,37.4077964109884,32.4499057641975,36.1589556690969,39.166109432022,38.3985041751842,41.8487532842449,37.7337985103447,37.0755655132475,45.3588797482337,38.0374729113047,43.5608412489057,39.818208084682,44.7755166189701,32.7519246498938,35.9283352626581,40.5945903893622,41.9407370370566,41.9606747737564,40.8176737479627,39.2511567561251,36.8153927549627,31.5332473225534,41.9081712016805,34.8176199069624,40.9983591173484,35.403338953403,44.3549807313049,35.6134278206579,41.5340942371826,39.276690281639,42.0617385528119,41.7018056226816,44.8564054332283,44.4557603985458,37.4961870327447],[34.2271672895923,36.3801392190163,34.421682452915,32.5201128080583,33.7292175260162,32.0662173146644,32.5406385623511,33.4341093771711,34.8790921354446,30.8689806898838,28.6769590165426,31.9329726309788,32.6801990486775,30.5578026838953,27.7391493181573,33.2884400911898,36.9320146604067,34.8710949532057,27.7516613818785,37.5394625355437,34.9909536660363,34.0357154162497,37.3023021365365,29.1601612762925,31.1826417060773,36.4995022085538,32.4875807648133,34.8982342223694,31.6747962084903,30.9174035045269,27.4545547258918,31.5547111964986,31.4178874683776,31.5967067015386,35.445161083532,35.8432970526047,29.3151142091988,29.8742244067968,36.6496921468178,28.8895741875894,31.1965200143016,34.7546408642237,31.0473631672634,31.7494186451982,33.6234439976395,33.9099646560853,29.2220099336174,28.9650168429944,32.0265454361585,32.2015690710072,34.5661215351464,36.4399766682587,32.8028487054033,27.4596195719644,37.4508558978961,30.1512871187562,31.7505378834281,37.2724429366209,31.5697901332137,32.2370004294823,31.5194141541082,32.5172784360539,30.1885898494531,29.1491202357583,36.1367169736311,37.3329568804682,30.4708531854125,38.6916382339441,30.4125996919923,31.4759370601202,32.0586510390259,36.5307517341681,30.9934541970144,29.5147893579959,38.5975713016859,34.9958916726865,35.3258533805118,35.6456755181214,33.8250328920841,33.4173716804165,30.6354920142259,31.8010480255982,30.6794863429393,35.9566897015319,30.7328680448161,34.7791153983364,31.9387859655615,32.0350769210617,30.8099664547763,36.3279781224586,29.7698435892032,38.5173545187535,29.0279152419076,34.9850674673434,32.8225708438659,34.0760812731361,34.9263938889012,29.0578429797128,40.6122461482252,30.9160199895162,32.2530338270546,33.7185027204589,32.0742450232724,34.5389599084617,32.7626039912326,38.2825077365322,40.9065946217219,44.9322212747473,40.1214971817719,38.701863565617,36.6189670896444,42.749387816194,38.9777152722871,38.1788074555863,39.014746601005,32.8540210697918,39.7894250324293,33.0250910131303,37.7786768715477,36.5338293545839,40.6578429955857,35.7829672308693,40.2613964641224,41.0608328596042,36.4532335061719,37.7404158606965,40.0911120905818,35.9247931782698,39.6378849934198,39.5778942650201,34.8875117518059,32.2669674751534,34.4906767614788,37.6917714995886,32.4330237973549,32.3537410183817,39.4550210667492,44.998688543967,38.3114820813173,44.1329050759904,36.3005412244657,47.8833495868488,43.5770671269525,36.8089782155356,36.69154926317,38.7689370362072,37.8858065415445,28.7480405681649,32.9951468791674,38.4577524140755,41.7091780460491,42.1932076689538,37.8464509420279,38.5997644795237,39.7605257189548,30.0045052766894,37.1758994414128,36.5624844473011,37.7130278919206,38.6624196789145,43.700407557374,38.0423135256079,44.6227631725426,34.3910456265532,34.0799280134408,35.8034924544175,41.0790203860584,36.2259962609912,41.2865428586226,39.5306335530241,38.1747601486159,45.2431005618093,33.7942368085583,37.7494596478659,39.46756711573,39.0563133098436,31.8017644494953,38.693481441882,38.7321613636159,38.7527039885944,42.1516209423499,35.4799720946541,37.6222029024969,34.4715858034143,35.3143719593842,37.2829664744245,35.0256088401142,37.6055159173779,37.7858876160764,36.6080244988768,36.9320999135021,39.5680072898543,42.5472611461598,36.4542507793765,39.2902188825874,37.0187026722286,37.2651133316022,46.9462971114782,37.9760711833422,41.2846064917195,31.3363651599349,38.4694875090339,32.3941303525202,42.0492259972291,37.6444460737666,35.4228036950972,41.5213311709604,40.3986665898838,38.30631093831,37.314466936152],[34.272626842815,36.3840056884038,34.4144739120155,32.5239747023745,33.7354640291532,32.1597690890421,32.5153059530111,33.407622677322,34.8827899398297,30.9467273014678,28.8602743615552,32.1752389875611,32.7064377253773,30.7061907331547,27.911805525546,33.2451934388592,37.0492858514249,34.8738587146023,27.5600497185936,37.5526450900232,35.0553802771869,34.0432516416396,37.294394479159,29.0066262818946,31.115701202761,36.5691453168725,32.5218445528137,34.8962466287282,31.6951127917565,31.0055030551978,27.3584985567367,31.391484748782,31.3811440154568,31.5646347803905,35.4367844913218,35.8162684834185,29.4534298196199,29.7947862305619,36.6462122742053,28.8305488864617,31.1650622237796,34.7795897572889,31.0471855515223,31.7340679509031,33.6013043469849,33.8498597144469,29.3945359955616,29.1511774581513,32.0957357532342,32.3204574016527,34.4934703635627,36.3906026842168,32.7147794107391,27.3009905482493,37.5123226990475,30.0261354003199,31.8493824192873,37.271406195535,31.6222308435826,32.1288847805663,31.6016082642139,32.4390177818888,30.3281304287446,29.0698186364602,36.1895409516037,37.3356954099,30.5313153263374,38.776113232365,30.5679920869617,31.6284518598802,32.2069821001114,36.7073510673912,30.8794460765164,29.3964062528478,38.4727130955429,35.0110222923254,35.333373097605,35.7384624871599,33.8766755048619,33.4162347992267,30.8339974763836,31.9134491928814,30.7201306943046,36.0081148059417,30.6258146329286,34.7535529852063,31.8212420585159,32.0952378271577,30.9617276758211,36.3623548237461,29.6745685171035,38.5815440849688,29.1975123978881,35.0316682529034,32.88932349258,34.119413895589,34.9838787312149,29.1792314184001,40.4904963740887,30.854608091978,32.1769913359634,33.6881423878574,32.1419446855558,34.6495661298662,32.9596890313641,38.1635857241504,40.9548762255409,45.2185870506583,40.0311071051019,38.8026033162205,36.6474362413116,42.9491411658289,38.9100676506626,38.2359067187442,38.8535537133199,32.8681162032652,39.6977693201819,33.0273961796091,37.8066768154627,36.5865797743422,40.691813112524,35.8475049990131,40.2191543518668,41.1808387452083,36.4968744553367,37.849695529827,39.9154036867,35.9037633950419,39.5904468344586,39.5412017127505,34.9369961116056,32.2178029933189,34.4394018937293,37.6325646130836,32.4885901206834,32.3244525379952,39.2916320199819,45.0741680005032,38.3508048669111,44.2690831755414,36.3583963043844,48.1799115929042,43.3668565028606,36.9854308426886,36.7977456414924,38.6812695830619,37.8531992068942,28.9434803875117,33.0159420714164,38.4621355843385,41.5426515231667,42.3571141930019,37.9027301346095,38.8077786846744,39.5811800314697,30.146262988867,37.2341096338019,36.6098949951539,37.6940737504451,38.6463274776727,43.54859044711,38.0498055434177,44.9440835205669,34.3930410766441,34.1058356845726,35.9135836944866,41.0453177141483,36.2877461429789,41.4479441811049,39.5826723643191,38.2784483977098,45.072784374019,33.8625345823876,37.7937133633571,39.3143941030132,38.9108365185447,31.8581231312851,38.7639787489143,38.832171612604,38.812291163232,42.279160041013,35.4762825760615,37.5681118455399,34.4689832018542,35.3335153790406,37.2621245635499,34.9805598529147,37.5482059318976,37.9214202853194,36.6860693274137,37.0209748952515,39.6375298149329,42.3673983903675,36.3885587695547,39.3057722209112,37.018773909427,37.3388910806371,46.8002407843078,37.994211417354,41.3811392189409,31.3954984206122,38.5877819521673,32.4099265532315,42.1915701780367,37.7250183646021,35.3684257401509,41.6436258426698,40.2813473318245,38.2562192019677,37.2564791765283],["CD","CD","MR","CD","CD","MR","CD","CD","CD","CD","CD","CD","CD","MR","MR","MR","CD","CD","MR","MR","CD","CD","CD","MR","MR","CD","MR","MR","MR","CD","MR","CD","MR","MR","CD","MR","MR","MR","MR","CD","MR","CD","MR","MR","MR","MR","MR","CD","CD","CD","CD","MR","CD","CD","MR","CD","CD","MR","CD","MR","CD","MR","MR","CD","MR","CD","MR","MR","CD","CD","CD","CD","CD","MR","CD","MR","CD","MR","MR","MR","MR","MR","MR","MR","MR","MR","CD","MR","MR","MR","MR","CD","MR","CD","MR","CD","CD","CD","CD","MR","CD","CD","CD","CD","MR","CD","MR","MR","CD","CD","MR","MR","MR","CD","MR","CD","MR","CD","CD","CD","MR","CD","CD","MR","CD","CD","MR","MR","MR","CD","CD","CD","CD","CD","CD","CD","CD","MR","CD","MR","MR","CD","MR","MR","CD","CD","CD","CD","CD","CD","CD","CD","CD","CD","CD","MR","MR","CD","MR","CD","CD","CD","MR","MR","MR","CD","CD","CD","CD","MR","MR","CD","MR","CD","MR","MR","CD","MR","MR","MR","MR","MR","MR","MR","CD","CD","CD","CD","MR","MR","CD","MR","MR","CD","MR","CD","MR","MR","MR","MR","CD","CD","CD","MR","MR","MR","CD","CD","CD","MR"],["MR","MR","CD","CD","CD","MR","MR","CD","MR","MR","MR","MR","MR","MR","MR","CD","CD","CD","CD","CD","CD","MR","CD","CD","CD","CD","CD","MR","MR","MR","CD","CD","CD","CD","MR","CD","MR","CD","MR","CD","CD","CD","MR","CD","CD","CD","MR","MR","MR","MR","CD","CD","CD","CD","MR","CD","MR","MR","MR","CD","MR","CD","MR","CD","CD","CD","MR","CD","MR","MR","MR","CD","CD","CD","MR","MR","MR","CD","MR","CD","MR","MR","MR","MR","CD","MR","CD","MR","MR","MR","CD","CD","MR","CD","MR","CD","CD","MR","MR","CD","CD","CD","MR","MR","MR","MR","CD","CD","MR","CD","MR","CD","MR","CD","MR","MR","MR","CD","MR","CD","CD","CD","MR","CD","CD","CD","MR","CD","MR","MR","MR","CD","CD","MR","MR","CD","MR","CD","CD","CD","CD","CD","MR","CD","CD","MR","MR","MR","MR","MR","MR","CD","CD","CD","MR","MR","CD","CD","MR","MR","MR","MR","CD","MR","MR","CD","MR","CD","CD","CD","CD","MR","MR","CD","MR","MR","MR","CD","CD","CD","CD","CD","MR","CD","CD","MR","CD","MR","CD","MR","CD","CD","MR","MR","CD","MR","CD","MR","MR","CD","MR","CD","MR","CD","MR","MR","CD","MR","MR","MR"]],"container":"<table class=\"compact custom-dt\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gender<\/th>\n      <th>race<\/th>\n      <th>parentBMI<\/th>\n      <th>baselineBMI<\/th>\n      <th>month4BMI<\/th>\n      <th>month12BMI<\/th>\n      <th>A1<\/th>\n      <th>A2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gender","targets":1},{"name":"race","targets":2},{"name":"parentBMI","targets":3},{"name":"baselineBMI","targets":4},{"name":"month4BMI","targets":5},{"name":"month12BMI","targets":6},{"name":"A1","targets":7},{"name":"A2","targets":8}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render"],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -2233,6 +2802,10 @@ qwebrInstance.then(
           break;
         case 'setup':
           const activeDiv = document.getElementById(`qwebr-noninteractive-setup-area-${qwebrCounter}`);
+
+          // Store code in history
+          qwebrLogCodeToHistory(cellCode, entry.options);
+
           // Run the code in a non-interactive state with all output thrown away
           await mainWebR.evalRVoid(`${cellCode}`);
           break;

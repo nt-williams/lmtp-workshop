@@ -5,7 +5,7 @@ date-modified: last-modified
 filters:
   - webr
 webr:
-  packages: ['lmtp', 'superlearner', 'ife', 'dplyr', 'tidyr', 'purrr', 'ggplot2', 'DT', 'broom']
+  packages: ['lmtp', 'SuperLearner', 'ife', 'dplyr', 'tidyr', 'purrr', 'ggplot2', 'DT', 'broom']
   autoload-packages: true
   repos: 
     - https://nt-williams.r-universe.dev

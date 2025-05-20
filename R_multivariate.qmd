@@ -5,7 +5,7 @@ date-modified: last-modified
 filters:
   - webr
 webr:
-  packages: ['lmtp', 'superlearner', 'rpart', 'gam']
+  packages: ['lmtp', 'SuperLearner', 'rpart', 'gam']
   autoload-packages: true
   repos: 
     - https://nt-williams.r-universe.dev
