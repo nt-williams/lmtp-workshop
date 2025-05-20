@@ -55,7 +55,7 @@ DT::datatable(crime, class = "compact custom-dt",
 
 ## Problem 1
 
-Write a shift function (named `d_mtp`) for a modified treatment policy where the natural value of neighborhood violence is decreased by 50%. Using the `lmtp` package, estimate the population mean effect of this intervention on preterm birth. Make sure to use the `id` argument to account for community level clustering in the estimation of standard errors. To save computation time, don't use cross-fitting.
+Write a shift function for a modified treatment policy where the natural value of neighborhood violence is decreased by 50%. Using the `lmtp` package, estimate the population mean effect of this intervention on preterm birth. Make sure to use the `id` argument to account for community level clustering in the estimation of standard errors. To save computation time, don't use cross-fitting.
 
 ```{webr-r}
 A <- "neighborhood_violence"
