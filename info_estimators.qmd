@@ -90,9 +90,8 @@ We then estimate the conditional probability that $\Lambda=1$ conditional on $(A
 
 $$
 \begin{align*}
-r_t(a_t, h_t) &= \frac{P^\lambda(a_t, h_t \mid \Lambda =
-    1)}{P^\lambda(a_t, h_t \mid \Lambda =
-    0)}\\
+r_t(a_t, h_t) &= \frac{\g_t^\dd(a_t \mid h_t)}{\g_t(a_t \mid h_t)}\\
+&= \frac{P^\lambda(a_t, h_t \mid \Lambda = 1)}{P^\lambda(a_t, h_t \mid \Lambda = 0)}\\
     &= \frac{P^\lambda(\Lambda = 1\mid a_t,h_t)P^\lambda(a_t,h_t)}{P^\lambda(\Lambda = 1)}\times \frac{P^\lambda(\Lambda = 0)}{P^\lambda(\Lambda = 0\mid a_t,h_t)P^\lambda(a_t,h_t)} \\
     &=\frac{P^\lambda(\Lambda = 1\mid a_t,h_t)}{P^\lambda(\Lambda = 0\mid a_t, h_t)}
 \end{align*}
