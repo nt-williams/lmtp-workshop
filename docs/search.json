@@ -105,7 +105,7 @@
     "href": "R_mtp.html#problem-2",
     "title": "Modified treatment policies",
     "section": "Problem 2",
-    "text": "Problem 2\nLet’s compare the effect of the intervention on reducing neighborhood violence on preterm birth to the observed preterm birth rate. Use the lmtp_contrast() function.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\n✅ Solution\n\n\nlmtp_contrast(fit_mtp, ref = mean(crime$preterm_birth))\n\n\nWith lmtp we found that under a hypothetical intervention that reduces neighborhood violence by 50%, preterm birth would decrease by approximately 4.4 percentange points.",
+    "text": "Problem 2\nLet’s compare the effect of the intervention on reducing neighborhood violence on preterm birth to the observed preterm birth rate. Use the lmtp_contrast() function.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\n✅ Solution\n\n\nlmtp_contrast(fit_mtp, ref = mean(crime$preterm_birth))\n\n\nWith lmtp we found that under a hypothetical intervention that reduces neighborhood violence by 50%, preterm birth would decrease by approximately 4.2 percentage points.",
     "crumbs": [
       "Instructors",
       "4. Estimating Effects with lmtp",

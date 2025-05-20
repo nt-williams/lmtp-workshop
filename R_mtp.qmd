@@ -59,7 +59,7 @@ Write a shift function (named `d_mtp`) for a modified treatment policy where the
 
 ```{webr-r}
 A <- "neighborhood_violence"
-W <- names(crime)[1:12]
+W <- names(crime)[1:7]
 Y <- "preterm_birth"
 id <- "community_code"
 
@@ -70,7 +70,7 @@ learners <- c("SL.mean",
 
 d <- # Write your shift function here!
 
-fit_d <- # Write your estimation code here!
+fit_mtp <- # Write your estimation code here!
 ```
 
 <details>
@@ -137,4 +137,4 @@ lmtp_contrast(fit_mtp, ref = mean(crime$preterm_birth))
 
 </details>
 
-With `lmtp` we found that under a hypothetical intervention that reduces neighborhood violence by 50%, preterm birth would decrease by approximately 4.4 percentange points.
+With `lmtp` we found that under a hypothetical intervention that reduces neighborhood violence by 50%, preterm birth would decrease by approximately 4.2 percentage points.
