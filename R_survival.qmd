@@ -177,7 +177,7 @@ d <- function(data, trt) {
 <!-- </details> -->
 <!-- ::: -->
 
-We can now estimate the effect of preventing IMV 1-day on 14-day mortality.
+We can now estimate the effect of preventing IMV on 14-day mortality.
 
 ```{webr-r}
 #| results: 'asis'
