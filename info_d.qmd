@@ -302,3 +302,43 @@ We can compute the identification formula in the following steps:
     ```{webr-r}
     mean(m1_d)
     ```
+
+### Identification proof (for two time points)
+
+Here we show the proof for identification in a very simple
+setup. Though simple, this contains the main elements of the proof,
+which is shown in the original papers.
+
+Consider a setup with no baseline covariates and an intervention that
+does not depend on covariates but depends on the natural value of
+treatment:
+
+\begin{align*}
+    A_1&=f_{A,1}(U_{A,1})\\
+    A_1^d&=\dd_1(A_1)\\
+    L_2&=f_{L,2}(A_1, U_{L,2})\\
+    L_2^{A_1^\dd}&=f_{L,2}(A_1^d, U_{L,2})\\
+    A_2&=f_{A,2}(A_1, L_1, U_{A,2})\\
+    A_2(A_1^\dd)&=f_{A,2}(A_1^\dd, L_1^{A_1^\dd}, U_{A,2})\\
+    A_2^d&=d_2(A_2(A_1^\dd))\\
+    Y&=f_{Y}(A_2, L_1, A_1, U_{Y})\\
+    Y(\bar A^\dd)&=f_{Y}(A_2^\dd, L_1(A_1^\dd), A_1^\dd, U_{Y})
+\end{align*}
+
+Then identification proceeds as:
+
+\begin{align*}
+    E[Y^{\bar A^\dd}]&=\int E[f_{Y}(\dd(A_2(\dd(a_1))), L_2(\dd(a_1)), \dd(a_1), U_{Y})\mid A_1=a_1]dP(a_1)\\
+    &=\int E[f_{Y}(f_{Y}(\dd(A_2(\dd(a_1))), L_2(\dd(a_1)), \dd(a_1)), U_{Y})\mid A_1=\dd(a_1)]dP(a_1)\\
+    &=\int E[f_{Y}(f_{Y}(\dd(A_2(A_1)), L_2(A_1), A_1), U_{Y})\mid A_1=\dd(a_1)]dP(a_1)\\
+    &=\int E[f_{Y}(f_{Y}(\dd(A_2), L_2, A_1), U_{Y})\mid A_1=\dd(a_1)]dP(a_1)\\
+    &=\int E[f_{Y}(f_{Y}(\dd(a_2), L_2, A_1), U_{Y})\mid A_1=\dd(a_1), A_2=a_2, L_2=l_2]dP(a_2, l_2)dP(a_1)\\
+    &=\int E[f_{Y}(f_{Y}(\dd(a_2), L_2, A_1), U_{Y})\mid A_1=\dd(a_1), A_2=\dd(a_2), L_2=l_2]dP(a_2, l_2)dP(a_1)\\
+    &=\int E[f_{Y}(f_{Y}(A_2, L_2, A_1), U_{Y})\mid A_1=\dd(a_1), A_2=\dd(a_2), L_2=l_2]dP(a_2, l_2)dP(a_1)\\
+    &=\int E[Y\mid A_1=\dd(a_1), A_2=\dd(a_2), L_2=l_2]dP(a_2, l_2)dP(a_1)\\
+      &= E[Y\mid A_1, A_2=\dd(A_2), L_2]dP(a_2, l_2)dP(a_1)\\
+       &=\int m_2(d(a_2), l_2, d(a_1))dP(a_2, l_2)dP(a_1)\\
+      &= \int E[Y\mid A_1, A_2=\dd(A_2), L_2]dP(a_2, l_2)dP(a_1)\\
+             &=\int E[ m_2(d(A_2), L_2, A_1)\mid A_1=d(a_1)]dP(a_1)\\
+&=\int m_1(d(a_1)]dP(a_1)
+\end{align*}
