@@ -231,7 +231,7 @@ Wait, what does it mean for an estimator to be doubly robust?
 
 \
 
--   For time-varying setting, an estimator is doubly robust if, for some time $s$, all outcome regressions for $t >s$ are consistently estimated and all intervention mechanisms (treatment + censoring) for $t \leq s$ are consistently estimated. Consider for example $5$ time points:
+-   For time-varying setting, an estimator is $\tau + 1$ doubly robust if, for some time $s$, all outcome regressions for $t >s$ are consistently estimated and all intervention mechanisms (treatment + censoring) for $t \leq s$ are consistently estimated. Consider for example $5$ time points:
 
 |           |         |         |         |         |         |
 |-----------|---------|---------|---------|---------|---------|
@@ -291,13 +291,16 @@ $$
 
 ## Targeted Minimum-Loss Based Estimation
 
-| Pros ✅                    | Cons ❌                                            |
-|:---------------------------|:--------------------------------------------------|
-|Substitution estimator     | not sequentially doubly-robust  |
-|doubly-robust     |         |
-|can use machine learning |
+TMLE exploits the fact that the expected value of the EIF is equal to zero. For simplicity, lets consider the case of a single time-point where the EIF was defined above.
 
-: {tbl-colwidths="\[25,25\]"}
+\begin{aligned}
+\E[\phi_1(O) - \theta] &= \E[r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta]\\
+&= \E[r(a, w)\{Y - \m(a,w)\}] + \theta - \theta \\
+&= \E[r(a, w)\{Y - \m(a,w)\}] \\
+\E[r(a, w)\{Y - \m(a,w)\}] &= 0
+\end{aligned}
+
+The key insight is to recognize that $r(a, w)\{Y - \m(a,w)\}$ is a score function and that the score equation $\sum_i r_i(a, w)\{Y_i - \m_i(a,w)\} = 0$ can be solved using a weighted GLM with canonical link and an intercept. So, by solving the score equation with a GLM, TMLE solves the EIF estimating equation. 
 
 The algorithm is as follows:
 
@@ -389,15 +392,18 @@ predictions_shifted[, 1] <- predictions_shifted[, 1] + coef(targeting_fit1)
 mean(predictions_shifted[, 1])
 ```
 
-## Sequentially Doubly Robust Estimator
+The benefits of TMLE are quite large as it solves the main problems with g-computation and IPW. Namely, the TMLE is $\tau+1$ doubly robust and it's rate doubly robust. 
+
 
 | Pros ✅                    | Cons ❌                                            |
 |:---------------------------|:--------------------------------------------------|
-|doubly-robust      | not a substitution estimator  |
-|sequentially doubly-robust     |         |
+|Substitution estimator     | not sequentially doubly-robust  |
+|$\tau+1$ doubly-robust     |         |
 |can use machine learning |
 
 : {tbl-colwidths="\[25,25\]"}
+
+## Sequentially Doubly Robust Estimator
 
 The SDR estimator is based on the central fact that
 
@@ -468,6 +474,17 @@ uc_eif <- rowSums(weights * (predictions_shifted[, 2:3] - predictions_natural[, 
 mean(uc_eif)
 ```
 
+Similarly to TMLE, the SDR estimator addresses the main issues with g-computation and IPW. In addition, the SDR estimator is sequentially doubly robust. However, this comes at the price of the SDR not being a substitution estimator, meaning it could produce a point estimate outside the valid range of the outcome.
+
+
+| Pros ✅                    | Cons ❌                                            |
+|:---------------------------|:--------------------------------------------------|
+|$\tau+1$ doubly-robust      | not a substitution estimator  |
+|sequentially doubly-robust     |         |
+|can use machine learning |
+
+: {tbl-colwidths="\[25,25\]"}
+
 ## Choosing an Estimator
 
 -   In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference 🙃.
@@ -480,7 +497,7 @@ mean(uc_eif)
 | Uses the propensity score             | ⭐  |         |  ⭐  | ⭐  |
 | Valid inference with machine-learning |     |         |  ⭐  | ⭐  |
 | Substitution estimator                |     |   ⭐    |  ⭐  |     |
-| Doubly robust                         |     |         |  ⭐  | ⭐  |
+| $\tau+1$ doubly robust                |     |         |  ⭐  | ⭐  |
 | Sequentially doubly robust            |     |         |      | ⭐  |
 
 : **Table 1.** Summary of estimator properties. {tbl-colwidths="\[40,15,15,15,15\]"}
