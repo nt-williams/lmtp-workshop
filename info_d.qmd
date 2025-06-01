@@ -273,7 +273,7 @@ a_t &\text{ otherwise.}
 \end{cases}
 $$
 
-The true value under this intervention is $\approx -0.37$. First, let's translate this intervention into an R function. 
+The true value under this intervention is approximately $-0.37$. First, let's translate this intervention into an R function. 
 
 ```{webr-r}
 d <- function(a) {

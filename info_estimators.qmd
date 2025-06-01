@@ -99,7 +99,7 @@ $$
 
 ### Example
 
-Consider the following example where we simulate 500 observations from this data-generating mechanism:
+Consider the following example where we simulate 1000 observations from this data-generating mechanism:
 
 \begin{align}
 L_1 &\sim \text{Normal}(0, 1) \\  
@@ -179,9 +179,6 @@ We call this estimator IPW due to its similarity with the inverse-probability we
 $$
 \theta = \E \bigg[ \bigg\{\prod_{t=1}^\tau r_t(a_t, h_t) \bigg\} Y \bigg]
 $$
-
-
-
 
 \
 The algorithm is as follows:
