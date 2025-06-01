@@ -215,7 +215,7 @@ and define $\theta = E[\m_1(A^{\dd}_1, L_1)]$.
 
 ### Example
 
-Consider the following data where $\tau = 2$.
+Consider the following data (here $\tau = 2$):
 
 ```{webr-r}
 #| context: setup
@@ -263,8 +263,26 @@ DT::datatable(foo, class = "compact",
                 )) |> 
   DT::formatRound(columns = c("L1", "L2", "Y"), digits = 2)
 ```
-\
-We can compute the identification formula in the following steps:
+
+and the intervention
+
+$$
+\dd(a_t, \epsilon_t) = \begin{cases}
+0 &\text{ if } \epsilon_t < 0.5 \text{ and } a_t = 1 \\
+a_t &\text{ otherwise.}
+\end{cases}
+$$
+
+First, let's translate this intervention into an R function. 
+
+```{webr-r}
+d <- function(a) {
+  epsilon <- runif(length(a))
+  ifelse(epsilon < 0.5 & a == 1, 0, a)
+}
+```
+
+We can then compute the identification formula in the following steps:
 
 1.  Set $\m_3(A_3^\dd, H_3) = Y$
 
@@ -275,26 +293,25 @@ We can compute the identification formula in the following steps:
 2.  Compute the regression of $\m_3(A_3^\dd, H_3)$ on $(A_2, H_2)$. This gives a predictive function, call that predictive function $\m_2(A_2,H_2)$.
 
     ```{webr-r}
-    m2 <- glm(m3_d ~ L1 + A1 + L2 + A2, 
-              data = dplyr::rename(foo, m3_d = Y))
+    m2 <- glm(m3_d ~ L1 + A1 + L2 + A2, data = foo)
     ```
 
 3.  Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=2$, i.e., compute $\m_2(A_2^\dd,H_2)$.
 
     ```{webr-r}
-    m2_d <- predict(m2, dplyr::mutate(foo, A2 = 1))
+    m2_d <- predict(m2, mutate(foo, A2 = d(A2)))
     ```
 
 4.  Compute the regression of $\m_2(A_2^\dd,H_2)$ on $(A_1, H_1)$. This gives a predictive function, call that predictive function $\m_1(A_1,H_1)$.
 
     ```{webr-r}
-    m1 <- glm(m2_d ~ L1 + A1, data = dplyr::mutate(foo, m2_d = m2_d))
+    m1 <- glm(m2_d ~ L1 + A1, data = mutate(foo, m2_d = m2_d))
     ```
 
 5.  Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=1$, i.e., compute $\m_1(A_1^\dd,H_1)$.
 
     ```{webr-r}
-    m1_d <- predict(m1, dplyr::mutate(foo, A1 = 1))
+    m1_d <- predict(m1, mutate(foo, A1 = d(A1)))
     ```
 
 6.  Compute the mean of $\m_1(A_1^\dd,H_1)$. This mean is equal to $\theta$.
@@ -303,42 +320,42 @@ We can compute the identification formula in the following steps:
     mean(m1_d)
     ```
 
-### Identification proof (for two time points)
+<!-- ### Identification proof (for two time points) -->
 
-Here we show the proof for identification in a very simple
-setup. Though simple, this contains the main elements of the proof,
-which is shown in the original papers.
+<!-- Here we show the proof for identification in a very simple -->
+<!-- setup. Though simple, this contains the main elements of the proof, -->
+<!-- which is shown in the original papers. -->
 
-Consider a setup with no baseline covariates and an intervention that
-does not depend on covariates but depends on the natural value of
-treatment:
+<!-- Consider a setup with no baseline covariates and an intervention that -->
+<!-- does not depend on covariates but depends on the natural value of -->
+<!-- treatment: -->
 
-\begin{align*}
-    A_1&=f_{A,1}(U_{A,1})\\
-    A_1^d&=\dd_1(A_1)\\
-    L_2&=f_{L,2}(A_1, U_{L,2})\\
-    L_2^{A_1^\dd}&=f_{L,2}(A_1^d, U_{L,2})\\
-    A_2&=f_{A,2}(A_1, L_1, U_{A,2})\\
-    A_2(A_1^\dd)&=f_{A,2}(A_1^\dd, L_1^{A_1^\dd}, U_{A,2})\\
-    A_2^d&=d_2(A_2(A_1^\dd))\\
-    Y&=f_{Y}(A_2, L_1, A_1, U_{Y})\\
-    Y(\bar A^\dd)&=f_{Y}(A_2^\dd, L_1(A_1^\dd), A_1^\dd, U_{Y})
-\end{align*}
+<!-- \begin{align*} -->
+<!--     A_1&=f_{A,1}(U_{A,1})\\ -->
+<!--     A_1^\dd&=\dd_1(A_1)\\ -->
+<!--     L_2&=f_{L,2}(A_1, U_{L,2})\\ -->
+<!--     L_2(A_1^\dd)&=f_{L,2}(A_1^\dd, U_{L,2})\\ -->
+<!--     A_2&=f_{A,2}(A_1, L_2, U_{A,2})\\ -->
+<!--     A_2(A_1^\dd)&=f_{A,2}(A_1^\dd, L_2(A_1^\dd), U_{A,2})\\ -->
+<!--     A_2^\dd&=\dd_2(A_2(A_1^\dd))\\ -->
+<!--     Y&=f_{Y}(A_2, L_2, A_1, U_{Y})\\ -->
+<!--     Y(\bar A^\dd)&=f_{Y}(A_2^\dd, L_2(A_1^\dd), A_1^\dd, U_{Y}) -->
+<!-- \end{align*} -->
 
-Then identification proceeds as:
+<!-- Then identification proceeds as: -->
 
-\begin{align*}
-    E[Y^{\bar A^\dd}]&=\int E[f_{Y}(\dd(A_2(\dd(a_1))), L_2(\dd(a_1)), \dd(a_1), U_{Y})\mid A_1=a_1]dP(a_1)\\
-    &=\int E[f_{Y}(f_{Y}(\dd(A_2(\dd(a_1))), L_2(\dd(a_1)), \dd(a_1)), U_{Y})\mid A_1=\dd(a_1)]dP(a_1)\\
-    &=\int E[f_{Y}(f_{Y}(\dd(A_2(A_1)), L_2(A_1), A_1), U_{Y})\mid A_1=\dd(a_1)]dP(a_1)\\
-    &=\int E[f_{Y}(f_{Y}(\dd(A_2), L_2, A_1), U_{Y})\mid A_1=\dd(a_1)]dP(a_1)\\
-    &=\int E[f_{Y}(f_{Y}(\dd(a_2), L_2, A_1), U_{Y})\mid A_1=\dd(a_1), A_2=a_2, L_2=l_2]dP(a_2, l_2)dP(a_1)\\
-    &=\int E[f_{Y}(f_{Y}(\dd(a_2), L_2, A_1), U_{Y})\mid A_1=\dd(a_1), A_2=\dd(a_2), L_2=l_2]dP(a_2, l_2)dP(a_1)\\
-    &=\int E[f_{Y}(f_{Y}(A_2, L_2, A_1), U_{Y})\mid A_1=\dd(a_1), A_2=\dd(a_2), L_2=l_2]dP(a_2, l_2)dP(a_1)\\
-    &=\int E[Y\mid A_1=\dd(a_1), A_2=\dd(a_2), L_2=l_2]dP(a_2, l_2)dP(a_1)\\
-      &= E[Y\mid A_1, A_2=\dd(A_2), L_2]dP(a_2, l_2)dP(a_1)\\
-       &=\int m_2(d(a_2), l_2, d(a_1))dP(a_2, l_2)dP(a_1)\\
-      &= \int E[Y\mid A_1, A_2=\dd(A_2), L_2]dP(a_2, l_2)dP(a_1)\\
-             &=\int E[ m_2(d(A_2), L_2, A_1)\mid A_1=d(a_1)]dP(a_1)\\
-&=\int m_1(d(a_1)]dP(a_1)
-\end{align*}
+<!-- \begin{align*} -->
+<!--     E[Y(\bar A^\dd)]&=\int E[f_{Y}(\dd(A_2(\dd(a_1))), L_2(\dd(a_1)), \dd(a_1), U_{Y})\mid A_1=a_1]dP(a_1)\\ -->
+<!--     &=\int E[f_{Y}(f_{Y}(\dd(A_2(\dd(a_1))), L_2(\dd(a_1)), \dd(a_1)), U_{Y})\mid A_1=\dd(a_1)]dP(a_1)\\ -->
+<!--     &=\int E[f_{Y}(f_{Y}(\dd(A_2(A_1)), L_2(A_1), A_1), U_{Y})\mid A_1=\dd(a_1)]dP(a_1)\\ -->
+<!--     &=\int E[f_{Y}(f_{Y}(\dd(A_2), L_2, A_1), U_{Y})\mid A_1=\dd(a_1)]dP(a_1)\\ -->
+<!--     &=\int E[f_{Y}(f_{Y}(\dd(a_2), L_2, A_1), U_{Y})\mid A_1=\dd(a_1), A_2=a_2, L_2=l_2]dP(a_2, l_2)dP(a_1)\\ -->
+<!--     &=\int E[f_{Y}(f_{Y}(\dd(a_2), L_2, A_1), U_{Y})\mid A_1=\dd(a_1), A_2=\dd(a_2), L_2=l_2]dP(a_2, l_2)dP(a_1)\\ -->
+<!--     &=\int E[f_{Y}(f_{Y}(A_2, L_2, A_1), U_{Y})\mid A_1=\dd(a_1), A_2=\dd(a_2), L_2=l_2]dP(a_2, l_2)dP(a_1)\\ -->
+<!--     &=\int E[Y\mid A_1=\dd(a_1), A_2=\dd(a_2), L_2=l_2]dP(a_2, l_2)dP(a_1)\\ -->
+<!--       &= E[Y\mid A_1, A_2=\dd(A_2), L_2]dP(a_2, l_2)dP(a_1)\\ -->
+<!--        &=\int m_2(d(a_2), l_2, d(a_1))dP(a_2, l_2)dP(a_1)\\ -->
+<!--       &= \int E[Y\mid A_1, A_2=\dd(A_2), L_2]dP(a_2, l_2)dP(a_1)\\ -->
+<!--              &=\int E[ m_2(d(A_2), L_2, A_1)\mid A_1=d(a_1)]dP(a_1)\\ -->
+<!-- &=\int m_1(d(a_1)]dP(a_1) -->
+<!-- \end{align*} -->

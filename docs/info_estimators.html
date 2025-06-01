@@ -386,7 +386,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"id":1,"options":{"out-width":"700px","classes":"","label":"unnamed-chunk-1","output":"true","editor-font-scale":"1","context":"setup","comment":"","editor-quick-suggestions":"false","autorun":"true","results":"markup","fig-height":5,"fig-width":7,"fig-cap":"","message":"true","read-only":"false","dpi":72,"out-height":"","editor-max-height":"","warning":"true","editor-word-wrap":"true"},"code":"set.seed(786543)\nn <- 500\nl0 <- rnorm(n)\na1 <- rbinom(n, 1, plogis(-1 + l0*1.5))\nl1 <- rnorm(n)\na2 <- rbinom(n, 1, plogis(-1 + l1*1.5 + a1*2))\ny <- rnorm(n, -1 - 1.2*l0 + 2.4*a1 - 2*l1 + 1.2*a2)\nfoo <- data.frame(\n  L1 = l0, \n  A1 = a1, \n  L2 = l1, \n  A2 = a2, \n  Y = y\n)"},{"id":2,"options":{"out-width":"700px","classes":"","label":"unnamed-chunk-2","output":"true","editor-font-scale":"1","context":"interactive","comment":"","editor-quick-suggestions":"false","autorun":"false","results":"markup","fig-height":5,"fig-width":7,"fig-cap":"","message":"true","read-only":"false","dpi":72,"out-height":"","editor-max-height":"","warning":"true","editor-word-wrap":"true"},"code":"# Create an empty matrix to store the density ratios\ndensity_ratios <- matrix(NA, nrow = n, ncol = 2)\n\nfor (t in 1:2) {\n  a <- c(\"A1\", \"A2\")[t]\n  # Duplicate the data\n  shifted <- foo\n  # In the duplicated data, modify treatment according to d\n  shifted[[a]] <- 1\n  \n  # Set the values of delta in the original and modified data\n  foo$lambda <- 0\n  shifted$lambda <- 1\n  \n  # Stack the original data and the modified data\n  density_ratio_data <- rbind(foo, shifted)\n  \n  # Regress lambda_t on A_t,H_t\n  parents <- unlist(lapply(1:t, \\(x) paste0(c(\"L\", \"A\"), x)))\n  formula <- as.formula(paste(\"lambda ~\", paste(parents, collapse = \"+\")))\n  density_ratio_model <- glm(formula, data = density_ratio_data, family = binomial)\n  \n  # Calculate the estimated odds\n  prob_lambda_1 <- predict(density_ratio_model, foo, type = \"response\")\n  density_ratios[, t] <- prob_lambda_1 / (1 - prob_lambda_1)\n}\n\nsummary(density_ratios)"},{"id":3,"options":{"out-width":"700px","classes":"","label":"unnamed-chunk-3","output":"true","editor-font-scale":"1","context":"interactive","comment":"","editor-quick-suggestions":"false","autorun":"false","results":"markup","fig-height":5,"fig-width":7,"fig-cap":"","message":"true","read-only":"false","dpi":72,"out-height":"","editor-max-height":"","warning":"true","editor-word-wrap":"true"},"code":"weights <- apply(density_ratios, 1, prod)"},{"id":4,"options":{"out-width":"700px","classes":"","label":"unnamed-chunk-4","output":"true","editor-font-scale":"1","context":"interactive","comment":"","editor-quick-suggestions":"false","autorun":"false","results":"markup","fig-height":5,"fig-width":7,"fig-cap":"","message":"true","read-only":"false","dpi":72,"out-height":"","editor-max-height":"","warning":"true","editor-word-wrap":"true"},"code":"mean(weights*foo$Y)"},{"id":5,"options":{"out-width":"700px","classes":"","label":"unnamed-chunk-5","output":"true","editor-font-scale":"1","context":"interactive","comment":"","editor-quick-suggestions":"false","autorun":"false","results":"markup","fig-height":5,"fig-width":7,"fig-cap":"","message":"true","read-only":"false","dpi":72,"out-height":"","editor-max-height":"","warning":"true","editor-word-wrap":"true"},"code":"# First compute the weights as the cumulative product of the density ratios\nweights <- t(apply(density_ratios, 1, cumprod))\n\npredictions_natural <- matrix(NA, nrow = n, ncol = 2)\npredictions_shifted <- matrix(NA, nrow = n, ncol = 2)\n\n# Set t = 2\n# Because t + 1 = tau + 1, set the first pseudo outcome to the observed outcome\nm3_d <- foo$Y\n\n# Regress the pseudo outcome on the observed data\nfit2 <- glm(m3_d ~ A2 + L2 + A1 + L1, data = foo)\n\n# Generate the predictions for t = 2\npredictions_natural[, 2] <- predict(fit2)\npredictions_shifted[, 2] <- predict(fit2, mutate(foo, A2 = 1))\n\n# Perform the targeting step\ntargeting_fit2 <- glm(m3_d ~ offset(predictions_natural[, 2]), weights = weights[, 2])\n\n# Update predictions\npredictions_natural[, 2] <- predictions_natural[, 2] + coef(targeting_fit2)\npredictions_shifted[, 2] <- predictions_shifted[, 2] + coef(targeting_fit2)\n\n# Iterate, setting t - 1 = 1\n# The new pseudo outcome is the targeted outcome under the shift at t + 1 = 2\nm2_d <- predictions_shifted[, 2]\n\n# Regress the pseudo outcome on the observed data\nfit1 <- glm(m2_d ~ A1 + L1, data = foo)\n\n# Generate the predictions for t = 2\npredictions_natural[, 1] <- predict(fit1)\npredictions_shifted[, 1] <- predict(fit1, mutate(foo, A1 = 1))\n\n# Perform the targeting step\ntargeting_fit1 <- glm(m2_d ~ offset(predictions_natural[, 1]), weights = weights[, 1])\n\n# Update predictions\npredictions_natural[, 1] <- predictions_natural[, 1] + coef(targeting_fit1)\npredictions_shifted[, 1] <- predictions_shifted[, 1] + coef(targeting_fit1)\n\nmean(predictions_shifted[, 1])"},{"id":6,"options":{"out-width":"700px","classes":"","label":"unnamed-chunk-6","output":"true","editor-font-scale":"1","context":"interactive","comment":"","editor-quick-suggestions":"false","autorun":"false","results":"markup","fig-height":5,"fig-width":7,"fig-cap":"","message":"true","read-only":"false","dpi":72,"out-height":"","editor-max-height":"","warning":"true","editor-word-wrap":"true"},"code":"predictions_natural <- matrix(NA, nrow = n, ncol = 2)\npredictions_shifted <- matrix(NA, nrow = n, ncol = 3)\n\n# Set t = 2\n# Because t + 1 = tau + 1, set the first pseudo outcome to the observed outcome\nm3_d <- foo$Y\npredictions_shifted[, 3] <- m3_d\n\n# Regress the pseudo outcome on the observed data\nfit2 <- glm(m3_d ~ A2 + L2 + A1 + L1, data = foo)\n\n# Generate the predictions for t = 2\npredictions_natural[, 2] <- predict(fit2)\npredictions_shifted[, 2] <- predict(fit2, mutate(foo, A2 = 1))\n\n# Iterate, setting t - 1 = 1\n# Compute the pseudo outcome using the efficient influence function\nm2_d <- density_ratios[, 2]*(m3_d - predictions_natural[, 2]) + predictions_shifted[, 2]\n\n# Regress the pseudo outcome on the observed data\nfit1 <- glm(m2_d ~ A1 + L1, data = foo)\n\n# Generate the predictions for t = 1\npredictions_natural[, 1] <- predict(fit1)\npredictions_shifted[, 1] <- predict(fit1, mutate(foo, A1 = 1))\n\nweights <- t(apply(density_ratios, 1, cumprod))\n\n# Compute the estimate as the sample mean of the uncentered efficient influence function\nuc_eif <- rowSums(weights * (predictions_shifted[, 2:3] - predictions_natural[, 1:2])) + \n  predictions_shifted[, 1]\n\nmean(uc_eif)"}];
+globalThis.qwebrCellDetails = [{"id":1,"options":{"results":"markup","read-only":"false","out-width":"700px","warning":"true","editor-font-scale":"1","fig-width":7,"out-height":"","output":"true","editor-word-wrap":"true","message":"true","comment":"","label":"unnamed-chunk-1","classes":"","context":"setup","autorun":"true","fig-height":5,"dpi":72,"editor-quick-suggestions":"false","fig-cap":"","editor-max-height":""},"code":"set.seed(786543)\nn <- 500\nl0 <- rnorm(n)\na1 <- rbinom(n, 1, plogis(-1 + l0*1.5))\nl1 <- rnorm(n)\na2 <- rbinom(n, 1, plogis(-1 + l1*1.5 + a1*2))\ny <- rnorm(n, -1 - 1.2*l0 + 2.4*a1 - 2*l1 + 1.2*a2)\nfoo <- data.frame(\n  L1 = l0, \n  A1 = a1, \n  L2 = l1, \n  A2 = a2, \n  Y = y\n)"},{"id":2,"options":{"results":"markup","read-only":"false","out-width":"700px","warning":"true","editor-font-scale":"1","fig-width":7,"out-height":"","output":"true","editor-word-wrap":"true","message":"true","comment":"","label":"unnamed-chunk-2","classes":"","context":"interactive","autorun":"false","fig-height":5,"dpi":72,"editor-quick-suggestions":"false","fig-cap":"","editor-max-height":""},"code":"# Create an empty matrix to store the density ratios\ndensity_ratios <- matrix(NA, nrow = n, ncol = 2)\n\nfor (t in 1:2) {\n  a <- c(\"A1\", \"A2\")[t]\n  # Duplicate the data\n  shifted <- foo\n  # In the duplicated data, modify treatment according to d\n  shifted[[a]] <- 1\n  \n  # Set the values of delta in the original and modified data\n  foo$lambda <- 0\n  shifted$lambda <- 1\n  \n  # Stack the original data and the modified data\n  density_ratio_data <- rbind(foo, shifted)\n  \n  # Regress lambda_t on A_t,H_t\n  parents <- unlist(lapply(1:t, \\(x) paste0(c(\"L\", \"A\"), x)))\n  formula <- as.formula(paste(\"lambda ~\", paste(parents, collapse = \"+\")))\n  density_ratio_model <- glm(formula, data = density_ratio_data, family = binomial)\n  \n  # Calculate the estimated odds\n  prob_lambda_1 <- predict(density_ratio_model, foo, type = \"response\")\n  density_ratios[, t] <- prob_lambda_1 / (1 - prob_lambda_1)\n}\n\nsummary(density_ratios)"},{"id":3,"options":{"results":"markup","read-only":"false","out-width":"700px","warning":"true","editor-font-scale":"1","fig-width":7,"out-height":"","output":"true","editor-word-wrap":"true","message":"true","comment":"","label":"unnamed-chunk-3","classes":"","context":"interactive","autorun":"false","fig-height":5,"dpi":72,"editor-quick-suggestions":"false","fig-cap":"","editor-max-height":""},"code":"weights <- apply(density_ratios, 1, prod)"},{"id":4,"options":{"results":"markup","read-only":"false","out-width":"700px","warning":"true","editor-font-scale":"1","fig-width":7,"out-height":"","output":"true","editor-word-wrap":"true","message":"true","comment":"","label":"unnamed-chunk-4","classes":"","context":"interactive","autorun":"false","fig-height":5,"dpi":72,"editor-quick-suggestions":"false","fig-cap":"","editor-max-height":""},"code":"mean(weights*foo$Y)"},{"id":5,"options":{"results":"markup","read-only":"false","out-width":"700px","warning":"true","editor-font-scale":"1","fig-width":7,"out-height":"","output":"true","editor-word-wrap":"true","message":"true","comment":"","label":"unnamed-chunk-5","classes":"","context":"interactive","autorun":"false","fig-height":5,"dpi":72,"editor-quick-suggestions":"false","fig-cap":"","editor-max-height":""},"code":"# First compute the weights as the cumulative product of the density ratios\nweights <- t(apply(density_ratios, 1, cumprod))\n\npredictions_natural <- matrix(NA, nrow = n, ncol = 2)\npredictions_shifted <- matrix(NA, nrow = n, ncol = 2)\n\n# Set t = 2\n# Because t + 1 = tau + 1, set the first pseudo outcome to the observed outcome\nm3_d <- foo$Y\n\n# Regress the pseudo outcome on the observed data\nfit2 <- glm(m3_d ~ A2 + L2 + A1 + L1, data = foo)\n\n# Generate the predictions for t = 2\npredictions_natural[, 2] <- predict(fit2)\npredictions_shifted[, 2] <- predict(fit2, mutate(foo, A2 = 1))\n\n# Perform the targeting step\ntargeting_fit2 <- glm(m3_d ~ offset(predictions_natural[, 2]), weights = weights[, 2])\n\n# Update predictions\npredictions_natural[, 2] <- predictions_natural[, 2] + coef(targeting_fit2)\npredictions_shifted[, 2] <- predictions_shifted[, 2] + coef(targeting_fit2)\n\n# Iterate, setting t - 1 = 1\n# The new pseudo outcome is the targeted outcome under the shift at t + 1 = 2\nm2_d <- predictions_shifted[, 2]\n\n# Regress the pseudo outcome on the observed data\nfit1 <- glm(m2_d ~ A1 + L1, data = foo)\n\n# Generate the predictions for t = 2\npredictions_natural[, 1] <- predict(fit1)\npredictions_shifted[, 1] <- predict(fit1, mutate(foo, A1 = 1))\n\n# Perform the targeting step\ntargeting_fit1 <- glm(m2_d ~ offset(predictions_natural[, 1]), weights = weights[, 1])\n\n# Update predictions\npredictions_natural[, 1] <- predictions_natural[, 1] + coef(targeting_fit1)\npredictions_shifted[, 1] <- predictions_shifted[, 1] + coef(targeting_fit1)\n\nmean(predictions_shifted[, 1])"},{"id":6,"options":{"results":"markup","read-only":"false","out-width":"700px","warning":"true","editor-font-scale":"1","fig-width":7,"out-height":"","output":"true","editor-word-wrap":"true","message":"true","comment":"","label":"unnamed-chunk-6","classes":"","context":"interactive","autorun":"false","fig-height":5,"dpi":72,"editor-quick-suggestions":"false","fig-cap":"","editor-max-height":""},"code":"predictions_natural <- matrix(NA, nrow = n, ncol = 2)\npredictions_shifted <- matrix(NA, nrow = n, ncol = 3)\n\n# Set t = 2\n# Because t + 1 = tau + 1, set the first pseudo outcome to the observed outcome\nm3_d <- foo$Y\npredictions_shifted[, 3] <- m3_d\n\n# Regress the pseudo outcome on the observed data\nfit2 <- glm(m3_d ~ A2 + L2 + A1 + L1, data = foo)\n\n# Generate the predictions for t = 2\npredictions_natural[, 2] <- predict(fit2)\npredictions_shifted[, 2] <- predict(fit2, mutate(foo, A2 = 1))\n\n# Iterate, setting t - 1 = 1\n# Compute the pseudo outcome using the efficient influence function\nm2_d <- density_ratios[, 2]*(m3_d - predictions_natural[, 2]) + predictions_shifted[, 2]\n\n# Regress the pseudo outcome on the observed data\nfit1 <- glm(m2_d ~ A1 + L1, data = foo)\n\n# Generate the predictions for t = 1\npredictions_natural[, 1] <- predict(fit1)\npredictions_shifted[, 1] <- predict(fit1, mutate(foo, A1 = 1))\n\nweights <- t(apply(density_ratios, 1, cumprod))\n\n# Compute the estimate as the sample mean of the uncentered efficient influence function\nuc_eif <- rowSums(weights * (predictions_shifted[, 2:3] - predictions_natural[, 1:2])) + \n  predictions_shifted[, 1]\n\nmean(uc_eif)"}];
 
 </script>
 <script type="module">
@@ -2157,7 +2157,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 20, 2025</p>
+      <p class="date-modified">June 1, 2025</p>
     </div>
   </div>
     
@@ -2377,7 +2377,7 @@ The algorithm is as follows:</p>
 <p><br>
 </p>
 <ul>
-<li>For time-varying setting, an estimator is doubly robust if, for some time <span class="math inline">\(s\)</span>, all outcome regressions for <span class="math inline">\(t &gt;s\)</span> are consistently estimated and all intervention mechanisms (treatment + censoring) for <span class="math inline">\(t \leq s\)</span> are consistently estimated. Consider for example <span class="math inline">\(5\)</span> time points:</li>
+<li>For time-varying setting, an estimator is <span class="math inline">\(\tau + 1\)</span> doubly robust if, for some time <span class="math inline">\(s\)</span>, all outcome regressions for <span class="math inline">\(t &gt;s\)</span> are consistently estimated and all intervention mechanisms (treatment + censoring) for <span class="math inline">\(t \leq s\)</span> are consistently estimated. Consider for example <span class="math inline">\(5\)</span> time points:</li>
 </ul>
 <table class="caption-top table">
 <tbody>
@@ -2487,32 +2487,14 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </section>
 <section id="targeted-minimum-loss-based-estimation" class="level2">
 <h2 class="anchored" data-anchor-id="targeted-minimum-loss-based-estimation">Targeted Minimum-Loss Based Estimation</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Pros ✅</th>
-<th style="text-align: left;">Cons ❌</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Substitution estimator</td>
-<td style="text-align: left;">not sequentially doubly-robust</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">doubly-robust</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">can use machine learning</td>
-<td style="text-align: left;"></td>
-</tr>
-</tbody>
-</table>
+<p>TMLE exploits the fact that the expected value of the EIF is equal to zero. Consider the EIF for the single time-point setting we just defined.</p>
+<span class="math display">\[\begin{aligned}
+\E[\phi_1(O) - \theta] &amp;= \E[r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta]\\
+&amp;= \E[r(a, w)\{Y - \m(a,w)\}] + \theta - \theta \\
+&amp;= \E[r(a, w)\{Y - \m(a,w)\}] \\
+\E[r(a, w)\{Y - \m(a,w)\}] &amp;= 0
+\end{aligned}\]</span>
+<p>The key insight is to recognize that <span class="math inline">\(r(a, w)\{Y - \m(a,w)\}\)</span> looks like a score equation <span class="math inline">\(\sum_i r_i(a, w)\{Y_i - \m_i(a,w)\} = 0\)</span> that can be solved using a GLM with weights <span class="math inline">\(r_i(a, w)\)</span>, offset <span class="math inline">\(m_i(a,w)\)</span>, an intercept, and the canonical link. Thus, by solving the score equation with a GLM, TMLE solves the EIF estimating equation.</p>
 <p>The algorithm is as follows:</p>
 <div class="algorithm">
 <div class="algorithm-body">
@@ -2548,10 +2530,7 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 <p>Let’s apply TMLE using the estimated density ratios we calculated in the previous example.</p>
 <div id="qwebr-insertion-location-5"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-</section>
-</section>
-<section id="sequentially-doubly-robust-estimator" class="level2">
-<h2 class="anchored" data-anchor-id="sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</h2>
+<p>The benefits of TMLE are quite large as it solves the main problems with g-computation and IPW. Namely, the TMLE is <span class="math inline">\(\tau+1\)</span> doubly robust and rate doubly robust.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -2565,11 +2544,11 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">doubly-robust</td>
-<td style="text-align: left;">not a substitution estimator</td>
+<td style="text-align: left;">Substitution estimator</td>
+<td style="text-align: left;">not sequentially doubly-robust</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">sequentially doubly-robust</td>
+<td style="text-align: left;"><span class="math inline">\(\tau+1\)</span> doubly-robust</td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
@@ -2578,6 +2557,10 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 </tr>
 </tbody>
 </table>
+</section>
+</section>
+<section id="sequentially-doubly-robust-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</h2>
 <p>The SDR estimator is based on the central fact that</p>
 <p><span class="math display">\[
 E[\phi_t(O)\mid A_t=a_t, H_t=h_t] \approx \m_t(a_t, h_t)
@@ -2604,6 +2587,33 @@ E[\phi_t(O)\mid A_t=a_t, H_t=h_t] \approx \m_t(a_t, h_t)
 <p>Let’s apply the SDR estimator. Again, we’ll use the estimated density ratios we previously estimated.</p>
 <div id="qwebr-insertion-location-6"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>Similarly to TMLE, the SDR estimator addresses the main issues with g-computation and IPW. In addition, the SDR estimator is sequentially doubly robust. However, this comes at the price of the SDR not being a substitution estimator, meaning it could produce a point estimate outside the valid range of the outcome.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Pros ✅</th>
+<th style="text-align: left;">Cons ❌</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\tau+1\)</span> doubly-robust</td>
+<td style="text-align: left;">not a substitution estimator</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sequentially doubly-robust</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">can use machine learning</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="choosing-an-estimator" class="level2">
@@ -2660,7 +2670,7 @@ E[\phi_t(O)\mid A_t=a_t, H_t=h_t] \approx \m_t(a_t, h_t)
 <td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
-<td>Doubly robust</td>
+<td><span class="math inline">\(\tau+1\)</span> doubly robust</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;">⭐</td>

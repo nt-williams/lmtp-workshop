@@ -291,7 +291,7 @@ $$
 
 ## Targeted Minimum-Loss Based Estimation
 
-TMLE exploits the fact that the expected value of the EIF is equal to zero. For simplicity, lets consider the case of a single time-point where the EIF was defined above.
+TMLE exploits the fact that the expected value of the EIF is equal to zero. Consider the EIF for the single time-point setting we just defined.
 
 \begin{aligned}
 \E[\phi_1(O) - \theta] &= \E[r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta]\\
@@ -300,7 +300,7 @@ TMLE exploits the fact that the expected value of the EIF is equal to zero. For 
 \E[r(a, w)\{Y - \m(a,w)\}] &= 0
 \end{aligned}
 
-The key insight is to recognize that $r(a, w)\{Y - \m(a,w)\}$ is a score function and that the score equation $\sum_i r_i(a, w)\{Y_i - \m_i(a,w)\} = 0$ can be solved using a weighted GLM with canonical link and an intercept. So, by solving the score equation with a GLM, TMLE solves the EIF estimating equation. 
+The key insight is to recognize that $r(a, w)\{Y - \m(a,w)\}$ looks like a score equation $\sum_i r_i(a, w)\{Y_i - \m_i(a,w)\} = 0$ that can be solved using a GLM with weights $r_i(a, w)$, offset $m_i(a,w)$, an intercept, and the canonical link. Thus, by solving the score equation with a GLM, TMLE solves the EIF estimating equation. 
 
 The algorithm is as follows:
 
@@ -392,7 +392,7 @@ predictions_shifted[, 1] <- predictions_shifted[, 1] + coef(targeting_fit1)
 mean(predictions_shifted[, 1])
 ```
 
-The benefits of TMLE are quite large as it solves the main problems with g-computation and IPW. Namely, the TMLE is $\tau+1$ doubly robust and it's rate doubly robust. 
+The benefits of TMLE are quite large as it solves the main problems with g-computation and IPW. Namely, the TMLE is $\tau+1$ doubly robust and rate doubly robust. 
 
 
 | Pros ✅                    | Cons ❌                                            |
