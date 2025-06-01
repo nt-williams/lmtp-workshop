@@ -203,6 +203,10 @@ Recall that the fundamental problem of causal inference is that we can't observe
 **Question**: When might these assumptions be violated?
 :::
 
+::: {.callout-note  appearance="simple"}
+Under these assumptions, the distribution of the natural value of treatment at time $t$ is equal to the distribution of the observed value of treatment at time $t$ conditional on the observed history. 
+:::
+
 Assuming the above, $\theta$ is identified from the observed data with:
 
 Set $\m_{\tau+1} = Y$. In a slight abuse of notation, let $A_t^\dd = \dd(A_t, H_t)$. For $t = \tau, ..., 1$, recursively define
