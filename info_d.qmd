@@ -35,6 +35,8 @@ where $Y^{\bar A^{\dd}}$ is the counterfactual outcome in a world, where possibl
 
 * This process is iteratively repeated until the end of the study. At that time, the counterfactual outcome $Y^{\bar A^{\dd}}$ is generated.
 
+![Single World Intervention Graph.](images/swig.png){fig-align="center"}
+
 This definition is agnostic to the type of outcome:
 
 -   When $Y$ is continuous, $\theta$ is the mean population value of $Y$ under intervention $\dd$.
