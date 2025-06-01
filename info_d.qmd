@@ -61,23 +61,23 @@ An intervention is static if the function $\dd_t$ always returns the same value 
 
 ## Dynamic Treatment Regime
 
-Let $A_t$ denote a binary vector, such as receiving a medication, and $H_t$ a numeric vector, such as a measure of discomfort. For a given value of $\delta$, define $$
+Let $A_t$ denote a binary vector, such as receiving a medication, and $L_t$ a numeric vector, such as a measure of discomfort. For a given value of $\delta$, define $$
 \dd(a_t, h_t, \epsilon) = \begin{cases}
-1 &\text{ if } h_t > \delta \\
+1 &\text{ if } l_t > \delta \\
 0 &\text{ otherwise.}
 \end{cases}
 $$
 
 ::: {.callout-note appearance="simple"}
-Interventions where the output of the function $\dd$ depends **only** **on the covariates** $H_t$ are referred to as being dynamic.
+Interventions where the output of the function $\dd$ depends **only** **on the history** $H_t$ are referred to as being dynamic.
 :::
 
 #### Example
 
-> @rudolph2022buprenorphine examined a Buprenorphine (BUP-NX) dosing strategy among a population of patients who were taking BUP-NX for opioid use disorder. Under the hypothetical intervention, patients who reported opioid use during the week prior to a physicians exam received a BUP-NX dose increase while patients who did not report prior-week opioid use maintained the same dose. Let $A_t$ be a binary indicator for BUP-NX dose increase at week $t$ compared to week $t-1$ and $X_t$ be an indicator for opioid use at week $t$. Then,
+> @rudolph2022buprenorphine examined a Buprenorphine (BUP-NX) dosing strategy among a population of patients who were taking BUP-NX for opioid use disorder. Under the hypothetical intervention, patients who reported opioid use during the week prior to a physicians exam received a BUP-NX dose increase while patients who did not report prior-week opioid use maintained the same dose. Let $A_t$ be a binary indicator for BUP-NX dose increase at week $t$ compared to week $t-1$ and $L_t$ be an indicator for opioid use at week $t$. Then,
 $$
 \dd(a_t, h_t, \epsilon) = \begin{cases}
-1 \text{ if } x_{t-1} = 1\\
+1 \text{ if } l_{t-1} = 1\\
 0 \text{ otherwise}
 \end{cases}
 $$
@@ -109,9 +109,9 @@ Under this intervention, the natural value of exposure at time $t$ is increased 
 
 #### Example
 
-> @diaz2023nonparametric estimated the effect of increasing P/F ratio (a measure of hypoxemia) by 50 units on survival among those patients with acute respiratory failure (a P/F ratio \< 300).
+> @diaz2023nonparametric estimated the effect of increasing P/F ratio ($A_t$)--a measure of hypoxemia--by 50 units on survival among those patients with acute respiratory failure (a P/F ratio \< 300).
 $$
-\dd_t(a_t, h_t, \epsilon) = \begin{cases}
+\dd_t(a_t, l_t, \epsilon) = \begin{cases}
 a_t + 50 &\text{ if } a_t \leq 300 \\
 a_t &\text{ otherwise}
 \end{cases}
@@ -130,7 +130,7 @@ $$
 
 > @nugent2023demonstration evaluated the association between county-level measures of mobility and incident COVID-19 cases in the United States in the Summer and Fall of 2022. They considered both hypothetical additive and multiplicative MTPs; for example, they defined a multiplicative MTP where a measure for the density of mobile devices visiting commercial locations was decreased by 25%:
 $$
-\dd(a_t, h_t, \epsilon) = a_t \times 0.75.
+\dd(a_t, l_t, \epsilon) = a_t \times 0.75.
 $$
 
 ## Randomized Interventions
@@ -155,7 +155,7 @@ $$
 a_t &\text{ if } \epsilon_t < \delta \\
 0 &\text{ otherwise}
 \end{cases}.
-$$ In this case, we have $\g^\dd(a_t \mid H_t) = a_t \delta \g_t(1 \mid H_t) + (1 - a_t) (1 - \delta \g_t(1\mid H_t))$, which leads to a risk ratio of $\g_t^\dd(1 \mid H_t)/\g_t(1\mid H_t) = \delta$ for comparing the propensity score post- vs pre-intervention.
+$$ In this case, we have $\g^\dd(a_t \mid h_t) = a_t \delta \g_t(1 \mid H_t) + (1 - a_t) (1 - \delta \g_t(1\mid H_t))$, which leads to a risk ratio of $\g_t^\dd(1 \mid H_t)/\g_t(1\mid H_t) = \delta$ for comparing the propensity score post- vs pre-intervention.
 
 ::: {.callout-note appearance="simple"}
 An intervention where the conditional probability of treatment is shifted is referred to as an incremental propensity score intervention.
