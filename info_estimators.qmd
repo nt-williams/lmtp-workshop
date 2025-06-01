@@ -108,12 +108,19 @@ L_2 &\sim \text{Normal}(0, 1) \\
 A_2 &\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5L_2 + 2A_1))\\
 Y &\sim \text{Normal}(-1 - 1.2L_1 + 2.4A_1 - 2L_2 + 1.2A_2)
 \end{align}
-The data has been loaded into R in the background as `foo`. We will use the density ratio classification trick to estimate the density ratio $r_t(a_t, h_t)$ under the static intervention $d(a_t, h_t) = 1$. The true value under this intervention is $\approx 2.6$. First, we create the augmented data. We then regress the $\Lambda$ on $A_t$ and $H_t$ and estimate the density ratio as the predicted odds.
+The data has been loaded into R in the background as `foo`. We will use the density ratio classification trick to estimate the density ratio $r_t(a_t, h_t)$ under the intervention 
+$$
+\dd(a_t, \epsilon_t) = \begin{cases}
+0 &\text{ if } \epsilon_t < 0.5 \text{ and } a_t = 1 \\
+a_t &\text{ otherwise.}
+\end{cases}
+$$
+The true value under this intervention is approximately $-0.37$. First, we create the augmented data. We then regress the $\Lambda$ on $A_t$ and $H_t$ and estimate the density ratio as the predicted odds.
 
 ```{webr-r}
 #| context: setup
 set.seed(786543)
-n <- 500
+n <- 1000
 l0 <- rnorm(n)
 a1 <- rbinom(n, 1, plogis(-1 + l0*1.5))
 l1 <- rnorm(n)
@@ -129,6 +136,12 @@ foo <- data.frame(
 ```
 
 ```{webr-r}
+# Define the intervention as a function
+d <- function(a) {
+  epsilon <- runif(length(a))
+  ifelse(epsilon < 0.5 & a == 1, 0, a)
+}
+
 # Create an empty matrix to store the density ratios
 density_ratios <- matrix(NA, nrow = n, ncol = 2)
 
@@ -137,7 +150,7 @@ for (t in 1:2) {
   # Duplicate the data
   shifted <- foo
   # In the duplicated data, modify treatment according to d
-  shifted[[a]] <- 1
+  shifted[[a]] <- d(foo[[a]])
   
   # Set the values of delta in the original and modified data
   foo$lambda <- 0
@@ -362,7 +375,7 @@ fit2 <- glm(m3_d ~ A2 + L2 + A1 + L1, data = foo)
 
 # Generate the predictions for t = 2
 predictions_natural[, 2] <- predict(fit2)
-predictions_shifted[, 2] <- predict(fit2, mutate(foo, A2 = 1))
+predictions_shifted[, 2] <- predict(fit2, mutate(foo, A2 = d(A2)))
 
 # Perform the targeting step
 targeting_fit2 <- glm(m3_d ~ offset(predictions_natural[, 2]), weights = weights[, 2])
@@ -380,7 +393,7 @@ fit1 <- glm(m2_d ~ A1 + L1, data = foo)
 
 # Generate the predictions for t = 2
 predictions_natural[, 1] <- predict(fit1)
-predictions_shifted[, 1] <- predict(fit1, mutate(foo, A1 = 1))
+predictions_shifted[, 1] <- predict(fit1, mutate(foo, A1 = d(A1)))
 
 # Perform the targeting step
 targeting_fit1 <- glm(m2_d ~ offset(predictions_natural[, 1]), weights = weights[, 1])
@@ -452,7 +465,7 @@ fit2 <- glm(m3_d ~ A2 + L2 + A1 + L1, data = foo)
 
 # Generate the predictions for t = 2
 predictions_natural[, 2] <- predict(fit2)
-predictions_shifted[, 2] <- predict(fit2, mutate(foo, A2 = 1))
+predictions_shifted[, 2] <- predict(fit2, mutate(foo, A2 = d(A2)))
 
 # Iterate, setting t - 1 = 1
 # Compute the pseudo outcome using the efficient influence function
@@ -463,7 +476,7 @@ fit1 <- glm(m2_d ~ A1 + L1, data = foo)
 
 # Generate the predictions for t = 1
 predictions_natural[, 1] <- predict(fit1)
-predictions_shifted[, 1] <- predict(fit1, mutate(foo, A1 = 1))
+predictions_shifted[, 1] <- predict(fit1, mutate(foo, A1 = d(A1)))
 
 weights <- t(apply(density_ratios, 1, cumprod))
 

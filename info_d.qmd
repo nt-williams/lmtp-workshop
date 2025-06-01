@@ -220,7 +220,7 @@ Consider the following data (here $\tau = 2$):
 ```{webr-r}
 #| context: setup
 set.seed(786543)
-n <- 500
+n <- 1000
 l0 <- rnorm(n)
 a1 <- rbinom(n, 1, plogis(-1 + l0*1.5))
 l1 <- rnorm(n)
@@ -237,7 +237,7 @@ foo <- data.frame(
 
 ```{r echo=FALSE}
 set.seed(786543)
-n <- 500
+n <- 1000
 l0 <- rnorm(n)
 a1 <- rbinom(n, 1, plogis(-1 + l0*1.5))
 l1 <- rnorm(n)
@@ -273,7 +273,7 @@ a_t &\text{ otherwise.}
 \end{cases}
 $$
 
-First, let's translate this intervention into an R function. 
+The true value under this intervention is $\approx -0.37$. First, let's translate this intervention into an R function. 
 
 ```{webr-r}
 d <- function(a) {
