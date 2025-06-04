@@ -18,29 +18,29 @@ website:
     contents:
       - href: index.qmd
         text: Welcome!
-      - href: info_tldr.qmd
+      - href: 01_info_introduction.qmd
         text: 1. Introduction
-      - href: info_d.qmd
+      - href: 02_info_d.qmd
         text: 2. Defining Interventions
-      - href: info_estimators.qmd
+      - href: 03_info_estimators.qmd
         text: 3. Estimators
       - section: 4. Estimating Effects with lmtp
         contents:
-          - href: lmtp.qmd
+          - href: 04_lmtp.qmd
             text: The lmtp package
-          - href: R_static.qmd
+          - href: 05_R_static.qmd
             text: Static effects and the ATE
-          - href: R_dtr.qmd
+          - href: 06_R_dtr.qmd
             text: Dynamic Treatment Regimes
-          - href: R_mtp.qmd
+          - href: 07_R_mtp.qmd
             text: Modified Treatment Policies
-          - href: R_ipsi.qmd
+          - href: 08_R_ipsi.qmd
             text: IPSI
-          - href: R_survival.qmd
+          - href: 09_R_survival.qmd
             text: Survival Analysis
-          - href: R_multivariate.qmd
+          - href: 10_R_multivariate.qmd
             text: Multivariate Exposures
-      - href: info_conclusion.qmd
+      - href: 11_info_conclusion.qmd
         text: 5. Final Remarks
         
     tools:
