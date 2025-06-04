@@ -16,7 +16,7 @@ Thank you for attending this workshop! We encourage you to reach out to us with 
 
 ## Including in a manuscript
 
-If you decide to use `lmtp` in your research, here's a summary that can be included for explaining the methodology. It is based on the explanation in @rudolph2024associations:
+If you decide to use _lmtp_ in your research, here's a summary that can be included for explaining the methodology. It is based on the explanation in @rudolph2024associations:
 
 > We estimated the effect of \[exposure\] on \[outcome\], adjusting for covariates. This effect can be written: $\E(Y^{\dd, C=1} - Y^{C=1}),$ \[change the preceding to correspond to your effect\] where $\E(Y^{C=1})$ \[change as applicable\] denotes the expected value of the counterfactual outcome had the exposure not been intervened on (i.e., remained as observed) and had no one been censored, and where $\E(Y^{\dd, C=1})$ \[change as applicable\] denotes the expected value of the counterfactual outcome had the exposure been intervened on as dictated by the function $\dd(A)$ and had no one been censored. We defined $\dd(A)$ as a hypothetical intervention that increased the value of the exposure by 20% (i.e., multiplied each person's value by 1.2). \[change the preceding to correspond to your intervention, $\dd$\]
 >

@@ -72,6 +72,7 @@ Counterfactuals are random variables that would have been observed, possibly con
 
 For example, consider a scenario where we are interested in the value of $Y$ in a hypothetical situation where, instead of the variable $A$ being equal to its observed value, it is set to some other value $A^\dd$.
 
+-   Here we introduce some new notation $A^{\dd}$ to refer to the post-intervention exposure. 
 -   The value of $Y$ in this hypothetical situation is a counterfactual random variable.
 
 Typically, one is interested in counterfactuals where treatment is set to some deterministic value. For instance, one could be interested in setting treatment $A^\dd=1$. One could also be interested in setting $A$ according to some covariates, e.g., "treat if age > 50".
@@ -82,7 +83,7 @@ In this workshop we are interested in a generalization of this concept, where th
 
 -   Let $\dd(A, L)$ be a function that takes a natural treatment value $A$ and a covariate profile $L$ and returns a new value of treatment. **We will refer to the function** $\dd$ **as a *shift* function or a *general hypothetical intervention*.**
 
--   Denote the value of $Y$ in the hypothetical world where treatment is set to the value $\dd(A,L)$ as $Y^{\dd}$.
+-   Denote the value of $Y$ in the hypothetical world where treatment is set to the value $\dd(A,L)$ as $Y^{A^\dd}$.
 
 Returning to the data example, imagine we are interested in the value of `event` if `trt` was replaced with the output of a function $\dd$ that always returns 1:
 
@@ -90,11 +91,11 @@ $$
 \begin{align}
 L &= f_L(U_L)\\
 A^{\dd} &= \dd(A, L) = 1 \\
-Y^{\dd} &= f_Y(1, L, U_Y)
+Y^{A^\dd} &= f_Y(A^\dd, L, U_Y) = f_Y(1, L, U_Y)
 \end{align}
 $$
 
-Here we introduce some new notation $A^{\dd}$ to refer to the post-intervention exposure. If we had the ability to collect data from this alternative NPSEM, the data may instead look like this:
+If we had the ability to collect data from this alternative NPSEM, the data may instead look like this:
 
 ```{r echo=FALSE}
 read.csv("data/williams_synthetic.csv") |>

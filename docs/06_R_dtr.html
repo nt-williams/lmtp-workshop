@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Estimators – Beyond the Average Treatment Effect</title>
+<title>Dynamic treatment regimes – Beyond the Average Treatment Effect</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -55,10 +89,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-79108a0fc1995748cbd19a5b0e3e3e7c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -86,6 +120,16 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/editor/editor.main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
@@ -364,10 +408,10 @@ iframe.qwebr-output-code-browse {
 // Document level settings ----
 
 // Determine if we need to install R packages
-globalThis.qwebrInstallRPackagesList = ['dplyr'];
+globalThis.qwebrInstallRPackagesList = ['lmtp', 'DynTxRegime', 'gam'];
 
 // Specify possible locations to search for the repository
-globalThis.qwebrPackageRepoURLS = ['https://repo.r-wasm.org/'];
+globalThis.qwebrPackageRepoURLS = ['https://nt-williams.r-universe.dev/', 'https://repo.r-wasm.org', 'https://imbs-hl.r-universe.dev', 'https://repo.r-wasm.org/'];
 
 // Check to see if we have an empty array, if we do set to skip the installation.
 globalThis.qwebrSetupRPackages = !(qwebrInstallRPackagesList.indexOf("") !== -1);
@@ -386,7 +430,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"options":{"fig-width":7,"out-width":"700px","editor-max-height":"","fig-height":5,"read-only":"false","dpi":72,"label":"unnamed-chunk-1","output":"true","fig-cap":"","editor-word-wrap":"true","context":"setup","comment":"","warning":"true","message":"true","out-height":"","results":"markup","autorun":"true","classes":"","editor-font-scale":"1","editor-quick-suggestions":"false"},"id":1,"code":"set.seed(786543)\nn <- 1000\nl0 <- rnorm(n)\na1 <- rbinom(n, 1, plogis(-1 + l0*1.5))\nl1 <- rnorm(n)\na2 <- rbinom(n, 1, plogis(-1 + l1*1.5 + a1*2))\ny <- rnorm(n, -1 - 1.2*l0 + 2.4*a1 - 2*l1 + 1.2*a2)\nfoo <- data.frame(\n  L1 = l0, \n  A1 = a1, \n  L2 = l1, \n  A2 = a2, \n  Y = y\n)"},{"options":{"fig-width":7,"out-width":"700px","editor-max-height":"","fig-height":5,"read-only":"false","dpi":72,"label":"unnamed-chunk-2","output":"true","fig-cap":"","editor-word-wrap":"true","context":"interactive","comment":"","warning":"true","message":"true","out-height":"","results":"markup","autorun":"false","classes":"","editor-font-scale":"1","editor-quick-suggestions":"false"},"id":2,"code":"# Define the intervention as a function\nd <- function(a) {\n  epsilon <- runif(length(a))\n  ifelse(epsilon < 0.5 & a == 1, 0, a)\n}\n\n# Create an empty matrix to store the density ratios\ndensity_ratios <- matrix(NA, nrow = n, ncol = 2)\n\nfor (t in 1:2) {\n  a <- c(\"A1\", \"A2\")[t]\n  # Duplicate the data\n  shifted <- foo\n  # In the duplicated data, modify treatment according to d\n  shifted[[a]] <- d(foo[[a]])\n  \n  # Set the values of delta in the original and modified data\n  foo$lambda <- 0\n  shifted$lambda <- 1\n  \n  # Stack the original data and the modified data\n  density_ratio_data <- rbind(foo, shifted)\n  \n  # Regress lambda_t on A_t,H_t\n  parents <- unlist(lapply(1:t, \\(x) paste0(c(\"L\", \"A\"), x)))\n  formula <- as.formula(paste(\"lambda ~\", paste(parents, collapse = \"+\")))\n  density_ratio_model <- glm(formula, data = density_ratio_data, family = binomial)\n  \n  # Calculate the estimated odds\n  prob_lambda_1 <- predict(density_ratio_model, foo, type = \"response\")\n  density_ratios[, t] <- prob_lambda_1 / (1 - prob_lambda_1)\n}\n\nsummary(density_ratios)"},{"options":{"fig-width":7,"out-width":"700px","editor-max-height":"","fig-height":5,"read-only":"false","dpi":72,"label":"unnamed-chunk-3","output":"true","fig-cap":"","editor-word-wrap":"true","context":"interactive","comment":"","warning":"true","message":"true","out-height":"","results":"markup","autorun":"false","classes":"","editor-font-scale":"1","editor-quick-suggestions":"false"},"id":3,"code":"weights <- apply(density_ratios, 1, prod)"},{"options":{"fig-width":7,"out-width":"700px","editor-max-height":"","fig-height":5,"read-only":"false","dpi":72,"label":"unnamed-chunk-4","output":"true","fig-cap":"","editor-word-wrap":"true","context":"interactive","comment":"","warning":"true","message":"true","out-height":"","results":"markup","autorun":"false","classes":"","editor-font-scale":"1","editor-quick-suggestions":"false"},"id":4,"code":"mean(weights*foo$Y)"},{"options":{"fig-width":7,"out-width":"700px","editor-max-height":"","fig-height":5,"read-only":"false","dpi":72,"label":"unnamed-chunk-5","output":"true","fig-cap":"","editor-word-wrap":"true","context":"interactive","comment":"","warning":"true","message":"true","out-height":"","results":"markup","autorun":"false","classes":"","editor-font-scale":"1","editor-quick-suggestions":"false"},"id":5,"code":"# First compute the weights as the cumulative product of the density ratios\nweights <- t(apply(density_ratios, 1, cumprod))\n\npredictions_natural <- matrix(NA, nrow = n, ncol = 2)\npredictions_shifted <- matrix(NA, nrow = n, ncol = 2)\n\n# Set t = 2\n# Because t + 1 = tau + 1, set the first pseudo outcome to the observed outcome\nm3_d <- foo$Y\n\n# Regress the pseudo outcome on the observed data\nfit2 <- glm(m3_d ~ A2 + L2 + A1 + L1, data = foo)\n\n# Generate the predictions for t = 2\npredictions_natural[, 2] <- predict(fit2)\npredictions_shifted[, 2] <- predict(fit2, mutate(foo, A2 = d(A2)))\n\n# Perform the targeting step\ntargeting_fit2 <- glm(m3_d ~ offset(predictions_natural[, 2]), weights = weights[, 2])\n\n# Update predictions\npredictions_natural[, 2] <- predictions_natural[, 2] + coef(targeting_fit2)\npredictions_shifted[, 2] <- predictions_shifted[, 2] + coef(targeting_fit2)\n\n# Iterate, setting t - 1 = 1\n# The new pseudo outcome is the targeted outcome under the shift at t + 1 = 2\nm2_d <- predictions_shifted[, 2]\n\n# Regress the pseudo outcome on the observed data\nfit1 <- glm(m2_d ~ A1 + L1, data = foo)\n\n# Generate the predictions for t = 2\npredictions_natural[, 1] <- predict(fit1)\npredictions_shifted[, 1] <- predict(fit1, mutate(foo, A1 = d(A1)))\n\n# Perform the targeting step\ntargeting_fit1 <- glm(m2_d ~ offset(predictions_natural[, 1]), weights = weights[, 1])\n\n# Update predictions\npredictions_natural[, 1] <- predictions_natural[, 1] + coef(targeting_fit1)\npredictions_shifted[, 1] <- predictions_shifted[, 1] + coef(targeting_fit1)\n\nmean(predictions_shifted[, 1])"},{"options":{"fig-width":7,"out-width":"700px","editor-max-height":"","fig-height":5,"read-only":"false","dpi":72,"label":"unnamed-chunk-6","output":"true","fig-cap":"","editor-word-wrap":"true","context":"interactive","comment":"","warning":"true","message":"true","out-height":"","results":"markup","autorun":"false","classes":"","editor-font-scale":"1","editor-quick-suggestions":"false"},"id":6,"code":"predictions_natural <- matrix(NA, nrow = n, ncol = 2)\npredictions_shifted <- matrix(NA, nrow = n, ncol = 3)\n\n# Set t = 2\n# Because t + 1 = tau + 1, set the first pseudo outcome to the observed outcome\nm3_d <- foo$Y\npredictions_shifted[, 3] <- m3_d\n\n# Regress the pseudo outcome on the observed data\nfit2 <- glm(m3_d ~ A2 + L2 + A1 + L1, data = foo)\n\n# Generate the predictions for t = 2\npredictions_natural[, 2] <- predict(fit2)\npredictions_shifted[, 2] <- predict(fit2, mutate(foo, A2 = d(A2)))\n\n# Iterate, setting t - 1 = 1\n# Compute the pseudo outcome using the efficient influence function\nm2_d <- density_ratios[, 2]*(m3_d - predictions_natural[, 2]) + predictions_shifted[, 2]\n\n# Regress the pseudo outcome on the observed data\nfit1 <- glm(m2_d ~ A1 + L1, data = foo)\n\n# Generate the predictions for t = 1\npredictions_natural[, 1] <- predict(fit1)\npredictions_shifted[, 1] <- predict(fit1, mutate(foo, A1 = d(A1)))\n\nweights <- t(apply(density_ratios, 1, cumprod))\n\n# Compute the estimate as the sample mean of the uncentered efficient influence function\nuc_eif <- rowSums(weights * (predictions_shifted[, 2:3] - predictions_natural[, 1:2])) + \n  predictions_shifted[, 1]\n\nmean(uc_eif)"}];
+globalThis.qwebrCellDetails = [{"code":"data(bmiData)\nbmi <- bmiData\n# bmi$A1 <- ifelse(bmi$A1 == \"MR\", 1, 0)\n# bmi$A2 <- ifelse(bmi$A2 == \"MR\", 1, 0)","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"setup","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-1","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"d_dtr <- # Write your shift function here!","id":2,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-2","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"fit_dtr <- lmtp_sdr(\n  data = bmi, \n  trt = c(\"A1\", \"A2\"), \n  outcome = \"month12BMI\", \n  baseline = c(\"gender\", \"race\", \"parentBMI\"), \n  time_vary = list(\"baselineBMI\", \"month4BMI\"),\n  shift = d_dtr, \n  outcome_type = \"continuous\",\n  folds = 1,\n  learners_trt = \"SL.glm\", \n  learners_outcome = c(\"SL.mean\", \"SL.glm\", \"SL.gam\")\n)","id":3,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-3","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"fit_MR <- # Write your estimation code here!","id":4,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-4","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"fit_CD <- lmtp_sdr(\n  data = bmi, \n  trt = c(\"A1\", \"A2\"), \n  outcome = \"month12BMI\", \n  baseline = c(\"gender\", \"race\", \"parentBMI\"), \n  time_vary = list(\"baselineBMI\", \"month4BMI\"),\n  shift = \\(data, trt) rep(\"CD\", nrow(data)), \n  outcome_type = \"continuous\",\n  folds = 1,\n  learners_trt = \"SL.glm\", \n  learners_outcome = c(\"SL.mean\", \"SL.glm\", \"SL.gam\")\n)","id":5,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-5","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"lmtp_contrast(fit_dtr, fit_MR, ref = fit_CD)","id":6,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-6","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -1691,7 +1735,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./instructors.html"> 
+    <a class="nav-link" href="./00_instructors.html"> 
 <span class="menu-text">Instructors</span></a>
   </li>  
 </ul>
@@ -1706,7 +1750,7 @@ window.Quarto = {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title">Estimators</h1>
+          <h1 class="quarto-secondary-nav-title">Dynamic treatment regimes</h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -1745,19 +1789,19 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_tldr.html" class="sidebar-item-text sidebar-link">
+  <a href="./01_info_introduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">1. Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_d.html" class="sidebar-item-text sidebar-link">
+  <a href="./02_info_d.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">2. Defining Interventions</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_estimators.html" class="sidebar-item-text sidebar-link active">
+  <a href="./03_info_estimators.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">3. Estimators</span></a>
   </div>
 </li>
@@ -1772,43 +1816,43 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lmtp.html" class="sidebar-item-text sidebar-link">
+  <a href="./04_lmtp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">The lmtp package</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_static.html" class="sidebar-item-text sidebar-link">
+  <a href="./05_R_static.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Static effects and the ATE</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_dtr.html" class="sidebar-item-text sidebar-link">
+  <a href="./06_R_dtr.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Dynamic Treatment Regimes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_mtp.html" class="sidebar-item-text sidebar-link">
+  <a href="./07_R_mtp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Modified Treatment Policies</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_ipsi.html" class="sidebar-item-text sidebar-link">
+  <a href="./08_R_ipsi.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IPSI</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_survival.html" class="sidebar-item-text sidebar-link">
+  <a href="./09_R_survival.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Survival Analysis</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_multivariate.html" class="sidebar-item-text sidebar-link">
+  <a href="./10_R_multivariate.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Multivariate Exposures</span></a>
   </div>
 </li>
@@ -1816,7 +1860,7 @@ window.Quarto = {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_conclusion.html" class="sidebar-item-text sidebar-link">
+  <a href="./11_info_conclusion.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">5. Final Remarks</span></a>
   </div>
 </li>
@@ -1830,29 +1874,9 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#sequential-regression-estimator" id="toc-sequential-regression-estimator" class="nav-link active" data-scroll-target="#sequential-regression-estimator">Sequential Regression Estimator</a></li>
-  <li><a href="#sec-density-ratio-estimation" id="toc-sec-density-ratio-estimation" class="nav-link" data-scroll-target="#sec-density-ratio-estimation">Density-ratio estimation</a>
-  <ul class="collapse">
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
-  </ul></li>
-  <li><a href="#inverse-probability-weighting" id="toc-inverse-probability-weighting" class="nav-link" data-scroll-target="#inverse-probability-weighting">Inverse Probability Weighting</a>
-  <ul class="collapse">
-  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1">Example</a></li>
-  </ul></li>
-  <li><a href="#doubly-robust-estimators" id="toc-doubly-robust-estimators" class="nav-link" data-scroll-target="#doubly-robust-estimators">Doubly Robust Estimators</a>
-  <ul class="collapse">
-  <li><a href="#efficient-influence-function" id="toc-efficient-influence-function" class="nav-link" data-scroll-target="#efficient-influence-function">Efficient Influence Function</a></li>
-  </ul></li>
-  <li><a href="#targeted-minimum-loss-based-estimation" id="toc-targeted-minimum-loss-based-estimation" class="nav-link" data-scroll-target="#targeted-minimum-loss-based-estimation">Targeted Minimum-Loss Based Estimation</a>
-  <ul class="collapse">
-  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2">Example</a></li>
-  </ul></li>
-  <li><a href="#sequentially-doubly-robust-estimator" id="toc-sequentially-doubly-robust-estimator" class="nav-link" data-scroll-target="#sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</a>
-  <ul class="collapse">
-  <li><a href="#example-3" id="toc-example-3" class="nav-link" data-scroll-target="#example-3">Example</a></li>
-  </ul></li>
-  <li><a href="#choosing-an-estimator" id="toc-choosing-an-estimator" class="nav-link" data-scroll-target="#choosing-an-estimator">Choosing an Estimator</a></li>
-  <li><a href="#cross-fitting" id="toc-cross-fitting" class="nav-link" data-scroll-target="#cross-fitting">Cross-fitting</a></li>
+  <li><a href="#simulated-bmi-data" id="toc-simulated-bmi-data" class="nav-link active" data-scroll-target="#simulated-bmi-data">Simulated BMI Data</a></li>
+  <li><a href="#problem-1" id="toc-problem-1" class="nav-link" data-scroll-target="#problem-1">Problem 1</a></li>
+  <li><a href="#problem-2" id="toc-problem-2" class="nav-link" data-scroll-target="#problem-2">Problem 2</a></li>
   </ul>
 </nav>
     </div>
@@ -2145,7 +2169,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Estimators</h1>
+<h1 class="title d-none d-lg-block">Dynamic treatment regimes</h1>
 </div>
 
 
@@ -2157,7 +2181,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">June 1, 2025</p>
+      <p class="date-modified">May 20, 2025</p>
     </div>
   </div>
     
@@ -2183,581 +2207,97 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 \newcommand{\E}{\mathsf{E}}
 \]</span></p>
 </div>
-<p>To recap, we have</p>
-<ol type="1">
-<li><p>defined a causal parameter <span class="math inline">\(\theta\)</span> that represents the outcome <span class="math inline">\(Y\)</span> under a general hypothetical intervention implied by the function <span class="math inline">\(\dd(a_t, h_t, \epsilon)\)</span>, and</p></li>
-<li><p>defined the necessary assumptions to identify the expected value of <span class="math inline">\(Y\)</span> under an intervention that replaces <span class="math inline">\(A_t\)</span> with the output of <span class="math inline">\(\dd_t\)</span> (applied sequentially to the natural value of treatment).</p></li>
-</ol>
-<p>The parameter <span class="math inline">\(\theta\)</span> is a function that could be computed if we knew the distribution of the variables (e.g., outcome regressions). Because we do not know this distribution, we need to estimate it from a sample of observed data. We now discuss how to estimate the parameter <span class="math inline">\(\theta\)</span> from a sample.</p>
-<section id="sequential-regression-estimator" class="level2">
-<h2 class="anchored" data-anchor-id="sequential-regression-estimator">Sequential Regression Estimator</h2>
-<p>One possible estimator is simply a <em>plug-in</em> estimator of the identification result. This estimator is often referred to as G-computation, or iterative conditional expectation (ICE), and it proceeds by simply estimating the regressions described in the identification result. Another way to describe this algorithm is as follows:</p>
-<div class="algorithm">
-<div class="algorithm-body">
-<ol type="1">
-<li><p>Initialize <span class="math inline">\(\hat \m_{\tau +1} = Y_i\)</span>.</p>
-<p>For <span class="math inline">\(t = \tau, ..., 1\)</span>:</p>
-<ol type="a">
-<li><p>Using a pre-specified parametric model, regress <span class="math inline">\(\hat \m_{i,t+1}\)</span> on <span class="math inline">\(\{A_{i, t}, H_{i,t}\}\)</span>. This gives you a predictive model <span class="math inline">\(\hat \m_t(a_t, h_t)\)</span>.</p></li>
-<li><p>Generate predictions from this model with <span class="math inline">\(A_{i,t}\)</span> changed to <span class="math inline">\(A^{\dd}_{i,t}\)</span>. Let <span class="math inline">\(\hat \m_t(A_{i, t}^\dd, H_{i,t})\)</span> be these predicted values.</p></li>
-<li><p>Repeat (iterate) the above two steps until generating predicted values <span class="math inline">\(\hat \m_1(A_{i, 1}^\dd, H_{i,1})\)</span> at the first time point.</p></li>
-</ol></li>
-<li><p>Take the final estimate as <span class="math inline">\(\hat{\theta} = \frac{1}{n}\sum_{i=1}^n \hat \m_1(A_{i, 1}^\dd, H_{i,1})\)</span>.</p></li>
-<li><p>Compute standard errors using a bootstrap of steps 1 and 2; or a Delta method, if available.</p></li>
-</ol>
-</div>
-</div>
-<p>A substitution estimator is nice, because its estimates are guaranteed to stay within the valid range of the outcome and it is simple to estimate. That said, its cons are major:</p>
-<ul>
-<li>In studies with multiple time points, the adjustment set can become large very quickly. For instance, consider a study with 3 covariates measured at every time point, and 10 time points. Even though we have only 3 covariates at each time point, the number of covariates in the regression of <span class="math inline">\(Y\)</span> is 33.</li>
-<li>Imagine trying to correctly specify (e.g., include the appropriate interactions) a parametric model (e.g., logistic, Cox) with 33 variables.</li>
-</ul>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 28%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Pros ✅</th>
-<th style="text-align: left;">Cons ❌</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Simple to implement</td>
-<td style="text-align: left;">Consistency requires correct estimation of all regressions</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Substitution estimator</td>
-<td style="text-align: left;">Correctness of bootstrap requires pre-specified parametric models</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="sec-density-ratio-estimation" class="level2">
-<h2 class="anchored" data-anchor-id="sec-density-ratio-estimation">Density-ratio estimation</h2>
-<div class="callout callout-style-simple callout-caution">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>The next three estimators all rely on estimating the density ratio</p>
-<p><span class="math display">\[
-r_t(a_t, h_t) = \frac{\g_t^\dd(a_t \mid h_t)}{\g_t(a_t \mid h_t)}.
-\]</span></p>
-<p>Recall that <span class="math inline">\(\g_t^\dd(a_t \mid h_t)\)</span> denotes the density of treatment <em>post-intervention</em>, i.e., the density of <span class="math inline">\(\dd(A_t, H_t)\)</span> evaluated at <span class="math inline">\(a_t\)</span>, and that <span class="math inline">\(\g_t(a_t \mid h_t)\)</span> denotes the density of the observed treatment under no intervention.</p>
-<p>We will often refer to this ratio as the <em>intervention mechanism</em> throughout the workshop. Estimation of <span class="math inline">\(r_t(a_t, h_t)\)</span> is fully automated in <code>lmtp</code> and hidden from the user. <strong>A comprehensive understanding of this process isn’t necessary to use <code>lmtp</code>!</strong></p>
-</div>
-</div>
-</div>
-<p>We can directly estimate this density ratio with a classification trick. To do this, we create an augmented dataset with <span class="math inline">\(2n\)</span> observations. In this new dataset, the outcome is a new variable that we make, <span class="math inline">\(\Lambda\)</span>, (defined below) and the predictors are the variables <span class="math inline">\(A_t\)</span> and <span class="math inline">\(H_t\)</span>. The data structure at time <span class="math inline">\(t\)</span> is then redefined as</p>
-<p><span class="math display">\[
-(H_{\lambda, i, t}, A_{\lambda, i, t}, \Lambda_{\lambda, i} : \lambda = 0, 1; i = 1, ..., n)
-\]</span></p>
-<ul>
-<li><p><span class="math inline">\(\Lambda_{\lambda, i} = \lambda_i\)</span> indexes duplicate values. So if <span class="math inline">\(\Lambda_i =1\)</span> if observation <span class="math inline">\(i\)</span> is a duplicated value and <span class="math inline">\(\Lambda_i =0\)</span> otherwise.</p></li>
-<li><p>For all duplicated observations <span class="math inline">\(\lambda\in\{0,1\}\)</span> with the same <span class="math inline">\(i\)</span>, <span class="math inline">\(H_{\lambda, i, t}\)</span> is the same</p></li>
-<li><p>For all the original observations, <span class="math inline">\(\lambda = 0\)</span>, <span class="math inline">\(A_{\lambda=0, i, t}\)</span> equals the observed exposure values <span class="math inline">\(A_{i, t}\)</span></p></li>
-<li><p>For all the duplicated observations, <span class="math inline">\(\lambda=1\)</span>, <span class="math inline">\(A_{\lambda=1, i, t}\)</span> equals the exposure values under the intervention <span class="math inline">\(\dd\)</span>, <span class="math inline">\(A^{\dd}_{i,t}\)</span></p></li>
-</ul>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="images/density_ratio_data.png" class="img-fluid figure-img"></p>
-<figcaption>Example of augmenting data for density ratio estimation.</figcaption>
-</figure>
-</div>
-<p>We then estimate the conditional probability that <span class="math inline">\(\Lambda=1\)</span> conditional on <span class="math inline">\((A, H)\)</span> in this dataset, and divide it by the corresponding estimate of the conditional probability that <span class="math inline">\(\Lambda=0\)</span>. Specifically, denoting <span class="math inline">\(P^\lambda\)</span> to be the distribution of the data in the augmented dataset, we have:</p>
-<p><span class="math display">\[
-\begin{align*}
-r_t(a_t, h_t) &amp;= \frac{\g_t^\dd(a_t \mid h_t)}{\g_t(a_t \mid h_t)}\\
-&amp;= \frac{P^\lambda(a_t, h_t \mid \Lambda = 1)}{P^\lambda(a_t, h_t \mid \Lambda = 0)}\\
-    &amp;= \frac{P^\lambda(\Lambda = 1\mid a_t,h_t)P^\lambda(a_t,h_t)}{P^\lambda(\Lambda = 1)}\times \frac{P^\lambda(\Lambda = 0)}{P^\lambda(\Lambda = 0\mid a_t,h_t)P^\lambda(a_t,h_t)} \\
-    &amp;=\frac{P^\lambda(\Lambda = 1\mid a_t,h_t)}{P^\lambda(\Lambda = 0\mid a_t, h_t)}
-\end{align*}
-\]</span></p>
-<section id="example" class="level3">
-<h3 class="anchored" data-anchor-id="example">Example</h3>
-<p>Consider the following example where we simulate 1000 observations from this data-generating mechanism:</p>
-<p><span class="math display">\[\begin{align}
-L_1 &amp;\sim \text{Normal}(0, 1) \\  
-A_1 &amp;\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5L_1))\\  
-L_2 &amp;\sim \text{Normal}(0, 1) \\
-A_2 &amp;\sim \text{Bernoulli}(\text{logit}^{-1}(-1 + 1.5L_2 + 2A_1))\\
-Y &amp;\sim \text{Normal}(-1 - 1.2L_1 + 2.4A_1 - 2L_2 + 1.2A_2)
-\end{align}\]</span> The data has been loaded into R in the background as <code>foo</code>. We will use the density ratio classification trick to estimate the density ratio <span class="math inline">\(r_t(a_t, h_t)\)</span> under the intervention <span class="math display">\[
-\dd(a_t, \epsilon_t) = \begin{cases}
-0 &amp;\text{ if } \epsilon_t &lt; 0.5 \text{ and } a_t = 1 \\
-a_t &amp;\text{ otherwise.}
-\end{cases}
-\]</span> The true value under this intervention is approximately <span class="math inline">\(-0.37\)</span>. First, we create the augmented data. We then regress the <span class="math inline">\(\Lambda\)</span> on <span class="math inline">\(A_t\)</span> and <span class="math inline">\(H_t\)</span> and estimate the density ratio as the predicted odds.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>Recall that interventions where the output of the function depends only on covariates are referred to as dynamic interventions or dynamic treatment regimes. Let’s learn how to estimate the effects of dynamic treatment regimes using <code>lmtp</code>.</p>
+<section id="simulated-bmi-data" class="level3">
+<h3 class="anchored" data-anchor-id="simulated-bmi-data">Simulated BMI Data</h3>
+<p>A dataset named <code>bmi</code> has been loaded into R in the background.</p>
+<ul>
+<li><p>The data, from the <code>DynTxRegime</code> package, are simulated to reflect a two-stage RCT (<span class="math inline">\(A\)</span> = {<code>A1</code>, <code>A2</code>}) that studied the effect of meal replacement (<code>MR</code>) shakes versus a calorie deficit (<code>CD</code>) diet on adolescent obesity.</p></li>
+<li><p>Baseline variables include gender, race, and parent BMI.</p></li>
+<li><p>Time-varying covariates include BMI collected at stage 1 (<code>baselineBMI</code>) and stage 2 (<code>month4BMI</code>). The primary outcome is BMI at 12 months (<code>month12BMI</code>).</p></li>
+<li><p>There is no censoring.</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-ad53a33f5293f050ee16" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ad53a33f5293f050ee16">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122","123","124","125","126","127","128","129","130","131","132","133","134","135","136","137","138","139","140","141","142","143","144","145","146","147","148","149","150","151","152","153","154","155","156","157","158","159","160","161","162","163","164","165","166","167","168","169","170","171","172","173","174","175","176","177","178","179","180","181","182","183","184","185","186","187","188","189","190","191","192","193","194","195","196","197","198","199","200","201","202","203","204","205","206","207","208","209","210"],[0,1,1,1,1,0,0,1,1,0,0,0,1,0,0,1,0,0,1,1,0,1,0,1,1,0,1,0,1,1,1,1,0,0,1,1,1,1,0,0,0,1,1,0,1,1,0,1,0,0,0,1,1,1,0,0,0,1,0,1,1,0,1,1,0,0,1,0,0,1,0,0,0,1,1,0,0,0,1,1,0,0,1,0,1,1,0,0,0,0,1,1,0,0,0,1,0,1,0,1,0,1,1,0,1,1,0,0,1,1,0,0,1,1,0,0,0,0,1,1,1,0,1,0,0,0,1,1,0,0,0,0,1,1,1,0,0,1,1,1,1,0,0,1,1,0,1,0,1,1,0,0,1,0,1,1,0,1,1,0,0,1,0,1,1,1,1,0,1,1,0,1,0,0,1,0,1,1,1,0,0,1,0,1,1,1,0,1,1,1,0,1,1,0,0,1,0,0,1,1,0,1,1,1,0,0,1,1,1,0],[1,0,0,0,1,0,1,1,1,0,1,1,1,0,1,1,0,0,1,0,0,1,0,1,0,1,1,1,1,1,0,0,1,0,1,1,0,1,0,0,0,1,1,1,1,1,1,0,1,0,0,0,1,1,0,0,0,1,1,0,1,0,1,1,1,0,0,0,0,1,1,0,0,1,1,1,1,1,0,0,1,1,1,1,0,1,1,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,1,1,1,0,0,0,1,0,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0,0,1,0,1,1,1,0,1,1,1,1,0,0,1,1,0,1,0,0,1,1,0,1,1,0,1,0,0,1,1,1,1,1,1,0,1,1,0,0,0,1,0,1,0,0,1,1,1,1,0,0,1,0],[31.5968318483271,30.1756356785969,30.2791805720788,27.4925639536086,26.4235030578742,29.3097028602197,25.9004953839248,30.0710683521509,28.5212636233082,26.0243965306649,26.0772008193802,27.0385487527352,29.7094883087714,28.9224737238368,28.6124334522678,29.8454867797679,30.8235566613149,29.8897997360069,25.4103503739197,29.2735979126957,28.8625257690046,29.1552848851867,27.9438104485535,26.2340890143842,32.6055349572872,27.5568200625244,27.7050244363249,29.3486159074754,28.2271528648959,33.2495826635327,26.2089430304968,27.5926160232334,28.6280601397405,29.275532855513,32.5660822580474,30.6696527273157,27.9293929897221,28.5569747650387,32.9899357535859,25.8017815037268,29.2332750441281,27.3144160242306,28.6133024071739,27.2563028903991,29.2939730413347,31.2875823333514,28.4472865276752,24.5871158770569,24.8765099941707,30.4226366070002,28.7128350810937,31.1154382932201,29.0820645671288,29.4153870516944,31.1704456652138,28.0849585751793,26.7682728790888,30.2732850445308,31.751889473,27.5077447296646,29.4668826560683,32.4009075918896,28.3951711089974,30.729557882399,26.0788688597458,30.0826645818561,29.0767749564888,31.5479592435817,29.8845199722753,28.9048903961073,25.2137363117863,33.9449659264947,30.0175422421505,25.1917645432234,29.7998771302675,30.5413498327413,31.0618877453117,29.6532924385687,29.1915078743245,29.7711151806851,30.1807252497815,27.4056152938221,28.4086048361403,29.7403095664926,29.0489681895652,28.3557368190232,24.8548598808231,28.8106800763928,27.8862979273306,28.7213307384893,25.6481644227204,28.0602556220042,26.8388175051607,25.3459516361351,27.8043085029699,29.7872095848364,29.5177647121541,29.2125591842254,26.0580819244269,29.0259342817049,28.8518675178746,30.4606018904983,32.2642513833078,28.1035024975379,28.7304266795524,41.51321172294,41.3492306933484,38.6221422747027,38.7783320814866,38.8515961403114,32.5320635576317,42.7694642791476,41.2770759077081,36.9527134424169,40.7874142343349,45.5697696582316,39.4431984681516,39.3964081798467,34.5258553715863,41.6306745886718,50.8333555350427,35.584945250856,32.8714562690236,38.7137867379175,35.7171343910827,36.0091476999245,35.1312909117106,39.3250107424864,41.5632222807496,36.1280852789093,34.9813924263611,39.7150285714149,42.182534914779,40.2004486116071,34.9192694032632,42.5387529455107,36.0315157434716,50.766755046636,33.5525196631247,37.5717403422607,37.211108987751,39.4865966883862,32.8515086073487,37.6301352770643,41.9693595463341,35.7276601078795,36.1593499953863,42.9688710343465,40.262406207356,40.249350332998,38.2250638411105,43.5368167432468,38.2782746414832,39.6737418779832,46.693769740275,32.6154321998616,33.8489385493448,36.1647060066867,34.4033025511868,34.8335707862893,36.7298617321768,32.1858079083204,45.2435355385754,40.3533439244207,38.8934202059533,36.0305461939754,31.1099613237619,38.4186773544978,32.5430617543702,39.8211274965861,37.9442100724629,33.4204917870523,32.1541893308589,49.4455537745882,35.3744281926257,35.0414428016681,36.3618394379658,41.8657677215711,38.0167053836908,44.0498324514362,40.3571452658047,38.6522211207698,37.1826333812221,34.1586764212114,33.3373369270565,39.4564140934319,34.8361263292668,37.5881241165712,45.8167366252594,35.3382699281492,37.9671420253808,42.5604788482187,35.7384935445763,37.4337198370254,43.7483119229769,39.0583122460716,41.5928723226047,43.3867518477068,33.9222447503285,43.5315659667319,35.7365142090536,39.8646141597294,30.1709251485223,42.7119057456991,36.5415242496024,32.167506322318,36.1144994610154,35.1327479111612,35.3978518919441,36.5089341695638],[35.8400505844913,37.3039586910681,36.8388927397088,36.7067888904164,34.8420684530105,36.6864014984657,35.4263102497953,37.0590606128652,35.3685987689465,33.0647219027641,32.3399962522145,35.905040022087,33.5667345569686,35.4242788132674,31.311018045386,33.8824855265834,35.6965470728487,37.3867841753117,34.5396645991215,36.416601538563,36.6697176380486,36.0759564002357,40.2399647794254,33.3079403916821,32.721452885721,37.8579133577677,35.3993874451954,38.2176404800547,34.0154393143722,33.3169007877039,31.6962413671513,35.6861806748892,35.4116245198845,34.3681064263761,36.7452126663768,36.8062514400708,34.4759304009627,33.9217625289354,34.1897301838816,31.7038023432634,31.2494098064287,33.6813922291418,36.27341361175,37.9444117880157,38.9251399558777,39.3640897787705,32.9410378647426,32.5205605152126,34.774893146581,34.6804642879754,41.1372234694825,37.1465827049241,34.9536058940755,31.8556402898036,39.6102346141751,36.5597857879862,36.9507477769156,35.5963279658644,37.076855463549,37.3745973045164,36.5775366688182,35.1591236089033,36.4071200830396,34.5927869653427,38.8477286856288,39.1939904063974,33.7101105997601,37.7986607382182,33.7221316230908,37.4880626230247,34.9420465760116,40.1874615080188,35.8728975262065,39.4484910345293,39.0977574070384,36.9755664079899,36.4395081931457,36.2220927498324,35.2161069087819,34.7655300066151,33.4636163180805,35.669559388649,36.4651915000965,38.8681576367012,38.5629106660422,36.3306991074564,34.6042086512075,37.4618996653082,37.1144602832931,34.8448175718331,36.3626679216744,41.0038806255628,36.5587360311556,36.274379931599,34.7602537758574,35.2059828146951,36.7820720500468,31.1457955106628,40.439759798817,34.3689476739489,37.018238452232,35.8735485455039,34.6324792086546,37.8310314618707,36.2908925706439,43.2659336239479,40.8182158096921,44.4952202078272,42.4023408395103,45.2832668333708,40.1562163609003,41.5248484436131,36.2722618925427,45.271843069743,43.5650755579936,36.2415486396726,44.0224942844041,33.7539709933501,39.2045369330491,39.3748716030813,34.6925279989344,36.725477854328,43.8294553855262,38.3950852093819,42.7163887700083,44.6853922172683,41.9788559933223,34.3820957497796,37.6073639253812,41.8199495671565,36.2069858682801,33.5429058396724,38.9293372412494,40.2474720344567,37.277330668132,37.7766233525022,42.2237970124812,36.4872428302646,41.8446312991368,44.5757868082459,36.986225786018,49.828283726195,52.5168125484269,34.5868892401366,34.1374044823423,44.533211863297,42.4871070197343,35.307587300295,37.9968583243768,45.3158738696634,43.0803978539683,44.8982484489005,40.1724855488821,39.2043223715979,40.1159552259825,37.852551821515,42.7544547399696,41.4867332964223,40.4267443661591,46.1660763510995,45.2157334250825,42.8534685851277,42.6599794229896,33.5251474014311,33.3127075700751,39.7386709252033,41.4500973554668,42.0882705808234,45.6896626591482,38.696090796288,39.0182962678748,46.1804137369161,42.0740343014,40.1079230034456,38.563724101622,37.4077964109884,32.4499057641975,36.1589556690969,39.166109432022,38.3985041751842,41.8487532842449,37.7337985103447,37.0755655132475,45.3588797482337,38.0374729113047,43.5608412489057,39.818208084682,44.7755166189701,32.7519246498938,35.9283352626581,40.5945903893622,41.9407370370566,41.9606747737564,40.8176737479627,39.2511567561251,36.8153927549627,31.5332473225534,41.9081712016805,34.8176199069624,40.9983591173484,35.403338953403,44.3549807313049,35.6134278206579,41.5340942371826,39.276690281639,42.0617385528119,41.7018056226816,44.8564054332283,44.4557603985458,37.4961870327447],[34.2271672895923,36.3801392190163,34.421682452915,32.5201128080583,33.7292175260162,32.0662173146644,32.5406385623511,33.4341093771711,34.8790921354446,30.8689806898838,28.6769590165426,31.9329726309788,32.6801990486775,30.5578026838953,27.7391493181573,33.2884400911898,36.9320146604067,34.8710949532057,27.7516613818785,37.5394625355437,34.9909536660363,34.0357154162497,37.3023021365365,29.1601612762925,31.1826417060773,36.4995022085538,32.4875807648133,34.8982342223694,31.6747962084903,30.9174035045269,27.4545547258918,31.5547111964986,31.4178874683776,31.5967067015386,35.445161083532,35.8432970526047,29.3151142091988,29.8742244067968,36.6496921468178,28.8895741875894,31.1965200143016,34.7546408642237,31.0473631672634,31.7494186451982,33.6234439976395,33.9099646560853,29.2220099336174,28.9650168429944,32.0265454361585,32.2015690710072,34.5661215351464,36.4399766682587,32.8028487054033,27.4596195719644,37.4508558978961,30.1512871187562,31.7505378834281,37.2724429366209,31.5697901332137,32.2370004294823,31.5194141541082,32.5172784360539,30.1885898494531,29.1491202357583,36.1367169736311,37.3329568804682,30.4708531854125,38.6916382339441,30.4125996919923,31.4759370601202,32.0586510390259,36.5307517341681,30.9934541970144,29.5147893579959,38.5975713016859,34.9958916726865,35.3258533805118,35.6456755181214,33.8250328920841,33.4173716804165,30.6354920142259,31.8010480255982,30.6794863429393,35.9566897015319,30.7328680448161,34.7791153983364,31.9387859655615,32.0350769210617,30.8099664547763,36.3279781224586,29.7698435892032,38.5173545187535,29.0279152419076,34.9850674673434,32.8225708438659,34.0760812731361,34.9263938889012,29.0578429797128,40.6122461482252,30.9160199895162,32.2530338270546,33.7185027204589,32.0742450232724,34.5389599084617,32.7626039912326,38.2825077365322,40.9065946217219,44.9322212747473,40.1214971817719,38.701863565617,36.6189670896444,42.749387816194,38.9777152722871,38.1788074555863,39.014746601005,32.8540210697918,39.7894250324293,33.0250910131303,37.7786768715477,36.5338293545839,40.6578429955857,35.7829672308693,40.2613964641224,41.0608328596042,36.4532335061719,37.7404158606965,40.0911120905818,35.9247931782698,39.6378849934198,39.5778942650201,34.8875117518059,32.2669674751534,34.4906767614788,37.6917714995886,32.4330237973549,32.3537410183817,39.4550210667492,44.998688543967,38.3114820813173,44.1329050759904,36.3005412244657,47.8833495868488,43.5770671269525,36.8089782155356,36.69154926317,38.7689370362072,37.8858065415445,28.7480405681649,32.9951468791674,38.4577524140755,41.7091780460491,42.1932076689538,37.8464509420279,38.5997644795237,39.7605257189548,30.0045052766894,37.1758994414128,36.5624844473011,37.7130278919206,38.6624196789145,43.700407557374,38.0423135256079,44.6227631725426,34.3910456265532,34.0799280134408,35.8034924544175,41.0790203860584,36.2259962609912,41.2865428586226,39.5306335530241,38.1747601486159,45.2431005618093,33.7942368085583,37.7494596478659,39.46756711573,39.0563133098436,31.8017644494953,38.693481441882,38.7321613636159,38.7527039885944,42.1516209423499,35.4799720946541,37.6222029024969,34.4715858034143,35.3143719593842,37.2829664744245,35.0256088401142,37.6055159173779,37.7858876160764,36.6080244988768,36.9320999135021,39.5680072898543,42.5472611461598,36.4542507793765,39.2902188825874,37.0187026722286,37.2651133316022,46.9462971114782,37.9760711833422,41.2846064917195,31.3363651599349,38.4694875090339,32.3941303525202,42.0492259972291,37.6444460737666,35.4228036950972,41.5213311709604,40.3986665898838,38.30631093831,37.314466936152],[34.272626842815,36.3840056884038,34.4144739120155,32.5239747023745,33.7354640291532,32.1597690890421,32.5153059530111,33.407622677322,34.8827899398297,30.9467273014678,28.8602743615552,32.1752389875611,32.7064377253773,30.7061907331547,27.911805525546,33.2451934388592,37.0492858514249,34.8738587146023,27.5600497185936,37.5526450900232,35.0553802771869,34.0432516416396,37.294394479159,29.0066262818946,31.115701202761,36.5691453168725,32.5218445528137,34.8962466287282,31.6951127917565,31.0055030551978,27.3584985567367,31.391484748782,31.3811440154568,31.5646347803905,35.4367844913218,35.8162684834185,29.4534298196199,29.7947862305619,36.6462122742053,28.8305488864617,31.1650622237796,34.7795897572889,31.0471855515223,31.7340679509031,33.6013043469849,33.8498597144469,29.3945359955616,29.1511774581513,32.0957357532342,32.3204574016527,34.4934703635627,36.3906026842168,32.7147794107391,27.3009905482493,37.5123226990475,30.0261354003199,31.8493824192873,37.271406195535,31.6222308435826,32.1288847805663,31.6016082642139,32.4390177818888,30.3281304287446,29.0698186364602,36.1895409516037,37.3356954099,30.5313153263374,38.776113232365,30.5679920869617,31.6284518598802,32.2069821001114,36.7073510673912,30.8794460765164,29.3964062528478,38.4727130955429,35.0110222923254,35.333373097605,35.7384624871599,33.8766755048619,33.4162347992267,30.8339974763836,31.9134491928814,30.7201306943046,36.0081148059417,30.6258146329286,34.7535529852063,31.8212420585159,32.0952378271577,30.9617276758211,36.3623548237461,29.6745685171035,38.5815440849688,29.1975123978881,35.0316682529034,32.88932349258,34.119413895589,34.9838787312149,29.1792314184001,40.4904963740887,30.854608091978,32.1769913359634,33.6881423878574,32.1419446855558,34.6495661298662,32.9596890313641,38.1635857241504,40.9548762255409,45.2185870506583,40.0311071051019,38.8026033162205,36.6474362413116,42.9491411658289,38.9100676506626,38.2359067187442,38.8535537133199,32.8681162032652,39.6977693201819,33.0273961796091,37.8066768154627,36.5865797743422,40.691813112524,35.8475049990131,40.2191543518668,41.1808387452083,36.4968744553367,37.849695529827,39.9154036867,35.9037633950419,39.5904468344586,39.5412017127505,34.9369961116056,32.2178029933189,34.4394018937293,37.6325646130836,32.4885901206834,32.3244525379952,39.2916320199819,45.0741680005032,38.3508048669111,44.2690831755414,36.3583963043844,48.1799115929042,43.3668565028606,36.9854308426886,36.7977456414924,38.6812695830619,37.8531992068942,28.9434803875117,33.0159420714164,38.4621355843385,41.5426515231667,42.3571141930019,37.9027301346095,38.8077786846744,39.5811800314697,30.146262988867,37.2341096338019,36.6098949951539,37.6940737504451,38.6463274776727,43.54859044711,38.0498055434177,44.9440835205669,34.3930410766441,34.1058356845726,35.9135836944866,41.0453177141483,36.2877461429789,41.4479441811049,39.5826723643191,38.2784483977098,45.072784374019,33.8625345823876,37.7937133633571,39.3143941030132,38.9108365185447,31.8581231312851,38.7639787489143,38.832171612604,38.812291163232,42.279160041013,35.4762825760615,37.5681118455399,34.4689832018542,35.3335153790406,37.2621245635499,34.9805598529147,37.5482059318976,37.9214202853194,36.6860693274137,37.0209748952515,39.6375298149329,42.3673983903675,36.3885587695547,39.3057722209112,37.018773909427,37.3388910806371,46.8002407843078,37.994211417354,41.3811392189409,31.3954984206122,38.5877819521673,32.4099265532315,42.1915701780367,37.7250183646021,35.3684257401509,41.6436258426698,40.2813473318245,38.2562192019677,37.2564791765283],["CD","CD","MR","CD","CD","MR","CD","CD","CD","CD","CD","CD","CD","MR","MR","MR","CD","CD","MR","MR","CD","CD","CD","MR","MR","CD","MR","MR","MR","CD","MR","CD","MR","MR","CD","MR","MR","MR","MR","CD","MR","CD","MR","MR","MR","MR","MR","CD","CD","CD","CD","MR","CD","CD","MR","CD","CD","MR","CD","MR","CD","MR","MR","CD","MR","CD","MR","MR","CD","CD","CD","CD","CD","MR","CD","MR","CD","MR","MR","MR","MR","MR","MR","MR","MR","MR","CD","MR","MR","MR","MR","CD","MR","CD","MR","CD","CD","CD","CD","MR","CD","CD","CD","CD","MR","CD","MR","MR","CD","CD","MR","MR","MR","CD","MR","CD","MR","CD","CD","CD","MR","CD","CD","MR","CD","CD","MR","MR","MR","CD","CD","CD","CD","CD","CD","CD","CD","MR","CD","MR","MR","CD","MR","MR","CD","CD","CD","CD","CD","CD","CD","CD","CD","CD","CD","MR","MR","CD","MR","CD","CD","CD","MR","MR","MR","CD","CD","CD","CD","MR","MR","CD","MR","CD","MR","MR","CD","MR","MR","MR","MR","MR","MR","MR","CD","CD","CD","CD","MR","MR","CD","MR","MR","CD","MR","CD","MR","MR","MR","MR","CD","CD","CD","MR","MR","MR","CD","CD","CD","MR"],["MR","MR","CD","CD","CD","MR","MR","CD","MR","MR","MR","MR","MR","MR","MR","CD","CD","CD","CD","CD","CD","MR","CD","CD","CD","CD","CD","MR","MR","MR","CD","CD","CD","CD","MR","CD","MR","CD","MR","CD","CD","CD","MR","CD","CD","CD","MR","MR","MR","MR","CD","CD","CD","CD","MR","CD","MR","MR","MR","CD","MR","CD","MR","CD","CD","CD","MR","CD","MR","MR","MR","CD","CD","CD","MR","MR","MR","CD","MR","CD","MR","MR","MR","MR","CD","MR","CD","MR","MR","MR","CD","CD","MR","CD","MR","CD","CD","MR","MR","CD","CD","CD","MR","MR","MR","MR","CD","CD","MR","CD","MR","CD","MR","CD","MR","MR","MR","CD","MR","CD","CD","CD","MR","CD","CD","CD","MR","CD","MR","MR","MR","CD","CD","MR","MR","CD","MR","CD","CD","CD","CD","CD","MR","CD","CD","MR","MR","MR","MR","MR","MR","CD","CD","CD","MR","MR","CD","CD","MR","MR","MR","MR","CD","MR","MR","CD","MR","CD","CD","CD","CD","MR","MR","CD","MR","MR","MR","CD","CD","CD","CD","CD","MR","CD","CD","MR","CD","MR","CD","MR","CD","CD","MR","MR","CD","MR","CD","MR","MR","CD","MR","CD","MR","CD","MR","MR","CD","MR","MR","MR"]],"container":"<table class=\"compact custom-dt\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gender<\/th>\n      <th>race<\/th>\n      <th>parentBMI<\/th>\n      <th>baselineBMI<\/th>\n      <th>month4BMI<\/th>\n      <th>month12BMI<\/th>\n      <th>A1<\/th>\n      <th>A2<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":6,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 1, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gender","targets":1},{"name":"race","targets":2},{"name":"parentBMI","targets":3},{"name":"baselineBMI","targets":4},{"name":"month4BMI","targets":5},{"name":"month12BMI","targets":6},{"name":"A1","targets":7},{"name":"A2","targets":8}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render"],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="problem-1" class="level2">
+<h2 class="anchored" data-anchor-id="problem-1">Problem 1</h2>
+<p>Write a shift function that assigns meal replacement to all observations at time 1, but only meal replacement at time 2 to those observations whose 4-month BMI is greater than 30.</p>
+<p><span class="math display">\[
+\dd_t(a_t, h_t, \epsilon_t) = \begin{cases}
+\text{Meal replacement} &amp;\text{ if } t = 1 \\
+\text{Meal replacement} &amp;\text{ if } t = 2 \text{ and } \text{4-month BMI} &gt; 30 \\
+\text{Calorie deficit} &amp;\text{ otherwise.}
+\end{cases}
+\]</span></p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-</section>
-</section>
-<section id="inverse-probability-weighting" class="level2">
-<h2 class="anchored" data-anchor-id="inverse-probability-weighting">Inverse Probability Weighting</h2>
-<p>We call this estimator IPW due to its similarity with the inverse-probability weighted estimator for binary treatments, but it would be more accurately referred to as simply reweighted estimator. It is based on the following alternative identification formula:</p>
-<p><span class="math display">\[
-\theta = \E \bigg[ \bigg\{\prod_{t=1}^\tau r_t(a_t, h_t) \bigg\} Y \bigg]
-\]</span></p>
-<p><br>
-The algorithm is as follows:</p>
-<div class="algorithm">
-<div class="algorithm-body">
-<ol type="1">
-<li><p>Construct estimates of <span class="math inline">\(r_{i,t}(a_t, h_t)\)</span> using the density ratio classification trick and a pre-specified parametric model.</p></li>
-<li><p>Define the weights <span class="math inline">\(w_{i} = \prod_{t=1}^\tau r_{i,t}(a_t, h_t)\)</span>.</p></li>
-<li><p>Take the final estimate as <span class="math inline">\(\hat{\theta} = \frac{1}{n}\sum_{i=1}^n \hat{w}_{i}\times y_i\)</span>.</p></li>
-<li><p>Compute standard errors using a bootstrap of steps 1-3.</p></li>
-</ol>
-</div>
-</div>
-<section id="example-1" class="level3">
-<h3 class="anchored" data-anchor-id="example-1">Example</h3>
-<p>Let’s apply the IPW estimator using the estimated density ratios we calculated in the previous example. We first compute the weights as the product of the density ratios.</p>
-<div id="qwebr-insertion-location-3"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<p>Our estimate is then the sample average of the estimated weights times the observed outcomes.</p>
-<div id="qwebr-insertion-location-4"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<p>Similarly to the sequential regression estimator, the IPW is simple to implement. However, it suffers from the same drawbacks.<br>
-</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Pros ✅</th>
-<th style="text-align: left;">Cons ❌</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Simple to implement</td>
-<td style="text-align: left;">Consistency requires correct estimation of all regressions</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Uncertainty quantification requires pre-specified parametric models</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="doubly-robust-estimators" class="level2">
-<h2 class="anchored" data-anchor-id="doubly-robust-estimators">Doubly Robust Estimators</h2>
-<p>Uncertainty quantification with G-computation and IPW estimators require the estimation of nuisance parameters with correctly specified parametric models. We will now turn our attention to two non-parametric estimators that allow us to use flexible regression tools:</p>
-<ol type="1">
-<li><p>targeted minimum-loss based estimator (TMLE), and</p></li>
-<li><p>a sequentially doubly-robust estimator (SDR).</p></li>
-</ol>
-<p>Wait, what does it mean for an estimator to be doubly robust?</p>
-<ul>
-<li>For the simple case of a single time point, an estimator is considered doubly robust if it is able to produce a consistent estimate of the target parameter as long as either the outcome model is consistently estimated or the treatment (and censoring) model(s) are consistently estimated. For example:</li>
-</ul>
-<div class="center-table" style="width: 50%;   margin-left: auto;   margin-right: auto;">
-<table class="caption-top table">
-<tbody>
-<tr class="odd">
-<td>Time</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td>Treatment</td>
-<td>Correct</td>
-</tr>
-<tr class="odd">
-<td>Outcome</td>
-<td>Wrong</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><br>
-</p>
-<ul>
-<li>For time-varying setting, an estimator is <span class="math inline">\(\tau + 1\)</span> doubly robust if, for some time <span class="math inline">\(s\)</span>, all outcome regressions for <span class="math inline">\(t &gt;s\)</span> are consistently estimated and all intervention mechanisms (treatment + censoring) for <span class="math inline">\(t \leq s\)</span> are consistently estimated. Consider for example <span class="math inline">\(5\)</span> time points:</li>
-</ul>
-<table class="caption-top table">
-<tbody>
-<tr class="odd">
-<td>Time</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>4</td>
-<td>5</td>
-</tr>
-<tr class="even">
-<td>Treatment</td>
-<td>Correct</td>
-<td>Correct</td>
-<td>Wrong</td>
-<td>Wrong</td>
-<td>Wrong</td>
-</tr>
-<tr class="odd">
-<td>Outcome</td>
-<td>Wrong</td>
-<td>Wrong</td>
-<td>Correct</td>
-<td>Correct</td>
-<td>Correct</td>
-</tr>
-</tbody>
-</table>
-<p><br>
-</p>
-<ul>
-<li>Sequential double robustness (often also referred to as <span class="math inline">\(2^\tau\)</span>-multiply robust) implies that an estimator is consistent if for all times either the outcome or intervention mechanism (treatment + censoring) is consistently estimated. For example:</li>
-</ul>
-<table class="caption-top table">
-<tbody>
-<tr class="odd">
-<td>Time</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>4</td>
-<td>5</td>
-</tr>
-<tr class="even">
-<td>Treatment</td>
-<td>Correct</td>
-<td>Wrong</td>
-<td>Correct</td>
-<td>Wrong</td>
-<td>Correct</td>
-</tr>
-<tr class="odd">
-<td>Outcome</td>
-<td>Wrong</td>
-<td>Correct</td>
-<td>Wrong</td>
-<td>Correct</td>
-<td>Wrong</td>
-</tr>
-</tbody>
-</table>
-<div class="callout callout-style-simple callout-caution">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>Be careful not to confuse doubly robust consistency with <em>rate double robustness</em>. Doubly robust consistency refers to the properties we just described. Rate double robustness refers to the property where the error of an estimator is the product of errors in estimation of two nuisance functions.</p>
-<p>Rate double robustness is perhaps more interesting practically as it implies that the error of the estimator can be small in cases where both models are wrong!</p>
-</div>
-</div>
-</div>
-<section id="efficient-influence-function" class="level3">
-<h3 class="anchored" data-anchor-id="efficient-influence-function">Efficient Influence Function</h3>
-<p>Key to constructing the TMLE and SDR is the <em>efficient influence function</em> (EIF).</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<ul>
-<li><p>The EIF characterizes the asymptotic behavior of all regular and efficient estimators.</p></li>
-<li><p>The EIF characterizes the first-order bias of plug-in estimators of pathwise differentiable estimands.</p></li>
-</ul>
-</div>
-</div>
-</div>
-<p>Before we introduce the EIF, it’s necessary to make some additional assumptions on <span class="math inline">\(A\)</span> and <span class="math inline">\(\dd\)</span>.</p>
-<ol type="1">
-<li><p>The treatment <span class="math inline">\(A\)</span> is discrete, or</p></li>
-<li><p>If <span class="math inline">\(A\)</span> is continuous, the function <span class="math inline">\(\dd\)</span> is piecewise smooth invertible</p></li>
-<li><p>The function <span class="math inline">\(\dd\)</span> does not depend on the observed distribution <span class="math inline">\(\P\)</span> (this means that we cannot apply these methods to odds ratio IPSI, although we can apply them to risk ratio IPSI)</p></li>
-</ol>
-<p>These assumptions ensure that the efficient influence function of <span class="math inline">\(\theta\)</span> for interventions <span class="math inline">\(\dd\)</span> have a structure similar to the influence function for the effect of dynamic regimes. This allows for multiply robust estimation, which is not generally possible for interventions <span class="math inline">\(\dd\)</span> that depend on <span class="math inline">\(\P\)</span>.</p>
-<p>For an observation <span class="math inline">\(o\)</span> define the function</p>
-<p><span class="math display">\[
-\phi_t: o \mapsto \sum_{s=t}^\tau \bigg( \prod_{k=t}^s r_k(a_k, h_k)\bigg) \big\{\m_{s+1}(a_{s+1}^\dd, h_{s+1}) - \m_s(a_s, h_s) \big\} + \m_t(a_t^\dd, h_t).
-\]</span></p>
-<p>The efficient influence function for estimating <span class="math inline">\(\theta = \E[\m_1(A^\dd, L_1)]\)</span> in the non-parametric model is given by <span class="math inline">\(\phi_1(O) - \theta\)</span>.</p>
-<p>In the case of single time-point, the influence function simplifies to</p>
-<p><span class="math display">\[
-r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
-\]</span></p>
-</section>
-</section>
-<section id="targeted-minimum-loss-based-estimation" class="level2">
-<h2 class="anchored" data-anchor-id="targeted-minimum-loss-based-estimation">Targeted Minimum-Loss Based Estimation</h2>
-<p>TMLE exploits the fact that the expected value of the EIF is equal to zero. Consider the EIF for the single time-point setting we just defined.</p>
-<span class="math display">\[\begin{aligned}
-\E[\phi_1(O) - \theta] &amp;= \E[r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta]\\
-&amp;= \E[r(a, w)\{Y - \m(a,w)\}] + \theta - \theta \\
-&amp;= \E[r(a, w)\{Y - \m(a,w)\}] \\
-\E[r(a, w)\{Y - \m(a,w)\}] &amp;= 0
-\end{aligned}\]</span>
-<p>The key insight is to recognize that <span class="math inline">\(r(a, w)\{Y - \m(a,w)\}\)</span> looks like a score equation <span class="math inline">\(\sum_i r_i(a, w)\{Y_i - \m_i(a,w)\} = 0\)</span> that can be solved using a GLM with weights <span class="math inline">\(r_i(a, w)\)</span>, offset <span class="math inline">\(m_i(a,w)\)</span>, an intercept, and the canonical link. Thus, by solving the score equation with a GLM, TMLE solves the EIF estimating equation.</p>
-<p>The algorithm is as follows:</p>
-<div class="algorithm">
-<div class="algorithm-body">
-<ol type="1">
-<li><p>Construct estimates of <span class="math inline">\(r_{i,t}(a_t, h_t)\)</span> using the density ratio classification trick and your favorite regression method.</p></li>
-<li><p>For <span class="math inline">\(t = 1, ..., \tau\)</span>, compute the weights: <span class="math inline">\(w_{i,t} = \prod_{k=1}^t r_{i,k}(a_{i,k}, h_{i,k})\)</span></p></li>
-<li><p>Set <span class="math inline">\(\tilde{\m}_{i,\tau +1}(A^\dd_{i,t+1}, H_{i,t+1}) = Y_i\)</span>.</p>
-<p>For <span class="math inline">\(t = \tau, ..., 1\)</span>:</p>
-<ol type="1">
-<li><p>Regress <span class="math inline">\(\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})\)</span> on <span class="math inline">\(\{A_{i, t}, H_{i,t}\}\)</span>.</p>
-<ul>
-<li><p>Using this regression, generate predictions from <span class="math inline">\(\{A_{i, t}, H_{i,t}\}\)</span> and <span class="math inline">\(\{A^\dd_{i, t}, H_{i,t}\}\)</span>.</p></li>
-<li><p>Denote the predictions as <span class="math inline">\(\tilde{\m}_t(A_{i,t}, H_{i,t})\)</span> and <span class="math inline">\(\tilde{\m}_t(A^\dd_{i,t}, H_{i,t})\)</span> respectively.</p></li>
-</ul></li>
-<li><p>Fit the generalized linear tilting model:</p>
-<p><span class="math inline">\(\text{link }\tilde{\m}^\epsilon_t(A_{i,t}, H_{i,t}) = \epsilon + \text{link }\tilde{\m}_{i,t}(A_{i,t}, H_{i,t})\)</span></p>
-<p>with weights <span class="math inline">\(w_{i,t}\)</span>.</p>
-<ul>
-<li><p><span class="math inline">\(\text{link }\tilde{\m}_{i,t}(A_{i,t}, H_{i,t})\)</span> is an offset variable (i.e., a variable with known parameter value equal to one).</p></li>
-<li><p>The parameter <span class="math inline">\(\epsilon\)</span> may be estimated by running a generalized linear model of <span class="math inline">\(\tilde{\m}_{i,t+1}(A^\dd_{i,t+1}, H_{i,t+1})\)</span> with only an intercept term, an offset term equal to <span class="math inline">\(\text{link }\tilde{\m}_{i,t}(A_{i,t}, H_{i,t})\)</span>, and weights <span class="math inline">\(w_{i,t}\)</span>.</p></li>
-</ul></li>
-<li><p>Let <span class="math inline">\(\hat\epsilon\)</span> be the maximum likelihood estimate, and update the estimates as:</p>
-<p><span class="math inline">\(\text{link }\tilde{\m}^\hat\epsilon_t(A^\dd_{i,t}, H_{i,t}) = \hat\epsilon + \text{link }\tilde{\m}_t(A^\dd_{i,t}, H_{i,t})\)</span></p>
-<p><span class="math inline">\(\text{link }\tilde{\m}^\hat\epsilon_t(A_{i,t}, H_{i,t}) = \hat\epsilon + \text{link }\tilde{\m}_t(A_{i,t}, H_{i,t})\)</span></p></li>
-<li><p>Update <span class="math inline">\(\tilde{\m}_{i,t} = \tilde{\m}^\hat\epsilon_{i,t}\)</span>, <span class="math inline">\(t = t-1\)</span>, and iterate.</p></li>
-</ol></li>
-<li><p>The final estimate is defined as <span class="math inline">\(\hat\theta = \frac{1}{n}\sum_{i=1}^n\tilde{m}_{i, 1}(A^\dd_{i, 1}, L_{i, 1})\)</span>.</p></li>
-</ol>
-</div>
-</div>
-<section id="example-2" class="level3">
-<h3 class="anchored" data-anchor-id="example-2">Example</h3>
-<p>Let’s apply TMLE using the estimated density ratios we calculated in the previous example.</p>
-<div id="qwebr-insertion-location-5"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<p>The benefits of TMLE are quite large as it solves the main problems with g-computation and IPW. Namely, the TMLE is <span class="math inline">\(\tau+1\)</span> doubly robust and rate doubly robust.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Pros ✅</th>
-<th style="text-align: left;">Cons ❌</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Substitution estimator</td>
-<td style="text-align: left;">not sequentially doubly-robust</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><span class="math inline">\(\tau+1\)</span> doubly-robust</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">can use machine learning</td>
-<td style="text-align: left;"></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="sequentially-doubly-robust-estimator" class="level2">
-<h2 class="anchored" data-anchor-id="sequentially-doubly-robust-estimator">Sequentially Doubly Robust Estimator</h2>
-<p>The SDR estimator is based on the central fact that</p>
-<p><span class="math display">\[
-E[\phi_t(O)\mid A_t=a_t, H_t=h_t] \approx \m_t(a_t, h_t)
-\]</span></p>
-<p>where the approximation error is “doubly robust”. This provides a way to obtain doubly robust estimators of the regression functions <span class="math inline">\(\m_t(a_t, h_t)\)</span></p>
-<p>The estimation algorithm is as follows:</p>
-<div class="algorithm">
-<div class="algorithm-body">
-<ol type="1">
-<li><p>Construct estimates of <span class="math inline">\(r_{i,t}(a_t, h_t)\)</span> using the density ratio classification trick and your favorite regression method.</p></li>
-<li><p>Initialize <span class="math inline">\(\phi_{\tau +1}(O_i) = Y_i\)</span>.</p>
-<p>For <span class="math inline">\(t = \tau, ..., 1\)</span>:</p>
-<ol type="1">
-<li><p>Compute the pseudo-outcome <span class="math inline">\(\check{Y}_{i,t+1} = \phi_{t+1}(O_i)\)</span>.</p></li>
-<li><p>Regress <span class="math inline">\(\check{Y}_{i,t+1}\)</span> on <span class="math inline">\(\{A_{i, t}, H_{i,t}\}\)</span>. Let <span class="math inline">\(\check\m_{t}\)</span> denote this regression.</p></li>
-<li><p>Iterate.</p></li>
-</ol></li>
-<li><p>The final estimate is defined as <span class="math inline">\(\hat\theta = \frac{1}{n}\sum_{i=1}^n\phi_1(O_i)\)</span>, where <span class="math inline">\(\phi_1\)</span> is computed using <span class="math inline">\(\hat r_t\)</span> and <span class="math inline">\(\check\m_{t}\)</span>.</p></li>
-</ol>
-</div>
-</div>
-<section id="example-3" class="level3">
-<h3 class="anchored" data-anchor-id="example-3">Example</h3>
-<p>Let’s apply the SDR estimator. Again, we’ll use the estimated density ratios we previously estimated.</p>
-<div id="qwebr-insertion-location-6"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-<p>Similarly to TMLE, the SDR estimator addresses the main issues with g-computation and IPW. In addition, the SDR estimator is sequentially doubly robust. However, this comes at the price of the SDR not being a substitution estimator, meaning it could produce a point estimate outside the valid range of the outcome.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Pros ✅</th>
-<th style="text-align: left;">Cons ❌</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><span class="math inline">\(\tau+1\)</span> doubly-robust</td>
-<td style="text-align: left;">not a substitution estimator</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sequentially doubly-robust</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">can use machine learning</td>
-<td style="text-align: left;"></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="choosing-an-estimator" class="level2">
-<h2 class="anchored" data-anchor-id="choosing-an-estimator">Choosing an Estimator</h2>
-<ul>
-<li><p>In general we never recommend using the IPW or sequential regression estimator. Both require the use of correctly pre-specified parametric models for valid statistical inference 🙃.</p></li>
-<li><p>The TMLE and SDR estimators, however, are both doubly or sequentially doubly robust and can be used with machine-learning algorithms while remaining <span class="math inline">\(\sqrt{n}\)</span>-consistent under reasonable assumptions.</p></li>
-</ul>
-<table class="caption-top table">
-<caption><strong>Table 1.</strong> Summary of estimator properties.</caption>
-<colgroup>
-<col style="width: 40%">
-<col style="width: 15%">
-<col style="width: 15%">
-<col style="width: 15%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th style="text-align: center;">IPW</th>
-<th style="text-align: center;">G-comp.</th>
-<th style="text-align: center;">TMLE</th>
-<th style="text-align: center;">SDR</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Uses outcome regression</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">⭐</td>
-<td style="text-align: center;">⭐</td>
-<td style="text-align: center;">⭐</td>
-</tr>
-<tr class="even">
-<td>Uses the propensity score</td>
-<td style="text-align: center;">⭐</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">⭐</td>
-<td style="text-align: center;">⭐</td>
-</tr>
-<tr class="odd">
-<td>Valid inference with machine-learning</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">⭐</td>
-<td style="text-align: center;">⭐</td>
-</tr>
-<tr class="even">
-<td>Substitution estimator</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">⭐</td>
-<td style="text-align: center;">⭐</td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\tau+1\)</span> doubly robust</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">⭐</td>
-<td style="text-align: center;">⭐</td>
-</tr>
-<tr class="even">
-<td>Sequentially doubly robust</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">⭐</td>
-</tr>
-</tbody>
-</table>
-<div class="callout callout-style-simple callout-tip no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><strong>Question</strong>: Why can’t we use machine learning with the G-computation and IPW estimators?</p>
 <details>
 <summary style="color: grey; font-weight: 400;">
-<p>✅ Answer</p>
+<p>✅ Solution</p>
 </summary>
-<p>The G-computation and IPW estimators require models that converge to the truth at a <span class="math inline">\(\sqrt{n}\)</span>-rate. Machine learning algorithms are not guaranteed to do this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>d_dtr <span class="ot">&lt;-</span> <span class="cf">function</span>(data, trt) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (trt <span class="sc">==</span> <span class="st">"A1"</span>) <span class="fu">return</span>(<span class="fu">rep</span>(<span class="st">"MR"</span>, <span class="fu">nrow</span>(data)))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(data<span class="sc">$</span>month4BMI <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="st">"MR"</span>, <span class="st">"CD"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </details>
-</div>
-</div>
-</div>
-<p>While the SDR estimator may be more robust to model misspecification, the TMLE does have the advantage of being a substitution estimator. Because of this, estimates from the TMLE are guaranteed to stay within the valid range of the outcome. Taken together, this leads to the following recommendations for choosing between the TMLE and SDR:</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<ul>
-<li><p>If treatment is not time-varying, use the TMLE.</p></li>
-<li><p>If treatment is time-varying and the parameter <span class="math inline">\(\theta\)</span> has clear bounds, such as probabilities, beware of the SDR estimator. Use TMLE preferably.</p></li>
-</ul>
-</div>
-</div>
-</div>
+<p>Let’s estimate the effect of the dynamic treatment regime on the 12-month BMI using <code>lmtp</code> with the SDR estimator.</p>
+<div id="qwebr-insertion-location-3"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
-<section id="cross-fitting" class="level2">
-<h2 class="anchored" data-anchor-id="cross-fitting">Cross-fitting</h2>
-<p>When estimating nuisance parameters with data adaptive algorithms, you should perform a process similar to cross-validation called cross-fitting. Cross-fitting helps ensure:</p>
-<ul>
-<li><p>that standard errors will be correct, and</p></li>
-<li><p>can help reduce estimator bias and improve coverage of the confidence intervals.</p></li>
-</ul>
-<p>Cross-fitting is fully automated in <code>lmtp</code>, but for more information we recommend reviewing <span class="citation" data-cites="chernozhukov2018double">Chernozhukov et al. (<a href="#ref-chernozhukov2018double" role="doc-biblioref">2018</a>)</span>, <span class="citation" data-cites="diaz2020machine">Dı́az (<a href="#ref-diaz2020machine" role="doc-biblioref">2020</a>)</span>, and <span class="citation" data-cites="zivich2021machine">Zivich and Breskin (<a href="#ref-zivich2021machine" role="doc-biblioref">2021</a>)</span>.</p>
+<section id="problem-2" class="level2">
+<h2 class="anchored" data-anchor-id="problem-2">Problem 2</h2>
+<p>Suppose we are interested in comparing the dynamic treatment regime to a static treatment regime where all patients receive meal replacement at both time points. Using the SDR estimator, estimate the effect of this static intervention.</p>
+<div id="qwebr-insertion-location-4"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<details>
+<summary style="color: grey; font-weight: 400;">
+<p>✅ Solution</p>
+</summary>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fit_MR <span class="ot">&lt;-</span> <span class="fu">lmtp_sdr</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> bmi, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">trt =</span> <span class="fu">c</span>(<span class="st">"A1"</span>, <span class="st">"A2"</span>), </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="st">"month12BMI"</span>, </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">baseline =</span> <span class="fu">c</span>(<span class="st">"gender"</span>, <span class="st">"race"</span>, <span class="st">"parentBMI"</span>), </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_vary =</span> <span class="fu">list</span>(<span class="st">"baselineBMI"</span>, <span class="st">"month4BMI"</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">shift =</span> \(data, trt) <span class="fu">rep</span>(<span class="st">"MR"</span>, <span class="fu">nrow</span>(data)), </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome_type =</span> <span class="st">"continuous"</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">folds =</span> <span class="dv">1</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">learners_trt =</span> <span class="st">"SL.glm"</span>, </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">learners_outcome =</span> <span class="fu">c</span>(<span class="st">"SL.mean"</span>, <span class="st">"SL.glm"</span>, <span class="st">"SL.gam"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</details>
+<p>Let’s also estimate the effect of an intervention where all patients receive a calorie deficit diet at both time points.</p>
+<div id="qwebr-insertion-location-5"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>Finally, let’s compare the dynamic treatment regime and the always receive meal replacement intervention to the always receive a calorie deficit intervention.</p>
+<div id="qwebr-insertion-location-6"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 
 
 
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-bickel1993efficient" class="csl-entry" role="listitem">
-Bickel, Peter J, Chris AJ Klaassen, Peter J Bickel, Ya’acov Ritov, J Klaassen, Jon A Wellner, and YA’Acov Ritov. 1993. <em>Efficient and Adaptive Estimation for Semiparametric Models</em>. Vol. 4. Springer.
-</div>
-<div id="ref-chernozhukov2018double" class="csl-entry" role="listitem">
-Chernozhukov, Victor, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, Whitney Newey, and James Robins. 2018. <span>“Double/Debiased Machine Learning for Treatment and Structural Parameters.”</span> Oxford University Press Oxford, UK.
-</div>
-<div id="ref-diaz2020machine" class="csl-entry" role="listitem">
-Dı́az, Iván. 2020. <span>“Machine Learning in the Estimation of Causal Effects: Targeted Minimum Loss-Based Estimation and Double/Debiased Machine Learning.”</span> <em>Biostatistics</em> 21 (2): 353–58.
-</div>
 <div id="ref-diaz2023nonparametric" class="csl-entry" role="listitem">
 Dı́az, Iván, Nicholas Williams, Katherine L Hoffman, and Edward J Schenck. 2023. <span>“Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies.”</span> <em>Journal of the American Statistical Association</em> 118 (542): 846–57.
-</div>
-<div id="ref-haneuse2013estimation" class="csl-entry" role="listitem">
-Haneuse, Sebastian, and Andrea Rotnitzky. 2013. <span>“Estimation of the Effect of Interventions That Modify the Received Treatment.”</span> <em>Statistics in Medicine</em> 32 (30): 5260–77.
 </div>
 <div id="ref-hoffman2023introducing" class="csl-entry" role="listitem">
 Hoffman, Katherine L., Diego Salazar-Barreto, Nicholas Williams, Kara E. Rudolph, and Ivan Diaz. 2024. <span>“Studying Continuous, Time-Varying, and/or Complex Exposures Using Longitudinal Modified Treatment Policies.”</span> <a href="https://arxiv.org/abs/2304.09460">https://arxiv.org/abs/2304.09460</a>.
 </div>
-<div id="ref-kennedy2019nonparametric" class="csl-entry" role="listitem">
-Kennedy, Edward H. 2019. <span>“Nonparametric Causal Effects Based on Incremental Propensity Score Interventions.”</span> <em>Journal of the American Statistical Association</em> 114 (526): 645–56.
-</div>
-<div id="ref-zivich2021machine" class="csl-entry" role="listitem">
-Zivich, Paul N, and Alexander Breskin. 2021. <span>“Machine Learning for Causal Inference: On the Use of Cross-Fit Estimators.”</span> <em>Epidemiology</em> 32 (3): 393–401.
+<div id="ref-dtrPackage" class="csl-entry" role="listitem">
+Holloway, S. T., E. B. Laber, K. A. Linn, B. Zhang, M. Davidian, and A. A. Tsiatis. 2023. <em>DynTxRegime: Methods for Estimating Optimal Dynamic Treatment Regimes</em>. <a href="https://CRAN.R-project.org/package=DynTxRegime">https://CRAN.R-project.org/package=DynTxRegime</a>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -2842,8 +2382,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -2954,7 +2492,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

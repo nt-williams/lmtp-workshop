@@ -173,7 +173,7 @@ $$
 Now $\g_t^\dd(a_t \mid H_t) = a_t (1 - \delta \g_t(0\mid H_t)) + (1 - a_t) \delta \g_t(0 \mid H_t)$, which implies a risk ratio $\g_t^\dd(0\mid H_t)/\g(0\mid H_t) = \delta$.
 
 ::: {.callout-caution appearance="simple"}
-Interventions where the shift is in the odds ratio scale were previously proposed, but the effects of odds-ratio shifts should not be estimated with `lmtp`, we will discuss this more later.
+Interventions where the shift is in the odds ratio scale were previously proposed, but the effects of odds-ratio shifts should not be estimated with _lmtp_, we will discuss this more later.
 :::
 
 #### Example

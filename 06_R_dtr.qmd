@@ -26,7 +26,7 @@ bmi <- bmiData
 # bmi$A2 <- ifelse(bmi$A2 == "MR", 1, 0)
 ```
 
-Recall that interventions where the output of the function depends only on covariates are referred to as dynamic interventions or dynamic treatment regimes. Let's learn how to estimate the effects of dynamic treatment regimes using `lmtp`.
+Recall that interventions where the output of the function depends only on covariates are referred to as dynamic interventions or dynamic treatment regimes. Let's learn how to estimate the effects of dynamic treatment regimes using _lmtp_.
 
 ### Simulated BMI Data
 
@@ -91,7 +91,7 @@ d_dtr <- function(data, trt) {
 
 </details>
 
-Let's estimate the effect of the dynamic treatment regime on the 12-month BMI using `lmtp` with the SDR estimator.
+Let's estimate the effect of the dynamic treatment regime on the 12-month BMI using _lmtp_ with the SDR estimator.
 
 ```{webr-r}
 fit_dtr <- lmtp_sdr(

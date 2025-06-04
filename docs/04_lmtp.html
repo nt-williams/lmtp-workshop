@@ -2,12 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>The Causal Model and Notation – Beyond the Average Treatment Effect</title>
+<title>The lmtp package – Beyond the 
+ Average Treatment Effect</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -55,10 +90,10 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-79108a0fc1995748cbd19a5b0e3e3e7c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -86,16 +121,6 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
-<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
-<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
-<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -148,7 +173,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./instructors.html"> 
+    <a class="nav-link" href="./00_instructors.html"> 
 <span class="menu-text">Instructors</span></a>
   </li>  
 </ul>
@@ -163,7 +188,7 @@ window.Quarto = {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title">The Causal Model and Notation</h1>
+          <h1 class="quarto-secondary-nav-title">The <code>lmtp</code> package</h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -202,19 +227,19 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_tldr.html" class="sidebar-item-text sidebar-link active">
+  <a href="./01_info_introduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">1. Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_d.html" class="sidebar-item-text sidebar-link">
+  <a href="./02_info_d.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">2. Defining Interventions</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_estimators.html" class="sidebar-item-text sidebar-link">
+  <a href="./03_info_estimators.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">3. Estimators</span></a>
   </div>
 </li>
@@ -229,43 +254,43 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lmtp.html" class="sidebar-item-text sidebar-link">
+  <a href="./04_lmtp.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">The lmtp package</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_static.html" class="sidebar-item-text sidebar-link">
+  <a href="./05_R_static.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Static effects and the ATE</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_dtr.html" class="sidebar-item-text sidebar-link">
+  <a href="./06_R_dtr.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Dynamic Treatment Regimes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_mtp.html" class="sidebar-item-text sidebar-link">
+  <a href="./07_R_mtp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Modified Treatment Policies</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_ipsi.html" class="sidebar-item-text sidebar-link">
+  <a href="./08_R_ipsi.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IPSI</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_survival.html" class="sidebar-item-text sidebar-link">
+  <a href="./09_R_survival.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Survival Analysis</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_multivariate.html" class="sidebar-item-text sidebar-link">
+  <a href="./10_R_multivariate.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Multivariate Exposures</span></a>
   </div>
 </li>
@@ -273,7 +298,7 @@ window.Quarto = {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_conclusion.html" class="sidebar-item-text sidebar-link">
+  <a href="./11_info_conclusion.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">5. Final Remarks</span></a>
   </div>
 </li>
@@ -287,8 +312,11 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#notation" id="toc-notation" class="nav-link active" data-scroll-target="#notation">Notation</a></li>
-  <li><a href="#counterfactuals" id="toc-counterfactuals" class="nav-link" data-scroll-target="#counterfactuals">Counterfactuals</a></li>
+  <li><a href="#existing-software-and-lmtp" id="toc-existing-software-and-lmtp" class="nav-link active" data-scroll-target="#existing-software-and-lmtp">Existing software and <code>lmtp</code></a></li>
+  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries">Preliminaries</a></li>
+  <li><a href="#data-structure-examples" id="toc-data-structure-examples" class="nav-link" data-scroll-target="#data-structure-examples">Data structure examples</a></li>
+  <li><a href="#machine-learning-ensembles" id="toc-machine-learning-ensembles" class="nav-link" data-scroll-target="#machine-learning-ensembles">Machine learning ensembles</a></li>
   </ul>
 </nav>
     </div>
@@ -297,7 +325,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">The Causal Model and Notation</h1>
+<h1 class="title d-none d-lg-block">The <code>lmtp</code> package</h1>
 </div>
 
 
@@ -309,7 +337,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 13, 2025</p>
+      <p class="date-modified">May 20, 2025</p>
     </div>
   </div>
     
@@ -320,173 +348,144 @@ window.Quarto = {
 </header>
 
 
-<div class="hidden">
-<p><span class="math display">\[
-\renewcommand{\P}{\mathsf{P}}
-\newcommand{\m}{\mathsf{m}}
-\newcommand{\p}{\mathsf{p}}
-\newcommand{\q}{\mathsf{q}}
-\newcommand{\bb}{\mathsf{b}}
-\newcommand{\g}{\mathsf{g}}
-\newcommand{\rr}{\mathsf{r}}
-\newcommand{\IF}{\mathbb{IF}}
-\newcommand{\dd}{\mathsf{d}}
-\newcommand{\Pn}{$\mathsf{P}_n$}
-\newcommand{\E}{\mathsf{E}}
-\]</span></p>
-</div>
-<section id="notation" class="level2">
-<h2 class="anchored" data-anchor-id="notation">Notation</h2>
-<p>Consider a typical setting where we have measured some treatment <span class="math inline">\(A\)</span>, some set of pre-treatment variables <span class="math inline">\(L\)</span>, and an outcome <span class="math inline">\(Y\)</span>. We will assume that the data are generated by the following causal model (but alternative definitions can be achieved using other causal models):</p>
-<p><span class="math display">\[
-\begin{align}
-L &amp;= f_L(U_L)\\
-A &amp;= f_A(L, U_A)\\
-Y &amp;= f_Y(A, L, U_Y)
-\end{align}
-\]</span></p>
+<p>So far, we’ve</p>
+<ol type="1">
+<li><p>Defined a causal estimand for general, hypothetical interventions</p></li>
+<li><p>Identified that estimand from observational data</p></li>
+<li><p>Discussed 4 different estimators.</p></li>
+</ol>
+<p>It’s now time to move on to applying this new knowledge to real data examples.</p>
+<section id="existing-software-and-lmtp" class="level3">
+<h3 class="anchored" data-anchor-id="existing-software-and-lmtp">Existing software and <code>lmtp</code></h3>
+<p>General software for estimation of causal effects in longitudinal studies is limited:</p>
 <ul>
-<li><p>The functions <span class="math inline">\(f\)</span> are assumed fixed, but likely unknown.</p></li>
-<li><p><span class="math inline">\(U = (U_L, U_A, U_Y)\)</span> is a vector of exogenous, unmeasured random variables.</p></li>
-<li><p>This system is referred to as a Non-parametric Structural Equation Model (NPSEM).</p></li>
-<li><p>We will assume that this system of equations exists in nature and is responsible for generating our observed data.</p></li>
+<li><p>The <code>ipw</code> and <code>gfoRmula</code> packages provide routines for estimating causal effects using inverse probability weighting (IPW) and the parametric g-formula respectively. As we already discussed, however, the validity of these methods requires making unrealistic parametric assumptions.</p></li>
+<li><p>The <code>ltmle</code> and <code>survtmle</code> packages implement a doubly-robust method for estimating causal effects from longitudinal data, but these packages do not support continuous valued exposures, multiple exposures, interventions that depend on the natural value of the exposure, or stochastic interventions.</p></li>
 </ul>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>We will often refer to <span class="math inline">\(L\)</span> as confounders, <span class="math inline">\(A\)</span> as the treatment or exposure, and <span class="math inline">\(Y\)</span> as the outcome.</p>
-</div>
-</div>
-</div>
-<p>Take for example the following sample of data:</p>
-<div class="cell">
-<div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-3092df0f283318e00fd2" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-3092df0f283318e00fd2">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Female","Male","Male","Male","Male","Female","Female","Male","Female","Female"],[35.3,28.9,39.9,21.6,23.6,27,50.1,22.8,28.8,31.9],[89.2950034223135,61.429158110883,60.8104038329911,73.5030800821355,53.5167693360712,86.8665297741273,53.7084188911704,36.2135523613963,81.0458590006845,37.4976043805613],["No","No","No","Former Smoker","No","No","No","Active Smoker","No","No"],[1,0,0,1,1,0,1,1,1,0],[0,0,1,0,1,1,1,0,0,0]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
-</div>
-</div>
-<p><br>
-Let, <span class="math inline">\(L\)</span> = <code>sex</code>, <code>bmi</code>, <code>age</code>, and <code>smoke</code>; <span class="math inline">\(A\)</span> = <code>trt</code>; and <span class="math inline">\(Y\)</span> = <code>event</code>. When we say that we assume the previous NPSEM, we are positing that:</p>
+<p>In contrast, the <code>lmtp</code> package (software companion to the paper by <span class="citation" data-cites="diaz2023nonparametric">Dı́az et al. (<a href="#ref-diaz2023nonparametric" role="doc-biblioref">2023</a>)</span>) can be used to doubly robustly and flexibly estimate point-in-time and longitudinal effects of the general set of interventions that we’ve talked about today.</p>
 <ul>
-<li><p>the variable <code>trt</code> was generated from an unknown function of the random variables <code>sex</code>, <code>bmi</code>, <code>age</code>, and <code>smoke</code>, as well as a set of unmeasured random variables not present in our data.</p></li>
-<li><p>that the variable <code>event</code> was generated from an unknown function of the variables that generated <code>trt</code> in addition to <code>trt</code> itself.</p></li>
+<li><code>lmtp</code> could be your default package for conducting causal analyses in R!</li>
 </ul>
-<p>Note that in some cases, we may know one or more of the functions <span class="math inline">\(f\)</span>. For example, if our data came from a randomized trial for <span class="math inline">\(A\)</span>, then we know the function <span class="math inline">\(f_A\)</span>.</p>
 </section>
-<section id="counterfactuals" class="level2">
-<h2 class="anchored" data-anchor-id="counterfactuals">Counterfactuals</h2>
-<p>Central to how we will define causal effects is the concept of <em>counterfactual random variables.</em></p>
+<section id="installation" class="level3">
+<h3 class="anchored" data-anchor-id="installation">Installation</h3>
+<p>For this workshop, <code>lmtp</code> has already been installed with <code>webr</code>. However, you can install the package locally on your machine from CRAN with<br>
+</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"lmtp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Alternatively, you can download the developmental version from GitHub with</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(devtools)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"nt-williams/lmtp@devel"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="preliminaries" class="level3">
+<h3 class="anchored" data-anchor-id="preliminaries">Preliminaries</h3>
+<p>Before we move on to using <code>lmtp</code>, here’s general information that will be applicable across all examples:</p>
+<ul>
+<li><p>Data is passed to estimators through the <code>data</code> argument.</p></li>
+<li><p>Data should be in wide format with one column per variable per time point under study (i.e., there should be one column for every variable in <span class="math inline">\(O\)</span>). Data may be either a <code>data.frame</code> or <code>tibble</code> but not a <code>data.table</code>.</p></li>
+<li><p>Columns do not have to be in any specific order and the data may contain variables that are not used in estimation.</p></li>
+<li><p>The names of treatment variables are specified with the <code>trt</code> argument.</p></li>
+<li><p>The names of censoring variables are specified with the <code>cens</code> argument.</p></li>
+<li><p>The names of baseline covariates are specified with the <code>baseline</code> argument.</p></li>
+<li><p>The names of time-varying covariates are specified with the <code>time_vary</code> argument.</p></li>
+<li><p>The <code>trt</code> argument accepts either a character vector or a list of character vectors.</p></li>
+<li><p>The <code>cens</code> and <code>baseline</code> arguments accept character vectors.</p></li>
+<li><p>The <code>time_vary</code> argument accepts a list of character vectors.</p></li>
+</ul>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>Counterfactuals are random variables that would have been observed, possibly contrary to fact, in an alternative world.</p>
-</div>
-</div>
-</div>
-<p>For example, consider a scenario where we are interested in the value of <span class="math inline">\(Y\)</span> in a hypothetical situation where, instead of the variable <span class="math inline">\(A\)</span> being equal to its observed value, it is set to some other value <span class="math inline">\(A^\dd\)</span>.</p>
-<ul>
-<li>The value of <span class="math inline">\(Y\)</span> in this hypothetical situation is a counterfactual random variable.</li>
-</ul>
-<p>Typically, one is interested in counterfactuals where treatment is set to some deterministic value. For instance, one could be interested in setting treatment <span class="math inline">\(A^\dd=1\)</span>. One could also be interested in setting <span class="math inline">\(A\)</span> according to some covariates, e.g., “treat if age &gt; 50”.</p>
-<ul>
-<li>This intervention would be denoted as <span class="math inline">\(A^\dd=\dd(L)\)</span> for some function <span class="math inline">\(\dd\)</span>, and is known as a dynamic treatment regime.</li>
-</ul>
-<p>In this workshop we are interested in a generalization of this concept, where the function <span class="math inline">\(\dd\)</span> can also depend on the <em>natural value of treatment</em> <span class="math inline">\(A\)</span>:</p>
-<ul>
-<li><p>Let <span class="math inline">\(\dd(A, L)\)</span> be a function that takes a natural treatment value <span class="math inline">\(A\)</span> and a covariate profile <span class="math inline">\(L\)</span> and returns a new value of treatment. <strong>We will refer to the function</strong> <span class="math inline">\(\dd\)</span> <strong>as a <em>shift</em> function or a <em>general hypothetical intervention</em>.</strong></p></li>
-<li><p>Denote the value of <span class="math inline">\(Y\)</span> in the hypothetical world where treatment is set to the value <span class="math inline">\(\dd(A,L)\)</span> as <span class="math inline">\(Y^{\dd}\)</span>.</p></li>
-</ul>
-<p>Returning to the data example, imagine we are interested in the value of <code>event</code> if <code>trt</code> was replaced with the output of a function <span class="math inline">\(\dd\)</span> that always returns 1:</p>
-<p><span class="math display">\[
-\begin{align}
-L &amp;= f_L(U_L)\\
-A^{\dd} &amp;= \dd(A, L) = 1 \\
-Y^{\dd} &amp;= f_Y(1, L, U_Y)
-\end{align}
-\]</span></p>
-<p>Here we introduce some new notation <span class="math inline">\(A^{\dd}\)</span> to refer to the post-intervention exposure. If we had the ability to collect data from this alternative NPSEM, the data may instead look like this:</p>
+<p>Vectors and lists are basic data structures in R. A vector can be thought of as a 1-dimensional collection of homogeneous elements. For example a character vector is a collection of values with the class <code>character</code>.<br>
+</p>
 <div class="cell">
-<div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-96ed87efd8bdd2178953" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-96ed87efd8bdd2178953">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Male","Male","Female","Male","Male","Female","Female","Female","Male","Male"],[32.6,30.7,21.5,26.9,32,30.9,28.8,23.7,21,25.1],[69.1663244353183,58.7542778918549,60.8952772073922,49.1581108829569,41.0896646132786,95.9260780287474,81.35249828884329,54.9705681040383,82.6666666666667,61.8124572210815],["No","Former Smoker","No","No","No","Former Smoker","No","No","Former Smoker","No"],[1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sex<\/th>\n      <th>bmi<\/th>\n      <th>age<\/th>\n      <th>smoke<\/th>\n      <th>trt<\/th>\n      <th>event<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"lengthChange":false,"ordering":false,"info":false,"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 0, 3, \",\", \".\", null);\n  }"},{"targets":0,"visible":false},{"className":"dt-left","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sex","targets":1},{"name":"bmi","targets":2},{"name":"age","targets":3},{"name":"smoke","targets":4},{"name":"trt","targets":5},{"name":"event","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a_character_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"this"</span>, <span class="st">"is"</span>, <span class="st">"a"</span>, <span class="st">"character"</span>, <span class="st">"vector"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A list is similar, except that it can hold elements of different types.<br>
+</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>a_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">a_character_vector =</span> <span class="fu">c</span>(<span class="st">"this"</span>, <span class="st">"is"</span>, <span class="st">"a"</span>, <span class="st">"character"</span>, <span class="st">"vector"</span>), </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">a_numeric_vector =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">a_list_whithin_a_list =</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p><br>
-<strong>Unfortunately, we are never able to collect data from this alternative world. This is called the fundamental problem of causal inference.</strong></p>
-<p>The previous NPSEM is the simplest causal model we will assume in this workshop. However, real data is often much more complex and may be characterized by:</p>
+</div>
+</div>
 <ul>
-<li><p>time-varying variables</p></li>
-<li><p>loss-to-follow-up</p></li>
+<li><p>The <code>trt</code>, <code>cens</code>, and <code>time_vary</code> arguments must be sorted according to the time-ordering of the model with each index containing the name (or names) of variables for the given time.</p></li>
+<li><p>The outcome variable is specified with the <code>outcome</code> argument.</p></li>
+<li><p>The <code>outcome_type</code> argument specifies the type of outcome. It should be set to <code>"continuous"</code> for continuous outcomes, <code>"binomial"</code> for dichotomous outcomes, and <code>"survival"</code> for time-to–event outcomes.</p></li>
+<li><p>Censoring indicators should be coded using 0 and 1 where 1 indicates an observation is observed at the next time and 0 indicates loss-to-follow-up. Once an observation’s censoring status is switched to 0 it cannot change back to 1. Missing data before an observation is censored is not allowed.</p></li>
+<li><p>The argument should be set to for continuous outcomes, for dichotomous outcomes, and for time-to-event outcomes.</p></li>
 </ul>
-<p>As such, we need to modify and introudce some additional notation:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 36%">
-<col style="width: 63%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Symbol</th>
-<th>Definition</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(i\)</span></td>
-<td>The index (i.e.&nbsp;a row in a dataset) of an observation from a data set with <span class="math inline">\(n\)</span> total units (i.e., the total number of rows)</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(t\)</span></td>
-<td>The index of time for a total number of time points <span class="math inline">\(\tau\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(L_t\)</span></td>
-<td>Confounders at time <span class="math inline">\(t\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(A_t\)</span></td>
-<td>A <em>vector</em> of intervention variables (i..e, treatment or exposure) at time <span class="math inline">\(t\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(Y\)</span></td>
-<td>An outcome variable observed at the end of the study, that is at time <span class="math inline">\(\tau + 1\)</span>. Earlier measures of the outcome can be included in <span class="math inline">\(L_t\)</span>.</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(C_t\)</span></td>
-<td>A indicator variable that a unit is <em>observed</em> (not censored) at time <span class="math inline">\(t+1\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(O_1, ..., O_n\)</span></td>
-<td>A sample of <span class="math inline">\(n\)</span> i.i.d observations with <span class="math inline">\(O = (L_1, A_1, C_1, L_2, A_2, C_2, ..., L_\tau, A_\tau, C_\tau, Y)\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\bar{X}_t = (X_1, ..., X_t)\)</span></td>
-<td>The history of a variable up until time <span class="math inline">\(t\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\underline{X}_t = (X_t, ..., X_\tau)\)</span></td>
-<td>The future of a variable, including time <span class="math inline">\(t\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(H_t = (\bar{A}_{t-1}, \bar{L}_t)\)</span></td>
-<td>The history of all variables up until just before <span class="math inline">\(A_t\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\epsilon_t\)</span></td>
-<td>A randomizer</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\dd(a_t, h_t, \epsilon_t)\)</span></td>
-<td>A function that maps <span class="math inline">\(A_t\)</span>, <span class="math inline">\(H_t\)</span>, and <span class="math inline">\(\epsilon_t\)</span> to a new value of treatment <span class="math inline">\(A^{\dd}_t\)</span></td>
-</tr>
-</tbody>
-</table>
+</section>
+<section id="data-structure-examples" class="level3">
+<h3 class="anchored" data-anchor-id="data-structure-examples">Data structure examples</h3>
+<section id="point-treatment" class="level5">
+<h5 class="anchored" data-anchor-id="point-treatment">Point treatment</h5>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/data_point_trt.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption>Adapted from Hoffman et al., 2022.</figcaption>
+</figure>
+</div>
+</section>
+<section id="point-treatment-with-censoring" class="level5">
+<h5 class="anchored" data-anchor-id="point-treatment-with-censoring">Point-treatment with censoring</h5>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/data_ltfu.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption>Adapted from Hoffman et al., 2022.</figcaption>
+</figure>
+</div>
+</section>
+<section id="time-varying-treatment-with-censoring" class="level5">
+<h5 class="anchored" data-anchor-id="time-varying-treatment-with-censoring">Time-varying treatment with censoring</h5>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/data_time_varying.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>Adapted from Hoffman et al., 2022.</figcaption>
+</figure>
+</div>
+</section>
+<section id="point-treatment-with-survival-outcome" class="level5">
+<h5 class="anchored" data-anchor-id="point-treatment-with-survival-outcome">Point-treatment with survival outcome</h5>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/data_survival.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>Adapted from Hoffman et al., 2022.</figcaption>
+</figure>
+</div>
+</section>
+<section id="time-varying-treatment-with-survival-outcome" class="level5">
+<h5 class="anchored" data-anchor-id="time-varying-treatment-with-survival-outcome">Time-varying treatment with survival outcome</h5>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/data_complex.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Adapted from Hoffman et al., 2022.</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="machine-learning-ensembles" class="level3">
+<h3 class="anchored" data-anchor-id="machine-learning-ensembles">Machine learning ensembles</h3>
+<p>As was already discussed, an attractive property of multiply-robust estimators is that they can incorporate flexible machine-learning algorithms for the estimation of nuisance parameters while remaining <span class="math inline">\(\sqrt{n}\)</span>-consistent.</p>
+<ul>
+<li><p><code>lmtp</code> uses the super learner algorithm for estimating these nuisance parameters.</p></li>
+<li><p>The super learner algorithm is an ensemble learner than incorporates a set of candidate models through a weighted convex-combination based on cross-validation. Asymptotically, this weighted combination of models, called the meta-learner, will outperform any single one of its components.</p></li>
+<li><p><code>lmtp</code> uses the implementation of the super learner provided by the <code>SuperLearner</code> package.</p></li>
+<li><p>The algorithms to be used in the super learner are specified with the <code>learners_trt</code> and <code>learners_outcome</code> arguments.</p></li>
+<li><p>The outcome variable type should guide users on selecting the appropriate candidate learners for use with the <code>learners_outcome</code> argument.</p></li>
+<li><p>Regardless of whether an exposure is continuous, dichotomous, or categorical, the <a href="info_estimators.html#sec-density-ratio-estimation">exposure mechanism is estimated using classification</a>. Therefore only include candidate learners capable of binary classification with the <code>learners_trt</code> argument.</p></li>
+<li><p>Candidate learners that rely on cross-validation for the tuning of hyper-parameters should support grouped data if used with <code>learners_trt</code>. Because estimation of the treatment mechanism relies on the augmented <span class="math inline">\(2n\)</span> duplicated data set, duplicated observations must be put into the same fold during sample-splitting. This is done automatically by the package.</p></li>
+</ul>
 
 
 
@@ -495,6 +494,12 @@ Y^{\dd} &amp;= f_Y(1, L, U_Y)
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-diaz2023nonparametric" class="csl-entry" role="listitem">
 Dı́az, Iván, Nicholas Williams, Katherine L Hoffman, and Edward J Schenck. 2023. <span>“Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies.”</span> <em>Journal of the American Statistical Association</em> 118 (542): 846–57.
+</div>
+<div id="ref-van2007super" class="csl-entry" role="listitem">
+Van der Laan, Mark J, Eric C Polley, and Alan E Hubbard. 2007. <span>“Super Learner.”</span> <em>Statistical Applications in Genetics and Molecular Biology</em> 6 (1).
+</div>
+<div id="ref-williams2023lmtp" class="csl-entry" role="listitem">
+Williams, Nicholas, and Iván Dı́az. 2023. <span>“Lmtp: An <span>R</span> Package for Estimating the Causal Effects of Modified Treatment Policies.”</span> <em>Observational Studies</em> 9 (2): 103–22.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -579,8 +584,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -691,7 +694,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

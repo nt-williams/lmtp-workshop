@@ -40,7 +40,7 @@ This workshop assumes the participant has a basic understanding of fundamental c
 | The estimator landscape                     | 20 minutes     |
 | **Break**                                   | 10 minutes     |
 | Setting up the correct data structure       | 15 minutes     |
-| Estimating effects using the `lmtp` package | 1 hour 30 min  |
+| Estimating effects using the _lmtp_ package | 1 hour 30 min  |
 | Q + A                                       | 15 minutes     |
 
 ### webR

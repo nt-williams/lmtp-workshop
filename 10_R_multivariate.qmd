@@ -22,7 +22,7 @@ download.file("https://raw.githubusercontent.com/nt-williams/lmtp-workshop/main/
 mixtures <- read.csv("mixtures.csv")
 ```
 
--   `lmtp` can estimate effects of simultaneous interventions on multiple variables
+-   _lmtp_ can estimate effects of simultaneous interventions on multiple variables
 
 -   Practically, this is useful for assessing the effects of mixtures on environmental outcomes
 
@@ -66,14 +66,14 @@ DT::datatable(mixtures, class = "compact custom-dt",
 ## Multivariate shift functions
 
 ::: {.callout-note appearance="simple"}
-Only two things need to change when using `lmtp` estimators with multivariate treatments:
+Only two things need to change when using _lmtp_ estimators with multivariate treatments:
 
 1.  Instead of a vector, you should now pass a list to the `trt` argument
 
 2.  The shift function should return a named list of vectors instead of a single vector.
 :::
 
-Let's use `lmtp` to estimate the effect of a modified treatment policy which intervenes on all 7 exposure simultaneously on the outcome:
+Let's use _lmtp_ to estimate the effect of a modified treatment policy which intervenes on all 7 exposure simultaneously on the outcome:
 
 $$
 \dd(\mathbf{a}, h) = 
@@ -129,7 +129,7 @@ d <- function(data, a) {
 
 ## Problem 1
 
-Using TMLE, estimate the population mean outcome under the simultaneous intervention we just defined. Fit both the treatment mechanism and the outcome regression using this set of learners: `c("SL.mean", "SL.glm", "SL.gam", "SL.rpart", "SL.rpartPrune", "SL.step.interaction")`. Assign the result to `ans`. To save time, don't use crossfitting; `lmtp` has already been loaded into the R session.
+Using TMLE, estimate the population mean outcome under the simultaneous intervention we just defined. Fit both the treatment mechanism and the outcome regression using this set of learners: `c("SL.mean", "SL.glm", "SL.gam", "SL.rpart", "SL.rpartPrune", "SL.step.interaction")`. Assign the result to `ans`. To save time, don't use crossfitting; _lmtp_ has already been loaded into the R session.
 
 
 ```{webr-r}

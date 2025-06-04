@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Instructors – Beyond the Average Treatment Effect</title>
+<title>Concluding Thoughts – Beyond the Average Treatment Effect</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -35,10 +55,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-79108a0fc1995748cbd19a5b0e3e3e7c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -67,6 +87,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -89,7 +138,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./instructors.html" aria-current="page"> 
+    <a class="nav-link" href="./00_instructors.html"> 
 <span class="menu-text">Instructors</span></a>
   </li>  
 </ul>
@@ -104,7 +153,7 @@ ul.task-list li input[type="checkbox"] {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title">Instructors</h1>
+          <h1 class="quarto-secondary-nav-title">Concluding Thoughts</h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -143,19 +192,19 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_tldr.html" class="sidebar-item-text sidebar-link">
+  <a href="./01_info_introduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">1. Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_d.html" class="sidebar-item-text sidebar-link">
+  <a href="./02_info_d.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">2. Defining Interventions</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_estimators.html" class="sidebar-item-text sidebar-link">
+  <a href="./03_info_estimators.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">3. Estimators</span></a>
   </div>
 </li>
@@ -170,43 +219,43 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lmtp.html" class="sidebar-item-text sidebar-link">
+  <a href="./04_lmtp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">The lmtp package</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_static.html" class="sidebar-item-text sidebar-link">
+  <a href="./05_R_static.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Static effects and the ATE</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_dtr.html" class="sidebar-item-text sidebar-link">
+  <a href="./06_R_dtr.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Dynamic Treatment Regimes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_mtp.html" class="sidebar-item-text sidebar-link">
+  <a href="./07_R_mtp.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Modified Treatment Policies</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_ipsi.html" class="sidebar-item-text sidebar-link">
+  <a href="./08_R_ipsi.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">IPSI</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_survival.html" class="sidebar-item-text sidebar-link">
+  <a href="./09_R_survival.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Survival Analysis</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./R_multivariate.html" class="sidebar-item-text sidebar-link">
+  <a href="./10_R_multivariate.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Multivariate Exposures</span></a>
   </div>
 </li>
@@ -214,7 +263,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./info_conclusion.html" class="sidebar-item-text sidebar-link">
+  <a href="./11_info_conclusion.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">5. Final Remarks</span></a>
   </div>
 </li>
@@ -228,9 +277,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#nick-williams" id="toc-nick-williams" class="nav-link active" data-scroll-target="#nick-williams">Nick Williams</a></li>
-  <li><a href="#kara-rudolph" id="toc-kara-rudolph" class="nav-link" data-scroll-target="#kara-rudolph">Kara Rudolph</a></li>
-  <li><a href="#iván-díaz" id="toc-iván-díaz" class="nav-link" data-scroll-target="#iván-díaz">Iván Díaz</a></li>
+  <li><a href="#thank-you" id="toc-thank-you" class="nav-link active" data-scroll-target="#thank-you">Thank you!</a></li>
+  <li><a href="#including-in-a-manuscript" id="toc-including-in-a-manuscript" class="nav-link" data-scroll-target="#including-in-a-manuscript">Including in a manuscript</a></li>
   </ul>
 </nav>
     </div>
@@ -239,7 +287,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Instructors</h1>
+<h1 class="title d-none d-lg-block">Concluding Thoughts</h1>
 </div>
 
 
@@ -248,6 +296,12 @@ ul.task-list li input[type="checkbox"] {
 
     
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">April 18, 2025</p>
+    </div>
+  </div>
     
   </div>
   
@@ -256,24 +310,93 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="nick-williams" class="level3">
-<h3 class="anchored" data-anchor-id="nick-williams"><a href="https://github.com/nt-williams">Nick Williams</a></h3>
-<p>Nick is a Senior Data Analyst in Columbia University’s Mailman School of Publich Health, Department of Epidemiology. His interests are in the development of statistical computing tools for novel causal inference methods. He’s the author and maintainer of multiple R packages.</p>
-<hr>
+<div class="hidden">
+<p><span class="math display">\[
+\renewcommand{\P}{\mathsf{P}}
+\newcommand{\m}{\mathsf{m}}
+\newcommand{\p}{\mathsf{p}}
+\newcommand{\q}{\mathsf{q}}
+\newcommand{\bb}{\mathsf{b}}
+\newcommand{\g}{\mathsf{g}}
+\newcommand{\rr}{\mathsf{r}}
+\newcommand{\IF}{\mathbb{IF}}
+\newcommand{\dd}{\mathsf{d}}
+\newcommand{\Pn}{$\mathsf{P}_n$}
+\newcommand{\E}{\mathsf{E}}
+\]</span></p>
+</div>
+<section id="thank-you" class="level2">
+<h2 class="anchored" data-anchor-id="thank-you">Thank you!</h2>
+<p>Thank you for attending this workshop! We encourage you to reach out to us with any questions or feedback.</p>
 </section>
-<section id="kara-rudolph" class="level3">
-<h3 class="anchored" data-anchor-id="kara-rudolph"><a href="https://kararudolph.github.io/">Kara Rudolph</a></h3>
-<p>Kara is an Assistant Professor of Epidemiology at Columbia University, Mailman School of Public Health. Her research interests are in developing and applying causal inference methods to understand social and contextual influences on mental health, substance use, and violence. Her current work focuses on developing and applying methods for transportability and mediations to understand mechanisms relevant for drug use disorder prevention and treatment in various target populations.</p>
-<hr>
-</section>
-<section id="iván-díaz" class="level3">
-<h3 class="anchored" data-anchor-id="iván-díaz"><a href="https://www.idiaz.xyz/">Iván Díaz</a></h3>
-<p>Iván is an Associate Professor of Biostatistics at New York University Grossman School of Medicine. His research focuses on the development of non-parametric statistical methods for causal inference from observational and randomized studies with complex datasets, using machine learning. This includes but is not limited to mediation analysis, methods for continuous exposures, longitudinal data including survival analysis, and efficiency guarantees with covariate adjustment in randomized trials. He also works applying these methods to healthcare research, including in neurology, critical care, opioid use research, and other areas.</p>
+<section id="including-in-a-manuscript" class="level2">
+<h2 class="anchored" data-anchor-id="including-in-a-manuscript">Including in a manuscript</h2>
+<p>If you decide to use <code>lmtp</code> in your research, here’s a summary that can be included for explaining the methodology. It is based on the explanation in <span class="citation" data-cites="rudolph2024associations">Rudolph et al. (<a href="#ref-rudolph2024associations" role="doc-biblioref">2024</a>)</span>:</p>
+<blockquote class="blockquote">
+<p>We estimated the effect of [exposure] on [outcome], adjusting for covariates. This effect can be written: <span class="math inline">\(\E(Y^{\dd, C=1} - Y^{C=1}),\)</span> [change the preceding to correspond to your effect] where <span class="math inline">\(\E(Y^{C=1})\)</span> [change as applicable] denotes the expected value of the counterfactual outcome had the exposure not been intervened on (i.e., remained as observed) and had no one been censored, and where <span class="math inline">\(\E(Y^{\dd, C=1})\)</span> [change as applicable] denotes the expected value of the counterfactual outcome had the exposure been intervened on as dictated by the function <span class="math inline">\(\dd(A)\)</span> and had no one been censored. We defined <span class="math inline">\(\dd(A)\)</span> as a hypothetical intervention that increased the value of the exposure by 20% (i.e., multiplied each person’s value by 1.2). [change the preceding to correspond to your intervention, <span class="math inline">\(\dd\)</span>]</p>
+<p>The above statistical estimand is a type of ``modified treatment policy’’ (<span class="citation" data-cites="haneuse2013estimation">Haneuse and Rotnitzky (<a href="#ref-haneuse2013estimation" role="doc-biblioref">2013</a>)</span>, <span class="citation" data-cites="munoz2012population">Muñoz and Van Der Laan (<a href="#ref-munoz2012population" role="doc-biblioref">2012</a>)</span>, <span class="citation" data-cites="young2014identification">Young, Hernán, and Robins (<a href="#ref-young2014identification" role="doc-biblioref">2014</a>)</span>, <span class="citation" data-cites="diaz2023nonparametric">Dı́az et al. (<a href="#ref-diaz2023nonparametric" role="doc-biblioref">2023</a>)</span>). The statistical estimand can be interpreted causally under the identifying assumptions of: 1) conditional exchangeability, meaning that there is no unobserved/unmeasured confounding of the relationship between the set of treatments and outcome conditional on covariates and that there is no unobserved/unmeasured confounding between censoring and the outcome conditional on the covariates and treatment; 2) positivity, and 3) consistency.</p>
+<p>We estimated this statistical estimand using a doubly robust, nonparametric targeted minimum loss-based estimator (<span class="citation" data-cites="diaz2023nonparametric">Dı́az et al. (<a href="#ref-diaz2023nonparametric" role="doc-biblioref">2023</a>)</span>, <span class="citation" data-cites="williams2023lmtp">Williams and Dı́az (<a href="#ref-williams2023lmtp" role="doc-biblioref">2023</a>)</span>). A cross-fitted version of this estimator was used with [fill in number]-folds. This estimator fits regressions for the outcome mechanism, treatment mechanism, and censoring mechanism. These regressions were fit using an ensemble of machine learning algorithms (<span class="citation" data-cites="vanderLaanPolleyHubbard07">van der Laan, Polley, and Hubbard (<a href="#ref-vanderLaanPolleyHubbard07" role="doc-biblioref">2007</a>)</span>) consisting of [fill in the algorithms included in your superlearner library].</p>
+</blockquote>
+<p>You can cite the package using the following BibTeX entries:</p>
+<pre><code>@article{diaz2023nonparametric,
+  title={Nonparametric causal effects based on longitudinal modified treatment policies},
+  author={D{\'\i}az, Iv{\'a}n and Williams, Nicholas and Hoffman, Katherine L and Schenck, Edward J},
+  journal={Journal of the American Statistical Association},
+  volume={118},
+  number={542},
+  pages={846--857},
+  year={2023},
+  publisher={Taylor \&amp; Francis}
+}</code></pre>
+<pre><code>@article{williams2023lmtp,
+  title={lmtp: An {R} package for estimating the causal effects of modified treatment policies},
+  author={Williams, Nicholas and D{\'\i}az, Iv{\'a}n},
+  journal={Observational Studies},
+  volume={9},
+  number={2},
+  pages={103--122},
+  year={2023},
+  publisher={University of Pennsylvania Press}
+}</code></pre>
+<p>You can reference this workshop with:</p>
+<pre><code>@inproceedings{lmtpSER,
+  author = {Williams, Nicholas and D{\'\i}az, Iv{\'a}n and Rudolph, Kara E},
+  title = {Beyond the Average Treatment Effect},
+  booktitle = {&lt;Insert conference&gt;},
+  year = {&lt;Insert year of confernece&gt;},
+  address = {&lt;Insert conference location&gt;},
+  month = {&lt;Insert conference month&gt;},
+  organization = {&lt;Insert conference organizer&gt;},
+  url = {https://www.beyondtheate.com}
+}</code></pre>
 
 
+
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-diaz2023nonparametric" class="csl-entry" role="listitem">
+Dı́az, Iván, Nicholas Williams, Katherine L Hoffman, and Edward J Schenck. 2023. <span>“Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies.”</span> <em>Journal of the American Statistical Association</em> 118 (542): 846–57.
+</div>
+<div id="ref-haneuse2013estimation" class="csl-entry" role="listitem">
+Haneuse, Sebastian, and Andrea Rotnitzky. 2013. <span>“Estimation of the Effect of Interventions That Modify the Received Treatment.”</span> <em>Statistics in Medicine</em> 32 (30): 5260–77.
+</div>
+<div id="ref-munoz2012population" class="csl-entry" role="listitem">
+Muñoz, Iván Dı́az, and Mark Van Der Laan. 2012. <span>“Population Intervention Causal Effects Based on Stochastic Interventions.”</span> <em>Biometrics</em> 68 (2): 541–49.
+</div>
+<div id="ref-rudolph2024associations" class="csl-entry" role="listitem">
+Rudolph, Kara E, Nicholas T Williams, Ivan Diaz, Sarah Forrest, Katherine L Hoffman, Hillary Samples, Mark Olfson, Lisa Doan, Magdalena Cerda, and Rachael Ross. 2024. <span>“Associations Between Pain-Management Treatments and Opioid Use Disorder Risk Among Medicaid Patients.”</span> <em>arXiv Preprint arXiv:2404.11802</em>.
+</div>
+<div id="ref-vanderLaanPolleyHubbard07" class="csl-entry" role="listitem">
+van der Laan, Mark J, Eric C Polley, and Alan E Hubbard. 2007. <span>“Super Learner.”</span> <em>Stat Appl Genet Mol Biol</em> 6(1) (25, 1): Article 25. doi: 10.2202/1544–6115.1309.
+</div>
+<div id="ref-williams2023lmtp" class="csl-entry" role="listitem">
+Williams, Nicholas, and Iván Dı́az. 2023. <span>“Lmtp: An <span>R</span> Package for Estimating the Causal Effects of Modified Treatment Policies.”</span> <em>Observational Studies</em> 9 (2): 103–22.
+</div>
+<div id="ref-young2014identification" class="csl-entry" role="listitem">
+Young, Jessica G, Miguel A Hernán, and James M Robins. 2014. <span>“Identification, Estimation and Approximation of Risk Under Interventions That Depend on the Natural Value of Treatment Using Observational Data.”</span> <em>Epidemiologic Methods</em> 3 (1): 1–19.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -356,8 +479,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -468,7 +589,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

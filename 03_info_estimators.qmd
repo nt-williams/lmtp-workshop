@@ -67,7 +67,7 @@ $$
 
 Recall that $\g_t^\dd(a_t \mid h_t)$ denotes the density of treatment *post-intervention*, i.e., the density of $\dd(A_t, H_t)$ evaluated at $a_t$, and that $\g_t(a_t \mid h_t)$ denotes the density of the observed treatment under no intervention.
 
-We will often refer to this ratio as the *intervention mechanism* throughout the workshop. Estimation of $r_t(a_t, h_t)$ is fully automated in `lmtp` and hidden from the user. **A comprehensive understanding of this process isn't necessary to use `lmtp`!**
+We will often refer to this ratio as the *intervention mechanism* throughout the workshop. Estimation of $r_t(a_t, h_t)$ is fully automated in _lmtp_ and hidden from the user. **A comprehensive understanding of this process isn't necessary to use _lmtp_!**
 :::
 
 We can directly estimate this density ratio with a classification trick. To do this, we create an augmented dataset with $2n$ observations. In this new dataset, the outcome is a new variable that we make, $\Lambda$, (defined below) and the predictors are the variables $A_t$ and $H_t$. The data structure at time $t$ is then redefined as
@@ -544,4 +544,4 @@ When estimating nuisance parameters with data adaptive algorithms, you should pe
 
 -   can help reduce estimator bias and improve coverage of the confidence intervals.
 
-Cross-fitting is fully automated in `lmtp`, but for more information we recommend reviewing @chernozhukov2018double, @diaz2020machine, and @zivich2021machine.
+Cross-fitting is fully automated in _lmtp_, but for more information we recommend reviewing @chernozhukov2018double, @diaz2020machine, and @zivich2021machine.

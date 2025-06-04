@@ -61,7 +61,7 @@ Our goal is to estimate the average treatment effect (ATE) of the hypothetical t
 $$
 \begin{align}
 \theta &= \E(Y^{A=1} - Y^{A=0}) \\
-&= \textcolor{blue}{\E(Y^{A=1})} - \textcolor{red}{\E(Y^{A=0})}
+&= \textcolor{blue}{\E(Y^{A=1})} - \textcolor{red}{\E(Y^{A=0})}\text{.}
 \end{align}
 $$
 
@@ -74,17 +74,17 @@ Notice that the ATE is composed of two parameters:
 We refer to these parameters as *population mean outcomes.* Let's rewrite the target parameter as a function of interventions using the framework we previously discussed. Let $\dd_1(a, h) = 1$ and $\dd_0(a, h) = 0$. Then,
 
 $$
-\theta = \textcolor{blue}{\E(Y^{\dd_1})} - \textcolor{red}{\E(Y^{\dd_0})}.
+\theta = \textcolor{blue}{\E(Y^{A^{\dd_1}})} - \textcolor{red}{\E(Y^{A^{\dd_0}})}\text{.}
 $$
 
 Remember, we refer to these interventions as static because they return the same value regardless of their input.
 
 ## Writing shift functions
 
-So, how do we translate the functions $\dd_1$ and $\dd_0$ into R code to be used with `lmtp`?
+So, how do we translate the functions $\dd_1$ and $\dd_0$ into R code to be used with _lmtp_?
 
 ::: {.callout-note appearance="simple"}
-Policies can be specified using one of two arguments in `lmtp` estimators: `shift` or `shifted`.
+Policies can be specified using one of two arguments in _lmtp_ estimators: `shift` or `shifted`.
 :::
 
 If using `shift`, we supply a two-argument function of the form
@@ -130,7 +130,7 @@ d1(covid, "A") |> length()
 :::
 \
 
-Let's now estimate $\E(Y^{\dd_1})$ using `lmtp`.
+Let's now estimate $\E(Y^{A^{\dd_1}})$ using _lmtp_.
 
 ```{webr-r}
 A <- "A"
@@ -191,9 +191,9 @@ print(treat)
 ```
 :::
 
-## `lmtp` objects
+## _lmtp_ objects
 
-A call to an `lmtp` estimator returns a list of class `lmtp`.
+A call to an _lmtp_ estimator returns a list of class _lmtp_.
 
 | Value          | Description                                                                                                                  |
 |----------------|------------------------------------------------------------------------------------------------------------------------------|
@@ -206,7 +206,7 @@ A call to an `lmtp` estimator returns a list of class `lmtp`.
 | fits_r         | A list the same length as `folds`, containing the fits at each time-point for each fold of density ratio estimation.         |
 | outcome_type   | The outcome variable type.                                                                                                   |
 
-: Values returned in an `lmtp` object.
+: Values returned in an _lmtp_ object.
 
 Let's inspect some of these values.
 
@@ -256,12 +256,12 @@ print(dont_treat)
 </details>
 
 ::: {.callout-note appearance="simple"}
-`lmtp` already implements `d1` and `d0` as `static_binary_on()` and `static_binary_off()`!
+_lmtp_ already implements `d1` and `d0` as `static_binary_on()` and `static_binary_off()`!
 :::
 
 ## Average treatment effect
 
-With estimates of $\E(Y^{\dd_1})$ and $\E(Y^{\dd_0})$ we can now calculate the ATE. To do so, we'll use the function `lmtp_contrast()`.
+With estimates of $\E(Y^{A^{\dd_1}})$ and $\E(Y^{A^{\dd_0}})$ we can now calculate the ATE. To do so, we'll use the function `lmtp_contrast()`.
 
 ```{webr-r}
 lmtp_contrast(treat, ref = dont_treat)

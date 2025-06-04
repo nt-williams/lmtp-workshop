@@ -76,7 +76,7 @@ d_ipsi_down <- function(data, trt) {
 </details>
 
 ::: {.callout-note appearance="simple"}
-`lmtp` already implements `d_ipsi_up` and `d_ipsi_down` as a single shift function factory, `ipsi()`!
+_lmtp_ already implements `d_ipsi_up` and `d_ipsi_down` as a single shift function factory, `ipsi()`!
 
 -   Risk ratio IPSIs that increase the likelihood of treatment should be specified with a value greater than 1 (i.e. a risk ratio IPSI that increases the likelihood of treatment 2-fold is equivalent to `ipsi(2)`).
 
@@ -105,4 +105,4 @@ lmtp_tmle(
 
 ------------------------------------------------------------------------
 
-Estimating the effect of incremental propensity scores based on the risk ratio are easy to do with `lmtp`. Just use the `ipsi()` function as the input for the `shift` argument!
+Estimating the effect of incremental propensity scores based on the risk ratio are easy to do with _lmtp_. Just use the `ipsi()` function as the input for the `shift` argument!

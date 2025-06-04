@@ -10,7 +10,7 @@ website:
   bread-crumbs: false
   navbar:
     left:
-      - href: instructors.qmd
+      - href: 00_instructors.qmd
         text: Instructors
   sidebar:
     style: "floating"
@@ -51,7 +51,7 @@ website:
 
 format:
   html:
-    theme: [default,callout_tweet.scss]
+    theme: [default]
     css: styles.css
     toc: true
     include-in-body: macros.qmd
