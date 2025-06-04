@@ -48,5 +48,5 @@ This workshop assumes the participant has a basic understanding of fundamental c
 This workshop was prepared using [Quarto](https://quarto.org/) and [webR](https://docs.r-wasm.org/webr/latest/). The source code is available on [GitHub](https://github.com/nt-williams/lmtp-workshop). webR is a version of the R programming language compiled to be run directly in the browser. Using webR for this workshop avoids having to spend time setting up a computing environment and making sure workshop participants are using the same version of R and R packages.
 
 ```{webr-r}
-print("Welcome to SER 2024!")
+print("Welcome to SER 2025!")
 ```
