@@ -2183,10 +2183,18 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 \newcommand{\E}{\mathsf{E}}
 \]</span></p>
 </div>
-<p>Have you ever begun reading a paper in the methodological causal inference literature and encountered the phrase “assume the treatment or exposure is a binary…”? (Most papers we read assume this!!) While assuming exposure variables are binary can simplify the definition of causal effects, many exposures of interest in reality are not binary.</p>
-<p><strong>Instead, we will work in situations where</strong> <span class="math inline">\(A\)</span> <strong>is a binary, categorical, multivariate, or continuous variable!</strong></p>
-<hr>
-<p>In the previous section, we defined <span class="math inline">\(\dd(a_t, h_t, \epsilon_t)\)</span> as a function that maps values <span class="math inline">\(a_t\)</span>, <span class="math inline">\(h_t\)</span>, and potentially a randomizer <span class="math inline">\(\epsilon_t\)</span> to a new value of treatment. Let us see how this function is used to define a treatment effect. Our focus henceforth is estimating the causal effect of an intervention, characterized by <span class="math inline">\(\dd\)</span> on the outcome <span class="math inline">\(Y\)</span>, through the causal parameter</p>
+<p>The causal roadmap provides a systematic approach for evaluating causal research questions <span class="citation" data-cites="petersen2014causal">(<a href="#ref-petersen2014causal" role="doc-biblioref">Petersen and Laan 2014</a>)</span>. It consists of 8 steps:</p>
+<ol type="1">
+<li>Specify the research question</li>
+<li>Define the causal model.</li>
+<li>Using counterfactuals, define the causal effects of interest.</li>
+<li>Describe the observed data.</li>
+<li>Under clearly stated assumptions, identify the causal effect as a statistical estimand.</li>
+<li>Define the statistical estimation problem.</li>
+<li>Estimate the statistical estimand.</li>
+<li>Interpret results in the context of the research question, causal, and statistical assumptions.</li>
+</ol>
+<p>In this section, we will focus on steps 2 and 5. We previously defined <span class="math inline">\(\dd(a_t, h_t, \epsilon_t)\)</span> as a function that maps values <span class="math inline">\(a_t\)</span>, <span class="math inline">\(h_t\)</span>, and potentially a randomizer <span class="math inline">\(\epsilon_t\)</span> to a new value of treatment. Let’s examine how this function is used to define a treatment effect. Our focus going forward is estimating the causal effect of an intervention, characterized by an intervention <span class="math inline">\(\dd\)</span> on the outcome <span class="math inline">\(Y\)</span>, through the causal parameter</p>
 <p><span class="math display">\[
 \theta = \E[Y^{\bar A^{\dd}}]\text{,}
 \]</span></p>
@@ -2208,6 +2216,8 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <li><p>When <span class="math inline">\(Y\)</span> is dichotomous, <span class="math inline">\(\theta\)</span> is the population proportion of event <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>.</p></li>
 <li><p>When <span class="math inline">\(Y\)</span> is the indicator of an event by end of the study, <span class="math inline">\(\theta\)</span> is defined as the cumulative incidence of <span class="math inline">\(Y\)</span> under intervention <span class="math inline">\(\dd\)</span>.</p></li>
 </ul>
+<p>At the end of this section, we will demonstrate how this causal parameter can be identified from the observed data under assumptions.</p>
+<p>Most papers we read in the methodological causal inference literature assume that the treatment or exposure variable is binary. This is often done to simplify the definition of causal effects, but many exposures of interest in reality are not binary. <strong>Instead, we will work in situations where</strong> <span class="math inline">\(A\)</span> <strong>is a binary, categorical, multivariate, or continuous variable!</strong></p>
 <p>But what is this function <span class="math inline">\(\dd\)</span>, how can it be defined, and how does using this function to define interventions solve the problem? Let’s start from simple to more complex examples of functions <span class="math inline">\(\dd\)</span>.</p>
 <section id="static-interventions" class="level2">
 <h2 class="anchored" data-anchor-id="static-interventions">Static Interventions</h2>
@@ -2513,6 +2523,9 @@ Kennedy, Edward H. 2019. <span>“Nonparametric Causal Effects Based on Incremen
 </div>
 <div id="ref-nugent2023demonstration" class="csl-entry" role="listitem">
 Nugent, Joshua R, and Laura B Balzer. 2023. <span>“A Demonstration of Modified Treatment Policies to Evaluate Shifts in Mobility and COVID-19 Case Rates in US Counties.”</span> <em>American Journal of Epidemiology</em> 192 (5): 762–71.
+</div>
+<div id="ref-petersen2014causal" class="csl-entry" role="listitem">
+Petersen, Maya L, and Mark J van der Laan. 2014. <span>“Causal Models and Learning from Data: Integrating Causal Modeling and Statistical Estimation.”</span> <em>Epidemiology</em> 25 (3): 418–26.
 </div>
 <div id="ref-rudolph2022effects" class="csl-entry" role="listitem">
 Rudolph, Kara E, Catherine Gimbrone, Ellicott C Matthay, Ivan Diaz, Corey S Davis, Katherine Keyes, and Magdalena Cerdá. 2022. <span>“When Effects Cannot Be Estimated: Redefining Estimands to Understand the Effects of Naloxone Access Laws.”</span> <em>Epidemiology</em> 33 (5): 689–98.

@@ -14,13 +14,18 @@ nocite: |
 
 {{< include macros.qmd >}}
 
-Have you ever begun reading a paper in the methodological causal inference literature and encountered the phrase "assume the treatment or exposure is a binary..."? (Most papers we read assume this!!) While assuming exposure variables are binary can simplify the definition of causal effects, many exposures of interest in reality are not binary.
+The causal roadmap provides a systematic approach for evaluating causal research questions [@petersen2014causal]. It consists of 8 steps:
 
-**Instead, we will work in situations where** $A$ **is a binary, categorical, multivariate, or continuous variable!**
+1. Specify the research question
+2. Define the causal model. 
+3. Using counterfactuals, define the causal effects of interest. 
+4. Describe the observed data. 
+5. Under clearly stated assumptions, identify the causal effect as a statistical estimand. 
+6. Define the statistical estimation problem.
+7. Estimate the statistical estimand. 
+8. Interpret results in the context of the research question, causal, and statistical assumptions.
 
-------------------------------------------------------------------------
-
-In the previous section, we defined $\dd(a_t, h_t, \epsilon_t)$ as a function that maps values $a_t$, $h_t$, and potentially a randomizer $\epsilon_t$ to a new value of treatment. Let us see how this function is used to define a treatment effect. Our focus henceforth is estimating the causal effect of an intervention, characterized by $\dd$ on the outcome $Y$, through the causal parameter
+In this section, we will focus on steps 2 and 5. We previously defined $\dd(a_t, h_t, \epsilon_t)$ as a function that maps values $a_t$, $h_t$, and potentially a randomizer $\epsilon_t$ to a new value of treatment. Let's examine how this function is used to define a treatment effect. Our focus going forward is estimating the causal effect of an intervention, characterized by an intervention $\dd$ on the outcome $Y$, through the causal parameter
 
 $$
 \theta = \E[Y^{\bar A^{\dd}}]\text{,}
@@ -44,6 +49,10 @@ This definition is agnostic to the type of outcome:
 -   When $Y$ is dichotomous, $\theta$ is the population proportion of event $Y$ under intervention $\dd$.
 
 -   When $Y$ is the indicator of an event by end of the study, $\theta$ is defined as the cumulative incidence of $Y$ under intervention $\dd$.
+
+At the end of this section, we will demonstrate how this causal parameter can be identified from the observed data under assumptions.
+
+Most papers we read in the methodological causal inference literature assume that the treatment or exposure variable is binary. This is often done to simplify the definition of causal effects, but many exposures of interest in reality are not binary. **Instead, we will work in situations where** $A$ **is a binary, categorical, multivariate, or continuous variable!**
 
 But what is this function $\dd$, how can it be defined, and how does using this function to define interventions solve the problem? Let's start from simple to more complex examples of functions $\dd$.
 
