@@ -299,7 +299,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">April 18, 2025</p>
+      <p class="date-modified">June 4, 2025</p>
     </div>
   </div>
     
@@ -331,7 +331,7 @@ window.Quarto = {
 </section>
 <section id="including-in-a-manuscript" class="level2">
 <h2 class="anchored" data-anchor-id="including-in-a-manuscript">Including in a manuscript</h2>
-<p>If you decide to use <code>lmtp</code> in your research, here’s a summary that can be included for explaining the methodology. It is based on the explanation in <span class="citation" data-cites="rudolph2024associations">Rudolph et al. (<a href="#ref-rudolph2024associations" role="doc-biblioref">2024</a>)</span>:</p>
+<p>If you decide to use <em>lmtp</em> in your research, here’s a summary that can be included for explaining the methodology. It is based on the explanation in <span class="citation" data-cites="rudolph2024associations">Rudolph et al. (<a href="#ref-rudolph2024associations" role="doc-biblioref">2024</a>)</span>:</p>
 <blockquote class="blockquote">
 <p>We estimated the effect of [exposure] on [outcome], adjusting for covariates. This effect can be written: <span class="math inline">\(\E(Y^{\dd, C=1} - Y^{C=1}),\)</span> [change the preceding to correspond to your effect] where <span class="math inline">\(\E(Y^{C=1})\)</span> [change as applicable] denotes the expected value of the counterfactual outcome had the exposure not been intervened on (i.e., remained as observed) and had no one been censored, and where <span class="math inline">\(\E(Y^{\dd, C=1})\)</span> [change as applicable] denotes the expected value of the counterfactual outcome had the exposure been intervened on as dictated by the function <span class="math inline">\(\dd(A)\)</span> and had no one been censored. We defined <span class="math inline">\(\dd(A)\)</span> as a hypothetical intervention that increased the value of the exposure by 20% (i.e., multiplied each person’s value by 1.2). [change the preceding to correspond to your intervention, <span class="math inline">\(\dd\)</span>]</p>
 <p>The above statistical estimand is a type of ``modified treatment policy’’ (<span class="citation" data-cites="haneuse2013estimation">Haneuse and Rotnitzky (<a href="#ref-haneuse2013estimation" role="doc-biblioref">2013</a>)</span>, <span class="citation" data-cites="munoz2012population">Muñoz and Van Der Laan (<a href="#ref-munoz2012population" role="doc-biblioref">2012</a>)</span>, <span class="citation" data-cites="young2014identification">Young, Hernán, and Robins (<a href="#ref-young2014identification" role="doc-biblioref">2014</a>)</span>, <span class="citation" data-cites="diaz2023nonparametric">Dı́az et al. (<a href="#ref-diaz2023nonparametric" role="doc-biblioref">2023</a>)</span>). The statistical estimand can be interpreted causally under the identifying assumptions of: 1) conditional exchangeability, meaning that there is no unobserved/unmeasured confounding of the relationship between the set of treatments and outcome conditional on covariates and that there is no unobserved/unmeasured confounding between censoring and the outcome conditional on the covariates and treatment; 2) positivity, and 3) consistency.</p>

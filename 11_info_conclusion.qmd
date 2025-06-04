@@ -55,7 +55,7 @@ You can cite the package using the following BibTeX entries:
 You can reference this workshop with:
 
 ```         
-@inproceedings{lmtpSER,
+@inproceedings{williamslmtpworkshop,
   author = {Williams, Nicholas and D{\'\i}az, Iv{\'a}n and Rudolph, Kara E},
   title = {Beyond the Average Treatment Effect},
   booktitle = {<Insert conference>},

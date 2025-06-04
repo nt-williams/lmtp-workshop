@@ -188,7 +188,7 @@ window.Quarto = {
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-          <h1 class="quarto-secondary-nav-title">The <code>lmtp</code> package</h1>
+          <h1 class="quarto-secondary-nav-title">The <em>lmtp</em> package</h1>
         </a>     
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -312,7 +312,7 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#existing-software-and-lmtp" id="toc-existing-software-and-lmtp" class="nav-link active" data-scroll-target="#existing-software-and-lmtp">Existing software and <code>lmtp</code></a></li>
+  <li><a href="#existing-software-and-lmtp" id="toc-existing-software-and-lmtp" class="nav-link active" data-scroll-target="#existing-software-and-lmtp">Existing software and <em>lmtp</em></a></li>
   <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
   <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries">Preliminaries</a></li>
   <li><a href="#data-structure-examples" id="toc-data-structure-examples" class="nav-link" data-scroll-target="#data-structure-examples">Data structure examples</a></li>
@@ -325,7 +325,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">The <code>lmtp</code> package</h1>
+<h1 class="title d-none d-lg-block">The <em>lmtp</em> package</h1>
 </div>
 
 
@@ -337,7 +337,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 20, 2025</p>
+      <p class="date-modified">June 4, 2025</p>
     </div>
   </div>
     
@@ -356,20 +356,20 @@ window.Quarto = {
 </ol>
 <p>It’s now time to move on to applying this new knowledge to real data examples.</p>
 <section id="existing-software-and-lmtp" class="level3">
-<h3 class="anchored" data-anchor-id="existing-software-and-lmtp">Existing software and <code>lmtp</code></h3>
+<h3 class="anchored" data-anchor-id="existing-software-and-lmtp">Existing software and <em>lmtp</em></h3>
 <p>General software for estimation of causal effects in longitudinal studies is limited:</p>
 <ul>
 <li><p>The <code>ipw</code> and <code>gfoRmula</code> packages provide routines for estimating causal effects using inverse probability weighting (IPW) and the parametric g-formula respectively. As we already discussed, however, the validity of these methods requires making unrealistic parametric assumptions.</p></li>
 <li><p>The <code>ltmle</code> and <code>survtmle</code> packages implement a doubly-robust method for estimating causal effects from longitudinal data, but these packages do not support continuous valued exposures, multiple exposures, interventions that depend on the natural value of the exposure, or stochastic interventions.</p></li>
 </ul>
-<p>In contrast, the <code>lmtp</code> package (software companion to the paper by <span class="citation" data-cites="diaz2023nonparametric">Dı́az et al. (<a href="#ref-diaz2023nonparametric" role="doc-biblioref">2023</a>)</span>) can be used to doubly robustly and flexibly estimate point-in-time and longitudinal effects of the general set of interventions that we’ve talked about today.</p>
+<p>In contrast, the <em>lmtp</em> package (software companion to the paper by <span class="citation" data-cites="diaz2023nonparametric">Dı́az et al. (<a href="#ref-diaz2023nonparametric" role="doc-biblioref">2023</a>)</span>) can be used to doubly robustly and flexibly estimate point-in-time and longitudinal effects of the general set of interventions that we’ve talked about today.</p>
 <ul>
-<li><code>lmtp</code> could be your default package for conducting causal analyses in R!</li>
+<li><em>lmtp</em> could be your default package for conducting causal analyses in R!</li>
 </ul>
 </section>
 <section id="installation" class="level3">
 <h3 class="anchored" data-anchor-id="installation">Installation</h3>
-<p>For this workshop, <code>lmtp</code> has already been installed with <code>webr</code>. However, you can install the package locally on your machine from CRAN with<br>
+<p>For this workshop, <em>lmtp</em> has already been installed with <code>webr</code>. However, you can install the package locally on your machine from CRAN with<br>
 </p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"lmtp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -382,7 +382,7 @@ window.Quarto = {
 </section>
 <section id="preliminaries" class="level3">
 <h3 class="anchored" data-anchor-id="preliminaries">Preliminaries</h3>
-<p>Before we move on to using <code>lmtp</code>, here’s general information that will be applicable across all examples:</p>
+<p>Before we move on to using <em>lmtp</em>, here’s general information that will be applicable across all examples:</p>
 <ul>
 <li><p>Data is passed to estimators through the <code>data</code> argument.</p></li>
 <li><p>Data should be in wide format with one column per variable per time point under study (i.e., there should be one column for every variable in <span class="math inline">\(O\)</span>). Data may be either a <code>data.frame</code> or <code>tibble</code> but not a <code>data.table</code>.</p></li>
@@ -478,9 +478,9 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="machine-learning-ensembles">Machine learning ensembles</h3>
 <p>As was already discussed, an attractive property of multiply-robust estimators is that they can incorporate flexible machine-learning algorithms for the estimation of nuisance parameters while remaining <span class="math inline">\(\sqrt{n}\)</span>-consistent.</p>
 <ul>
-<li><p><code>lmtp</code> uses the super learner algorithm for estimating these nuisance parameters.</p></li>
+<li><p><em>lmtp</em> uses the super learner algorithm for estimating these nuisance parameters.</p></li>
 <li><p>The super learner algorithm is an ensemble learner than incorporates a set of candidate models through a weighted convex-combination based on cross-validation. Asymptotically, this weighted combination of models, called the meta-learner, will outperform any single one of its components.</p></li>
-<li><p><code>lmtp</code> uses the implementation of the super learner provided by the <code>SuperLearner</code> package.</p></li>
+<li><p><em>lmtp</em> uses the implementation of the super learner provided by the <code>SuperLearner</code> package.</p></li>
 <li><p>The algorithms to be used in the super learner are specified with the <code>learners_trt</code> and <code>learners_outcome</code> arguments.</p></li>
 <li><p>The outcome variable type should guide users on selecting the appropriate candidate learners for use with the <code>learners_outcome</code> argument.</p></li>
 <li><p>Regardless of whether an exposure is continuous, dichotomous, or categorical, the <a href="info_estimators.html#sec-density-ratio-estimation">exposure mechanism is estimated using classification</a>. Therefore only include candidate learners capable of binary classification with the <code>learners_trt</code> argument.</p></li>
