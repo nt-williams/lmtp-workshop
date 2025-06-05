@@ -281,7 +281,20 @@ Before we introduce the EIF, it's necessary to make some additional assumptions 
 
 2.  If $A$ is continuous, the function $\dd$ is piecewise smooth invertible
 
-3.  The function $\dd$ does not depend on the observed distribution $\P$ (this means that we cannot apply these methods to odds ratio IPSI, although we can apply them to risk ratio IPSI)
+::: {.callout-caution appearance="simple"}
+All of the interventions we've covered so far satisfy this property. However, a causal effect that is often of interest (especially in environmental epidemiology) that is **NOT** piecewise smooth invertible is the _threshold_ intervention, such as
+
+$$
+\dd(a_t, h_t, \epsilon) = \begin{cases}
+a_t &\text{ if } a_t \leq u(h_t) \\
+u(h_t) &\text{ otherwise.}
+\end{cases}
+$$
+:::
+
+3.  The function $\dd$ does not depend on the observed distribution $\P$.
+
+- This is why we cannot apply these methods to the odds ratio IPSI, although we can apply them to risk ratio IPSI.
 
 These assumptions ensure that the efficient influence function of $\theta$ for interventions $\dd$ have a structure similar to the influence function for the effect of dynamic regimes. This allows for multiply robust estimation, which is not generally possible for interventions $\dd$ that depend on $\P$.
 
