@@ -317,10 +317,10 @@ $$
 TMLE exploits the fact that the expected value of the EIF is equal to zero. Consider the EIF for the single time-point setting we just defined.
 
 \begin{aligned}
-\E[\phi_1(O) - \theta] &= \E[r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta]\\
-&= \E[r(a, w)\{Y - \m(a,w)\}] + \theta - \theta \\
-&= \E[r(a, w)\{Y - \m(a,w)\}] \\
-\E[r(a, w)\{Y - \m(a,w)\}] &= 0
+n^{-1} \sum_i^n[\phi_1(O) - \theta] &= n^{-1} \sum_i^n[r_i(a_i, w)\{Y_i - \m_i(a,w)\} + \m_i(a^{\dd},w) - \theta]\\
+&= n^{-1} \sum_i^n[r_i(a, w)\{Y_i - \m_i(a,w)\}] + \theta - \theta \\
+&= n^{-1} \sum_i^n[r_i(a, w)\{Y_i - \m_i(a,w)\}] \\
+n^{-1} \sum_i^n[r_i(a, w)\{Y_i - \m_i(a,w)\}] &= 0
 \end{aligned}
 
 The key insight is to recognize that $r(a, w)\{Y - \m(a,w)\}$ looks like a score equation $\sum_i r_i(a, w)\{Y_i - \m_i(a,w)\} = 0$ that can be solved using a GLM with weights $r_i(a, w)$, offset $m_i(a,w)$, an intercept, and the canonical link. Thus, by solving the score equation with a GLM, TMLE solves the EIF estimating equation. 

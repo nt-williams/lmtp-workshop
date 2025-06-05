@@ -2515,10 +2515,10 @@ r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta.
 <h2 class="anchored" data-anchor-id="targeted-minimum-loss-based-estimation">Targeted Minimum-Loss Based Estimation</h2>
 <p>TMLE exploits the fact that the expected value of the EIF is equal to zero. Consider the EIF for the single time-point setting we just defined.</p>
 <span class="math display">\[\begin{aligned}
-\E[\phi_1(O) - \theta] &amp;= \E[r(a, w)\{Y - \m(a,w)\} + \m(a^{\dd},w) - \theta]\\
-&amp;= \E[r(a, w)\{Y - \m(a,w)\}] + \theta - \theta \\
-&amp;= \E[r(a, w)\{Y - \m(a,w)\}] \\
-\E[r(a, w)\{Y - \m(a,w)\}] &amp;= 0
+n^{-1} \sum_i^n[\phi_1(O) - \theta] &amp;= n^{-1} \sum_i^n[r_i(a_i, w)\{Y_i - \m_i(a,w)\} + \m_i(a^{\dd},w) - \theta]\\
+&amp;= n^{-1} \sum_i^n[r_i(a, w)\{Y_i - \m_i(a,w)\}] + \theta - \theta \\
+&amp;= n^{-1} \sum_i^n[r_i(a, w)\{Y_i - \m_i(a,w)\}] \\
+n^{-1} \sum_i^n[r_i(a, w)\{Y_i - \m_i(a,w)\}] &amp;= 0
 \end{aligned}\]</span>
 <p>The key insight is to recognize that <span class="math inline">\(r(a, w)\{Y - \m(a,w)\}\)</span> looks like a score equation <span class="math inline">\(\sum_i r_i(a, w)\{Y_i - \m_i(a,w)\} = 0\)</span> that can be solved using a GLM with weights <span class="math inline">\(r_i(a, w)\)</span>, offset <span class="math inline">\(m_i(a,w)\)</span>, an intercept, and the canonical link. Thus, by solving the score equation with a GLM, TMLE solves the EIF estimating equation.</p>
 <p>The algorithm is as follows:</p>
