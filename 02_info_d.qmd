@@ -52,6 +52,8 @@ This definition is agnostic to the type of outcome:
 
 At the end of this section, we will demonstrate how this causal parameter can be identified from the observed data under assumptions.
 
+---
+
 Most papers we read in the methodological causal inference literature assume that the treatment or exposure variable is binary. This is often done to simplify the definition of causal effects, but many exposures of interest in reality are not binary. **Instead, we will work in situations where** $A$ **is a binary, categorical, multivariate, or continuous variable!**
 
 But what is this function $\dd$, how can it be defined, and how does using this function to define interventions solve the problem? Let's start from simple to more complex examples of functions $\dd$.
