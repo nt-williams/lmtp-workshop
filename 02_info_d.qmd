@@ -311,24 +311,28 @@ We can then compute the identification formula in the following steps:
 
     ```{webr-r}
     m2 <- glm(m3_d ~ L1 + A1 + L2 + A2, data = foo)
+    summary(m2)
     ```
 
 3.  Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=2$, i.e., compute $\m_2(A_2^\dd,H_2)$.
 
     ```{webr-r}
     m2_d <- predict(m2, mutate(foo, A2 = d(A2)))
+    head(m2_d)
     ```
 
 4.  Compute the regression of $\m_2(A_2^\dd,H_2)$ on $(A_1, H_1)$. This gives a predictive function, call that predictive function $\m_1(A_1,H_1)$.
 
     ```{webr-r}
     m1 <- glm(m2_d ~ L1 + A1, data = mutate(foo, m2_d = m2_d))
+    summary(m1)
     ```
 
 5.  Use the predictive function to compute what would have occurred if the intervention had been implemented at time $t=1$, i.e., compute $\m_1(A_1^\dd,H_1)$.
 
     ```{webr-r}
     m1_d <- predict(m1, mutate(foo, A1 = d(A1)))
+    head(m1_d)
     ```
 
 6.  Compute the mean of $\m_1(A_1^\dd,H_1)$. This mean is equal to $\theta$.
