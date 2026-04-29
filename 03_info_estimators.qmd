@@ -1,6 +1,7 @@
 ---
 title: "Estimators"
 date-modified: last-modified
+engine: knitr
 filters:
   - webr
 webr:

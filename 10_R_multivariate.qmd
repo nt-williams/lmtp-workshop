@@ -5,7 +5,7 @@ date-modified: last-modified
 filters:
   - webr
 webr:
-  packages: ['lmtp', 'SuperLearner', 'rpart', 'gam']
+  packages: ['lmtp', 'SuperLearner', 'gam']
   autoload-packages: true
   repos: 
     - https://nt-williams.r-universe.dev
@@ -129,7 +129,7 @@ d <- function(data, a) {
 
 ## Problem 1
 
-Using TMLE, estimate the population mean outcome under the simultaneous intervention we just defined. Fit both the treatment mechanism and the outcome regression using this set of learners: `c("SL.mean", "SL.glm", "SL.gam", "SL.rpart", "SL.rpartPrune", "SL.step.interaction")`. Assign the result to `ans`. To save time, don't use crossfitting; _lmtp_ has already been loaded into the R session.
+Using TMLE, estimate the population mean outcome under the simultaneous intervention we just defined. Fit both the treatment mechanism and the outcome regression using this set of learners: `c("SL.mean", "SL.glm", "SL.gam")`. Assign the result to `ans`. To save time, don't use crossfitting; _lmtp_ has already been loaded into the R session.
 
 
 ```{webr-r}
@@ -152,10 +152,7 @@ set.seed(4363754)
 
 learners <- c("SL.mean", 
               "SL.glm", 
-              "SL.gam", 
-              "SL.rpart", 
-              "SL.rpartPrune", 
-              "SL.step.interaction")
+              "SL.gam")
 
 ans <- lmtp_tmle(data = mixtures, 
                  trt = A, 
@@ -191,7 +188,7 @@ Compared to what was observed under the natural course of exposure, how did inte
 
 ```{r eval=FALSE}
 obs_y <- mean(mixtures$Y)
-lmtp_contrast(ans, ref = obs_y)
+ans$estimate - ife::ife(obs_y, mixtures$Y - obs_y)
 ```
 
 </details>
