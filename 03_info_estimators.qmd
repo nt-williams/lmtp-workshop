@@ -9,7 +9,7 @@ webr:
   autoload-packages: true
 bibliography: references.bib
 nocite: |
-  @diaz2023nonparametric, @hoffman2023introducing, @kennedy2019nonparametric @haneuse2013estimation, @bickel1993efficient
+  @diaz2023nonparametric, @hoffman2023introducing, @kennedy2019nonparametric @haneuse2013estimation, @bickel1993efficient, @tchetgen2009commentary, @luedtke2017sequential
 ---
 
 {{< include macros.qmd >}}
@@ -428,6 +428,11 @@ The benefits of TMLE are quite large as it solves the main problems with g-compu
 : {tbl-colwidths="\[25,25\]"}
 
 ## Sequentially Doubly Robust Estimator
+
+Recall the transformation:
+$$
+\phi_t: o \mapsto \sum_{s=t}^\tau \bigg( \prod_{k=t}^s r_k(a_k, h_k)\bigg) \big\{\m_{s+1}(a_{s+1}^\dd, h_{s+1}) - \m_s(a_s, h_s) \big\} + \m_t(a_t^\dd, h_t).
+$$
 
 The SDR estimator is based on the central fact that
 
