@@ -55,4 +55,3 @@ format:
     css: styles.css
     toc: true
     include-in-body: macros.qmd
-

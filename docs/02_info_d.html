@@ -1854,6 +1854,7 @@ window.Quarto = {
   <li><a href="#identification-of-the-causal-parameter" id="toc-identification-of-the-causal-parameter" class="nav-link" data-scroll-target="#identification-of-the-causal-parameter">Identification of the causal parameter</a>
   <ul class="collapse">
   <li><a href="#identification-assumptions" id="toc-identification-assumptions" class="nav-link" data-scroll-target="#identification-assumptions">Identification Assumptions</a></li>
+  <li><a href="#proof" id="toc-proof" class="nav-link" data-scroll-target="#proof">Proof</a></li>
   <li><a href="#example-5" id="toc-example-5" class="nav-link" data-scroll-target="#example-5">Example</a></li>
   </ul></li>
   </ul>
@@ -2160,7 +2161,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">April 29, 2026</p>
+      <p class="date-modified">May 10, 2026</p>
     </div>
   </div>
     
@@ -2182,7 +2183,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 \newcommand{\rr}{\mathsf{r}}
 \newcommand{\IF}{\mathbb{IF}}
 \newcommand{\dd}{\mathsf{d}}
-\newcommand{\Pn}{$\mathsf{P}_n$}
+\newcommand{\Pn}{\mathsf{P}_n}
 \newcommand{\E}{\mathsf{E}}
 \]</span></p>
 </div>
@@ -2398,7 +2399,7 @@ a_t &amp;\text{ if } l_t = 1 \text{ and } \epsilon_t &lt; 0.85 \\
 <blockquote class="blockquote">
 <p>If there is a unit with observed treatment value <span class="math inline">\(a_t\)</span> and covariates <span class="math inline">\(h_t\)</span>, there must also be a unit with treatment value <span class="math inline">\(\dd(a_t, h_t)\)</span> and covariates <span class="math inline">\(h_t\)</span>.</p>
 </blockquote></li>
-<li><p><em>No unmeasured confounders.</em> All the common causes of <span class="math inline">\(A_t\)</span> and <span class="math inline">\((L_s, A_s, Y)\)</span> are measured and contained in <span class="math inline">\(H_t\)</span> for all <span class="math inline">\(s \in \{t+1, ..., \tau\}\)</span>.</p>
+<li><p><em>Strong sequential exchangeability.</em> All the common causes of <span class="math inline">\(A_t\)</span> and <span class="math inline">\((L_s, A_s, Y)\)</span> are measured and contained in <span class="math inline">\(H_t\)</span> for all <span class="math inline">\(s \in \{t+1, ..., \tau\}\)</span>.</p>
 <blockquote class="blockquote">
 <p>For all times <span class="math inline">\(t\)</span>, the history <span class="math inline">\(H_t\)</span> contains sufficient variables to adjust for confounding of <span class="math inline">\(A_t\)</span> and any subsequent variables, including future treatment.</p>
 </blockquote></li>
@@ -2429,6 +2430,54 @@ a_t &amp;\text{ if } l_t = 1 \text{ and } \epsilon_t &lt; 0.85 \\
 \m_t: (a_t, h_t) \rightarrow \E[\m_{t + 1}(A^{\dd}_{t+1}, H_{t + 1}) \mid A_t = a_t, H_t = h_t],
 \]</span></p>
 <p>and define <span class="math inline">\(\theta = E[\m_1(A^{\dd}_1, L_1)]\)</span>.</p>
+</section>
+<section id="proof" class="level3">
+<h3 class="anchored" data-anchor-id="proof">Proof</h3>
+<p>Let <span class="math inline">\(\tau = 2\)</span> and <span class="math inline">\(\dd\)</span> be an MTP that only depends on the current natural value of treatment. Suppose data are generated under this NPSEM: <span class="math display">\[
+\begin{align}
+    L_1 &amp;= f_{L,1}(U_{L,1})\\
+    A_1 &amp;= f_{A,1}(L_1, U_{A,1})\\
+    L_2 &amp;= f_{L,2}(A_1, L_1, U_{L,2})\\
+    A_2 &amp;= f_{A,2}(L_2,A_1,L_1,U_{A,2})\\
+    Y &amp;= f_Y(A_2,L_2,A_1,L_1,U_Y).
+\end{align}
+\]</span> The causal quantity of interest is <span class="math inline">\(\theta = \E[Y(\bar{A}^\dd)]\)</span> , where <span class="math inline">\(Y(\bar{A}^\dd)\)</span> is defined as <span class="math display">\[
+\begin{aligned}
+    L_1 &amp;= f_{L,1}(U_{L,1})\\
+    A_1 &amp;= f_{A,1}(L_1, U_{A,1})\\
+    A_1^\dd &amp;= \dd(A_1)\\
+    L_2(A_1^\dd) &amp;= f_{L,2}(A_1^\dd, L_1, U_{L,2})\\
+    A_2(A_1^\dd) &amp;= f_{A,2}(L_2(A_1^\dd),A_1^\dd,L_1,U_{A,2})\\
+    A_2^\dd &amp;= \dd(A_2(A_1^\dd))\\
+    Y(\bar{A}^\dd) &amp;= f_Y(A_2^\dd,L_2(A_1^\dd),A_1^\dd,L_1,U_Y).
+\end{aligned}
+\]</span> Therefore, <span class="math display">\[
+\begin{align}
+    Y(\bar{A}^\dd) &amp;= f_Y(A_2^\dd,L_2(A_1^\dd),A_1^\dd,L_1,U_Y)\\
+    &amp;= f_Y(\dd(A_2(A_1^\dd)),L_2(A_1^\dd),\dd(A_1),L_1,U_Y)\\
+    &amp;= f_Y(\dd(f_{A,2}(L_2(A_1^\dd),A_1^\dd,L_1,U_{A,2})),L_2(A_1^\dd),\dd(A_1),L_1,U_Y)\\
+    &amp;= f_Y(\dd(f_{A,2}(f_{L,2}(A_1^\dd, L_1, U_{L,2}),A_1^\dd,L_1,U_{A,2})),f_{L,2}(A_1^\dd, L_1, U_{L,2}),\dd(A_1),L_1,U_Y)\\
+    &amp;= f_Y(\dd(f_{A,2}(f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_{A,2})),f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_Y)
+\end{align}
+\]</span> By the law of total expectation: <span class="math display">\[\theta = \E\big[\E[Y(\bar{A}^\dd)\mid A_1,L_1]\big].
+\]</span> Expanding <span class="math inline">\(Y(\bar{A}^\dd)\)</span>: <span class="math display">\[
+\E\big[\E[f_Y(\dd(f_{A,2}(f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_{A,2})),f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_Y)\mid A_1,L_1]\big]
+\]</span> Under strong sequential exchangeability, <span class="math inline">\(\{U_Y, U_{A,2}, U_{L,2}\} \perp A_1\mid L_1\)</span>, therefore: <span class="math display">\[
+\begin{align}
+    &amp;\E\big[\E[f_Y(\dd(f_{A,2}(f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_{A,2})),f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_Y)\mid A_1=\dd(A_1),L_1]\big]\\
+    &amp;\E\big[\E[f_Y(\dd(A_2(\dd(A_1))),L_2(\dd(A_1)),\dd(A_1),L_1,U_Y)\mid A_1=\dd(A_1),L_1]\big].
+\end{align}
+\]</span> By consistency, when we condition on <span class="math inline">\(A_1=\dd(A_1)\)</span>, <span class="math inline">\(L_2(\dd(A_1))\)</span> and <span class="math inline">\(A_2(\dd(A_1))\)</span> are equal to <span class="math inline">\(L_2\)</span> and <span class="math inline">\(A_2\)</span>, respectively: <span class="math display">\[
+\E\big[\E[f_Y(\dd(A_2),L_2,\dd(A_1),L_1,U_Y)\mid A_1=\dd(A_1),L_1]\big].
+\]</span> By the law of total expectation: <span class="math display">\[
+\E\big[\E\big[\E[f_Y(\dd(A_2),L_2,\dd(A_1),L_1,U_Y)\mid A_2,L_2,A_1=\dd(A_1),L_1]\,\big|\,A_1=\dd(A_1),L_1\big]\big].
+\]</span> Again, assuming strong sequential exchangeability <span class="math inline">\(U_Y \perp A_2 \mid L_2,A_1,L_1\)</span>, therefore we can replace <span class="math inline">\(A_2\)</span> with <span class="math inline">\(A_2 =\dd(A_2)\)</span> in the innermost conditioning set: <span class="math display">\[
+\E\big[\E\big[\E[f_Y(\dd(A_2),L_2,\dd(A_1),L_1,U_Y)\mid A_2=\dd(A_2),L_2,A_1=\dd(A_1),L_1]\,\big|\,A_1=\dd(A_1),L_1\big]\big].
+\]</span> Finally, by one last consistency argument: <span class="math display">\[
+\begin{align}
+    &amp;\E\big[\E\big[\E[Y\mid A_2=\dd(A_2),L_2,A_1=\dd(A_1),L_1]\,\big|\,A_1=\dd(A_1),L_1\big]\big].
+\end{align}
+\]</span></p>
 </section>
 <section id="example-5" class="level3">
 <h3 class="anchored" data-anchor-id="example-5">Example</h3>

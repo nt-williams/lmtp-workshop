@@ -208,7 +208,7 @@ Recall that the fundamental problem of causal inference is that we can't observe
 
     > If there is a unit with observed treatment value $a_t$ and covariates $h_t$, there must also be a unit with treatment value $\dd(a_t, h_t)$ and covariates $h_t$.
 
-2.  *No unmeasured confounders.* All the common causes of $A_t$ and $(L_s, A_s, Y)$ are measured and contained in $H_t$ for all $s \in \{t+1, ..., \tau\}$.
+2.  *Strong sequential exchangeability.* All the common causes of $A_t$ and $(L_s, A_s, Y)$ are measured and contained in $H_t$ for all $s \in \{t+1, ..., \tau\}$.
 
     > For all times $t$, the history $H_t$ contains sufficient variables to adjust for confounding of $A_t$ and any subsequent variables, including future treatment.
 
@@ -229,6 +229,74 @@ $$
 $$
 
 and define $\theta = E[\m_1(A^{\dd}_1, L_1)]$.
+
+### Proof
+
+Let $\tau = 2$ and $\dd$ be an MTP that only depends on the current natural value of treatment. Suppose data are generated under this NPSEM:
+$$
+\begin{align}
+    L_1 &= f_{L,1}(U_{L,1})\\
+    A_1 &= f_{A,1}(L_1, U_{A,1})\\
+    L_2 &= f_{L,2}(A_1, L_1, U_{L,2})\\
+    A_2 &= f_{A,2}(L_2,A_1,L_1,U_{A,2})\\
+    Y &= f_Y(A_2,L_2,A_1,L_1,U_Y).
+\end{align}
+$$
+The causal quantity of interest is $\theta = \E[Y(\bar{A}^\dd)]$
+, where $Y(\bar{A}^\dd)$ is defined as
+$$
+\begin{aligned}
+    L_1 &= f_{L,1}(U_{L,1})\\
+    A_1 &= f_{A,1}(L_1, U_{A,1})\\
+    A_1^\dd &= \dd(A_1)\\
+    L_2(A_1^\dd) &= f_{L,2}(A_1^\dd, L_1, U_{L,2})\\
+    A_2(A_1^\dd) &= f_{A,2}(L_2(A_1^\dd),A_1^\dd,L_1,U_{A,2})\\
+    A_2^\dd &= \dd(A_2(A_1^\dd))\\
+    Y(\bar{A}^\dd) &= f_Y(A_2^\dd,L_2(A_1^\dd),A_1^\dd,L_1,U_Y).
+\end{aligned}
+$$
+Therefore, 
+$$
+\begin{align}
+    Y(\bar{A}^\dd) &= f_Y(A_2^\dd,L_2(A_1^\dd),A_1^\dd,L_1,U_Y)\\
+    &= f_Y(\dd(A_2(A_1^\dd)),L_2(A_1^\dd),\dd(A_1),L_1,U_Y)\\
+    &= f_Y(\dd(f_{A,2}(L_2(A_1^\dd),A_1^\dd,L_1,U_{A,2})),L_2(A_1^\dd),\dd(A_1),L_1,U_Y)\\
+    &= f_Y(\dd(f_{A,2}(f_{L,2}(A_1^\dd, L_1, U_{L,2}),A_1^\dd,L_1,U_{A,2})),f_{L,2}(A_1^\dd, L_1, U_{L,2}),\dd(A_1),L_1,U_Y)\\
+    &= f_Y(\dd(f_{A,2}(f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_{A,2})),f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_Y)
+\end{align}
+$$
+By the law of total expectation:
+$$\theta = \E\big[\E[Y(\bar{A}^\dd)\mid A_1,L_1]\big].
+$$
+Expanding $Y(\bar{A}^\dd)$:
+$$
+\E\big[\E[f_Y(\dd(f_{A,2}(f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_{A,2})),f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_Y)\mid A_1,L_1]\big]
+$$
+Under strong sequential exchangeability, $\{U_Y, U_{A,2}, U_{L,2}\} \perp A_1\mid L_1$, therefore:
+$$
+\begin{align}
+    &\E\big[\E[f_Y(\dd(f_{A,2}(f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_{A,2})),f_{L,2}(\dd(A_1), L_1, U_{L,2}),\dd(A_1),L_1,U_Y)\mid A_1=\dd(A_1),L_1]\big]\\
+    &\E\big[\E[f_Y(\dd(A_2(\dd(A_1))),L_2(\dd(A_1)),\dd(A_1),L_1,U_Y)\mid A_1=\dd(A_1),L_1]\big].
+\end{align}
+$$
+By consistency, when we condition on $A_1=\dd(A_1)$, $L_2(\dd(A_1))$ and $A_2(\dd(A_1))$ are equal to $L_2$ and $A_2$, respectively:
+$$
+\E\big[\E[f_Y(\dd(A_2),L_2,\dd(A_1),L_1,U_Y)\mid A_1=\dd(A_1),L_1]\big].
+$$
+By the law of total expectation:
+$$
+\E\big[\E\big[\E[f_Y(\dd(A_2),L_2,\dd(A_1),L_1,U_Y)\mid A_2,L_2,A_1=\dd(A_1),L_1]\,\big|\,A_1=\dd(A_1),L_1\big]\big].
+$$
+Again, assuming strong sequential exchangeability $U_Y \perp A_2 \mid L_2,A_1,L_1$, therefore we can replace $A_2$ with $A_2 =\dd(A_2)$ in the innermost conditioning set:
+$$
+\E\big[\E\big[\E[f_Y(\dd(A_2),L_2,\dd(A_1),L_1,U_Y)\mid A_2=\dd(A_2),L_2,A_1=\dd(A_1),L_1]\,\big|\,A_1=\dd(A_1),L_1\big]\big].
+$$
+Finally, by one last consistency argument:
+$$
+\begin{align}
+    &\E\big[\E\big[\E[Y\mid A_2=\dd(A_2),L_2,A_1=\dd(A_1),L_1]\,\big|\,A_1=\dd(A_1),L_1\big]\big].
+\end{align}
+$$
 
 ### Example
 
