@@ -2,9 +2,9 @@
 title: "Instructors"
 ---
 
-### [Nick Williams](https://github.com/nt-williams)
+### [Nick Williams](https://nicholastwilliams.com/)
 
-Nick is a Senior Data Analyst in Columbia University's Mailman School of Publich Health, Department of Epidemiology. His interests are in the development of statistical computing tools for novel causal inference methods. He's the author and maintainer of multiple R packages.
+Nick is a PhD student in Biostatistics at the University of California, Berkeley and a Senior Data Analyst in Columbia University's Mailman School of Publich Health, Department of Epidemiology. His interests are in the development of statistical computing tools for novel causal inference methods. He's the author and maintainer of multiple R packages.
 
 ------------------------------------------------------------------------
 
