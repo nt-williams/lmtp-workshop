@@ -289,7 +289,7 @@
     "crumbs": [
       "Instructors",
       "4. Estimating Effects with lmtp",
-      "Static effects and the ATE"
+      "Static effects and the causal contrasts"
     ]
   },
   {
@@ -301,7 +301,7 @@
     "crumbs": [
       "Instructors",
       "4. Estimating Effects with lmtp",
-      "Static effects and the ATE"
+      "Static effects and the causal contrasts"
     ]
   },
   {
@@ -313,7 +313,7 @@
     "crumbs": [
       "Instructors",
       "4. Estimating Effects with lmtp",
-      "Static effects and the ATE"
+      "Static effects and the causal contrasts"
     ]
   },
   {
@@ -325,7 +325,7 @@
     "crumbs": [
       "Instructors",
       "4. Estimating Effects with lmtp",
-      "Static effects and the ATE"
+      "Static effects and the causal contrasts"
     ]
   },
   {
@@ -337,7 +337,7 @@
     "crumbs": [
       "Instructors",
       "4. Estimating Effects with lmtp",
-      "Static effects and the ATE"
+      "Static effects and the causal contrasts"
     ]
   },
   {
@@ -349,19 +349,19 @@
     "crumbs": [
       "Instructors",
       "4. Estimating Effects with lmtp",
-      "Static effects and the ATE"
+      "Static effects and the causal contrasts"
     ]
   },
   {
-    "objectID": "05_R_static.html#average-treatment-effect",
-    "href": "05_R_static.html#average-treatment-effect",
+    "objectID": "05_R_static.html#causal-contrasts",
+    "href": "05_R_static.html#causal-contrasts",
     "title": "Static Interventions",
-    "section": "Average treatment effect",
-    "text": "Average treatment effect\nWith estimates of \\(\\E(Y^{A^{\\dd_1}})\\) and \\(\\E(Y^{A^{\\dd_0}})\\) we can now calculate the ATE. To do so, we’ll use the function lmtp_contrast().\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\nIn addition to the ATE, we can also calculate the causal risk ratio and the causal odds ratio.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\nConfirming what we already know, we’ve estimated the treatment as being associated with decreased intubation or death.",
+    "section": "Causal contrasts",
+    "text": "Causal contrasts\nWith estimates of \\(\\E(Y^{A^{\\dd_1}})\\) and \\(\\E(Y^{A^{\\dd_0}})\\) we can now calculate causal contrasts. First, let’s estimate the average treatment effect (ATE). To do so, we’ll use the function lmtp_contrast().\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\nIn addition to the ATE, we can also calculate the causal risk ratio and the causal odds ratio.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\nConfirming what we already know, we’ve estimated the treatment as being associated with decreased intubation or death.\nInstead of using lmtp_contrast we can simply apply standard arithmetic operators to the lmtp estimate object. On the backend, lmtp uses the ife package which performs automatic differentation for calculating standard errors.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
     "crumbs": [
       "Instructors",
       "4. Estimating Effects with lmtp",
-      "Static effects and the ATE"
+      "Static effects and the causal contrasts"
     ]
   },
   {

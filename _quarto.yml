@@ -29,7 +29,7 @@ website:
           - href: 04_lmtp.qmd
             text: The lmtp package
           - href: 05_R_static.qmd
-            text: Static effects and the ATE
+            text: Static effects and the causal contrasts
           - href: 06_R_dtr.qmd
             text: Dynamic Treatment Regimes
           - href: 07_R_mtp.qmd
